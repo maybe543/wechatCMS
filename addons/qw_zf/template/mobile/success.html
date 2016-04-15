@@ -1,0 +1,22 @@
+{template 'common/header'}
+<link rel="stylesheet" href="../addons/qw_zf/assets/css/common.css">
+<header>
+    <a class="back" href="javascript:history.go(-1);"><i class="fa fa-arrow-left"></i> </a>
+    <h4>支付成功</h4>
+</header>
+<div class="margin-50 text-center">
+    <i class="fa fa-check nb"></i>
+    <h4 class="paypay">支付成功</h4>
+    <h2>￥{$xq['fee']}元</h2>
+    <div class="padding-10 bg-white">
+            <span class="pull-left">收款方</span><span class="pull-right">{$xq['title']}</span>
+    </div>
+    <div class="padding-10 bgwhite">
+            <button class="btn btn-success btn-block enter height-60">完成</button>
+            <button class="btn btn-warning btn-block enterwin height-100"><a href="{$set['sitegame']}">赢得一次抽奖活动>></a></button>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

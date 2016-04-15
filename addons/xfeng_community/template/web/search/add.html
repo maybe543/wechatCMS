@@ -1,0 +1,102 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+<li {if $op == 'list'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('search', array('op' => 'list'))}">查询管理</a>
+</li>
+<li {if $op == 'add'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('search', array('op' => 'add'))}">查询添加</a>
+</li>
+</ul>
+
+<form action="" class="form-horizontal form" method="post" enctype="multipart/form-data" onsubmit="return check(this);">
+<input type="hidden" name="id" value="{$item['id']}">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">查询添加</h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+	    <label for="sname" class="col-sm-2 control-label">查询名称</label>
+	    <div class="col-xs-3">
+	      <input type="text" name="sname" value="{$item['sname']}" id='sname' class="form-control" placeHolder="请输入常用查询名称"/>
+	    </div>
+  	</div>
+  	<div class="form-group">
+	    <label for="sname" class="col-sm-2 control-label">第三方网址</label>
+	    <div class="col-xs-4">
+	    	{php echo tpl_form_field_link(surl,$item['surl'])}
+			（注：链接需加http://）
+	    </div>
+  	</div>
+  	<div class="form-group">
+	    <label for="sname" class="col-sm-2 control-label">图标</label>
+	    <div class="col-xs-3">
+	      {php echo tpl_form_field_image('icon',$item['icon'])}
+	    </div>
+  	</div>
+  	<div class="form-group">
+	    <label for="sname" class="col-sm-2 control-label">状态</label>
+	    <div class="col-xs-3">
+	      <label for="ipt_status" class="checkbox-inline">
+				<input class="" name="status" id="ipt_status" type="checkbox" value='1' {if intval($item['status'])==1}checked='checked'{/if} />
+				开启
+		  </label>
+	    </div>
+  	</div>
+    {if !$user['regionid']}
+  	<div class="form-group">
+        <label for="" class="col-sm-2 control-label">选择小区</label>
+        <div class="col-sm-10">
+            <label class="checkbox-inline">
+                <input type="checkbox" id="checkAll" name="checkAll" data-group="regionid">全部
+            </label>
+            {loop $regions $region}
+            <label class="checkbox-inline">
+                <input type="checkbox" id="regionid" value="{$region['id']}" name='regionid[]' data-group="regionid" {if @in_array($region[ 'id'], $regs)}checked='checked' {/if}> {$region['city']}{$region['dist']}{$region['title']}
+            </label>
+            {/loop}
+        </div>
+    </div>
+    {/if}
+  	<div class="form-group">
+	    <label for="" class="col-sm-2 control-label"></label>
+	    <div class="col-sm-10">
+	      <label for="ipt_status" class="checkbox">
+				<button type="submit" class="btn btn-primary span3" name="submit" value="提交">提交</button>
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		  </label>
+	    </div>
+  	</div>
+  </div>
+</div>
+</form>
+<script type="text/javascript">
+	function check(form){
+            if (!form['sname'].value) {
+                alert('请输入常用查询名称.');
+                return false;
+            }
+            if (!form['surl'].value) {
+                alert('请输入第三方网址！');
+                return false;
+            }
+            if (!form['icon'].value) {
+                alert('请上传图标。');
+                return false;
+            }
+            return true;
+        }
+    $(function() {
+	    $("#checkAll").click(function() {
+
+	        var checked = $(this).get(0).checked;
+	        var group = $(this).data('group');
+	        $("#regionid[data-group='" + group + "']").each(function() {
+	            $(this).get(0).checked = checked;
+	        })
+
+	    });
+	});
+</script>
+
+{template 'common/footer'}

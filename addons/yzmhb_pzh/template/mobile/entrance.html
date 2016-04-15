@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>口令输入入口</title>	
+<link type="text/css" rel="stylesheet" href="../addons/yzmhb_pzh/template/mobile/css/style.css" />
+<script type="text/javascript" src="../addons/yzmhb_pzh/template/mobile/js/jquery.js"></script>
+<link type="text/css" rel="stylesheet" href="../addons/yzmhb_pzh/template/mobile/css/sweetalert.css" />
+<script type="text/javascript" src="../addons/yzmhb_pzh/template/mobile/js/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+	function onBridgeReady(){ WeixinJSBridge.call('hideOptionMenu'); } if (typeof WeixinJSBridge == "undefined"){ if( document.addEventListener ){ document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false); }else if (document.attachEvent){ document.attachEvent('WeixinJSBridgeReady', onBridgeReady); document.attachEvent('onWeixinJSBridgeReady', onBridgeReady); } }else{ onBridgeReady(); }
+</script>
+<style type="text/css">
+		/*超链接*/
+	.link
+	{
+      position: relative;
+      text-align: right;
+      margin-right: 0;
+      padding-left: 10%;
+      padding-right: 19%;
+      padding-top: 30px;
+      font-size: 17px;
+     -webkit-appearance: none;
+	}
+	a
+	{
+		color:<?php  echo $link_color; ?>;
+		
+	}
+		.text_box
+	{
+
+		position: relative;
+		color: <?php echo $color; ?>;
+		font-size: 20px;
+	}
+	.background
+	{
+	position: absolute;
+	padding-top:<?php echo $height.'%'; ?>;
+	width: 100%;
+	text-align: center;
+	}
+</style>
+</head>
+<body>
+ <img class="img" src="<?php echo $img; ?>"/>
+ <div class="background">
+ <div class="text_box">
+ 	<?php echo nl2br($title); ?>
+ </div>
+ <div class="input_box">
+ 	<input type="text" class="text" id="kouling" name="kouling" />
+ </div>
+ <div class="button_box">
+  <input type="button" class="btn" value="确定" name="submit" id="submit"/>
+ </div>
+   <div class="link">
+    
+   </div>
+</div>
+ <script type="text/javascript">
+   
+	
+			$("#submit").click(function(){
+				
+				var kouling= $("#kouling").val();
+				$.ajax({
+					type: "POST",
+					url: "{php echo $this->createMobileUrl('sendkouling')}",
+					data: "kouling="+kouling,
+					success: function(msg)
+					{
+
+					swal(msg);
+					}
+				});
+			});
+		</script>
+ 
+</body>
+</html>

@@ -1,0 +1,25 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    body{background-color:#FAFAFA}
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+    .list-group-item{margin-top:5px;font-weight: bold;font-size:16px;background-color: #ffffff;}
+    .list-group-item span{margin-left:15px;}
+    .list-group-item red{color:red;font-size:24px;font-weight: bold;}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+        <img class="img-circle" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>提现记录</h3>
+    </div>
+</div>
+<ul class="list-group">
+    {loop $data $d}
+    <li class="list-group-item">提现金额 <red>{php echo ($d['money'])/100}</red> 元  <span>{php echo date('Y-m-d H:i:s',$d['createtime'])}</span></li>
+    {/loop}
+</ul>
+{template 'footer'}

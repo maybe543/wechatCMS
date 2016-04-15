@@ -1,0 +1,102 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>{if !$pcate}{$settings['title']}{else}{$category[$pcate]['name']}{/if}</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/> 
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes"> 
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+    <script>
+    (function() {
+        var baseFontSize = 100;
+        var baseWidth = 320;
+        var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+        var innerWidth = Math.max(Math.min(clientWidth, 480), 320);
+
+        var rem = 100;
+
+        if (innerWidth > 362 && innerWidth <= 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.9);
+        }
+        
+        if (innerWidth > 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.84);
+        }
+
+        document.querySelector('html').style.fontSize = rem + 'px';
+    })();
+</script>
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css" />
+<link rel="stylesheet" type="text/css" href="{MODULE_URL}images/style.css" />
+{php echo register_jssdk($debug);} 
+</head>
+
+<body>
+<div id="wrapper" class="wrapper" style="padding:0.44rem 0 1rem 0">
+    <header class="header3">
+        <h1>
+            <img src="{MODULE_URL}images/logo.png" alt="微信精选">
+            <span class="tit" id="greet-tip">{$settings['title']}</span>
+        </h1>
+        
+    </header>
+    <div id="search_bar" class="weui_search_bar">
+            <form class="weui_search_outer" action="./index.php" method="get" role="form">
+             <input type="hidden" name="i" value="{$_W['uniacid']}">  
+          <input type="hidden" name="c" value="{$_GPC['c']}">  
+          <input type="hidden" name="do" value="index">  
+          <input type="hidden" name="m" value="{$_GPC['m']}">  
+                <div class="weui_search_inner">
+                    <i class="weui_icon_search"></i>
+                    <input type="text" type="search" id='search' name="keyword" placeholder='请输入搜索关键词' class="weui_search_input"/>
+                                   
+                </div>   
+
+           
+        </div>   
+         <button type="submit" required="" placeholder="搜索" id="search_input" class="weui_btn weui_btn_plain_primary">点击搜索</button>              
+            </form>
+    <div class="weui_grids" style="margin-top: 0.1rem">
+              {loop $category $typeid}
+            <a data-id="button" class="weui_grid js_grid {if $pcate == $typeid['id']}weui_btn_plain_primary{/if}" href="{php echo $this->createMobileUrl('index')}&pcate={$typeid['id']}" style="padding:10px 10px">
+                
+                <p class="weui_grid_label">
+                    {$typeid['name']}
+                </p>
+            </a>         
+ 
+{/loop} 
+           
+        </div>
+ 
+        <div class="weui_tabbar" style="position: fixed;bottom: 0px">
+    <a href="{php echo $this->createMobileUrl('index');}" class="weui_tabbar_item weui_bar_item_on">
+      <div class="weui_tabbar_icon">
+        <img src="{MODULE_URL}images/home.png" alt="">
+      </div>
+      <p class="weui_tabbar_label">首页</p>
+    </a>    
+    <a href="{php echo $this->createMobileUrl('member', array('uid'=>$_W['fans']['uid']));}" class="weui_tabbar_item">
+      <div class="weui_tabbar_icon">
+        <img src="{MODULE_URL}images/ren.png" alt="">
+      </div>
+      <p class="weui_tabbar_label">会员</p>
+    </a>
+ 
+</div>
+</body>
+</html>

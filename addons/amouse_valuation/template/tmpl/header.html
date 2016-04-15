@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>微擎-微信管理平台</title>
+<link href="./source/modules/oldtonew/ui/css/bootstrap.css" rel="stylesheet">
+<link href="./source/modules/oldtonew/ui/font/css/font-awesome.min.css" rel="stylesheet">
+<script src="./source/modules/oldtonew/ui/js/jquery.min.js"></script>
+<script src="./source/modules/oldtonew/ui/js/bootstrap.js"></script>
+<link href="./source/modules/oldtonew/ui/css/jquery-ui.css" rel="stylesheet">
+<script src="./source/modules/oldtonew/ui/js/jquery-ui.js"  type="text/javascript" ></script>
+<script src="./source/modules/oldtonew/ui/js/jquery-ui-slide.min.js"  type="text/javascript" ></script>
+<script src="./source/modules/oldtonew/ui/js/jquery-ui-timepicker-addon.js"  type="text/javascript" ></script>
+<link type="text/css" rel="stylesheet" href="./resource/style/jquery.mCustomScrollbar.css" />
+<link type="text/css" rel="stylesheet" href="./resource/style/common.css?v={TIMESTAMP}" />
+<script type="text/javascript" src="./resource/script/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="./resource/script/common.js?v={TIMESTAMP}"></script>
+
+<script type="text/javascript">
+cookie.prefix = '{$_W['config']['cookie']['pre']}';
+</script>
+</head>
+<body {if $action == 'frame'}style="height:100%; overflow:hidden;" scroll="no"{/if}>
+{if !empty($GLOBALS['handlestips'])}
+<div class="alert alert-error" style="margin:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;"><i class="icon-warning-sign"></i> 此模块含有特殊回复处理，请在配置完模块后，去 <a href="{php echo create_url('rule/system/message')}">特殊消息类型处理</a> 页面进行启用配置。</a></div>
+{/if}

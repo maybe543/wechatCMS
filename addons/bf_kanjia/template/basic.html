@@ -1,0 +1,10 @@
+{if $_W["role"] != "operator"}
+<div class="alert alert-info">
+  <div><i class="fa fa-info-circle"></i>&nbsp;注意事项A：为了方便商家管理，弃用入口、规则、设置等功能，希望用户自行通过基础功能的图文回复等实现</div>
+  <div><i class="fa fa-info-circle"></i>&nbsp;注意事项B：为了优化微信支付交互，将支付放到模块支付，所以微信支付配置需要添加支付目录“你的域名/app/”</div>
+  <div><i class="fa fa-info-circle"></i>&nbsp;注意事项C：砍价列表的链接是:{$_W["siteroot"]}app/{php echo $this->createMobileUrl("list");}</div>
+</div>
+<div class="alert alert-danger">
+  本功能目前只能提供给认证的服务号使用，其他类型帐号使用后果自负。
+</div>
+{/if}

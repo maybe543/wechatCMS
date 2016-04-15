@@ -1,0 +1,129 @@
+{template 'common/header'}
+<script type="text/javascript">
+  require(['bootstrap'], function($) {
+    $('.btn').hover(function() {
+      $(this).tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
+    });
+  });
+</script>
+<ul class="nav nav-tabs">
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'list'));}">砍价管理</a>
+  </li>
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'post'));}">添加砍价</a>
+  </li>
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'weidian'));}">微店模式添加砍价</a>
+  </li>
+  <li class="active">
+    <a href="{php echo $this->createWebUrl('record', array('id'=>$kanjia['id']));}">参与用户</a>
+  </li>
+</ul>
+{template 'basic'}
+<div class="main">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      更新参与者信息
+    </div>
+    <div class="panel-body">
+      <div class="alert alert-info">
+        粉丝信息存在获取不到的情况，因此出现大量无效粉丝个人信息的时候可以用该功能。
+      </div>
+      <form action="" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+          <div class="col-sm-4 col-md-5">
+            <input type="hidden" name="c" value="site" />
+            <input type="hidden" name="a" value="entry" />
+            <input type="hidden" name="do" value="record" />
+            <input type="hidden" name="m" value="bf_kanjia" />
+            <input type="hidden" name="id" value="{$kanjia['id']}" />
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+            <button type="submit" name="fans" value="1" class="btn btn-info">一键更新参与者信息</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+      <form action="" method="get" class="form-horizontal" role="form">
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            昵称
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input class="form-control" type="text" name="nickname" value="{$_GPC['nickname']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            价格排序
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <label class="radio-inline">
+              <input type="radio" name="pricesort" value="0" {if empty($_GPC['pricesort'])}checked{/if}/>否
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="pricesort" value="1" {if !empty($_GPC['pricesort'])}checked{/if}/>是
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4 col-md-5 col-sm-offset-2 col-md-offset-2">
+            <input type="hidden" name="c" value="site" />
+            <input type="hidden" name="a" value="entry" />
+            <input type="hidden" name="do" value="record" />
+            <input type="hidden" name="m" value="bf_kanjia" />
+            <input type="hidden" name="id" value="{$kanjia['id']}" />
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+            <button type="submit" name="submit" value="1" class="btn btn-info">搜索</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">序号</th>
+              <th class="text-center">头像</th>
+              <th class="text-left">昵称</th>
+              <th class="text-center">砍后价格</th>
+              <th class="text-center">帮砍人次</th>
+              <th class="text-center">砍价时间</th>
+              <th class="text-right">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loop $recordlist $key $item}
+            <tr>
+              <td class="text-center">{php echo ++$key;}</td>
+              <td class="text-center"><img src="{$item['headimgurl']}" alt=" " width="48px" height="48px"/></td>
+              <td class="text-left">{$item['nickname']}</td>
+              <td class="text-center">¥&nbsp;{$item['price']}</td>
+              <td class="text-center">{$item['number_help']}</td>
+              <td class="text-center">{php echo date("Y-m-d H:i:s", $item['createtime'])}</td>
+              <td class="text-right">
+                <a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('help', array('id'=>$item['id']))}">查看帮砍记录</a>
+              </td>
+            </tr>
+            {/loop} {if empty($recordlist)}
+            <tr>
+              <td colspan="7">没有相关的内容</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+        {$pager}
+      </div>
+    </div>
+  </div>
+</div>
+{template 'common/footer'}

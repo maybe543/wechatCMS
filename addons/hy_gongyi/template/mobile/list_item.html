@@ -1,0 +1,34 @@
+
+<div class="clear"></div>
+<div class="i_d_5" style="">
+  <div class="i_d_5_1" style="  padding: 10px 15px 10px 0;">
+   <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">
+    <div class="i_d_5_1_l">
+    <img src="{$_W['attachurl']}{$item['thumb']}">
+    </div>
+    <div class="i_d_5_1_r" style="padding-right:0 !important;">
+    <div>
+        <div><span class="title">{$item['title']}</span></div>
+        <div class="i_show_li">{php  echo cutstr($item['brief'],34)}</div>
+    </div>
+    <div style="padding:0 !important; margin:-10px 0 !important;">
+    <div class="progress float_l" style="height:4px; width:74%; margin-top:8px; margin-bottom:15px;">
+      <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}" aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+        
+      </div>
+    </div>
+    <div class="float_r" style="vertical-align:bottom; width:25%; overflow:hidden; padding-top:0px; text-align:right; padding-right:0px; color:#fe6903;"><span id="bfb_show">{php echo round($item['finish_price']*100/$item['limit_price'],2)}</span>%</div>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div style="margin-top:5px;">
+     <div class="float_l i_show_li">
+    共<span style="color:#e39a65;">￥{$item['finish_price']}</span>元爱心</div>
+    <div class="float_r i_show_li">
+    目标<span style="color:#e39a65;">{php echo round($item['limit_price'])}</span>元</div>
+    </div>
+    </div>
+    <div class="clear"></div>
+   </a> 
+  </div>
+</div>

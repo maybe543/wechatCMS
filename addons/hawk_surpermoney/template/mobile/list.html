@@ -1,0 +1,26 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    .alert-success{background-color: #4F4F4F;color:#ffffff}
+</style>
+<div class="alert alert-success" role="alert">
+    分享下面文章到朋友圈或转发给好友，好友阅读即可产生收入，看的人越多收入越高哦！满{$low}元即可点击”我的收入“取款啦,立即红包到账，请注意查看微信消息提醒！
+</div>
+<ul class="media-list">
+    {loop $ds $d}
+    <li class="media">
+        <div class="media-left">
+            <a href="{php echo $this->createMobileUrl('article',array('id'=>$d['id']))}">
+                <img class="img-circle" class="media-object" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+            </a>
+        </div>
+        <div class="media-body">
+            <a href="{php echo $this->createMobileUrl('article',array('id'=>$d['id']))}"><h4 class="media-heading">{$d['title']}</h4></a>
+            剩余:{$d['remainder']}分｜＋{$d['money']}分/点击
+        </div>
+    </li>
+    {/loop}
+</ul>
+{$pager}
+{template 'footbar'}
+{template 'footer'}

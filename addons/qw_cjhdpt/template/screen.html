@@ -1,0 +1,219 @@
+﻿{template 'wheader'}
+<script type="text/javascript" src="../addons/qw_cjhdpt/image/jquery.flip.min.js"></script>
+<script type="text/javascript" src="../addons/qw_cjhdpt/image/jquery-ui.min.js"></script>
+<style>
+body{text-align:center; background:#000 url(../addons/qw_cjhdpt/image/bg.jpg) repeat-y; background-size:100% ;color:#FFF}
+.desk{ margin:50px auto 80px auto; width:84%;overflow:hidden; background:url(../addons/qw_cjhdpt/image/desk2.png) no-repeat center top; background-size:100% 100%;}
+.desk img{width:100%;}
+.puke_d{ position:absolute; z-index:99; top:-40px;left:0; width:90px;}
+.puke_d img{width:100%;}
+.game_area{ width:80%; top:110px; z-index:3; position:absolute;}
+.game_area ul ,.game_area ul li{list-style:none; margin:0; padding:0;}
+.game_area ul li{display:inline-block; margin:10px; border-radius:6px; width:90px}
+.game_area ul li img{ width:100%}
+.bar{position:fixed; width:100%;left:0; bottom:0;}
+.barer{ width:800px; margin:0 auto;}
+.barer_part{display:inline-block;}
+.barer_bg{background:url(../addons/qw_cjhdpt/image/bar_bg.jpg) 0 0 repeat-x;}
+.bar_input_box{background:#000; border-radius:8px;color:#FFF;}
+.jtable{ display:table; width:100%;}
+.jrow{ display:table-row;}
+.jcell{ display:table-cell;}
+.aimini_card{width:90px; position:absolute; z-index:9;top:-40px;background:url(../addons/qw_cjhdpt/image/2.png) 0 0 no-repeat; background-size:100% 100%;border-radius:8px;color:#000}
+.aimini_card img{ width:100%;}
+select,select option{color:#333}
+select{ border-radius:4px; padding:5px}
+.uinfo{ margin:4px 2px 0 2px; padding:3px; border:1px solid #666; border-radius:8px; text-align:center;}
+.uinfo img{width:74px; height:74px; border-radius:8px; margin:5px 0}
+.uinfo div{padding:2px 0; font-size:11px}
+</style>
+</head>
+<body>
+<div class="desk">&nbsp;</div>
+<div class="puke_d"><img src="../addons/qw_cjhdpt/image/3.png"  id="card_d"/></div>
+<div class="game_area">
+  <ul id="game_content">
+  </ul>
+</div>
+<div class="bar">
+  <div class="barer">
+    <div class="jtable">
+      <div class="jrow">
+        <div class="jcell text-left" style="width:12px"><img src="../addons/qw_cjhdpt/image/bar_left.jpg" /></div>
+        <div class="jcell barer_bg">
+        <button type="button" onclick="restartgame()" class="btn btn-danger btn-sm">重新开始</button>
+        <button type="button" class="btn btn-success btn-sm" id="gamenumber" onClick="showlucky()">已抽取{php echo $gamenumber}人</button>
+        <button type="button" class="btn btn-danger btn-sm" id="sendmesg" onClick="sendmesg(1)">发送通知</button>
+        <button type="button" class="btn btn-danger btn-sm" id="sendmesg2" onClick="sendmesg(2)">发送消息</button>
+          <select name="isappend">
+            <option value="">是否签到</option>
+            <option value="0">不限制</option>
+            <option value="1">已签到</option>
+          </select>
+          <select name="isstatus">
+            <option value="">审核状态</option>
+            <option value="0">不限制</option>
+            <option value="1">仅审核通过</option>
+          </select>
+          <select name="sex">
+            <option value="">性别</option>
+            <option value="0">不限制</option>
+            <option value="1">先生</option>
+            <option value="2">女士</option>
+          </select>
+          <select name="num">
+            <option value="0">人数</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+          </select>
+          <button type="button" onclick="getUser()" id="start_btn" class="btn btn-info btn-sm">开始第{php echo $times}轮</button>
+          
+        </div>
+        <div class="jcell text-right" style="width:12px"><img src="../addons/qw_cjhdpt/image/bar_right.jpg" /></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script language="javascript">
+var count_gameTimes=parseInt("{php echo $times}");
+$(document).ready(function(e) {
+	var _wwith=$(window).width();
+	var _wheight=$(window).height();
+	$(".desk").height(_wheight-130);
+    $(".puke_d").css('left',(_wwith-90)/2);
+	$(".game_area").css('left',_wwith*0.1);
+});
+function sendmesg(type){
+	var str="确认发送模板消息通知入选客户吗？";
+	if(type==2){
+		str="确认发送客服消息通知入选客户吗";
+	}
+	if(!confirm(str))return;
+	$.getJSON("{php echo $this->createWebUrl('ajax',array('op'=>'sendluckymessage','id'=>$id,))}",{
+		'type':type,
+	},function(data){
+		if(data.success){
+			alert("发送人数："+data.allnum+"人；失败人数："+data.send_false);
+		}
+	});
+}
+function sendMessage(){
+	
+}
+function startGame(n){
+	$("#game_content").empty();
+	$(".aimini_card").remove();
+	if(n<=5){
+		$("#game_content").css('padding-top',"10%");
+	}else{
+		$("#game_content").css('padding-top',"0%");
+	}
+	for(i=0;i<n;i++){
+		$("#game_content").append('<li id="pk_'+i+'"><img src="../addons/qw_cjhdpt/image/bank.png" /></li>');
+	}
+	sendCard();
+}
+function restartgame(){
+	if(!confirm("重新开始将清空此前的数据，确认重新开始？"))return;
+	location.href="{php echo $this->createWebUrl('screen',array('op'=>'restart','id'=>$id))}";
+}
+function showlucky(){
+	$.getJSON("{php echo $this->createWebUrl('ajax',array('op'=>'getluckylist','id'=>$id))}",{
+	},function(data){
+		if(data.success){
+			user_info=data.item;
+			startGame(data.item.length);
+		}
+	});
+}
+function sendCard(){
+	if($(".aimini_card").size()>=$("#game_content li").size()){
+		return;
+	}
+	var cur=$(".aimini_card").size();
+	var _x=$("#pk_"+cur).offset().left;
+	var _y=$("#pk_"+cur).offset().top;
+	var temp='<div class="aimini_card pk_'+cur+'" style="height:'+$(".puke_d").height()+'px"></div>';
+	$('body').append(temp);
+	$('.pk_'+cur).css({
+		'left':($(window).width()-80)/2,
+	}).animate({
+		'left':_x,
+		'top':_y,
+	});
+	var pertime=150;
+	var timer=pertime*($("#game_content li").size()-cur)+cur*100;
+	var temp='<div class="uinfo"><img src="'+user_info[cur]['avatar']+'"/><div>'+user_info[cur]['realname']+'</div><div>'+user_info[cur]['mobile']+'</div></div>';
+	setTimeout(function(){
+		$('.pk_'+cur).flip({ 
+			direction:'lr',
+			speed:200,
+			color:'#FFFFFF',
+			content:temp, 
+			onEnd: function(){
+				$('.pk_'+cur).css({'backgroud':'#FFFFFF','background-image':'none'})
+			}
+		}); 
+	},timer);
+	setTimeout('sendCard()',pertime);
+}
+var user_info;
+function getUser(){
+	$("#start_btn").attr("disabled","disabled");
+	var isappend=$("select[name='isappend'] option:selected").val();
+	var isstatus=$("select[name='isstatus'] option:selected").val();
+	var sex=$("select[name='sex'] option:selected").val();
+	var num=$("select[name='num'] option:selected").val() ? $("select[name='num'] option:selected").val() : 1;
+	
+	$.getJSON("{php echo $this->createWebUrl('ajax',array('op'=>'getlucky','id'=>$id))}",{
+		'isappend':isappend,
+		'isstatus':isstatus,
+		'times':count_gameTimes,
+		'sex':sex,
+		'num':num,
+	},function(data){
+		if(data.success){
+			count_gameTimes++;
+			$("#start_btn").text("开始第"+count_gameTimes+"轮").removeAttr("disabled");
+			$("#gamenumber").text("已抽取"+data.gamenumber+"人");
+			user_info=data.item;
+			startGame(num);
+		}
+	});
+}
+function restart(){
+	$('.aimini_card').flip({ 
+		direction:'lr',
+		speed:200,
+		content:'<img src="../addons/qw_cjhdpt/image/2.png"/>',
+		onAnimation:function(){
+			$('.aimini_card').css({'background-image':'../addons/qw_cjhdpt/image/2.png'});
+		},
+		onEnd:function(){
+			$('.aimini_card').animate({
+				'left':($(window).width()-80)/2,
+				'top':'-40px',
+			},'fast','',function(){
+				$('.aimini_card').remove();
+				setTimeout("getUser()",1500);
+			});
+		}
+	}); 
+}
+</script>
+</body>
+</html>

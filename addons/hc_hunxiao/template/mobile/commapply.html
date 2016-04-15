@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<title>佣金申请</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../addons/hc_hunxiao/style/css/style.css?r=5"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+<meta name="mobileOptimized" content="width" />
+<meta name="handheldFriendly" content="true" />
+<meta http-equiv="Cache-Control" content="max-age=0" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<style>
+.pagination li{
+	margin-left:12px;
+	background-color: #fa614b;
+	display: inline-block;
+	padding: 0 4%;
+	border-radius: 5px;
+}
+</style>
+
+<body>
+	<section class="main animated fadeInDown">
+		<div class="main-box">
+			
+			<div class="commission-detail">
+				<h6>佣金申请</h6>
+				{if empty($list)}
+				暂无
+				{else}
+				<p>
+					<span class="commission-time2">时间</span>
+					<span class="commission-event1">商品</span>
+					<span class="commission-money1">佣金</span>
+					<span class="commission-total1">数量</span>
+					<span class="commission-checkbox"><input type="checkbox" onclick="getTop()" name="selected"/></span>
+				</p>
+				
+				<p>
+					{loop $list $v}
+						<span class="commission-time2">{php echo date('m-d', $v['createtime'])}</span>
+						<span class="commission-event1">{php echo hehe($good[$v['goodsid']], 7)}</span>
+						<span class="commission-money1">{$v['commission']}</span>
+						<span class="commission-total1">{$v['total']}</span>
+						<span class="commission-checkbox">
+							<input type="checkbox" name="select" value="{$v['id']}"/>
+						</span>
+					{/loop}
+				</p>
+				{/if}
+			</div>
+			{$pager}
+			<br/>
+			{if !empty($list)}
+				<input type="submit" onclick="back();" value="返回" class="btn btn-primary" style="width:48%;"/>
+				<input type="submit" onclick="apply();" value="申请" class="btn btn-primary" style="width:48%;"/>
+			{/if}
+		</div>
+	</section>
+<footer class="foot"><a>&copy; {$_W['account']['name']}</a></footer>
+<script type="text/javascript">
+	function getTop(){
+		var xed = document.getElementsByName("selected");
+		var x = document.getElementsByName("select");
+		
+		if(xed[0].checked == true){
+			for (var i=0; i<x.length; i++){
+				x[i].checked = true;
+			}
+		}else{
+			for (var i=0; i<x.length; i++){
+				x[i].checked = false;
+			}
+		}
+	}
+	
+	function apply(){
+		if({$profile['flag']}==0){
+			alert('您还不是推广人，无法申请佣金');
+			return false;
+		}
+		var x = document.getElementsByName("select");
+		var flag = false;
+		var j = 0;
+		
+		var selected = new Array();
+		for (var i=0; i<x.length; i++){
+			if(x[i].checked == true){
+				selected[j] = x[i].value;
+				flag = true;
+				j++;
+			}
+		}
+		if(flag){
+			
+		}else{
+			alert('您还未选择需要申请佣金的订单！');
+			return false;
+		}
+		if(!confirm('确认申请吗？')){
+			return false;
+		}
+		
+		window.location.href = "{php echo $this->createMobileUrl('commission', array('op'=>'applyed'), true)}&selected="+selected;
+	}
+	
+	function back(){
+		window.location.href = "{php echo $this->createMobileUrl('commission')}";
+	}
+</script>
+</body>
+</html>

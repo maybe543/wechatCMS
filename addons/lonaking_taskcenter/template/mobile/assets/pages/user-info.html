@@ -1,0 +1,62 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="back"><i class="icon icon-angle-left icon-2x"></i></a>
+        </div>
+        <!-- We have home navbar without left link-->
+        <div class="center sliding">我的资料</div>
+        <div class="right">
+        </div>
+    </div>
+</div>
+<div class="page toolbar-fixed" data-page="user-info" id="user-info">
+    <div class="page-content">
+        <div class="col-auto head">
+            <img src="../addons/lonaking_taskcenter/template/mobile/assets/images/head.jpg">
+        </div>
+        <div class="col-auto user-name">{{name}}</div>
+        <div class="content-block-title">个人资料</div>
+        <form id="buy-gift-user-info" class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">姓名</div>
+                            <div class="item-input">
+                                <input type="text" name="name" value="{{name}}" {{#if name}}disabled{{else}}{{/if}} placeholder="请输入姓名">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- 
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">联系电话</div>
+                            <div class="item-input">
+                                <input type="text" name="mobile" placeholder="请输入您的联系电话">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">地址</div>
+                            <div class="item-input">
+                                <input type="text" name="address" placeholder="请输入您的领取地址">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                 -->
+            </ul>
+        </form>
+		{{#if name}}
+		{{else}}
+        <div class="content-block">
+            <a href="javascript:void(0);" class="button submit-user-info">提交信息</a>
+        </div>
+        {{/if}}
+    </div>
+</div>

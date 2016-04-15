@@ -1,0 +1,308 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <title>{if !$pcate}{$settings['title']}{else}{$category[$pcate]['name']}{/if}</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/> 
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes"> 
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">  
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  
+  <meta name="msapplication-TileColor" content="#0e90d2">
+<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.5.2/css/amazeui.min.css">
+<link rel="stylesheet" href="{MODULE_URL}images/app.css"> 	
+<style type="text/css">
+  body{font-family: 微软雅黑;}
+  .am-thumbnail{margin-bottom: 1px}
+
+</style>
+{php echo register_jssdk($debug);} 
+</head>
+<body>
+
+  <header data-am-widget="header"   class="am-header am-header-danger am-btn-danger">
+      <div class="am-header-left am-header-nav">
+          <img class="am-circle" src="{if $_W['openid']['avatar']}{$_W['fans']['tag']['avatar']}{else}{$_W['account']['qrcode']}{/if}" style="height:30px" />
+      </div>
+
+      <h1 class="am-header-title">
+        {if !$pcate}{$settings['title']}{else}{$category[$pcate]['name']}{/if}
+      </h1>
+
+      <div class="am-header-right am-header-nav">
+          <a data-am-modal="{target: '#my-popup'}" style="color:#fff;">
+             <i class="am-header-icon am-icon-search"></i>
+          </a>
+      </div>
+  </header>
+  <div class="am-g" data-am-sticky style="background:#fff;border-bottom: 1px solid red">
+<ul class="am-nav am-nav-pills am-nav-justify">
+  <li><a href="{php echo $this->createMobileUrl('index')}"  class="{if empty($pcate)} am-text-danger {/if}" style="padding:1rem 0px">头条</a></li>
+
+	
+
+ {php $i = 1}
+   
+  {loop $category $typeid}
+ 
+              {if $i<=2}
+  <li><a href="{php echo $this->createMobileUrl('index')}&pcate={$typeid['id']}" class="{if $typeid['id']== $pcate} am-text-danger {/if}" style="padding:1rem 0px">{$typeid['name']}</a></li>
+   {/if}
+    {php $i++}
+{/loop} 
+        <li><a href="{php echo $this->createMobileUrl('category',array('pcate'=>$pcate))}" style="padding:1rem 0px"> 更多</a></li> 
+</ul> 
+	</div>
+<div class="pet_mian">
+    <div class="pet_content_main" style="padding:10px">
+  <div data-am-widget="list_news" class="am-list-news am-list-news-default" >
+  <div class="am-list-news-bd">
+  <ul class="am-list">
+{loop $listgg $id $data}
+{php $pic = iunserializer($data['pic'])}
+{php $credit = iunserializer($data['credit'])}
+
+{php $picnum = count($pic)}
+<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right"> 
+ {if $picnum <= 4}
+  <div class=" am-u-sm-8 am-list-main pet_list_one_nr">
+    <h3 class="am-list-item-hd pet_list_one_bt">
+      <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+        {$data['title']}      </a>
+    </h3>
+    <div class="am-list-item-text">
+    {$data['description']}	
+    </div>
+   
+  </div>
+    <div class="am-u-sm-4 am-list-thumb">
+    <a class="am-thumbnail" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+    <img  src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}" style="">
+    </a>
+    </div>
+{else}
+<div class=" am-u-sm-12 am-list-main pet_list_one_nr">
+    <h3 class="am-list-item-hd pet_list_one_bt">
+      <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+        {$data['title']}      </a>
+    </h3>
+  
+   
+  </div>
+  <div class="am-g" style="margin-top:1rem">
+
+ 
+<?php $j = 1 ?>
+{loop $pic $key $picsome} 
+
+{if $j <= 3}
+
+  
+  <div class="am-u-sm-4" style="padding:0px">
+    <a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}" class="am-thumbnail">
+      <img src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" alt=""  style="width:200px;height:60px"/>
+    </a>
+  </div>
+  {/if}
+
+  
+   <?php $j++ ?> 
+ {/loop}
+ 
+</div> 
+  
+{/if}
+
+    <div class="pet_list_one_info">
+    <div class="pet_list_one_info_l">
+        <div class="pet_list_one_info_ico">
+        {if $data['uid']}
+          {php $avatar = mc_fansinfo($data['uid'],$_W['acid'],$_W['uniacid'])}
+          <img alt="" src="{php echo $avatar['tag']['avatar']}">
+        {else}
+          <img alt="" src="{$_W['account']['qrcode']}">
+        {/if}
+
+        </div>
+        <div class="pet_list_one_info_name">
+        {php echo relatively_date($data['createtime'])} </div>
+    </div>
+    <div class="pet_list_one_info_r">
+    	 <div class="am-list-item-bar am-vertical-align-bottom am-vertical-align">
+        <span class="am-list-icon"><i class="am-icon-eye"></i> {$data['click']} </span>       
+        	
+          <span class="am-list-item-time am-badge am-badge-danger am-round">转发赚钱</span> 
+       
+				{if $data['ly']}
+				<span class="am-list-item-time">{$data['ly']}评论  </span>
+				{/if}
+        
+				
+		</div>      
+    </div>
+  </div>
+  </li>
+ 
+ {/loop}
+   
+ {loop $list $id $data}
+{php $pic = iunserializer($data['pic'])}
+{php $credit = iunserializer($data['credit'])}
+
+{php $picnum = count($pic)}
+<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right"> 
+ {if $picnum <= 4}
+  <div class=" am-u-sm-8 am-list-main pet_list_one_nr">
+    <h3 class="am-list-item-hd pet_list_one_bt">
+      <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+        {$data['title']}      </a>
+    </h3>
+    <div class="am-list-item-text">
+    {$data['description']}	
+    </div>
+   
+  </div>
+    <div class="am-u-sm-4 am-list-thumb">
+    <a class="am-thumbnail" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+    <img  src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}" style="">
+    </a>
+    </div>
+{else}
+<div class=" am-u-sm-12 am-list-main pet_list_one_nr">
+    <h3 class="am-list-item-hd pet_list_one_bt">
+      <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}">
+        {$data['title']}      </a>
+    </h3>
+  
+   
+  </div>
+  <div class="am-g" style="margin-top:1rem">
+
+ 
+<?php $j = 1 ?>
+{loop $pic $key $picsome} 
+
+{if $j <= 3}
+
+  
+  <div class="am-u-sm-4" style="padding:0px">
+    <a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid']));}" class="am-thumbnail">
+      <img src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" alt=""  style="width:200px;height:60px"/>
+    </a>
+  </div>
+  {/if}
+
+  
+   <?php $j++ ?> 
+ {/loop}
+ 
+</div> 
+  
+{/if}
+
+    <div class="pet_list_one_info">
+    <div class="pet_list_one_info_l">
+        <div class="pet_list_one_info_ico">
+        {if $data['uid']}
+		 {php $avatar = mc_fansinfo($data['uid'],$_W['acid'],$_W['uniacid'])}
+          <img alt="" src="{php echo $avatar['tag']['avatar']}">
+        {else}
+          <img alt="" src="{$_W['account']['qrcode']}">
+        {/if}
+
+        </div>
+        <div class="pet_list_one_info_name">
+        {php echo relatively_date($data['createtime'])} </div>
+    </div>
+    <div class="pet_list_one_info_r">
+    	 <div class="am-list-item-bar am-vertical-align-bottom am-vertical-align">
+        <span class="am-list-icon"><i class="am-icon-eye"></i> {$data['click']} </span>       
+       
+        {if $data['uid']} 
+          <span class="am-list-item-time am-badge am-badge-danger am-round">个人推送</span> 
+        {else}
+               
+        {/if}
+				{if $data['ly']}
+				<span class="am-list-item-time">{$data['ly']}评论  </span>
+				{/if}
+        
+				
+		</div>      
+    </div>
+  </div>
+  </li>
+ 
+ {/loop}
+   
+
+    </ul>
+ {if $list}
+     <div class="am-list-news-ft" style="margin:3px 0px">
+      {if $page == 1}      
+      {else}
+      <a class="am-list-news-more am-btn am-btn-danger  {if $page != $totalpage}am-fl{/if}" href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page-1,'keyword'=>$keyword));}">前往上一页 &raquo;</a>
+      {/if}
+       {if $page == $totalpage}      
+      {else}
+        <a class="am-list-news-more am-btn am-btn-danger {if $page != 1}am-fr{/if}" href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page+1,'keyword'=>$keyword));}">前往下一页 &raquo;</a>
+        {/if}
+      </div>
+       {else}
+       <a class="am-list-news-more am-btn am-btn-danger am-btn-block" href="">暂时无数据</a>
+                {/if}
+  </div>
+<br>
+    </div>
+
+</div>
+	</div>
+<script>
+      wx.ready(function () {
+        sharedata = {
+          title: "{$settings['title']}",
+          desc: "{$settings['desc']}",          
+          imgUrl: "{php echo tomedia($settings['thumb'])}",          
+        };
+        wx.onMenuShareAppMessage(sharedata);
+      });    
+        </script> 
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.amazeui.org/amazeui/2.5.2/js/amazeui.min.js"></script>
+<script src="{MODULE_URL}images/js.js"></script>
+
+  <div data-am-widget="navbar" class="am-navbar am-cf am-btn-danger "
+      id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-4">
+          <li >
+            <a href="{php echo $this->createMobileUrl('index');}" class="" style="color:#fff">
+                  <span class="am-icon-home"></span>
+                <span class="am-navbar-label">首页</span>
+            </a>
+          </li>
+         <li >
+            <a href="{php echo $this->createMobileUrl('member', array('uid'=>$_W['fans']['uid']));}" class="" style="color:#fff">
+                  <span class="am-icon-user"></span>
+                <span class="am-navbar-label">我的</span>
+            </a>
+          </li>
+      </ul>
+  </div>
+
+</body>
+</html>

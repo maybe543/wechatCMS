@@ -1,0 +1,55 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('Order', array('name'=>'xm_housekeep_we7'));}">订单列表</a></li>
+    <li class="active"><a href="">派单</a></li>
+</ul>
+
+<div class="clearfix">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                订单信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="alert alert-info">
+                            <span>服务项目：</span><span class="label label-info">{php echo $this->gettypename($item['typeid'])}</span><br/><br/>
+							<span>服务时间：</span><span class="label label-info">{$item[ftime]}</span><br/><br/>
+							<span>服务地点：</span><span class="label label-info">{$item[address]}</span><br/><br/>
+							<span>备注：</span><span class="label label-info">{$item[mark]}</span><br/><br/><br/>
+							<span>指派员工：</span><span class="label label-info">{php echo $this->getwaiter($item['waiterid'])}</span><br/><br/>
+							<span>成交价格：</span><span class="label label-info">{$item['closemoney']}</span><br/><br/>
+                        </div>
+                    </div>
+                </div>
+			</div>	
+			
+			<form class="form form-horizontal" method="">
+				<div class="panel-heading">
+					提成信息
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 control-label">提成员工</label>
+						<div class="col-sm-9 col-xs-12">
+							{php echo $this->getname($item['orderformid'])}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 col-md-2 control-label">提成金额</label>
+						<div class="col-sm-9 col-xs-12">
+							￥{php echo $this->getcut($item['orderformid'])}
+						</div>
+					</div>
+					
+				</div>
+			</form>			
+			
+        </div>
+
+</div>
+
+{template 'common/footer'}

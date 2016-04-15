@@ -1,0 +1,102 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('member');}">用户管理</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('mingxi',array('member_id'=>$member_id));}">参与明细</a></li>
+    <li><a href="{php echo $this->createWebUrl('coupons');}">卡券管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('setting');}">基本设置</a></li>
+</ul>
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">{$user_member['nickname']}参与的详细数据  |  总数:{$total}</div>
+
+		<div class="panel-body table-responsive">
+
+		    <form action="" method="post" onsubmit="">
+
+			<table class="table table-hover">
+
+				<thead class="navbar-inner">
+
+					<tr>
+
+						<th style="width:30px;" class="row-first">选择</td>
+
+						<th style="width:80px;">昵称</th>
+
+						<th style="width:80px;">头像</th>
+
+						<th style="width:100px;">领券名称</th>
+
+						<th style="width:150px;">领券时间</th>
+
+					
+					</tr>
+
+				</thead>
+
+				<tbody id="main">
+
+				{php $i=1;}
+
+					{loop $member $row}
+
+					<tr>
+
+					    <td><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+
+					    <td>{$row['nickname']}</td>
+
+						<td><img style="width:70px" src="{$_W['attach_url']}{$row['avatar']}"></td>
+
+						<td>{$row['coupons']}元</td>                            
+
+						<td>{php echo date('m-d H:i:s', $row['createtime']);}</td>
+  
+
+					</tr>
+
+					{php $i++;}
+
+					{/loop}
+
+				</tbody>
+
+			</table>
+
+
+			</form>			
+
+	    </div>
+
+	</div>
+
+	{$pager}
+
+</div>
+
+<script type="text/javascript">
+require(['jquery', 'util'], function($, util){
+	$(function(){
+		util.clip($('#needCopy')[0], $('#needCopy').text());
+	});
+});
+</script>
+
+<script>
+
+$(function(){   
+
+    $(".check_all").click(function(){
+
+       var checked = $(this).get(0).checked;
+
+       $("input[type=checkbox]").attr("checked",checked);
+
+    });	
+
+});
+
+</script>
+
+{template 'common/footer'}

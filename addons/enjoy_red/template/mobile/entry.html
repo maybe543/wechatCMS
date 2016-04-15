@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8">
+    <title>{$actdetail[title]}</title>
+    {php echo register_jssdk(false);}
+    <link type="text/css" rel="stylesheet" href="../addons/enjoy_red/template/mobile/css/style.css" />
+
+    <script src="../addons/enjoy_red/template/mobile/js/jquery-1.4.2.min.js"></script>
+</head>
+<body  style="background: url('{php echo tomedia($actdetail[bgpic])}') no-repeat; background-size: 100% 100%;color:{$actdetail[color]};">
+ <style>
+ .gz{
+ 		background:#E26636;border-radius:7px;
+        display:inline-block;text-align:center;margin:0 auto;
+        width:120px;height:50px;font-size:20px;line-height:40px; text-decoration:none;
+ }
+ </style>
+
+<div id="aniamteBox">
+		<img src="{php echo tomedia($actdetail[apic]);}" alt="" />
+	</div>  
+    <div class="main">
+        <p id="title">{$actdetail[title]}</p>
+        <div class="whiteFont">
+{php echo htmlspecialchars_decode($actdetail[adept])}
+        </div>
+        <div class="whiteFont hide" style="text-align:center;margin-top:20px;" id="gz">
+        <a href="{$actdetail[sucai]}" class="gz" style="color:{$actdetail[color]}; ">点我关注</a>
+        </div>
+{if $flag==0}
+        <div id="index">
+            <div id="box">
+                <div class="row">
+                    <div class="card">
+                        <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[0]*0.01}元</p></div>
+                        <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic1])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                    <div class="card">
+                     <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[1]*0.01}元</p></div>
+                         <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic2])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                    <div class="card">
+                       <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[2]*0.01}元</p></div>
+                         <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic3])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[3]*0.01}元</p></div>
+                         <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic4])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                    <div class="card">
+                   <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[4]*0.01}元</p></div>
+                          <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic5])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                    <div class="card">
+                        <div class="photo" style="background: url('{php echo tomedia($actdetail[redpic])}') no-repeat;background-size: 100% 100%;"><p>{php echo $vmoney[5]*0.01}元</p></div>
+                          <div class="photo-box" style="background: url('{php echo tomedia($actdetail[redpic6])}') no-repeat;background-size: 100% 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{elseif $flag==1}
+		<div class="smallFont smallFont2">
+		<img src="../addons/enjoy_red/template/mobile/images/end.png" width="100%" />
+		</div>
+
+
+{elseif $flag==2}
+		<div class="smallFont smallFont2">
+		<img src="../addons/enjoy_red/template/mobile/images/start.png" width="100%" />
+		</div>
+
+{/if}
+
+        <div id="footer">
+            <div id="logo"><img src="../addons/enjoy_red/template/mobile/images/v_24.png" alt=""/></div>
+        </div>
+		<div class="smallFont smallFont2">
+		<p>游戏规则：</p>
+		{php echo htmlspecialchars_decode($actdetail[rule])}	
+		<p style="text-align:right" id="countp">活动已参加：{$countP}人</p>
+		<p style="text-align:right">我还剩：<span style="color:#c9222e;font-weight:bold" id="chance">{$chance}</span>{$actdetail[unit]}</p>
+		<p style="text-align:right">奖池：可提现<span style="color:#c9222e;font-weight:bold" id="countm1">{if $countM<0}0.00{else}{$countM}{/if}</span>元，累计<span id="countl">{$countL}</span>元  </p>
+<div class="fixed-wrap fixed-b">
+       
+            <a class="btn01 sp2" href="{php echo $this->createMobileUrl('rank')}">牛人榜</a>
+            <a class="btn01 sp2"  href="{php echo $this->createMobileUrl('mylog')}">我的</a>
+            <a class="btn01 sp2" id="cash" data="1" onclick="cash()">提现</a>
+            </div>
+		</div>
+			<script type="text/javascript">
+			function cash(){
+				if($("#cash").attr("data")==1){
+					var openid='{$user[openid]}';
+					$("#cash").attr("data","0"); 
+					$.ajax({
+						type:'post',
+						url:"{php echo $this->createMobileurl('cash')}",
+						dataType:"JSON",
+						data:{openid:openid},
+						success:function(data){
+							var data = eval('('+data+')');
+							$("#cash").attr("data","1"); 
+						if(data['type']==-4){
+								alert('请先关注再提现哦',2000);
+								$("#gz").fadeIn(200);
+								setTimeout(function(){
+									$("#gz").fadeOut(200);
+								},5000)
+							}else if(data['type'] == -1){
+								if(data['money']==null){
+									data['money']=0.00;
+								}
+							alert("您能提现的金额是"+data['money']+"元，满一元才能提现哦");
+						}else if(data['type']==-2){
+							alert("抱歉，系统未开放");
+						}else if(data['type']==-3){
+							alert("系统忙，请重新提现");
+						}else if(data['type']==1){
+							$("#countm1").html("0.00");
+							alert("提现"+data['money']+"元成功，请实时查看您的微信到账通知");
+						}
+						}
+						
+					});
+				}
+			
+				
+	
+			}
+			</script>	
+            <style>
+            .fixed-b {
+			    bottom: 0;
+			}
+			.fixed-t, .fixed-b {
+			    z-index: 800;
+			    position: fixed;
+			    left: 0;
+			    right: 0;
+			}
+			.fixed-wrap {
+			    background: rgba(0,0,0,.7);
+			}
+            
+			.btn01.sp2 {
+			    margin: 0.4em 0 0.4em 3.3%;
+			}
+			.btn01:visited {
+			    color: #ffffff;
+			}
+			.btn01 {
+			    display: block;
+			    width: 30%;
+			    height: 1.5em;
+			    line-height: 1.5;
+			    background: #d93710;
+			    border-bottom: 4px solid #c9222e;
+			    -webkit-border-radius: 5px;
+			    -moz-border-radius: 5px;
+			    border-radius: 8px;
+			    font-size: 1.5rem;
+			    color: #ffffff;
+			    text-align: center;
+			    float:left;
+			    text-decoration:none;
+			}
+            </style>
+		<!--  <div class="smallFont smallFont2">
+		<table class="table" cellspacing="0" cellpadding="0">
+		<tr><th>序号</th><th>图片</th><th>名称</th><th>数量</th></tr>
+		{loop $rulelist $item}
+		{php $i++}
+		<tr>
+		<td class="fontrule">{$i}</td>
+		<td><img alt="{$item[rname]}" src="{php echo tomedia($item[rpic])}" width="40%"></td>
+		<td>{$item[rname]}</td>
+		<td>{$item[count]}</td>
+		</tr>
+		
+		{/loop}
+		</table>
+		
+		</div>-->
+		
+    </div>
+    <div id="sureBox" class="hide">
+        <div id="sureInBox">
+            <div id="head"><i id="del">x</i></div>
+            <p>恭喜您中了<span id="money"></span>元，分享好友获得{$actdetail['share_chance']}{$actdetail['unit']}</p>
+            <div id="btn">
+                <input id="ok" type="button" value="全部翻开" />
+                <input id="no" type="button" value="再来一波" />
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+    <div style="height:60px;"></div>
+    <input id="openid" type="hidden" value="{$user[openid]}"/>
+</body>
+<script>
+    $(function(){
+    	var openid=$("#openid").val();
+		$('#aniamteBox').css({
+			width: $(window).width(),
+			height: $(window).height()
+		})
+		$('#aniamteBox').delay(3000).animate({
+			top: '-'+$(window).height()+'px'
+		},1000)
+        $('body').css({minHeight:$(window).height()});
+        $('.photo-box').bind('click',function(){
+			var obj = $(this);
+			$.ajax({
+				type:'post',
+				url:"{php echo $this->createMobileurl('chance')}",
+				dataType:"JSON",
+				data:{openid:openid},
+				success:function(data){
+					var data = eval('('+data+')');
+					if(data['type'] == -4){
+						alert('请先关注我们再游戏哦',2000);
+						$("#gz").fadeIn(200);
+						setTimeout(function(){
+							$("#gz").fadeOut(200);
+						},5000)
+					}else if(data['type'] == -2){
+						
+							alert('系统未开放',2000);
+							
+						}else if(data['type'] == -1){	
+
+						alert("你的游戏"+data['unit']+"已经用光，喊朋友来玩可以获得额外的"+data['unit']+"哦",2000);
+						
+						}else if(data['type'] == -3){
+							
+							alert('系统太忙，歇口气再玩吧'+data['error'],2000);
+						//	location.reload();
+						}else if(data['type'] == -5){
+							obj.prev('.photo').find('p').text('谢谢参与');
+							obj.css({
+								transform:'rotateY(90deg)',
+								webkitTransform:'rotateY(90deg)'
+							})
+							setTimeout(function(){
+								$('.photo-box').css({
+					                transform:'rotateY(90deg)',
+					                webkitTransform:'rotateY(90deg)'
+					            })
+							},1000)
+								setTimeout(function(){
+								$('.photo-box').css({
+					                transform:'rotateY(0deg)',
+					                webkitTransform:'rotateY(0deg)'
+					            })
+							},3000)
+							$("#chance").html(data['chance']);
+						}else if(data['type'] == -6){
+							alert('您的位置是:'+data['user']['state']+'省'+data['user']['city']+'市,不在本次活动范围. 请期待我们下一次活动');
+						}else if(data['type'] == -7){
+							alert('抢太快了，20秒再后试试吧');
+						}else{
+							obj.prev('.photo').find('p').text(data['rule']['money']+'元');
+							$("#money").text(data['rule']['money']);
+							obj.css({
+								transform:'rotateY(90deg)',
+								webkitTransform:'rotateY(90deg)'
+							})
+						setTimeout(function(){
+							$('#sureBox').fadeIn();
+							},100)
+							//返回次数和总
+							$("#chance").html(data['chance']);
+							$("#countm1").html(data['countm']);
+							$("#countl").html(data['countl']);
+						}
+				}
+			})
+			
+			
+
+
+
+        })
+        $('#no,#del').bind('click',function(){
+
+			$('.photo-box').css({
+                transform:'rotateY(0deg)',
+                webkitTransform:'rotateY(0deg)'
+            })
+            $('#sureBox').fadeOut();
+
+        })
+        $('#ok').bind('click',function(){
+            $('#sureBox').fadeOut();
+
+         			setTimeout(function(){
+				$('.photo-box').css({
+	                transform:'rotateY(90deg)',
+	               webkitTransform:'rotateY(90deg)'
+	           })
+			},1000)
+			         			setTimeout(function(){
+				$('.photo-box').css({
+	                transform:'rotateY(0deg)',
+	               webkitTransform:'rotateY(0deg)'
+	           })
+			},5000)
+        })
+        $('#formdel').bind('click',function(){
+            $('#form').fadeOut();
+            $('#address').remove();
+            $('.photo-box').css({
+                transform:'rotateY(0deg)',
+                webkitTransform:'rotateY(0deg)'
+            })
+            $(window).unbind('touchmove');
+        })
+    })
+
+</script>
+<script>
+
+wx.ready(function () {
+    sharedata = {
+    	title : "{$actdetail[share_title]}",
+   		link :  "{$sharelink}",
+   		desc : "{$actdetail[share_content]}",
+    	imgUrl:"{php echo tomedia($actdetail[share_icon])}",
+      success: function(){
+    	// ajax返回加机会
+      },
+      cancel: function(){
+    	//  alert(2);
+      }
+    };
+    wx.onMenuShareAppMessage(sharedata);
+    wx.onMenuShareTimeline(sharedata);
+    wx.onMenuShareQQ(sharedata);
+    wx.onMenuShareWeibo(sharedata);
+  });
+</script>
+
+<script src="../addons/enjoy_red/template/mobile/js/jweixin-1.0.0.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

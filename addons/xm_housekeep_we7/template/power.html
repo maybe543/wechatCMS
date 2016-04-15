@@ -1,0 +1,58 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#">权限管理</a></li>
+    
+</ul>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            订单列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr>
+                    	<td style="width:50px;">序号</td>
+						<td style="width:80px;">用户ID</td>
+						<td style="width:150px;">用户名</td>
+						<td style="width:50px;">is</td>
+						<td style="width:250px;">角色</td>
+						<td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+					{loop $permission $row}
+						<tr {if !empty($_GPC['fromuid']) && $_GPC['fromuid']== $row['uid']}style="background:#dddddd;"{/if}>
+							<td class="row-first"><input class="member" type="checkbox" value="{$row['id']}" /></td>
+							<td>{$row['uid']}</td>
+							<td>{php echo $this->getUser($row['uid'])}</td>
+							<td>{php echo $this->getcheck($row['uid'])}</td>
+							<td>
+								<label for="radio_{$row['uid']}_1" class="radio-inline" style="padding-top:0; float:left; width:70px;"><input type="radio" name="role[{$row['uid']}]" targetid="{$row['uid']}" id="radio_{$row['uid']}_1" value="operator" {if empty($row['role']) || $row['role'] == 'operator'} checked{/if} /> 操作员</label>
+								<label for="radio_{$row['uid']}_2" class="radio-inline" style="padding-top:0; float:left; width:70px;"><input type="radio" name="role[{$row['uid']}]" targetid="{$row['uid']}" id="radio_{$row['uid']}_2" value="manager" {if $row['role'] == 'manager'} checked{/if} /> 管理员</label>
+							</td>
+							<td>
+							{if !in_array($member[$row['uid']]['uid'], $founders)}
+								<!--<a href="{php echo url('user/edit', array('uid' => $member[$row['uid']]['uid']));}">编辑用户</a>&nbsp;|&nbsp;-->
+								{if $row['role'] == 'operator'}
+								<a href="{php echo $this->createWebUrl('addpower', array('uid' => $row['uid'], 'uniacid' => $uniacid,'from'=>'1'));}">设置权限</a>&nbsp;|&nbsp;
+								<a href="{php echo $this->createWebUrl('addpower', array('uid' => $row['uid'], 'uniacid' => $uniacid));}">查看操作权限</a>{/if}</td>
+								{/if}
+					
+						</tr>
+					{/loop}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+        
+       
+    </div>
+</div>
+
+
+{template 'common/footer'}

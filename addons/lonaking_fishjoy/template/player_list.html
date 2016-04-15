@@ -1,0 +1,64 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+	</ul>
+	<div>
+
+	</div>
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th width="7%">编号</th>
+	                    <th>昵称</th>
+						<th>游戏次数</th>
+						<th>总得分</th>
+						<th>创建时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $page['data'] $d}
+						<tr>
+							<td data-id="{$d['id']}">{$d['id']}</td>
+							<td>{$d['nickname']}</td>
+							<td>{$d['play_times']}</td>
+							<td>{$d['total_score']}</td>
+							<td>{php echo date("Y-m-d",$d['create_time'])}</td>
+							<td>
+								<a href="{php echo $this->createWebUrl('PlayerEdit',array('id'=>$d['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+	                        	<a href="javascript:void(0);" class="btn btn-danger btn-sm del-ad" data-id="{$d['id']}" data-url="{php echo $this->createWebUrl('HardRemove',array('id'=>$d['id'],'opt'=>'player'));}"><i class="glyphicon glyphicon-remove"> 删除</i></a>
+	                        </td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</form>
+		{$page['pager']}
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$(".del-ad").on("click",function(){
+			var btn = $(this);
+			var url = btn.data('url')
+			var tr = btn.parent().parent();
+			$.post(url,function(result){
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					//移除dom
+					tr.remove();
+				}
+			});
+
+		});
+	});
+</script>
+{template 'common/footer'}

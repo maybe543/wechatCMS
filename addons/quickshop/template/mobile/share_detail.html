@@ -1,0 +1,396 @@
+{php $bootstrap_type = 3;}
+{template 'header'}
+{template 'common'}
+<link type="text/css" rel="stylesheet" href="./addons/quickshop/images/style.css?v={TIMESTAMP}">
+<script type="text/javascript" src="./addons/quickshop/images/jquery.gcjs.js"></script>
+<script type='text/javascript' src='./addons/quickshop/images/touchslider.min.js'></script>
+<script language='javascript' src='./addons/quickshop/images/photoswipe/simple-inheritance.min.js'></script>
+<script language='javascript' src='./addons/quickshop/images/photoswipe/photoswipe-1.0.11.min.js'></script>
+<link href="./addons/quickshop/images/photoswipe/photoswipe.css" rel="stylesheet" />
+
+<div class="head">
+  <a href="javascript:history.back();" class="bn pull-left"><i class="icon-angle-left"></i></a>
+  <span class="title">跪求杀价</span>
+  <a href="{php echo $this->createMobileUrl('list')}" class="bn pull-right" style="margin-right:10px;"><i class="icon-home"></i></a>
+</div>
+
+<div class="detail-main" style='margin-bottom:65px;'>
+
+  <div class="detail-img">
+
+    <div id="banner_box" class="box_swipe">
+      <ul style="background:#FFF;">
+        {loop $piclist $row}
+        <li style="text-align:center;">
+        <a href="{$_W['attachurl']}{$row['attachment']}" rel='{$_W['attachurl']}{$row['attachment']}'><img src="{$_W['attachurl']}{$row['attachment']}" alt="" height="200px"/>
+        </a>
+        </li>
+        {/loop}
+      </ul>
+      <ol>
+        {loop $piclist $row}
+        <li class="on"></li>
+        {/loop}
+      </ol>
+    </div>
+    <script>
+      var proimg_count = {php echo count($piclist)};
+      $(function() {
+      new Swipe($('#banner_box')[0], {
+      speed:500,
+      auto:3000,
+      callback: function(){
+      var lis = $(this.element).next("ol").children();
+      lis.removeClass("on").eq(this.index).addClass("on");
+      }
+      });
+
+      if (proimg_count > 0) {
+      (function(window, $, PhotoSwipe) {
+      $('#banner_box ul li a[rel]').photoSwipe({});
+      }(window, window.jQuery, window.Code.PhotoSwipe));
+
+    }
+
+  });
+</script>
+
+
+  </div>
+
+  <!-- ---- 分销开始------ -->
+  {php $ju_discount = $goods['killdiscount']; }
+  {php $ju_friend_count = count($juinfo);}
+  {php $ju_received_money = 0; }
+  {loop $juinfo $j}
+    {php $ju_received_money += $j['discount'];}
+  {/loop}
+  {php $ju_needs_more_money = max(0, $goods['killtotaldiscount'] - $ju_received_money);}
+  <!-- ---- 分销结束------ -->
+
+
+  <div class="detail-div img-rounded">
+    <div class="detail-group text-center" style="line-height:20px;font-weight:bold;">{$goods['title']}</div>
+    <div class="detail-group" style='margin-top:10px;'><span class="col-xs-8" style="width:100%;">
+        {if $marketprice==$productprice}
+        现价¥ <span id='marketprice' class="text-danger" style="font-size:18px; font-weight:bold;">{$marketprice}</span>{if $ju_needs_more_money > 0}，帮砍一刀最多可省¥ <span class="text-danger" style="font-size:18px; font-weight:bold;">{$ju_needs_more_money}</span>!{/if}
+        {else}
+        <span id='productpricecontainer' style='{if $productprice<=0}display:none{/if}'>原价: <del style="font-size:16px; ">¥  <span id='productprice'>{$productprice}</span></del></span> 现价¥ <span class="text-danger" id='marketprice'  style="font-size:18px; font-weight:bold;">{$marketprice}</span>{if $ju_needs_more_money > 0}，帮砍一刀最多可省¥ <span class="text-danger" style="font-size:18px; font-weight:bold;">{$ju_needs_more_money}</span>!{/if}
+        {/if}
+      </span>
+    </div>
+
+    <!-- ---- 分销开始------ -->
+    <div class="detail-group">
+      <div class="detail-div img-rounded other-detail text-center">
+        {if $ju_friend_count <= 0}
+        <div class="detail-group text-center" style="line-height:20px;font-weight:bold;">你是第一个，快来点下面的按钮帮我杀价吧！！一分一分省到结婚^_^</div>
+        {else}
+        <div class="detail-group text-center" style="line-height:20px;font-weight:bold;"> 已有{$ju_friend_count}名好友帮我杀价！{if $ju_needs_more_money > 0}帮帮忙，还可以再降{$ju_needs_more_money}元！{else} 搞定杀价！{/if}</div>
+        {/if}
+      </div>
+    </div>
+    <div class="detail-group" style='margin:10px auto;'>
+      <span class="col-xs-12" style="width:100%;">
+        {if strcmp(trim($giver), trim($begger)) == 0}
+          <a href="javascript:void(0)" id="jubutton" class="btn btn-danger col-xs-12" style="width:100%;"><i class="icon-ok"></i> 自砍一刀</a>
+        {else}
+          <a href="javascript:void(0)" id="jubutton" class="btn btn-danger col-xs-12" style="width:100%;"><i class="icon-ok"></i> 帮砍一刀</a>
+        {/if}
+      </span>
+    </div>
+  </div>
+
+
+  <style type="text/css">
+    #jucover{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0, 0, 0, 0.7);display:none;z-index:20000;}
+    #jucover img{position:fixed;right: 18px;top:5px;width:260px;height:180px;z-index:20001;}
+  </style>
+  <div id="jucover" onclick="$(this).hide()"><img src="./addons/quickshop/images/guide.png"></div>
+  <div id="loading" class="hide"><img src="./addons/quickshop/images/loading.gif"></div>
+  <script>
+    $(function() {
+    // 初始化分销提示层为隐藏状态
+    {if $_GPC['begger'] == $_W['fans']['from_user']}
+    $("#jucover").show();
+    {else}
+    $("#jucover").hide();
+    {/if}
+
+    //点击具有杀价按钮后显示提示层
+    $("#jubutton").on("click", function() {
+      var doing_msg = '...';
+      var success_msg = '您已经帮助好友节省{$ju_discount}元。他对你感激涕零！';
+      var dialog = new BootstrapDialog({
+            title: '正在杀价...',
+            message: '<img style="width:100%;height:18px" src="./addons/quickshop/images/loading.gif" />',
+            autospin: true,
+            buttons: [{
+                label: '关闭',
+                icon: 'glyphicon glyphicon-check',
+                id: 'btn-1',
+                action: function(dialog) {
+                    dialog.close();
+                }
+            },
+            {
+                label: '去看看',
+                icon: 'glyphicon glyphicon-send',
+                id: 'btn-go',
+                action: function(dialog) {
+                  location.href="{php echo $this->createMobileUrl('Detail', array('id'=>$goodsid));}";
+                }
+            }
+                ]
+      });
+      dialog.open();
+
+      //tip("正在处理数据...");
+      $.get(
+      '{php echo $this->createMobileUrl('kill', array('goodsid' => $goodsid, 'title'=>$goods['title'], 'giver'=>$giver, 'givername'=>$givername, 'begger'=>$begger))}',
+      {},
+      function(s){
+        //tip_close();
+        if (s.message) {
+          dialog.setTitle(s.message.title);
+          dialog.setMessage(s.message.msg);
+          // 杀价成功时刷新页面
+          if (s.message.code == 0) {
+            dialog.getButton('btn-1').click(function() {
+              location.reload();
+            });
+          } else {
+            dialog.getModalHeader().css('background-color', 'red');
+          }
+        }
+      }, 'json');
+     });
+    });
+
+  </script>
+  <!-- ---- 分销结束------ -->
+
+  {if count($params)>0}
+  <div class="detail-div img-rounded other-detail">
+    {loop $params $p}
+    <div class="detail-group">
+      <span class="col-xs-4">{$p['title']}</span>
+      <span class="col-xs-8">{$p['value']}</span>
+    </div>
+    {/loop}
+  </div>
+  {/if}
+
+
+  <div class="detail-div img-rounded detail-content" style="word-break:break-all">
+    {$goods['content']}
+  </div>
+
+  <div style="position:fixed; bottom:0; left:0; width:100%; text-align:center; background:#E9E9E9; padding:10px 2%;">
+    {if $goods['status']!=1 || $goods['deleted']==1}
+    <a href="javascript:void(0)" class="btn btn-default col-xs-12"  style="width:100%;">此商品已下架</a>
+    {else}
+    <input type="hidden"  id="optionid" name="optionid" value="" />
+    <!--
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$goodsid));}" class="btn btn-success col-xs-12"  style="width:100%;">什么好东西，我也想看看</a>
+    -->
+    {/if}
+  </div>
+</div>
+
+<script>
+  var options={php echo json_encode($options)};
+  var specs={php echo json_encode($specs)};
+  var hasoption = {php echo $goods['hasoption']=='1'?'true':'false'};
+
+  $(function() {
+    $('.other-detail .detail-group:last').css("border-bottom", "0");
+
+    if (proimg_count > 0) {
+      (function(window, $, PhotoSwipe) {
+        $('.touchslider-viewport .list a[rel]').photoSwipe({});
+      }(window, window.jQuery, window.Code.PhotoSwipe));
+
+      $('.touchslider').touchSlider({
+        mouseTouch: true,
+        autoplay: true,
+        delay: 2000
+      });
+    }
+    $(".option,.optionimg").click(function() {
+      var specid = $(this).attr("specid");
+      var oid = $(this).attr("oid");
+      $(".optionid_"+specid).val(oid);
+      $(".options_" + specid + "  span").removeClass("current").attr("sel", "false");
+      $(this).addClass("current").attr("sel", "true");
+      var optionid = "";
+      var stock =0;
+      var marketprice = 0;
+      var productprice = 0;
+      var ret = option_selected();
+
+      if(ret.no==''){
+        var len = options.length;
+        for(var i=0;i<len;i++) {
+          var o = options[i];
+
+          var ids = ret.all.join("_");
+
+          if( o.specs==ids){
+            optionid = o.id;
+            stock = o.stock;
+            marketprice = o.marketprice;
+            productprice = o.productprice;
+            break;
+          }
+
+        }
+        $("#optionid").val(optionid); 
+
+        if(stock!="-1"){
+          $("#stockcontainer").html("( 剩余 <span id='stock'>" + stock + "</span> )");
+        }
+        else{
+          $("#stockcontainer").html("<span id='stock'></span>");
+        }
+        $("#marketprice").html(marketprice);
+
+
+        $("#productprice").html(productprice);
+        if(productprice<=0){
+          $("#productpricecontainer").hide();
+        }
+        else{
+          $("#productpricecontainer").show();
+        }
+      }
+    });
+
+    $("#total").blur(function(){
+
+      var total = $("#total");
+      if(!total.isInt()){
+        total.val("1");
+      }
+      var stock = $("#stock").html()==''?-1:parseInt($("#stock").html());
+      var mb = maxbuy;
+      if(mb>stock && stock!=-1){
+        mb = stock;
+      }
+      var num = parseInt(total.val() );
+      if(num>mb && mb>0){
+        tip("您最多可购买 " + mb + " 件!",true);
+        total.val(mb);
+      }
+    })
+
+  });
+  var maxbuy = {php echo empty($goods['maxbuy'])?"0":$goods['maxbuy']};
+  function addNum(){
+    var total = $("#total");
+    if(!total.isInt()){
+      total.val("1");
+    }
+    var stock = $("#stock").html()==''?-1:parseInt($("#stock").html());
+    var mb = maxbuy;
+
+    if(mb>stock && stock!=-1){
+      mb = stock;
+    }
+    var num = parseInt(total.val() ) + 1;
+    if(num>stock){
+      tip("您最多可购买 " + stock + " 件!",true);
+      num--;
+    }
+    if(num>mb && mb>0){
+      tip("您最多可购买 " + mb + " 件!",true);
+      num = mb;
+    }
+
+    total.val(num);
+  }
+  function reduceNum(){
+    var total = $("#total");
+    if(!total.isInt()){
+      total.val("1");
+    }
+    var num = parseInt( total.val() );
+    if(num-1<=0){
+      return;
+    }
+    num--;
+    total.val(num);
+  }
+
+  function addtocart(){
+    var ret = option_selected();
+    if(ret.no!=''){
+      tip("请选择" + ret.no + "!",true);
+      return;
+    }
+    tip("正在处理数据...");
+    var total = $("#total").val();
+    var stock = parseInt($('#stock').text());
+    if(stock == 0){
+      tip('库存不足，无法购买。');
+      return;
+    }
+
+    var url = '{php echo $this->createMobileUrl('mycart',array('op'=>'add','id'=>$goods['id']));}' +"&optionid=" + $("#optionid").val() + "&total=" + total;
+    $.getJSON(url, function(s){
+      if(s.result==0){
+        tip("只能购买 " + s.maxbuy + " 件!");
+        }else{
+        tip_close();tip("已加入购物车!");
+        $('#stock').text(stock - total);
+        $('#carttotal').css({'width':'50px', 'height':'50px', 'line-height':'50px'}).html(s.total).animate({'width':'20px', 'height':'20px', 'line-height':'20px'}, 'slow');
+      }
+    });
+  }
+  function buy(){
+    var ret = option_selected();
+    if(ret.no!=''){
+      tip("请选择" + ret.no + "!",true);
+      return;
+    }
+    var stock = parseInt($('#stock').text());
+    if(stock == 0){
+      tip('库存不足，无法购买。');
+      return;
+    }
+    var total = $("#total").val();
+    location.href = '{php echo $this->createMobileUrl('confirm',array('id'=>$goods['id']));}'+"&optionid=" + $("#optionid").val() + "&total=" + total;
+  }
+  var selected = [];
+  function option_selected(){
+
+    var ret= {
+      no: "",
+      all: []
+    };
+    if(!hasoption){
+      return ret;
+    }
+    $(".optionid").each(function(){
+      ret.all.push($(this).val());
+      if($(this).val()==''){
+        ret.no = $(this).attr("title");
+        return false;
+      }
+    })
+    return ret;
+  }
+</script>
+{php $title = $goods['title'];}
+{php $title = $goods['title'];}
+{template 'detail_footer'}
+{template 'footerbar'}
+<script>
+  $(function() {
+    $(".footerbar").hide();
+    $("#footer").hide();
+  });
+  document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+      WeixinJSBridge.call('showOptionMenu');
+  });
+</script>

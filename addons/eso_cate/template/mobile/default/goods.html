@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$goods['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/focus.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .focus .bd li img { width:auto;min-width:68%;max-width:100%;display:block;margin:0 auto;}
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/mobile.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.query-2.1.7.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/sub_goods.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/weixin-api.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script type="text/javascript">
+        var shareData = {
+            "imgUrl" : ".focus",
+            "link" : "{php echo urwdo('cart','',1)}",
+            "title" : "",
+            "desc" : "#goodscontent"
+        };
+        var jssdkconfig = {JSONJSSDKCONFIG} || {};
+        $.mall_init();
+    </script>
+</head>
+
+<body id="LB" data-url="{php echo urwdo()}" data-goodsid="{$goods['id']}">
+
+<div id="go_top">
+    <a href="{php echo urwdo('cart')}" id="a_shop"><em>{$cart_num}</em><img src="{NOW_PATH}img/m-app-shop.png"></a>
+    <a href="#" id="a_top"><img src="{NOW_PATH}img/m-app-top.png"></a>
+</div>
+
+<div id="header" class="shadow">
+    <h1><img src="{NOW_PATH}img/mweb_logo.png" width="100" height="30"/></h1>
+    <ul class="nav">
+        <li{php echo isto($type,'now',' class="LB"')}><a href="{php echo urwdo(0)}">新品上市</a></li>
+        <li{php echo isto($type,'besa',' class="LB"')}><a href="{php echo urwdo(0)}&type=besa">推荐商品</a></li>
+        <li{php echo isto($type,'hot',' class="LB"')}><a href="{php echo urwdo(0)}&type=hot">最热商品</a></li>
+        <li><a href="{php echo urwdo('user')}">我的！</a></li>
+    </ul>
+</div>
+
+<div class="mb-sou mb-top">
+        <div class="c-f-search">
+            <a class="c-f-back" href="javascript:history.back()">返回</a>
+            <span class="c-f-title">详情</span>
+            <span class="c-f-h-s">
+            <a class="c-f-home" href="{php echo urwdo('index')}"></a>
+            <a class="c-f-sear" href="javascript:$('.mb-sou').toggleClass('mb-show');"></a>
+            </span>
+        </div>
+</div>
+
+<div class="mb-sou">
+    <form action="{php echo urwdo('lists')}" id="saveform" method="get">
+        <div class="c-f-search">
+            <input placeholder="请输入关键字" type="search" name="key" value="" class="c-f-text J_autocomplete" autocomplete="off">
+            <input type="submit" name="search" value="&nbsp;" class="c-f-bton">
+            <input type="hidden" name="type" value="{$type}">
+        </div>
+    </form>
+</div>
+
+
+<div id="focus" class="focus">
+    <div class="hd">
+        <ul></ul>
+    </div>
+    <div class="bd">
+        <ul>
+            {loop $goods['albumarr'] $list}
+            <li>
+                <a href="javascript:void(0);"><img id="pic" src="{if $list['img_url']}{php echo toimage($list['img_url'])}{else}{$list['img_file']}{/if}"/></a>
+            </li>
+            {/loop}
+            {if !$goods['albumarr']}
+            <li>
+                <a href="javascript:void(0);"><img src="{NOW_PATH}img/nopic.png"/></a>
+            </li>
+            {/if}
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    TouchSlide({
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul",
+        effect:"leftLoop",
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页
+        interTime:5000 //自动运行间隔
+    });
+</script>
+
+<div id="intro" data-id="{$goods['id']}" data-url="{php echo urwdo()}">
+    <h1>
+        {$goods['title']}
+        <span class="selectprice" data-price="{$goods['shop_price']}">￥{$goods['shop_price']}</span>
+        <span class="desc">{$goods['descriptions']}</span>
+    </h1>
+
+
+    <div class="goodssection">
+        <section>
+            {if $goods['attrA']}
+            <div class="sku-control">
+                <ul class="mui-sku">
+                    {loop $goods['attrA'] $name $list}
+                    <li class="clearfix">
+                        <h2 data-val="{$name}">{$name}：</h2>
+                        <div class="items">
+                            {loop $list $namep $listp}
+                            {php $_rand = rand(10000,99999)}
+                            <input type="radio" data-img="" autocomplete="off" name="att_{$listp['name']}" id="a_{$_rand}"
+                                   data-price="{php echo intval($listp['price'])}" value="{$listp['val']}"{if value($listp,'default')} checked{/if}>
+                            <label for="a_{$_rand}">{$listp['val']}</label>
+                            {/loop}
+                        </div>
+                    </li>
+                    {/loop}
+                </ul>
+            </div>
+            {/if}
+            <div class="number clearfix">
+                <h2>数量：</h2>
+                <div class="content">
+                    <div class="number-control">
+                        <div class="mui-number">
+                            <div type="button" class="decrease">-</div>
+                            <input type="text" id="quantity" name="quantity" class="num" value="1" max="{$goods['number']}">
+                            <div type="button" class="increase">+</div>
+                        </div>
+                    </div>
+                    <div class="stock">供应：<span class="goodsv">{if $goods['number']>0}正常{else}<font color="red">没有了</font>{/if}</span></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="buynow">
+        {if !$goods['attrA'] && $goods['number'] <= 0}
+        <a href="javascript:void(0);" class="bu_soldout">￥{$goods['shop_price']}抢购一空</a>
+        {else}
+        <div class="butnowbox">
+            <a href="javascript:void(0);" class="boxbutton add" id="buynow" data-type="add">加入购物车</a>
+        </div>
+        {/if}
+        <p class="status">
+            {if $goods['market_price']}原价 <del>￥{$goods['market_price']}</del>　节省 ￥{php echo $goods['market_price']-$goods['shop_price']}{/if}
+            已售出{$goods['salesnum']}{php echo $this->cate_unit($goods['unit'])}
+        </p>
+    </div>
+
+    <div class="goods_tab">
+        <div class="tab_box" data-index="-1">
+            <div>详细介绍</div>
+            {if $goods['attrB']}<div>详细参数</div>{/if}
+            <div>用户评价</div>
+            <div>成交记录</div>
+        </div>
+        <div class="tab_con">
+            <div id="goodscontent">
+                {if $goods['content']}
+                {php echo htmlspecialchars_decode($goods['content']);}
+                {else}
+                <div class="nolist">没有查到详细介绍!</div>
+                {/if}
+            </div>
+            {if $goods['attrB']}
+            <div>
+                {loop $goods['attrB'] $name $list}
+                <div class="attrtitle">{$name}</div>
+                {loop $list $namep $listp}
+                <div class="attrvalue"><span>{$listp['name']}</span>{$listp['val']}</div>
+                {/loop}
+                {/loop}
+            </div>
+            {/if}
+            <div id="commentlist">
+                <div class="pagecon">数据加载中...</div>
+                <div class="pagebut">
+                    <button id="prevpage" onclick="_comment(this);">上一页</button>
+                    <span id="textpage">0/0</span>
+                    <button id="nextpage" onclick="_comment(this);">下一页</button>
+                </div>
+            </div>
+            <div id="paylist">
+                <div class="pagecon">数据加载中...</div>
+                <div class="pagebut">
+                    <button id="prevpage" onclick="_paycart(this);">上一页</button>
+                    <span id="textpage">0/0</span>
+                    <button id="nextpage" onclick="_paycart(this);">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{if $goods['area_cn']}
+{php $alistdata = cate::db('数据表:goods,显示数目:10,排序:(case when `is_best`=1 then 0 else 1 end)', $area_where)}
+{php $alists = $alistdata['lists']}
+{if $alists}
+<div id="deals_list_n">
+    <h3 class="dashed">★{$goods['area_cn']}推荐商品</h3>
+    <ul class="clearfix">
+        {loop $alists $list}
+        <li>
+            <div class="frame">
+                <a href="{php echo urwdo('goods')}&id={$list['id']}" class="mb0">
+                    <div class="pic">
+                        <img class="lazy" data-original="{php echo toimage($list['img'])}" src="{IMG_PATH}loading.png"/>
+                    </div>
+                    <h1>{$list['title']}</h1>
+                    <em class="price">
+                        ￥{$list['shop_price']}
+                        {if $list['market_price'] && $list['market_price']!=$list['shop_price']}<em class="market">￥{$list['market_price']}</em>{/if}
+                    </em>
+                </a>
+                <a href="{php echo urwdo('goods')}&id={$list['id']}">购买详情&gt;&gt;</a>
+            </div>
+        </li>
+        {/loop}
+    </ul>
+</div>
+{/if}
+{/if}
+
+{php $slistdata = cate::db('数据表:goods,显示数目:10,排序:(case when `is_best`=1 then 0 else 1 end)', $sort_where)}
+{php $slists = $slistdata['lists']}
+{if $slists}
+<div id="deals_list_n">
+    <h3 class="dashed">★{$goods['sort_cn']}推荐商品</h3>
+    <ul class="clearfix">
+        {loop $slists $list}
+        <li>
+            <div class="frame">
+                <a href="{php echo urwdo('goods')}&id={$list['id']}" class="mb0">
+                    <div class="pic">
+                        <img class="lazy" data-original="{php echo toimage($list['img'])}" src="{IMG_PATH}loading.png"/>
+                    </div>
+                    <h1>{$list['title']}</h1>
+                    <em class="price">
+                        ￥{$list['shop_price']}
+                        {if $list['market_price'] && $list['market_price']!=$list['shop_price']}<em class="market">￥{$list['market_price']}</em>{/if}
+                    </em>
+                </a>
+                <a href="{php echo urwdo('goods')}&id={$list['id']}">购买详情&gt;&gt;</a>
+            </div>
+        </li>
+        {/loop}
+    </ul>
+</div>
+{/if}
+
+{template TEMPLET.'bottom'}
+
+<script type="text/javascript">
+    //微信浏览器查看图片
+    WeixinApi.ready(function(a) {
+        var picList = [];
+        var thelistobj = $("#focus").find("#pic");
+        thelistobj.each(function(index){
+            $(this).attr("data-j", index);
+        });
+        thelistobj.click(function(){
+            if (picList.length == 0) {
+                var iurl = "";
+                thelistobj.each(function(){
+                    if ($(this).attr("src") != iurl) {
+                        iurl = $(this).attr("src");
+                        if (iurl) picList.push(iurl);
+                    }
+                });
+            }
+            var _viewimg = $(this).attr("src");
+            if (!_viewimg) _viewimg = picList[0];
+            a.imagePreview(_viewimg, picList);
+        });
+
+        var cpicList = [];
+        var goodsimgobj = $("#goodscontent").find("img");
+        goodsimgobj.click(function(){
+            if (cpicList.length == 0) {
+                var iurl = "";
+                goodsimgobj.each(function(){
+                    if ($(this).attr("src") != iurl) {
+                        iurl = $(this).attr("src");
+                        if (!iurl) iurl = $(this).attr("data-original");
+                        if (iurl) cpicList.push(iurl);
+                    }
+                });
+            }
+            var _viewimg = $(this).attr("src");
+            if (!_viewimg) _viewimg = $(this).attr("data-original");
+            if (!_viewimg) _viewimg = cpicList[0];
+            a.imagePreview(_viewimg, cpicList);
+        });
+    });
+    //非微信浏览器查看图片
+    if(!WeixinApi.openInWeixin()) {
+        $("#focus").find("#pic").click(function(){
+            var iurl = $(this).attr("src");
+            $intemp = $('<div class="windowsimg"><div></div><img src="'+iurl+'"></div> ')
+            $(document.body).append($intemp.click(function () {
+                $intemp.remove();
+            }));
+            $intemp.find("div").animate({opacity:'0.8'});
+        });
+        $(".tab_con img").click(function(){
+            var iurl = $(this).attr("src");
+            if (!iurl) iurl = $(this).attr("data-original");
+            $intemp = $('<div class="windowsimg"><div></div><img src="'+iurl+'"></div> ')
+            $(document.body).append($intemp.click(function () {
+                $intemp.remove();
+            }));
+            $intemp.find("div").animate({opacity:'0.8'});
+        });
+    }
+</script>
+
+<div id="fb-root"></div>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+{php $bootstrap_type = 3;}
+{if empty($_W['isajax'])}
+{template 'header'}
+<style>
+	.show-more {padding-bottom:30px;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style.css?{TIMESTAMP}">
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style_new.css?{TIMESTAMP}">
+
+
+ <div class="hd" style=" background:url(http://gongyichina.org/mobilehtml/img/bg1.jpg) no-repeat; background-size:100%; padding:24px 15px; width:100%; box-sizing:border-box; border:none !important;">
+     <div class="float_l" style=" box-sizing:border-box; width:24%"><img src="{$_W['fans']['tag']['avatar']}" style=" border-radius:100%;"/></div>
+     <div class="float_l font_1" style="box-sizing:border-box;padding-left:15px; width:76%; font-size:14px; padding-top:10px">亲爱的 
+     <span class="font_3" style="font-size:14px !important;">{$_W['fans']['nickname']}</span><br>感谢您的善举<span class="font_3">{$totalq}</span>，<span class="font_3" style="font-size:14px !important;">您的每一份捐助</span>都会帮助到有需要的人。
+      </div>
+     <div class="clear"></div>
+    </div>
+     
+<!--<div style="border-bottom: #999 2px solid; width:100%;"></div>-->
+    <div style="padding:11px; font-size:14px; color:#2b2b2b; background:#e4e4e4; box-shadow:#acacac 0px 2px 5px;">捐赠记录
+      <!--<a href="http://gongyichina.org/app/index.php?i=2&c=entry&eid=1" class="float_r" style="color:#2b2b2b">-->
+      <a href="{php echo $this->createMobileUrl('list', array('id' => $item['id']))}" class="float_r" style="color:#2b2b2b">
+      <span class="glyphicon glyphicon-home" aria-hidden="true"></span> 主页</a>
+      <div class="clear"></div>
+    </div>
+    
+   <div class="clear"></div>
+   
+   
+   
+<style type='text/css'>
+	.sel { background:#33cdd6; color:#fff;}
+	.nosel { background:#fff;color:#000}
+</style>
+<div class="shopping-main" style="padding:0;">
+	
+	<div class="list" id="list" style="margin-top:0 !important;">
+	
+{/if}
+<div style="clear:both"></div>
+{loop $list $item}
+   {php $project = $this->getproject($item['pid']);}
+	{php $p_item = $this->getitem($item['item_id']);}
+<!--<div class="list-item img-rounded">
+	<div>
+		<a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">
+			<img src="{$_W['attachurl']}{$item['thumb']}">
+		</a>
+		<span class="title"><a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">{$item['title']}</a></span>
+	</div>
+	<span class="sold">
+		<span class="soldnum pull-left">已筹资￥{$item['finish_price']}</span>
+	</span>
+	<span class="sold">
+		<div class="progress">
+  			<div class="progress-bar" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}" aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+    			<span class="sr-only">{php echo $item['finish_price']*100/$item['limit_price']}% Complete</span>
+  			</div>
+		</div>
+	</span>
+	<span class="sold">
+		<span class="soldnum pull-left">{php echo floor($item['finish_price']*100/$item['limit_price'])}%</span>
+		<span class="price pull-right">剩余{php echo $item['deal_days'] - floor((time() - $item['createtime'])/86400)}天</span>
+	</span>
+</div>-->
+
+<div class="i_d_5">
+  <div class="i_d_5_1" style="height:74px">
+       <a href="{php echo $this->createMobileUrl('detail', array('id' => $project['id']))}">
+        <div class="i_d_5_1_l w65">
+        <p><span class="title1">{$project['title']}</span></p>
+        <p style="margin-bottom:0px;">{php echo date('Y-m-d H:i', $item['createtime'])}</p>
+        </div>
+        <div class="i_d_5_1_r w34" style="text-align:right;">
+        <p><span style="color:#fe6903; font-size:16px">
+				{if $item['dispatchprice']<=0}
+				{$item['price']} 元
+				{else}
+				{$item['price']} 元 (付出金额：{$item['item_price']}元 运费 {$item['dispatchprice']} 元)
+				{/if}</span></p>
+        <p style="margin-bottom:0px;"><span class="i_show_cg">捐赠成功</span></p>
+        </div>
+        <div class="clear"></div>
+       </a> 
+      </div>
+  
+</div>
+
+{/loop}
+
+{if empty($_W['isajax'])}
+	</div>
+	<div class="show-more" style="margin:0 !important; padding:10px  !important; background:#fff;"><a href="javascript:;" onclick="loadPage('{$pindex}', 'list')" class="btn btn-default btn-block" id="pager" >浏览更多</a></div>
+</div>
+<script type="text/javascript">
+function loadPage(pindex, container) {
+	pindex = parseInt(pindex) + 1;
+	$('#pager').html('正在加载数据...');
+	$.get(location.href, {'page' : pindex}, function(html){
+	
+		if (html.indexOf('list-item') > -1) {
+			$('#'+container).append(html);
+			$('#pager').get(0).onclick = function(){
+				loadPage(pindex, container);
+			}
+			$('#pager').html("浏览更多");
+		} else {
+			$('#pager').html('已经显示全部');
+		}
+	});
+}
+
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+ <script>
+ 
+	wx.config({
+		debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: 'wxe89fbe468173b2cc', // 必填，公众号的唯一标识
+		timestamp:'{php echo $time}', // 必填，生成签名的时间戳
+		nonceStr: '{php echo $nonceStr}', // 必填，生成签名的随机串
+		signature: '{php echo $signature}',// 必填，签名，见附录1
+		jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		
+    });
+	
+	
+
+wx.ready(function () {
+    // 在这里调用 API
+	
+	wx.onMenuShareAppMessage({
+	  title: '公益联盟', // 分享标题
+	  desc: '公益联盟 与您一起传递爱', // 分享描述
+	  link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+	  imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+	  type: '', // 分享类型,music、video或link，不填默认为link
+	  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	  success: function () { 
+		  // 用户确认分享后执行的回调函数
+	  },
+	  cancel: function () { 
+		  // 用户取消分享后执行的回调函数
+	  }
+});
+
+ 
+ 
+ 	 wx.onMenuShareTimeline({
+		title: '公益联盟', // 分享标题
+		link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+		imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+		success: function () { 
+			// 用户确认分享后执行的回调函数
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+		  }
+    });  
+	
+ });	
+ 
+	</script>
+
+
+{template 'footer'}
+{/if}
+
+<script>
+
+ /* $(".close_fli").click(
+  function(){
+	 $("#fli_btn").click(); 
+	  }
+  );*/
+</script>

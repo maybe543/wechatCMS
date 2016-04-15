@@ -1,0 +1,38 @@
+
+        <div class="panel panel-default">
+            <div class="panel-heading">前台名称设置（留空不显示）</div>
+            <div class="panel-body">
+		
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约列表名称设置</label>
+                    <div class="col-xs-12 col-sm-5 col-md-8 input-group">
+                    <span class="input-group-addon">例：我的预约：</span><input type="text" name="mname" class="form-control" value="{$activity['mname']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务项目名称设置</label>
+                    <div class="col-xs-12 col-sm-5 col-md-8 input-group">
+                    <span class="input-group-addon">例：请选择服务项目</span><input type="text" name="xmname" class="form-control" value="{$activity['xmname']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">前台预约时间设置</label>
+                    <div class="col-xs-12 col-sm-5 col-md-8 input-group">
+                    <span class="input-group-addon">例：预约时间、到店时间等</span><input type="text" name="yuyuename" class="form-control" value="{$activity['yuyuename']}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">前台模板设置</div>
+            <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">选择模板</label>
+          <div class="col-sm-8 col-xs-12">
+            <div class="row row-fix">
+              {template 'skins'}
+            </div>
+          </div>
+        </div>
+            </div>
+        </div>

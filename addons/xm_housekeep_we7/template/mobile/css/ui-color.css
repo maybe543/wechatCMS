@@ -1,0 +1,226 @@
+.bc-bg {
+	background-color: #333333;
+}
+.c-bla
+{
+	background-color:#000;
+}
+.c-bla80
+{
+	background-color: rgba(0,0,0,.8);
+}
+.c-bla50
+{
+	background-color: rgba(0,0,0,.5);
+}
+.c-bla30
+{
+	background-color: rgba(0,0,0,.3);
+}
+.c-wh50
+{
+	background-color: rgba(255,255,255,0.5);
+}
+.c-red
+{
+	background-color:#EB0000;
+}
+
+.c-blu
+{
+	background-color:#486A9A;
+}
+.c-blu1
+{
+	background-color:#4A8DDB;
+}
+.c-blu2
+{
+	background-color:#05B0DE;
+}
+.c-wh
+{
+	background-color:#FFF;
+}
+
+.c-gra
+{
+	background-color:#E6E6E6;
+}
+.c-gra1{
+	background-color: #F7F7F7;
+}
+.c-org
+{
+	background-color:#ED7D00;
+}
+.c-pink
+{
+	
+	background-color:#EA6D8D;
+}
+.c-org1
+{
+	background-color:#F6EDDC;
+}
+.c-dgra{
+	background-color:#e1e1e1;
+}
+.c-check{
+	background-color:#f1f1f1;
+}
+.c-dblu{
+	background-color:#218dd5;
+}
+.c-dwh{
+	background-color:#fdfdfd;
+}
+.c_e5{
+	background-color:#e5e5e5;
+}
+.c-sorg{
+	background-color:#fecb70;
+}
+.c-qorg{
+	background-color:#fcde9e;
+}
+.c-7d{
+	background-color:#7d7c7c;
+}
+.c-sdbla{
+	background-color:#484848;
+}
+.c-06{
+	background-color:#0670b7;
+}
+.c-gra2{
+	background-color:#e8e8e8;
+}
+.c-yel{
+	background-color: rgba(0,255,0,1);	
+}
+.c-s401{
+	background-color:#cc324c;
+}
+.c-s402{
+	background-color:#8e5cd4;
+}
+.c-s403{
+	background-color:#363951;
+}
+
+.t-wh,a .t-wh,a.t-wh,a.t-wh:active,a .t-wh:active,a.t-wh:visited,a .t-wh:visited
+{
+	color:white;
+}
+.t-bla
+{
+	color:black;
+}
+
+.t-gra{
+	color:#838695;
+}
+.t-dgra{
+	color:#8c8c8c;
+}
+
+.t-blu
+{
+	color:#385487;
+}
+.t-yel
+{
+	color:#FFF6C4;	
+}
+.t-org
+{
+	color:#E69329;
+}
+.t-blu2{
+	color:#8e5cd4;
+	}
+.t-dblu{
+	color:#0770b4;
+}
+.t-dwh{
+	color:#a1a1a1;
+}
+.t-sbla{
+	color:#4c4c4c;
+}
+.t-dorg{
+	color:#fecd71;
+}
+.t-red{
+	color:#e31110;
+}
+.t-orgs{
+	color:#edb373;
+}
+.b-bla
+{
+	border-color:black;
+}
+.b-wh
+{
+	border-color:white;
+}
+.b-gra
+{
+	border-color:#ABABAB;
+}
+.b-gra5{
+    border-color:#E3E3E3;
+}
+.b-blu
+{
+	border-color:#112E87;
+}
+.b-org
+{
+	border-color:#ED7D00;
+}
+.b-dblu{
+	border-color:#218dd5;
+}
+.b-tblu{
+	border-color:#09F;
+}
+
+.b-bla01{border-color:rgba(0,0,0,0.1);}
+.b-wh50{border-color:rgba(255,255,255,0.5);}
+.b-wh30{border-color:rgba(255,255,255,0.3);}
+.b-wh01{border-color:rgba(255,255,255,0.1);}
+.b-s401{
+	border-color:#54576b;
+}
+.c-swich1{
+	background-color: #09F;
+	color: #FFF;
+	border: 0px;
+}
+.ubt-blaimg {
+  -webkit-border-image: url("../images/border-line.png") 2 stretch;
+  -moz-border-image: url("../images/border-line.png") 2 stretch;
+  border-image: url("../images/border-line.png") 2 stretch;
+  border-top: 2px solid #e5e5e5;
+}
+.ubb-blaimg {
+  -webkit-border-image: url("../images/border-line.png") 2 stretch;
+  -moz-border-image: url("../images/border-line.png") 2 stretch;
+  border-image: url("../images/border-line.png") 2 stretch;
+  border-bottom: 2px solid #e5e5e5;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),only screen and (min--moz-device-pixel-ratio: 1.5),only screen and (-o-min-device-pixel-ratio: 3/2),only screen and (min-device-pixel-ratio: 1.5) {
+	.ubb-blaimg {
+	border-bottom-width:1px;
+	}
+	.ubt-blaimg {
+	border-top-width:1px;
+	}
+}
+
+.bg-primary.dk, .bg-primary .dk {
+  background-color: #6051b5;
+}

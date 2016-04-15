@@ -1,0 +1,377 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<title>{$cfg['indexlistname']}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" /> 
+<meta content="telephone=no" name="format-detection" /> 
+{php echo register_jssdk(false);}
+<link href="{MEEPO2}/Public/css/xqstyle.css?t={php echo time();}" rel="stylesheet" />
+<link rel="stylesheet" href="{MEEPO2}/Public/swiper/idangerous.swiper.css">
+<script type="text/javascript" src="{MEEPO2}/Public/js/jquery1.9.js"></script>
+<script type="text/javascript" src="{MEEPO2}/Public/js/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="{MEEPO2}/Public/js/layer.m.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?33176014411f905c3de9da28c799faac";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<style>
+body,html {
+	height: 100%;
+	width: 100%;
+	font-size:16px
+}
+
+header{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline
+}
+
+
+img {
+vertical-align: middle;
+}
+
+
+.head,.mail_promise {
+	z-index: 100;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.1)
+}
+
+.head {
+	height: 52px;
+	line-height: 52px;
+	background: #fafafa;
+	right: 0
+}
+.head .main_nav {
+	width: 100%;
+	height: 52px;
+	color: #555;
+	float: left
+}
+
+.head .main_nav li {
+	width: 33.3%;
+	font-weight: 700;
+	position: relative;
+	float:left
+}
+
+.head .main_nav li.active {
+	border-bottom: 2px solid #0fa442;
+	color: #1ebe5f
+}
+
+.head .main_nav .red-dot {
+	display: none;
+	padding: 1px;
+	min-width: 10px;
+	height: 10px;
+	line-height: 10px;
+	font-style: normal;
+	color: #fff;
+	text-align: center;
+	font-size: 11px;
+	border-radius: 10px;
+	background: #d00;
+	position: absolute;
+	left: 75%;
+	top: 9px
+}
+
+.head .main_nav li>a {
+	display: block;
+	color: #555;
+	box-flex: 1;
+	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	-o-box-flex: 1;
+	-ms-box-flex: 1;
+	text-align: center
+}
+
+.head .main_nav li.active>a {
+	color: #1ebe5f
+}
+
+
+</style>
+</head>
+<body>
+   <header class="head">
+  
+    <ul class="main_nav disbox-hor" id="nav_menu">
+	    <li style="width: 30%;
+height: 52px;
+float: left;
+margin: 0 0 0 2%;
+background: url({if empty($cfg['logo'])}../addons/danwu_show/logo.png{else}{$_W['attachurl']}{$cfg['logo']}{/if}) center no-repeat;
+background-size: 44px 18px;"></li>
+        <li class="disbox-flex disbox-center active"><a href="{php echo $this->createMobileUrl('index')}">晒心情</a></li>
+        <li class="disbox-flex disbox-center"><a href="{php echo $this->createMobileUrl('myshow3')}">我要秀</a></li>
+        
+       
+    </ul>
+</header>
+<div style="height:20px">&nbsp;</div>
+<style type="text/css">
+.pagination {
+  position: absolute;
+  z-index: 20;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #555;
+  margin: 0 5px;
+  opacity: 0.8;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+</style> 
+    <div class="maxwidth xq_main">
+    	
+    	
+        <div class="maxwidth normal_hy" id="a01"><span>{$cfg['indexlistname']}</span><div class="xuanze"></div></div>
+        <hr>
+		<div style="height:20px">&nbsp;</div>
+        <div style="margin:0px auto; max-width:800px;">
+           <div id="container" class="container">
+                {loop $list $row}
+				   {if !empty($row['thumbpath'])}
+                    <div class="item">
+                        <a href="{php echo $this->createMobileUrl('someone',array('openid'=>$row['openid']))}" >
+                        <img src="{$_W['attachurl']}{$row['thumbpath']}" hei="{php echo $row['hei']}"/>
+                        </a>
+                        <strong {if $row['gender']=='1'}class="ncolor"{else}class="nvcolor"{/if}>{$row['nickname']}</strong>
+                        <span style="color:#0fa442">{$row['liketimes']}个赞 </span>
+                        <i> <font color="#0fa442">Ta说:</font>  {$row['content']}</i>
+                        <input type="hidden" name="id" value="{$row['id']}"/>
+                      
+                    </div>
+					{/if}
+					{/loop}
+            </div>
+            <div id="loading" class="loading-wrap">
+                <span class="loading"><img src="{MEEPO2}/Public/images/index/mobile/loadingY_100_gray.gif" width="40" height="40"/></span>
+            </div>
+        </div>
+        <input type="hidden" name="idList" id="idList" value="1066,1065,1063,1061,1058,1057,1056,1052,1051,1048"/>
+        <input type="hidden" name="sss" id="sss" value=""/>
+		 <input type="hidden" id="all" value="{$all}个人晒了TA的缤纷一天哦！"/>
+    </div>
+<div class="footer"><center>有问题请加微信&nbsp;&nbsp;{$cfg['contactweixin']}</center></div>
+<script src="{MEEPO2}/Public/swiper/idangerous.swiper.min.js"></script>
+<script type="text/javascript">
+var mySwiper = new Swiper('.swiper-container',{
+autoplay : 5000,//可选选项，自动滑动
+loop : true,//可选选项，开启循环
+pagination : '.pagination',
+})
+
+var Cindex;
+$(function(){
+	$(".swiper-container, .swiper-slide").width($(".xq_ad img").width()).height($(".xq_ad img").height());
+	function getheight(obj){
+		 obj.each(function(i){
+		   	var h = $(this).children('a').children('img').attr('hei');// 头像高度
+			var hi = $(this).children('i').height();// 自我介绍高度
+			var hstrong  = $(this).children('strong').height(); // 昵称高度
+			
+			var nw = $(".item").width();
+			var nh = (nw/150)*h;
+			$(this).height(nh+hi+hstrong+20);
+		 });	
+	}
+	getheight($(".item"));
+	$("#tj").click(function(e) {
+        $("#tjlist").css('display','');
+		 $("#rqlist").css('display','none');
+		 $("#zxlist").css('display','none');
+		$(this).parent("div").removeClass('tj_tip_no');
+		$(this).parent("div").addClass('tj_tip');
+		$("#rq").parent("div").addClass('tj_tip_no');
+		$("#rq").parent("div").removeClass('tj_tip');
+		$("#zx").parent("div").addClass('tj_tip_no');
+		$("#zx").parent("div").removeClass('tj_tip');
+    });
+	$("#rq").click(function(e) {
+        $("#tjlist").css('display','none');
+		$("#rqlist").css('display','');
+		$("#zxlist").css('display','none');
+		$(this).parent("div").removeClass('tj_tip_no');
+		$(this).parent("div").addClass('tj_tip');
+		$("#tj").parent("div").addClass('tj_tip_no');
+		$("#tj").parent("div").removeClass('tj_tip');
+		$("#zx").parent("div").addClass('tj_tip_no');
+		$("#zx").parent("div").removeClass('tj_tip');
+    });
+	$("#zx").click(function(e) {
+        $("#tjlist").css('display','none');
+		$("#zxlist").css('display','');
+		$("#rqlist").css('display','none');
+		$(this).parent("div").removeClass('tj_tip_no');
+		$(this).parent("div").addClass('tj_tip');
+		$("#tj").parent("div").addClass('tj_tip_no');
+		$("#tj").parent("div").removeClass('tj_tip');
+		$("#rq").parent("div").addClass('tj_tip_no');
+		$("#rq").parent("div").removeClass('tj_tip');
+    });
+    //执行瀑布流
+    var $container = $('#container');
+	  $container.masonry({
+	    itemSelector : '.item',
+	    isAnimated: true,
+		gutterWidth:3,
+		isResizableL:1
+	  });
+	var loading = $("#loading").data("on", false);
+	var g = 3;
+	//滚动条下拉加载瀑布流
+	$(window).scroll(function(){
+		if(loading.data("on")) return;
+		if($(document).scrollTop() > 
+			$(document).height()-$(window).height()-$('.footer').height()){
+			//加载更多数据
+			loading.data("on", true).fadeIn();
+            
+			$.get(
+				"{php echo $this->createMobileUrl('getmore')}", 
+				{"last_id" : $("#container>div:last>input").val(),
+				 "idList" : $("#idList").val(),"page" : g},
+				function(data){
+					var html = "";
+					if($.isArray(data)){
+						for(i in data){
+							if(data[i]['gender'] == 1){
+								var colors = 'ncolor';
+							}else{
+								var colors = 'nvcolor';
+							}
+
+							if(i != 3){	
+								if(data[i]['thumbpath'] != ''){
+								   html += "<div class=\"item\" style=\"height:"+data[i]['hei']+"px;\"><a href=\"{php echo $this->createMobileUrl('someone')}&openid="+data[i]['openid']+"\"><img src=\"{$_W['attachurl']}"+data[i]['thumbpath']+"\" hei=\""+data[i]['hei']+"\"/></a><strong class=\""+colors+"\">"+data[i]['nickname']+"</strong><span style=\"color:#0fa442\">"+data[i]['liketimes']+"个赞 </span><i> <font color=\"#0fa442\">Ta说:</font>  "+data[i]['content']+"</i>";
+								   html += "<input type=\"hidden\" name=\"id\" value=\""+data[i]['id']+"\"/></div>";
+								}
+							}else{
+								$("#idList").val(data[i]);
+							}
+						}
+						var $newElems = $(html).css({ opacity: 0 }).appendTo($container);
+						$newElems.imagesLoaded(function(){
+							$newElems.animate({ opacity: 1 });
+							$container.masonry( 'appended', $newElems, true ); 
+				        });
+				        loading.data("on", false);
+						getheight($(".item"));
+					}
+					g++;
+					loading.fadeOut();
+				},
+				"json"
+			);
+		}
+		
+		
+	});
+	
+	
+	
+	$(document).delegate('#cancel','click',function(e) {
+        layer.close(Cindex)
+    });	
+	$(".xuanze").click(function(e) {
+        Cindex = layer.open({
+			type: 1,
+			content: '<div class="listType"><ul><li val="2" onclick="term(\'2\');">排行榜</li><li id="cancel"  onclick="cancel();">取消</li></ul></div>',
+			style: 'width:90%; height:120px;background-color:#fff; border:none;color:#1ebe5f',
+			
+		});
+    });
+	
+	
+	
+	
+	
+	
+	
+});
+function cancel(){
+		layer.close(Cindex);
+	}
+function term(type){
+	var url='{php echo $this->createMobileUrl('hot')}&type='+type;
+	layer.close(Cindex);
+	window.location.href=url;
+}
+
+</script>
+<script type="text/javascript">
+  wx.ready(function () {
+    var shareData = {
+    title: "{$cfg['sharetitle']}",
+    desc: $('#all').val(),
+    link: "{$cfg['sharelink']}",
+    imgUrl: "{$_W['attachurl']}{$cfg['sharepicurl']}",
+  };
+  
+  //分享朋友
+  wx.onMenuShareAppMessage({
+       title: shareData.title,
+      desc: shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+       
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+ //朋友圈
+  wx.onMenuShareTimeline({
+      title: shareData.title+"、"+shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+          
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert("分享失败,网络超时！！！！");
+      }
+    });   
+    
+  });
+
+
+
+</script>
+</body>
+</html>

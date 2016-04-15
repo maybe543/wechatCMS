@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="gbk"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <title>{if $reply['qrtype'] == 1}微信二维码支付{else}扫码签到{/if}</title>
+  <link rel="stylesheet" href="../addons/bm_qrsign/template/img/wap.css">
+  
+</head>
+<body>
+<style>
+body {
+	color:#858585
+}
+.img-responsive {
+	display:block;
+	width:100%;
+	line-height:1;
+	height:auto
+}
+.container_01 {
+	width:50%;
+	margin:0 auto
+}
+.container_02 {
+	width:75%;
+	margin:0 auto;
+	padding:0 1em
+}
+.container .logo-nubia {
+	margin:0 auto
+}
+.pwd-box {
+	border:1px solid #ddd
+}
+.id-icon {
+	background:url(/addons/bm_qrsign/template/mobile/images/id.png) no-repeat;
+	width:35px;
+	height:25px;
+	-webkit-background-size:60%;
+	-moz-background-size:60%;
+	background-size:60%;
+	display:inline-block;
+	vertical-align:middle
+}
+.pwd-icon {
+	background:url(/res/images/pwd.png) no-repeat;
+	width:35px;
+	height:25px;
+	-webkit-background-size:60%;
+	-moz-background-size:60%;
+	background-size:60%;
+	display:inline-block;
+	vertical-align:middle
+}
+.input_box input {
+	border:none;
+	width:70%;
+	margin-top:-5px;
+}
+.fs2 {
+	color:#858585;
+	font-weight:bold;
+	line-height:2em
+}
+.mb20 {
+	margin-bottom:20px
+}
+.mt20 {
+	margin-top:20px
+}
+@media only screen and (max-width:300px) {
+	body {
+	font-size:8.33333px !important
+}
+.viewport {
+	max-width:300px
+}
+}@media only screen and (max-width:310px) and (min-width:300px) {
+	body {
+	font-size:8.33333px !important
+}
+.viewport {
+	max-width:300px
+}
+}@media only screen and (max-width:320px) and (min-width:310px) {
+	body {
+	font-size:8.88889px !important
+}
+.viewport {
+	max-width:320px
+}
+}@media only screen and (max-width:360px) and (min-width:320px) {
+	body {
+	font-size:8.88889px !important
+}
+.viewport {
+	max-width:360px
+}
+}@media only screen and (max-width:360px) and (min-width:350px) {
+	body {
+	font-size:10px !important
+}
+.viewport {
+	max-width:360px
+}
+}@media only screen and (max-width:480px) and (min-width:360px) {
+	body {
+	font-size:10px !important
+}
+.viewport {
+	max-width:480px
+}
+}@media only screen and (max-width:480px) and (min-width:470px) {
+	body {
+	font-size:13.33333px !important
+}
+.viewport {
+	max-width:480px
+}
+}@media only screen and (max-width:560px) and (min-width:480px) {
+	body {
+	font-size:13.33333px !important
+}
+.viewport {
+	max-width:560px
+}
+}@media only screen and (max-width:570px) and (min-width:560px) {
+	body {
+	font-size:15.83333px !important
+}
+.viewport {
+	max-width:570px
+}
+}@media only screen and (max-width:640px) and (min-width:570px) {
+	body {
+	font-size:15.83333px
+}
+.viewport {
+	max-width:640px
+}
+}@media only screen and (max-width:640px) and (min-width:630px) {
+	body {
+	font-size:17.77778px !important
+}
+.viewport {
+	max-width:640px
+}
+}@media only screen and (max-width:710px) and (min-width:640px) {
+	body {
+	font-size:17.77778px !important
+}
+.viewport {
+	max-width:710px
+}
+}.mb20 {
+	margin-bottom:20px
+}
+.input_box {
+	position:relative;
+	height:40px;
+	line-height:20px;
+	padding:10px;
+	width:100%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	display:block;
+	font-size:14px;
+	margin-bottom:12px;
+	border-radius:12px;
+	color:#313131;
+	border:1px solid #ddd;
+	background:#fff
+}
+.con_inputbox {
+	}.return_link,.reg_btn {
+	width:100%;
+	text-align:center;
+	cursor:pointer;
+	margin-bottom:16px;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	display:block;
+	font-size:16px;
+	min-height:40px;
+	line-height:20px;
+	padding:10px;
+	border-radius:10px
+}
+.orange_linear {
+	background:#e8380d;
+	color:#fff;
+	box-shadow:0px 7px 0px #cecece
+}
+.btn_area .btn-reg {
+	width:100%;
+	border-radius:20px 0 0 20px
+}
+.pwd-icon,.id-icon {
+	position:relative;
+	left:7px;
+}
+</style>
+<div class="layout">
+	<div class="container_01 mt20a" style="margin-top: 25px;margin-bottom: 20px;width:200px">
+		<img src="{$qrpicurl}" alt="" class="img-responsive">
+	</div>
+	{if $reply['qrtype'] == 1}
+	<div class="container_02 mb20">
+		<form method="post" id="Form" action="">
+			<input type="hidden" name="op" id="op" value="post">
+			<div class="input_box">
+				<em class="id-icon"></em>
+				{if $reply['qrinput'] == 1}
+				<input type="text" name="qrmoney" id="qrmoney" value="{$reply['qrmoney']}"  placeholder="请输入支付金额"/>
+				{else}
+				<input type="text" name="qrmoney" id="qrmoney" value="{$reply['qrmoney']}" readonly="readonly"/>
+				{/if}
+				<div id="username_tag" class="error_tipsp">
+					<em class="error_ico"></em>
+					<div class="error_tips">
+						<div class="et_con">
+							<p></p>
+							<em></em>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--div class="input_box">
+				<em class="pwd-icon"></em>
+				<input type="password" name="password" id="userpwd" placeholder="密码"/>
+				<div id="userpwd_tag" class="error_tipsp">
+					<em class="error_ico"></em>
+					<div class="error_tips">
+						<div class="et_con">
+							<p></p>
+							<em></em>
+						</div>
+					</div>
+				</div>
+			</div-->
+			<div class="btn-reg">
+				<!--input id="sbtn" class="reg_btn orange_linear" value="立即登录" type="button" style="border:none"></div-->
+				<button type="submit" id="submit" class="reg_btn orange_linear">{$reply['button']}</button>
+				<p class="tips_title tl_r"></p>
+			</div>
+		</form>
+	</div>
+	<p class="tips_title" style="font-size:12px;text-align:center;">扫码支付</p>
+	{else}
+	<div class="container_02 mb20">
+		<form method="post" id="Form" action="">
+			<input type="hidden" name="op" id="op" value="sign">
+			<div class="input_box">
+				<em class="id-icon"></em>
+				<input type="text" name="n" id="n" value="成功签到奖励{$reply['n']}积分" readonly="readonly"/>
+				<div id="username_tag" class="error_tipsp">
+					<em class="error_ico"></em>
+					<div class="error_tips">
+						<div class="et_con">
+							<p></p>
+							<em></em>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--div class="input_box">
+				<em class="pwd-icon"></em>
+				<input type="password" name="password" id="userpwd" placeholder="密码"/>
+				<div id="userpwd_tag" class="error_tipsp">
+					<em class="error_ico"></em>
+					<div class="error_tips">
+						<div class="et_con">
+							<p></p>
+							<em></em>
+						</div>
+					</div>
+				</div>
+			</div-->
+			<div class="btn-reg">
+				<!--input id="sbtn" class="reg_btn orange_linear" value="立即登录" type="button" style="border:none"></div-->
+				<button type="submit" id="submit" class="reg_btn orange_linear">{$reply['button']}</button>
+				<p class="tips_title tl_r"></p>
+			</div>
+		</form>
+	</div>
+	<p class="tips_title" style="font-size:12px;text-align:center;">扫码签到</p>	
+	{/if}
+</div>
+<!--center><div style="font-size:10px">Copyright&copy;<a href="http://www.lanrenmb.com/" target="_blank">
+懒人模板</a> All Rights Reserved (2013-2015) 版权所有</center-->
+</body>
+</html>

@@ -1,0 +1,297 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="">基础数据</a></li>
+</ul>
+
+<div class="clearfix">    
+    <form id="theform" class="form form-horizontal" action="{php echo $this->createWebUrl('baseaddok', array('name'=>'xm_housekeep_we7'));}" method="post">
+	<input type="hidden" name="id" value="{$item[id]}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                预约接受员
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约接受员</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <select name="yyopenid" id="yyopenid" class="form-control  input-s-lg">
+                            {loop $list $val}
+                                <option value="{$val['openid']}" {if $item['yyopenid'] == $val['openid']} selected {/if}>{$val['name']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                </div>
+				
+			</div>
+			
+			<div class="panel-heading">
+                提成比例
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">比例数目</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="bili" id="bili" value="{$item[bili]}" class="form-control">
+						<span class="help-block" style="color:red;">给派单阿姨的比例提成[只需填写数字，如10%只需填入10]</span>
+                    </div>
+                </div>
+				
+			</div>
+			
+			<div class="panel-heading">
+                关注引导
+            </div>
+            <div class="panel-body">
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">引导地址</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="lead" id="lead" value="{$item[lead]}" class="form-control">
+						<span class="help-block" style="color:red;">引导的链接地址：当粉丝没有关注时，跳转至该页面[已http://开头]</span>
+                    </div>
+                </div>
+			</div>
+			
+			<div class="panel-heading">
+                积分计算
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">积分计算</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="sbili" id="sbili" value="{$item[sbili]}" class="form-control">
+						<span class="help-block" style="color:red;">根据订单成交价格计算积分比例,如1元为1积分只需填1,100元1积分就填100</span>
+                    </div>
+                </div>
+				
+			</div>
+			
+			<div class="panel-heading">
+                默认评论
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">评论1</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="comment1" id="comment1" value="{$item[comment1]}" class="form-control">
+						<span class="help-block" style="color:red;">用户没有填写评论内容时的默认评论</span>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">评论2</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="comment2" id="comment2" value="{$item[comment2]}" class="form-control">
+						<span class="help-block" style="color:red;">用户没有填写评论内容时的默认评论</span>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">评论3</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="comment3" id="comment3" value="{$item[comment3]}" class="form-control">
+						<span class="help-block" style="color:red;">用户没有填写评论内容时的默认评论</span>
+                    </div>
+                </div>
+				
+			</div>
+			
+			<div class="panel-heading">
+                模板消息数据
+            </div>
+            <div class="panel-body">
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务预约派单通知  （顾客）</label>
+                    <div class="col-sm-9 col-xs-12">
+					TM00756
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板编号</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="msg1" id="msg1" value="{$item[msg1]}" class="form-control">
+						<span class="help-block" style="color:red;">如果模板编号错误或为空将接受不到模板消息</span>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示语</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="hello1" id="hello1" value="{$item[hello1]}" class="form-control">
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:100px;" class="form-control" name="remark1" id="remark1">{$item[remark1]}</textarea>
+						<span class="help-block" style="color:red;">如：请按时到{address}服务,备注：{remark}【可用{address}替换地址、用{remark}替换备注】  注意：由于模板消息限制，手机号码只能在备注显示，请用{mobile}代替手机号码</span>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务接单通知  （员工）</label>
+                    <div class="col-sm-9 col-xs-12">
+					OPENTM204405162 
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板编号</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="msg2" id="msg2" value="{$item[msg2]}" class="form-control">
+						<span class="help-block" style="color:red;">如果模板编号错误或为空将接受不到模板消息</span>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示语</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="hello2" id="hello2" value="{$item[hello2]}" class="form-control">
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:100px;" class="form-control" name="remark2" id="remark2">{$item[remark2]}</textarea>
+						<span class="help-block" style="color:red;">由于模板消息中没有地址，所以在备注中加上地址 如：请按时到{address}服务,备注：{remark}【可用{address}替换地址、用{remark}替换备注】 注意：由于模板消息限制，手机号码只能在备注显示，请用{mobile}代替手机号码</span>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单完成通知  （顾客）</label>
+                    <div class="col-sm-9 col-xs-12">
+					OPENTM202531033
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板编号</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="msg3" id="msg3" value="{$item[msg3]}" class="form-control">
+						<span class="help-block" style="color:red;">如果模板编号错误或为空将接受不到模板消息</span>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示语</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="hello3" id="hello3" value="{$item[hello3]}" class="form-control">
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:100px;" class="form-control" name="remark3" id="remark3">{$item[remark3]}</textarea>		
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约后平台指定接受员消息  （员工）</label>
+                    <div class="col-sm-9 col-xs-12">
+					OPENTM205330891
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板编号</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="msg4" id="msg4" value="{$item[msg4]}" class="form-control">
+						<span class="help-block" style="color:red;">如果模板编号错误或为空将接受不到模板消息</span>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示语</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="hello4" id="hello4" value="{$item[hello4]}" class="form-control">
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:100px;" class="form-control" name="remark4" id="remark4">{$item[remark4]}</textarea>		
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单完成积分通知  （员工）</label>
+                    <div class="col-sm-9 col-xs-12">
+					OPENTM206956529 
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板编号</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="msg5" id="msg5" value="{$item[msg5]}" class="form-control">
+						<span class="help-block" style="color:red;">如果模板编号错误或为空将接受不到模板消息</span>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提示语</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="hello5" id="hello5" value="{$item[hello5]}" class="form-control">
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:100px;" class="form-control" name="remark5" id="remark5">{$item[remark5]}</textarea>
+						<span class="help-block" style="color:red;"></span>
+                    </div>
+                </div>
+				
+				
+			</div>
+			
+			
+			<div class="panel-heading">
+                分享信息
+            </div>
+            <div class="panel-body">
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:80px;" class="form-control" name="share_title" id="share_title">{$item[share_title]}</textarea>
+						<span class="help-block">在分享时显示的标题</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享图片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('share_icon',$item['share_icon']);}
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享内容</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:150px;" class="form-control" name="share_content" id="share_content">{$item[share_content]}</textarea>
+						<span class="help-block">在分享时显示的分享内容</span>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接地址</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="link" id="link" value="{$item[link]}" class="form-control">
+						<span class="help-block">分享的链接地址:默认是分享当前页面，指定以后会分享指定的地址</span>
+                    </div>
+                </div>
+                
+				{if in_array('15', $power)}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input name="submit" type="submit" value="保存" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+				{/if}
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{template 'common/footer'}

@@ -1,0 +1,121 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/shared/css/rest.css" media="all">
+
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/shared/css/other-common.css" media="all">
+
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/gfan/portal/live/css/timeline.css" media="all">
+        <title>{$reply['zhibo_title']}</title>
+		<meta name="keywords" content="{$reply['zhibo_title']}" />
+        <meta name="description" content="​" />
+    </head>
+    <body youdao="bind" onload="loadFideIn()">
+
+        <!--content start-->
+        <div class="g_wapper">
+             <link href="{RES}css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="{RES}bootstrap/css/bootstrap1.min.css" rel="stylesheet"/>   
+<script type="text/javascript" src="{RES}js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="{RES}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://yuntv.letv.com/player/live/blive.js"></script>
+  <style type="text/css">
+.listhr{
+	width: 90%;
+	margin:auto;
+	height:1px;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+</style>
+<script>
+function pinglun(){
+    $('#myModal').modal('show');
+}
+function addpinglun(){
+    var replyid=$('#replyid').val();
+    var content=$('#content').val();
+    if(replyid==''){
+        alert('参数错误！');
+        return false;
+    }
+    if(content==''){
+        alert('评论内容不能为空！');
+        return false;
+    }
+    $.ajax({
+        url: '{php echo $this->createMobileUrl('shipintijiao', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {replyid: replyid,content:content,randomshu:Math.random()},
+        success: function (result) {
+            if(result.status==1){
+                $('#myModal').modal('hide');
+                var content=$('#content').val('');
+                $('#liaotian').prepend(result.html);
+            }else{
+                alert(result.msg);
+            }
+        }
+    });
+}
+</script>
+<div class="t-header bwhite mb10">
+        <img src="{$reply['zhibo_picurl']}" width="956" height="242"/>
+        <h1>{$reply['title']}</h1>
+    </div>
+<input type="hidden" id="replyid" value="{$replyid}" />
+    <!--end intro -->
+    <div class="w660 fl">
+    <div id="player" style="width: 630px;height:410px;margin:20px auto;"></div>
+        <script>
+            var p = new CloudLivePlayer();
+            p.init({"activityId":"{$huodongid}"}, "player");
+        </script>
+                <div>
+                <textarea id="content" rows="" cols="" style="width: 96%;border: 1px solid gray;height: 100px; resize:none; margin-left: 2%;"></textarea>
+                <p style="text-align: right;width: 96%;margin: 10px auto;"><button type="button" class="btn btn-primary" onclick="addpinglun()">提交评论</button></p>
+                <div id="liaotian" style="width:96%;margin:10px auto;border:1px solid gray;overflow:auto;height:200px; padding:10px;">
+               {loop $return_arr $pinglun}
+                            <p><img src="{$pinglun['img']}"  style='width: 28px; display:inline-block;' class="img-circle"/>&nbsp;&nbsp;{$pinglun['nickname']}：
+                            <span style="font-size: 10px; display: block;float: right;line-height:28px;">{php echo date('Y-m-d H:i',$pinglun['cteate_at'])}</span>
+                            <br/>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$pinglun['content']}</span>
+                            </p>
+              
+
+                        {/loop}   
+            </div>
+                </div>
+            </div>
+<div class="w300 fr bwhite">
+<div style="width:90%;">
+        <div>
+            <h1 style="font-size: 30px;">摘要</h1>
+                <p>{$reply['zhibo_jianjie']}</p>
+          <img src="{$reply['zhibo_logo']}" alt="XXXX" width="296" height="166" style="margin-top: 10px;" />
+        </div>
+    </div>
+    <div style="width:90%;">
+<h1>推广</h1>
+            {loop $guanggaolist $guanggao}
+            <div style="width:96%;margin:10px auto;">
+            {if $guanggao['url']}
+            <a href="{$guanggao['url']}">
+                <img src="{$guanggao['imgurl']}" style="width: 100%;" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            </a>
+            {else}
+            <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            {/if}
+            <hr>
+        </div>
+        {/loop}
+</div>
+</div>
+</div>
+    </body>
+</html>

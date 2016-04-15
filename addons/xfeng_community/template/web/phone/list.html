@@ -1,0 +1,54 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+        <li {if $op == 'list'}class="active" {/if}>
+            <a href="{php echo $this->createWebUrl('phone', array('op' => 'list'));}">号码管理</a>
+        </li>
+        <li>
+            <a href="{php echo $this->createWebUrl('phone', array('op' => 'add'));}">新增号码</a>
+        </li>
+        
+    </ul>
+    <div style="padding:15px;">
+        <form action="" method="post">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:5%;">排序</th>
+                    <th style="width:8%">图片</th>
+                    <th style="width:12%;">号码</th>
+                    <th style="width:10%;">号码描述</th>
+                    <th style="width:60%;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $item}
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="displayorder[{$item['id']}]" value="{$item['displayorder']}">
+                    </td>
+                    <td>
+                        <img src="{php echo tomedia($item['thumb'])}" class="img-rounded" style="width:40px;height:40px;">
+                    </td>
+                    <td>{$item['phone']}</td>
+                    <td>{$item['content']}</td>
+                    <td>
+                        <a href="{php echo $this->createWebUrl('phone',array('op' => 'add','id' => $item['id']))}" title="编辑" class="btn btn-default btn-sm" ><i class="fa fa-edit" data-toggle="tooltip" data-placement="top"></i>编辑</a> 
+                        
+                        <a onclick="return confirm('删除号码，此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('phone',array('op' => 'delete','id' => $item['id']))}" title="" data-toggle="tooltip" data-placement="top" class="btn btn-default btn-sm" data-original-title="删除"><i class="fa fa-times"></i>删除</a>
+                    </td>
+                </tr>
+                {/loop}
+                <tr>
+                    <td></td>
+                    <td colspan="4">
+                        <input name="submit" type="submit" class="btn btn-primary" value="提交">
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+        {$pager}
+    </div>
+
+{template 'common/footer'}

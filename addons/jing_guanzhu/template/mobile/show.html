@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>一键关注生成器</title>
+<link rel="stylesheet" href="{CSS_PATH}animate.min.css">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link rel="stylesheet" href="{CSS_PATH}style.css?v=0">
+{php echo register_jssdk();}
+
+<script type="text/javascript">
+wx.ready(function () {
+	wx.onMenuShareAppMessage({
+	      title: '{$share_title}',
+	      desc: '{$share_content}',
+	      link: '{$_W['siteroot']}app{php echo str_replace('./','/',$this->createMobileUrl('index',array('name'=>$name)))}',
+	      imgUrl: 'http://open.weixin.qq.com/qr/code/?username={$name}',
+	    });
+	
+	 wx.onMenuShareTimeline({
+	      title: '{$share_title}',
+	      link: '{$_W['siteroot']}app{php echo str_replace('./','/',$this->createMobileUrl('index',array('name'=>$name)))}',
+	      imgUrl: 'http://open.weixin.qq.com/qr/code/?username={$name}',
+	    });
+});
+</script>
+</head>
+<body>
+	<div class="container">
+		<img src="http://tools.xmt.cn:80/resources/images/count2.png" class="img-responsive animated slideInUp" style="height:50px;display:block;margin:0 auto;">
+		<div class="nav-btn">
+			<span></span> <span></span> <span></span>
+		</div>
+		<ul class="nav-box">
+			<li>
+				<a href="{php echo $this->createMobileUrl('index')}">我也要制作</a>
+			</li>
+		</ul>
+		<div class="content-img">
+			<div class="codeimg">
+				<img src="http://tools.xmt.cn:80/tools/fastAttention.png?name={$name}" >
+			</div>
+		</div>
+	</div>
+	
+	<script src="{JS_PATH}zepto.min.js"></script>
+	<script src="{JS_PATH}event.js"></script>
+	<script src="{JS_PATH}touch.js"></script>
+	<script src="{JS_PATH}fx_methods.js"></script>
+	<script src="{JS_PATH}fx.js"></script>
+	
+<script>
+Zepto('.nav-btn').click(function(event) {
+	console.log(11);
+	if ($('.nav-box').hasClass('show')) {
+		$('.nav-box').removeClass('show');
+	}else{
+		$('.nav-box').addClass('show');
+	}
+});
+
+Zepto('.codeimg').click(function(event) {
+	if ($('.nav-box').hasClass('show')) {
+		$('.nav-box').removeClass('show');
+	}
+});
+	</script>
+</body>
+</html>

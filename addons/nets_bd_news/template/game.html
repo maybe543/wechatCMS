@@ -1,0 +1,196 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+	<li {if $_GPC['op']=='display'} class="active"{/if}><a  href="/web/index.php?c=site&a=entry&op=display&do=Hxsgame&m=nets_bd_news">活动列表</a></li>
+	<li {if $_GPC['op']=='add'} class="active"{/if}><a  href="/web/index.php?c=site&a=entry&op=add&do=Hxsgame&m=nets_bd_news">添加活动</a></li>
+</ul>
+{if $_GPC['op']=='add'}
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">添加活动</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">标题</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="title" class="form-control" value="{$record['title']}">
+						<div class="help-block">活动的标题 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">缩略图</label>
+					<div class="col-sm-8 col-xs-12">
+						{php load()->func('tpl')}
+						{php echo tpl_form_field_image('picture',$record['picture'])}				
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动简介</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_ueditor('content', $record['content']);}
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">参与金钱</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="integral_eq_game" class="form-control" value="{$record['integral_eq_game']}">
+						<div class="help-block">参与此次活动消费的金钱 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">开奖人数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="num_eq_result" class="form-control" value="{$record['num_eq_result']}">
+						<div class="help-block">满多少人参与后开奖 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">奖品</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="prize" class="form-control">{$record['prize']}</textarea>
+						<div class="help-block">中奖奖品介绍 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">时间</label>
+					<div class="col-sm-2 col-xs-6">
+						
+						{php echo tpl_form_field_date('begintime', date('Y-m-d h:m', strtotime($record['begintime'])))}
+						<div class="help-block">活动开始时间 </div>
+					</div>
+					<div class="col-sm-3 col-xs-6">
+						{php echo tpl_form_field_date('endtime', date('Y-m-d h:m', strtotime($record['endtime'])))}
+						<div class="help-block">活动结束时间 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否推荐</label>
+					<div class="col-sm-9 col-xs-12">
+						<select name="ishome" class="form-control tpl-category-parent">
+								<option value="0" {if $record['ishome']==0} selected="selected" {/if}>不推荐</option>
+								<option value="1" {if $record['ishome']==1} selected="selected" {/if}>推荐</option>
+						</select>
+						<div class="help-block">推荐在首页优先展示 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="hidden" name="id" value="{$record['id']}"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+{/if}
+{if $_GPC['op']=='display' && (empty($_GPC['partin_show']) && empty($_GPC['partin']))}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        活动管理
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:150px;">标题</th>
+                    <th style="width:180px;">奖品</th>
+					<th style="width:80px;">参与金钱</th>
+					<th style="width:80px;">开奖人数</th>
+					<th style="width:80px;">已参与</th>
+                    <th style="width:80px;">时间</th>
+					<th style="width:80px;">推荐</th>
+                    <th style="width:100px;">创建时间</th>
+					<th style="width:80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $record $r}
+				<?php $count=pdo_fetchcolumn("select count(*) from ims_netsbd_integral_game_record where gameid=".$r['id']);?>
+				
+				<tr>
+                    <td style="white-space: inherit;"><p>{$r["title"]}</p></td>
+                    <td style="white-space: inherit;">{$r["prize"]}</td>
+					<td>{$r["integral_eq_game"]}</td>
+                    <td>{$r["num_eq_result"]}</td>
+					<td><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsgame&m=nets_bd_news&id={$r['id']}&partin_show={$r['id']}">
+							<span style="color:red;">{$count}</span>人参与
+						</a>
+					</td>
+                    <td>
+						<?php echo date("Y-m-d",strtotime($r["begintime"]))?> 到
+						<?php echo date("Y-m-d",strtotime($r["endtime"]))?>
+					</td>
+					<td>{if $r["ishome"]==1}是{else}否{/if}</td>
+                    <td><?php echo date("Y-m-d",$r["createtime"])?></td>
+					<td>
+					<a href="/web/index.php?c=site&a=entry&op=add&do=Hxsgame&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">修改</a>
+					<a href="/web/index.php?c=site&a=entry&op=del&do=Hxsgame&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">删除</a>
+					</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+		{$pager}
+    </div>
+</div>
+
+{/if}
+{if !empty($_GPC['partin_show']) || !empty($_GPC['partin'])}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {$game['title']} &nbsp;&nbsp;活动参与记录 
+		{if empty($check_record)}
+		<a href="/web/index.php?c=site&a=entry&op=display&do=Hxsgame&m=nets_bd_news&id={$gameid}&partin={$gameid}" class="btn btn-primary">现在开奖</a>
+		{else}
+		<a style="color:red;" class="btn btn-default">已开奖</a>
+		{/if}
+		<a class="btn btn-default" onclick="history.go(-1);">返回</a>
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:150px;">参与人</th>
+					<th style="width:150px;">姓名</th>
+                    <th style="width:80px;">参与时间</th>
+					<th style="width:80px;">中奖状态</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $partin_recordnew $r1}
+				<tr>
+                    <td style="white-space: inherit;">
+					<?php
+						$ishttp=strstr($r1['avatar'],"http");
+						if ($r1['avatar'] != ""){
+							if($ishttp==true){
+								$userheadurl=$r1['avatar'];
+							}
+							if($ishttp==false){
+								$userheadurl=$_W['siteroot']."/attachment/".$r1['avatar'];
+							}
+						}
+					?>
+					<p><img src="{$userheadurl}" width="50"/>
+					</p>
+					</td>
+					<td>
+					<p>{$r1["nickname"]}{if !empty($r1["realname"])}（姓名:{$r1["realname"]}）{/if}</p>
+					<p></p>
+					</td>
+                    <td><?php echo date("Y-m-d",$r1["createtime"])?></td>
+					<td>{if $r1["state"]==1}中奖,<a href="/web/index.php?c=mc&a=member&do=post&uid={$r1['uid']}" target="_blank">查看资料</a>{else}未中奖{/if}</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/if}
+</div>
+{template 'common/footer'}

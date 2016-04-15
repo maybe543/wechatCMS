@@ -1,0 +1,119 @@
+<input type="hidden" name="reply_id" value="{$reply['id']}" />
+<!-- 规则创建 -->
+<div class="panel panel-default">
+	<a class="close" data-dismiss="alert">×</a>
+    <div class="panel-heading">
+        添加活动规则 
+    </div>
+    <div class="panel-body">
+    	<div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目编号</label>
+            <div class="col-xs-12 col-sm-9">
+                {$reply['rid']}，添加完规则后，生成的编号用于打印程序配置填写
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_1" class="radio inline"><input type="radio" name="wpstatus" id="radio_1" value="0" {if empty($rid)}disabled{/if} {if $reply['status'] == 0 || empty($reply['status'])} checked{/if} /> 停用</label>
+					<label for="radio_2" class="radio inline"><input type="radio" name="wpstatus" id="radio_2" value="1" {if empty($rid)}disabled{/if} {if $reply['status'] == 1} checked{/if} /> 启用</label> 
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">屏幕验证码</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_3" class="radio inline"><input type="radio" name="is_authcode" id="radio_3" value="0" {if empty($rid)}disabled{/if} {if $reply['is_authcode'] == 0 || empty($reply['is_authcode'])} checked{/if} /> 停用</label>
+					<label for="radio_4" class="radio inline"><input type="radio" name="is_authcode" id="radio_4" value="1" {if empty($rid)}disabled{/if} {if $reply['is_authcode'] == 1} checked{/if} /> 启用 （启用后初始验证码为：888；可与消费码同时启用）</label> 
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝可参与次数</label>
+            <div class="col-xs-12 col-sm-9">
+                <input type="text" value="{$reply['maxnum']}" class="span7" name="maxnum">
+					<div class="help-block">用户免费可以参与打印照片次数，不限请填0。</div>
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">计次周期</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_5" class="radio inline"><input type="radio" name="cycle" id="radio_5" value="0" {if empty($rid)}disabled{/if} {if $reply['cycle'] == 0 || empty($reply['cycle'])} checked{/if} /> 按天</label>
+					<label for="radio_6" class="radio inline"><input type="radio" name="cycle" id="radio_6" value="1" {if empty($rid)}disabled{/if} {if $reply['cycle'] == 1} checked{/if} /> 整个活动期 （删除上传照片记录，则重新计次）</label> 
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">消费码</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_7" class="radio inline"><input type="radio" name="is_consumecode" id="radio_7" value="0" {if empty($rid)}disabled{/if} {if $reply['is_consumecode'] == 0 || empty($reply['is_consumecode'])} checked{/if} /> 停用</label>
+					<label for="radio_8" class="radio inline"><input type="radio" name="is_consumecode" id="radio_8" value="1" {if empty($rid)}disabled{/if} {if $reply['is_consumecode'] == 1} checked{/if} /> 启用 （启用后，消费码可人工发放也可融合其他功能发放）</label> 
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">消费码价格</label>
+            <div class="col-xs-12 col-sm-9">
+                <input type="text" value="{$reply['price']}" class="span7" name="price">元/个
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">凭消费码单次可打印照片数量</label>
+            <div class="col-xs-12 col-sm-9">
+                <input type="text" value="{$reply['dcmaxnum']}" class="span7" name="dcmaxnum">
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝留言</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_9" class="radio inline"><input type="radio" name="is_guestbook" id="radio_9" value="0" {if empty($rid)}disabled{/if} {if $reply['is_guestbook'] == 0 || empty($reply['is_guestbook'])} checked{/if} /> 停用</label>
+					<label for="radio_10" class="radio inline"><input type="radio" name="is_guestbook" id="radio_10" value="1" {if empty($rid)}disabled{/if} {if $reply['is_guestbook'] == 1} checked{/if} /> 启用 </label>
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">自助剪裁</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_11" class="radio inline"><input type="radio" name="is_cut" id="radio_11" value="0" {if empty($rid)}disabled{/if} {if $reply['is_cut'] == 0 || empty($reply['is_cut'])} checked{/if} /> 停用</label>
+					<label for="radio_12" class="radio inline"><input type="radio" name="is_cut" id="radio_12" value="1" {if empty($rid)}disabled{/if} {if $reply['is_cut'] == 1} checked{/if} /> 启用 </label>
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">相纸尺寸</label>
+            <div class="col-xs-12 col-sm-9">
+                <label for="radio_3" class="radio inline"><input type="radio" name="pic_size" id="radio_3" value="A7" {if empty($rid)}disabled{/if} {if $reply['pic_size'] == 'A7' || empty($reply['pic_size'])} checked{/if} /> A7 [74mm X 105mm]</label>
+					<label for="radio_4" class="radio inline"><input type="radio" name="pic_size" id="radio_4" value="A6" {if empty($rid)}disabled{/if} {if $reply['pic_size'] == 'A6'} checked{/if} /> A6 [105mm X 148mm]</label> 
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">照片页脚广告模板</label>
+            <div class="col-xs-12 col-sm-9">
+                {php echo tpl_form_field_image('photo_ad', $reply['photo_ad']);}JPG格式（600*900,150DPI）
+            </div>
+        </div>
+        
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">进入提示内容</label>
+            <div class="col-xs-12 col-sm-9">
+                <textarea style="height:30px;" name="msg" class="span7" cols="60">{$reply['msg']}</textarea>
+					<div class="help-block">用户在进入打印照片活动的提示语。如：欢迎进入免费打印照片活动。</div>
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">参与活动成功提示内容</label>
+            <div class="col-xs-12 col-sm-9">
+                <textarea style="height:30px;" name="msg_succ" class="span7" cols="60">{$reply['msg_succ']}</textarea>
+					<div class="help-block">参与活动成功提示内容。如：参与活动成功。</div>
+            </div>
+        </div>
+        <div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">参与活动失败提示内容</label>
+            <div class="col-xs-12 col-sm-9">
+                <textarea style="height:30px;" name="msg_fail" class="span7" cols="60">{$reply['msg_fail']}</textarea>
+					<div class="help-block">参与活动失败提示内容。如：提交失败，请重试..</div>
+            </div>
+        </div>
+		<div class="form-group">
+        <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告间隔时长</label>
+            <div class="col-xs-12 col-sm-9">
+                <input type="text" value="{$reply['timer']}" class="span7" name="timer">秒
+					<div class="help-block">屏幕图片广告切换时间间隔时长。</div>
+            </div>
+        </div>
+    </div>
+ </div>

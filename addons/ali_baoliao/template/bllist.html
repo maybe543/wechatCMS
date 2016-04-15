@@ -1,0 +1,81 @@
+{template 'common/header'}
+<style>
+ .red { color:#ff0000;}
+ .preview_img img { float:left; margin-right:5px;}
+ .pull-left input { margin-right:20px;}
+ </style>
+	<ul class="nav nav-tabs">
+		<li class="active"><a>报料管理</a></li>
+	</ul>
+	<div class="main">
+		<div class="panel panel-default">
+			<div class="panel-heading">搜索</div>
+			<div class="panel-body">
+				<form action="<?php echo $this->createWebUrl('search'); ?>" class="form-inline" method="post">
+					<div class="form-group">
+						<div class="pull-right">
+							<input class="btn btn-primary" type="submit" value="搜索">
+						</div>
+						<div class="pull-left">
+							电话：<input type="text" class="span2 kw form-control" name="keywordtel" value="" placeholder="请输入电话号码">
+							姓名：<input type="text" class="span2 kw form-control" name="keywordname" value="" placeholder="请输入姓名">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="panel-heading">报料详细数据  |  总数：{$total}</div>
+			<div class="panel-body">
+				<form action="" method="post" onsubmit="">
+					<div class="sub-content">
+						<table class="table table-hover" style="margin-bottom:0;">
+							<thead class="navbar-inner">
+								<tr>
+									<th style="width:40px;" class="row-first">选择</td>
+									<th style="width:60px;" class="row-hover">报料类型</th>
+									<th style="width:50px;">姓名</th>
+									<th style="width:100px;">电话</th>	
+									<th style="width:200px;">标题</th>
+									<th style="width:60px;">报料图片</th>
+									<th style="width:150px;">报料时间</th>
+									<th style="width:50px">操作</th>
+								</tr>
+							</thead>
+							<tbody id="main">
+							{php $i=1;}
+								{loop $bllist $row}
+								<tr>
+									<td class="row-first"><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+									<td class="type"><?php 
+									$lb = $this->module['config']['option3'];
+									$lbs =explode(',',$lb);
+									$lbk = $row['bltype'];
+									echo $lbs[$lbk];
+									?></td>
+									<td>{$row['name']}</td>
+									<td>{$row['tel']}</td>
+									<td><a href="<?php echo $this->createWebUrl('contentinfo', array( 'id'=>$row['id'])); ?>">{$row['title']}</a></td>
+									<td><?php if(!empty($row['pics'])){ foreach($ar = explode('-',$row['pics']) as $k=>$v){ echo "<div class='preview_img'><img src=../attachment/baoliao_imgs/".$v.".jpg  width='20' /></div>";} }else { echo "无";} ?></td>
+									<td>{php echo date('Y-m-d H:i:s', $row['uptime']);}</td> 
+									<td><?php if(!empty($row['reply'])){ echo "<a class='red' href='".$this->createWebUrl('contentinfo', array( 'id'=>$row['id'],'openid'=>$row['fromuser']))."'>已回复</a>"; } else { echo "<a href='".$this->createWebUrl('contentinfo', array( 'id'=>$row['id']))."'>未回复</a>"; } ?></td>
+								</tr>
+								{php $i++;}
+								{/loop}
+							</tbody>
+						</table>
+						<table class="table">
+							<tr>
+								<td style="width:40px;" class="row-first"><input type="checkbox" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});">
+								</td>
+								<td>
+									<input type="submit" name="delete" value="删除" class="btn btn-primary" />
+									<input type="hidden" name="token" value="{$_W['token']}" />
+								</td>
+							</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{template 'common/footer'}

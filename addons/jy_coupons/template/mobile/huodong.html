@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{if empty($item['aname'])}大家来领券{else}{$item['aname']}{/if}</title>
+    <style>
+        @media screen and (max-width:320px) {
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                background: #000;
+            }
+            #bodybox {
+                position: relative;
+                margin: 0 auto;
+                height: 100%;
+                {if empty($item['huodong_bg'])}
+                background: url(../addons/jy_coupons/images/page1_bg.jpg) no-repeat;
+                {else}
+                background: url({$_W['attachurl']}{$item['huodong_bg']}) no-repeat;
+                {/if}
+                background-size: 100%;
+                overflow: hidden;
+                max-width: 640px;
+            }
+            #share-bg{
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0 auto;
+                display: none;
+            }
+        }
+        @media screen and (min-width:321px) {
+            html,body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background: #000
+            }
+            #bodybox {
+                position: relative;
+                margin: 0 auto;
+                height: 100%;
+                {if empty($item['huodong_bg'])}
+                background: url(../addons/jy_coupons/images/page1_bg.jpg) no-repeat;
+                {else}
+                background: url({$_W['attachurl']}{$item['huodong_bg']}) no-repeat;
+                {/if}
+                background-size: 100% 100%;
+                overflow: hidden;
+                max-width: 640px;
+            }
+            #share-bg{
+                position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 10;
+                width: 100%;
+                height: 100%;
+                margin: 0 auto;
+                display: none;
+            }
+        }
+        @media screen and (min-width: 321px) and (max-width: 374px) {
+        }
+        @media screen and (min-width: 375px) and (max-width: 413px) {
+        }
+        @media screen and (min-width: 414px) {
+        }
+        .logo{width: 60%;position: absolute;left: 8%;top: 10%}
+
+        .page1_txt{position: absolute;width: 45%;left: 8%;top: 30%;opacity: 0;
+            animation: opacity-animation 1s linear 2s;
+            -moz-animation: opacity-animation 1s linear 2s;     /* Firefox */
+            -webkit-animation: opacity-animation 1s linear 2s;     /* Safari 和 Chrome */
+            -o-animation: opacity-animation 1s linear 2s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+        }
+
+        .milkcup{position: absolute;width: 35%;right: 8%;top: 30%;
+            -moz-animation: translate-animation 2s linear;     /* Firefox */
+            -webkit-animation: translate-animation 2s linear;     /* Safari 和 Chrome */
+            -o-animation: translate-animation 2s linear;     /* Opera */
+            animation: translate-animation 2s linear;
+            -webkit-animation-fill-mode: forwards;
+        -webkit-backface-visibility: hidden;
+     -moz-backface-visibility: hidden;
+     -ms-backface-visibility: hidden;
+     backface-visibility: hidden;}
+        #btn{width: 50%;position: absolute;left: 25%;bottom: 20%;height: 40px;font-size: 20px;border: none;background-color: #00a4e2;color: #fff;border-radius: 3px;opacity: 0;
+            animation: opacity1-animation 1s linear 3s;
+            -moz-animation: opacity1-animation 1s linear 3s;     /* Firefox */
+            -webkit-animation: opacity1-animation 1s linear 3s;     /* Safari 和 Chrome */
+            -o-animation: opacity1-animation 1s linear 3s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+        }
+        @keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-moz-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-webkit-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-o-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @keyframes opacity1-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-moz-keyframes opacity1-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-webkit-keyframes opacity1-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-o-keyframes opacity1-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @keyframes translate-animation {
+            0% {
+                -ms-transform:translate(20%,-20%);
+                -moz-transform:translate(20%,-20%);
+                -webkit-transform:translate(20%,-20%);
+                -o-transform:translate(20%,-20%);
+                transform: translate(20%,-20%);
+            }
+            50%{
+                -ms-transform:translate(-20%,0%);
+                -moz-transform:translate(-20%,0%);
+                -webkit-transform:translate(-20%,0%);
+                -o-transform:translate(-20%,0%);
+                transform: translate(-20%,0%);
+            }
+            100% {
+                -ms-transform:translate(0%,0%);
+                -moz-transform:translate(0%,0%);
+                -webkit-transform:translate(0%,0%);
+                -o-transform:translate(0%,0%);
+                transform: translate(0%,0%);
+            }
+        }
+        @-moz-keyframes translate-animation {
+            0% {
+                -ms-transform:translate(20%,-20%);
+                -moz-transform:translate(20%,-20%);
+                -webkit-transform:translate(20%,-20%);
+                -o-transform:translate(20%,-20%);
+                transform: translate(20%,-20%);
+            }
+            50%{
+                -ms-transform:translate(-20%,0%);
+                -moz-transform:translate(-20%,0%);
+                -webkit-transform:translate(-20%,0%);
+                -o-transform:translate(-20%,0%);
+                transform: translate(-20%,0%);
+            }
+            100% {
+                -ms-transform:translate(0%,0%);
+                -moz-transform:translate(0%,0%);
+                -webkit-transform:translate(0%,0%);
+                -o-transform:translate(0%,0%);
+                transform: translate(0%,0%);
+            }
+        }
+        @-webkit-keyframes translate-animation {
+            0% {
+                -ms-transform:translate(20%,-20%);
+                -moz-transform:translate(20%,-20%);
+                -webkit-transform:translate(20%,-20%);
+                -o-transform:translate(20%,-20%);
+                transform: translate(20%,-20%);
+            }
+            50%{
+                -ms-transform:translate(-20%,0%);
+                -moz-transform:translate(-20%,0%);
+                -webkit-transform:translate(-20%,0%);
+                -o-transform:translate(-20%,0%);
+                transform: translate(-20%,0%);
+            }
+            100% {
+                -ms-transform:translate(0%,0%);
+                -moz-transform:translate(0%,0%);
+                -webkit-transform:translate(0%,0%);
+                -o-transform:translate(0%,0%);
+                transform: translate(0%,0%);
+            }
+        }
+        @-o-keyframes translate-animation {
+            0% {
+                -ms-transform:translate(20%,-20%);
+                -moz-transform:translate(20%,-20%);
+                -webkit-transform:translate(20%,-20%);
+                -o-transform:translate(20%,-20%);
+                transform: translate(20%,-20%);
+            }
+            50%{
+                -ms-transform:translate(-20%,0%);
+                -moz-transform:translate(-20%,0%);
+                -webkit-transform:translate(-20%,0%);
+                -o-transform:translate(-20%,0%);
+                transform: translate(-20%,0%);
+            }
+            100% {
+                -ms-transform:translate(0%,0%);
+                -moz-transform:translate(0%,0%);
+                -webkit-transform:translate(0%,0%);
+                -o-transform:translate(0%,0%);
+                transform: translate(0%,0%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="bodybox">
+        {if empty($item['huodong1'])}
+        <img class="logo" src="../addons/jy_coupons/images/logo.png"/>
+        {else}
+        <img class="logo" src="{$_W['attachurl']}{$item['huodong1']}"/>
+        {/if}
+        {if empty($item['huodong2'])}
+        <img class="page1_txt" src="../addons/jy_coupons/images/page1_txt.png"/>
+        {else}
+        <img class="page1_txt" src="{$_W['attachurl']}{$item['huodong2']}"/>
+        {/if}
+        {if empty($item['huodong3'])}
+        <img class="milkcup" src="../addons/jy_coupons/images/milkcup.png"/>
+        {else}
+        <img class="milkcup" src="{$_W['attachurl']}{$item['huodong3']}"/>
+        {/if}
+        {if empty($user)}
+        <button id="btn" onclick="showShare()">即刻参与</button>
+        {else}
+        <button id="btn" onclick="showShare()">继续参与</button>
+        {/if}
+        {if empty($item['share_bg'])}
+        <img id="share-bg" src="../addons/jy_coupons/images/shareBg.jpg" onclick="hideShare()"/>
+        {else}
+        <img id="share-bg" src="{$_W['attachurl']}{$item['share_bg']}" onclick="hideShare()"/>
+        {/if}
+    </div>
+<script src="http://libs.baidu.com/jquery/1.7.1/jquery.min.js"></script>
+<script>
+    window.onload = function(){
+        var width = document.documentElement.clientWidth;
+        if(width <= 320){
+            var height = 1138 * (width / 720);
+            document.getElementById("bodybox").style.height = Math.floor(height) + 'px';
+        }
+    }
+    function showShare(){
+        $.ajax({
+            type: "POST",
+            url: "{php echo $this->createMobileurl('huodong',array('op'=>'add'))}",
+            data: {},
+            dataType: "text",
+            
+            success: function (d) {
+                if (d == "1") {
+                    document.getElementById("share-bg").style.display = "block";
+                }else {
+                
+                }
+            },
+            
+            error: function (xml, text, thrown) {
+                TopBox.alert("出错啦!");
+            }
+        });
+        
+    }
+    function hideShare(){
+        document.getElementById("share-bg").style.display = "none";
+    }
+</script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            {if empty($item['sharetitle'])}
+            title: "大家来领券",
+            {else}
+            title: "{$item['sharetitle']}",
+            {/if}
+            {if empty($item['desc'])}
+            desc: "大家来领券",
+            {else}
+            desc: "{$item['desc']}",
+            {/if}
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('friend',array('member_id'=>$uid))}",
+            {if !empty($item['sharelogo'])}
+            imgUrl: "{$item['sharelogo']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_coupons/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+                
+                },
+            cancel: function (res) {
+               
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

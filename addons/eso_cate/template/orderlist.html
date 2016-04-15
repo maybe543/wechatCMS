@@ -1,0 +1,154 @@
+{template 'common/header'}
+{php $_item=4;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                        <select id='keytype' class="form-control" style="margin-top:10px;">
+                            <option value="title">商品名称</option>
+                            <option value="address">收货人</option>
+                            <option value="id">编号</option>
+                            <option value="userid">会员UID</option>
+                            <option value="wxname">会员昵称</option>
+                            <option value="ordernum">订单号</option>
+                        </select>
+                        <script>{if $_GPC['keytype']}$('#keytype').val('{$_GPC['keytype']}');{/if}</script>
+                        <select id='ordertype' class="form-control" style="margin-top:10px;">
+                            <option value="">订单状态：不限</option>
+                            <option value="待付款">待付款</option>
+                            <option value="等待商家确认">等待商家确认</option>
+                            <option value="商家已确认">商家已确认</option>
+                            <option value="已付款">已付款</option>
+                            <option value="商家已发货">商家已发货</option>
+                            <option value="交易关闭">交易关闭</option>
+                            <option value="交易成功">交易成功</option>
+                        </select>
+                        <script>{if $_GPC['ordertype']}$('#ordertype').val('{$_GPC['ordertype']}');{/if}</script>
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="70"><label class="mp0"><input type="checkbox" class="check" onclick="all_y();" style="display:none;"/>编号</label></th>
+                    <th width="120">(UID)会员</th>
+                    <th width="150">订单号</th>
+                    <th class="lt">商品名称</th>
+                    <th>下单时间</th>
+                    <th class="lt">收货人</th>
+                    <th width="120">总金额</th>
+                    <th width="150">状态</th>
+                    <th width="80">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                {php $card = string2array($list['card'])}
+                <tr data-id="{$list['id']}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"
+                                      style="display:none;"/>{$list['id']}</label></td>
+                    <td>({$list['userid']})<a href="{php echo urido('member')}&keyval={$list['userid']}&keytype=userid">{$list['wxname']}</a></td>
+                    <td>{$list['ordernum']}<span style="display:none">({$list['batch']})</span></td>
+                    <td class="lt" id="ti" d-title="{$list['title']}">
+                        <a href="{php echo urido('goodslist')}&keyval={$list['goodsid']}&keytype=id">{php echo get_html($list['title'],15)}</a>
+                        {if $card['success']}<span title="{$card['text']}">(券)</span>{/if}
+                        {if $list['ismerge']}(合){/if}
+                    </td>
+                    <td>
+                        {php echo date('Y-m-d H:i:s',$list['indate'])}
+                    </td>
+                    {php $addr = string2array($list['address'])}
+                    <td class="lt">{php echo value($addr, 'info')}<br/>{php echo value($addr, 'addr')}</td>
+                    <td>
+                        {if $list['ismerge']}
+                        {php echo mergearrprice($list['mergearr'])}
+                        {else}
+                        {php echo $list['price'] * $list['number'] + $list['deliveryfare']}
+                        {/if}
+                    </td>
+                    <td>{php echo mallstatus($list['status'])}</td>
+                    <td>
+                        <a class="normal-link" href="{php echo urido('orderinfo')}&id={$list['id']}">详情</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="9" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {else}
+                <tr>
+                    <td colspan="9">
+                        <select id='puttype' class="form-control" style="float:left;width:auto;display:none;">
+                            <option value="confirm">确认订单</option>
+                            <option value="cancel">取消订单</option>
+                            <option value="delete">删除订单</option>
+                        </select>
+                        <div id="win" d="put" class="btn btn-primary" style="margin-left:5px;display:none;">确定</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        var keytype = $('#keytype').val();
+        var ordertype = $('#ordertype').val();
+        /*
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{$urlarr['3']}1/"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        */
+        if (keytype == ''){
+            alert("请选择搜索类型"); $('#keytype').focus(); return;
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval)+"&keytype="+keytype+"&ordertype="+ordertype;
+    }
+    $(function(){
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

@@ -1,0 +1,118 @@
+{template 'common/header'}
+<style>
+.sub-search input,.sub-search select{margin-bottom:0;}
+</style>
+<ul class="nav nav-tabs">
+	<li class="active">
+	<a href="">中奖记录</a>
+	</li>
+</ul>
+
+    <div class="main">
+		<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<div class="panel-body">
+				<form action="" class="form-horizontal" method="post">
+					<input type="hidden" name="rid" value="{$rid}">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">昵称</label>
+						<div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
+							<input class="form-control" name="username" id="" type="text" value="{$_GPC['username']}" placeholder="填写粉丝昵称">
+						</div>
+						<div class="col-xs-12 col-sm-2 col-md-1 col-lg-1">
+							<button class="btn btn-default" type="submit"><i class="fa fa-search"></i> 搜索</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive">
+				<h4 class="sub-title">详细数据  |  中奖人数:{$membertotal}</h4>
+				<form action="" method="post" onsubmit="">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<td style="width:10%;text-align:center;" >编号</td>
+								<td style="width:20%;text-align:center;" >昵称</td>
+								<td style="width:30%;text-align:center;" >抽奖时间</td>
+								<td style="width:20%;text-align:center;" >奖项名称</td>
+								<td style="width:10%;text-align:center;" >状态</td>
+								<td style="width:10%;text-align:center;" >操作</td>
+							</tr>
+							{loop $list $row}
+							<tr>
+								<td style="text-align:center;" >{$row['id']}</td>	
+								<td style="text-align:center;" >{$row['username']}</td>
+								<td style="text-align:center;" >{php echo date("Y-m-d H:i:s" , $row['dateline'] );}</td>
+								<td style="text-align:center;" >{$row['awardname']}</td>
+								<td>
+									{if empty($row['status']) || ($row['status'] == 0)}
+										<span class="label label-success">奖品未领</span>
+									{else}
+										<span class="label label-warning">奖品已领</span>
+									{/if}									
+								</td>
+								<td>
+									{if empty($row['status']) || ($row['status'] == 0)}
+										<a href="{php echo $this->createWebUrl('getaware', array('id' => $row['id'] , 'rid' => $rid , 'status' => 2))}">奖品发放</a>
+									{else}
+										<a href="{php echo $this->createWebUrl('getaware', array('id' => $row['id'] , 'rid' => $rid , 'status' => 0))}">取消领奖</a>
+									{/if}
+								</td>								
+							</tr>
+							{/loop}
+						</tbody>
+					</table>
+					<table class="table">
+						<tr>
+							<td>
+								<input type="hidden" name="token" value="{$_W['token']}" />
+							</td>
+						</tr>
+					</table>
+				</form>
+				{$pager}
+			</div>
+		</div>
+    </div>
+<script>
+$(function() {
+	//详细数据相关操作
+	var tdIndex;
+	$("#table-list thead").delegate("th", "mouseover", function(){
+		if($(this).find("i").hasClass("")) {
+			$("#table-list thead th").each(function() {
+				if($(this).find("i").hasClass("icon-sort")) $(this).find("i").attr("class", "");
+			});
+			$("#table-list thead th").eq($(this).index()).find("i").addClass("icon-sort");
+		}
+	});
+	$("#table-list thead th").click(function() {
+		if($(this).find("i").length>0) {
+			var a = $(this).find("i");
+			if(a.hasClass("icon-sort") || a.hasClass("icon-caret-up")) { //递减排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-down");
+			} else if(a.hasClass("icon-caret-down")) { //递增排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-up");
+			}
+			$("#table-list thead th,#table-list tbody:eq(0) td").removeClass("row-hover");
+			$(this).addClass("row-hover");
+			tdIndex = $(this).index();
+			$("#table-list tbody:eq(0) tr").each(function() {
+				$(this).find("td").eq(tdIndex).addClass("row-hover");
+			});
+		}
+	});
+});
+</script>
+{template 'common/footer'}

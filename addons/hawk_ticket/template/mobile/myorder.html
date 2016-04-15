@@ -1,0 +1,81 @@
+{template 'header'}
+<style type='text/css'>
+    .sel { background:#e9342a; color:#fff;}
+    .nosel { background:#fff;color:#000}
+    red{color:red;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hawk_ticket/images/style.css?{TIMESTAMP}">
+<div class="head">
+    <a href="javascript:history.back();" class="bn pull-left"><i class="fa fa-angle-left"></i></a>
+    <span class="title">我的票据</span>
+</div>
+<div class="myoder img-rounded" style='text-align:center;color:#aaa;padding:5px;'>
+    <div style='float:left;height:23px;margin:auto;width:60%;'>
+        <div {if $status==2}class='sel'{else}class="nosel"{/if} style='border:1px solid #e9342a;margin-left:-1px;float:left;width:30%;text-align: center;' onclick="location.href='{php echo $this->createMobileUrl('myorder',array('status'=>2))}'">
+            未使用
+        </div>
+        <div {if $status==3}class='sel'{else}class="nosel"{/if} style='border-top-right-radius: 5px;margin-left:-1px;border-bottom-right-radius:5px;text-align: center;border:1px solid #e9342a;float:left;width:30%' onclick="location.href='{php echo $this->createMobileUrl('myorder',array('status'=>3))}'">
+            已使用
+        </div>
+        {if $show==1}
+        <div class="nosel" style='border-top-right-radius: 5px;margin-left:-1px;border-bottom-right-radius:5px;text-align: center;border:1px solid #e9342a;float:left;width:30%' onclick="location.href='{php echo $this->createMobileUrl('mymaster')}'">
+            已核销
+        </div>
+        {/if}
+    </div>
+</div>
+
+{if count($ds)<=0}
+<div class="myoder img-rounded" style='text-align:center;color:#aaa;padding:30px;'>
+    您暂时没有任何票据!
+</div>
+{/if}
+<div style='margin-bottom:40px;'>
+    {loop $ds $item}
+    <div class="myoder img-rounded">
+        <div class="myoder-hd">
+            <span class="pull-left">票据编号：{$item['id']}</span>
+		<span class="pull-right">{if $item['status']==3}{php echo date('Y-m-d H:i', $item['scantime'])}{else}{php echo date('Y-m-d H:i', $item['paytime'])} {/if}
+            {if $item['status']==2}
+			<span class="text-warning"><red>未使用</red></span>
+			{elseif $item['status'] == 3}
+			<span class="text-warning"><red>已使用</red></span>
+			{/if}
+		</span>
+        </div>
+        <div class="myoder-detail">
+            <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['actid']))}">
+                <img src="{if empty($item['act']['shareimg'])}../addons/hawk_ticket/images/ticket.png{else}{php echo tomedia($item['act']['shareimg']);}{/if}" width="160" />
+            </a>
+            <div class="pull-left">
+                <div class="name"><a href="{php echo $this->createMobileUrl('detail', array('id' => $item['actid']))}">{$item['act']['proname']}</a></div>
+                <div class="price">
+                    <span class="pull-left">{$item['fee']} 元/张</span>
+                </div>
+                {if !empty($item['remain'])}
+                <div class="price" style="clear:left;">
+                    <span class="pull-left">还可用:{$item['remain']}次</span>
+                </div>
+                {/if}
+
+            </div>
+        </div>
+        {if !empty($item['scanname'])}
+        <div class="myoder-total">
+            <span>
+                核销人：<span class="false">
+                    {$item['scanname']}
+                    </span>
+            </span>
+        </div>
+        {/if}
+        {if $item['status']==2}
+        <div class="myoder-total">
+            <div style="height:30px;"><a href="{php echo $this->createMobileUrl('qrcode', array('id' => $item['id']))}" class="btn btn-success pull-right btn-sm" >票据二维码</a></div>
+        </div>
+        {/if}
+    </div>
+    {/loop}</div>
+{$pager}
+{template 'footer'}
+{template 'footbar'}

@@ -1,0 +1,21 @@
+{php include $_template->template('header')}
+{php include $_template->template('localjs')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>订单详情</h1>
+    </header>
+    <!--header end-->
+	  <!--footer-->
+      {php include $_template->template('footerbar')}
+	  <!--footer end-->
+    <!--content-->
+    <div class="content">
+      {php include $_template->template('order-item')}
+      {php include $_template->template('address-item')}
+      {php include $_template->template('order-misc-item')}
+    </div>
+
+    <!--content end-->
+{php include $_template->template('order-qrcode')}
+{php include $_template->template('footer')}

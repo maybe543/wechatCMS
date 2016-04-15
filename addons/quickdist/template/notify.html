@@ -1,0 +1,65 @@
+{template 'common/header'}
+<div class="main">
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <h4>下线购买后，通知一级、二级、三级上线：</h4>
+    <table class="table">
+      <tr>
+        <td>
+          <div class="bg-warning" style="padding: 15px;">
+            <p>通知模板中可以插入多种链接, 以增强活跃度</p>
+            <br>
+            <p> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/myorder', array('m'=>'quickshop', 'weid'=>$_W['weid']))}'&gt;我的订单&lt;/a&gt;</p>
+            <p> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/list', array('m'=>'quickshop', 'weid'=>$_W['weid']))}'&gt;点击进入商城&lt;/a&gt;</p>
+            <p> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/center', array('m'=>'quickcenter', 'weid'=>$_W['weid']))}'&gt;打开这里兑换积分&lt;/a&gt;</p>
+            <p> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/center', array('m'=>'quickcenter', 'weid'=>$_W['weid']))}'&gt;个人中心&lt;/a&gt;</p>
+            <p>以上只是一些例子，文字也可以修改。还可以自己填写更多种类的链接。</p>
+            <br>
+          </div>
+          <div class="bg-info">
+            <span class="text-danger">层级说明：会员(路人甲)-》推销员-》经理 -》老板</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+<div class="form-group">
+  {php echo FormTpl::label2('推销员得到的<br>返利提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_level_1_text', $notify[1]); }
+    <span class="help-block">例如: 通过您的努力，您的朋友 [buyer] 购买了[price]元的商品，订单成交后您将获得获得[return]元的返利，&lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/center', array('m'=>'quickcenter', 'weid'=>$_W['weid']))}'&gt;【查看详情】&lt;/a&gt;！</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('经理得到的<br>返利提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_level_2_text', $notify[2]); }
+    <span class="help-block">例如: 通过您的努力，您的朋友 [buyer] 购买了[price]元的商品，订单成交后您将获得获得[return]元的返利。</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('老板得到的<br>返利提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_level_3_text', $notify[3]); }
+    <span class="help-block">例如: 通过您的努力，您的朋友 [buyer] 购买了[price]元的商品，订单成交后您将获得获得[return]元的返利！</span>
+  </div>
+</div>
+
+<div class="form-group">
+  <div style="margin:0 0 10px 0" class="row">
+    {php echo FormTpl::label2('&nbsp;', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+    <div class="col-xs-12 col-sm-9 col-md-10">
+      <input name="level" type="hidden" value="3">
+      <input name="submit" type="submit" value="提交" class="btn btn-primary">
+      <input type="hidden" name="token" value="{$_W['token']}" />
+      <br>
+    </div>
+  </div>
+</div>
+
+  </form>
+</div>
+{template 'common/footer'}

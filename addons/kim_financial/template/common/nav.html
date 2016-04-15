@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs">
+    <li class="{if empty($_GPC[do]) || $_GPC[do] == 'FinancialCenter'}active{/if}"><a href="{php echo $this->createWebUrl('FinancialCenter');}">财务中心</a></li>
+    <!--<li class="{if $_GPC[do] == 'Recharge'}active{/if}"><a href="{php echo $this->createWebUrl('Recharge');}">在线充值</a></li>-->
+        <li class="{if $_GPC[do] == 'Buypackage'}active{/if}"><a href="{php echo $this->createWebUrl('Buypackage');}">套餐购买</a></li>
+    {if $_GPC[do] == 'BuySms'}
+    <li class="active"><a href="#">短信购买</a></li>
+    {/if}
+    {if $_GPC[do] == 'Record'}
+    <li class="active"><a href="#">资金记录</a></li>
+    {/if}
+    {if $_W['isfounder']}
+    <li class="{if $_GPC[do] == 'Users' || ($_GPC[do] == 'Users' && $op=='cz') || ($_GPC[do] == 'users' && $op == 'xf')}active{/if}"><a href="{php echo $this->createWebUrl('Users');}">会员消费</a></li>
+    <li class="{if $_GPC[do] == 'display'}active{/if}"><a href="{url 'user/display'}">会员管理</a></li>
+	<li class="{if $_GPC[do] == 'Configs'}active{/if}"><a href="{php echo $this->createWebUrl('Configs');}">服务配置</a></li>
+    <li class="{if $_GPC[do] == 'Test'}active{/if}"><a href="{php echo $this->createWebUrl('Test');}">测试服务</a></li>
+    {/if}
+</ul>

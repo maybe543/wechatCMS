@@ -1,0 +1,216 @@
+{template 'common/header'}
+{php $_item=4;}
+{php $_itemp=1;}
+{template 'menu'}
+<div class="main w98auto">
+    <style type="text/css">
+        .hujiao {
+            width: 300px;
+            height: 60px;
+            line-height: 46px;
+            margin: 5px auto 20px;
+            font-size: 26px;
+            display: block;
+        }
+    </style>
+    <div class="btn btn-success hujiao" id="hujiao" data-next="0">点击叫号</div>
+    <div class="panel panel-success">
+        <div class="panel-heading">即将到号列表 (<a href="javascript:$.alert('正在刷新...');window.location.reload();">刷新</a>)</div>
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="70"><label class="mp0"><input type="checkbox" class="check" onclick="all_y();" style="display:none;"/>编号</label></th>
+                    <th>(UID)会员</th>
+                    <th width="150">排号</th>
+                    <th>排号时间</th>
+                    <th>状态</th>
+                    <th width="120">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $tobenext $list}
+                <tr data-id="{$list['id']}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"
+                                      style="display:none;"/>{$list['id']}</label></td>
+                    <td>({$list['userid']})<a href="{php echo urido('member')}&keyval={$list['userid']}&keytype=userid">{$list['username']}</a></td>
+                    <td>{$list['num']}</td>
+                    <td>
+                        {php echo date('Y-m-d H:i:s',$list['indate'])}
+                    </td>
+                    <td class="status_cn">{php echo str_replace(array(0,1,99),array('正常','已使用','取消'),$list['status'])}</td>
+                    <td>
+                        <a class="normal-link" href="{php echo urido('tobelist')}&okid={$list['id']}"
+                           onClick="JavaScript:return confirm('标记为已使用但不通知会员！确定？')">已使用</a>
+                        <a class="normal-link" href="{php echo urido('tobelist')}&cancelid={$list['id']}"
+                           onClick="JavaScript:return confirm('标记为取消排号但不通知会员！确定？')">取消</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$tobenext}
+                <tr>
+                    <td colspan="6" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">所有排号列表</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                        <select id='keytype' class="form-control" style="margin-top:10px;">
+                            <option value="num">排号</option>
+                            <option value="username">会员昵称</option>
+                            <option value="userid">会员UID</option>
+                        </select>
+                        <script>{if $_GPC['keytype']}$('#keytype').val('{$_GPC['keytype']}');{/if}</script>
+                        <select id='ordertype' class="form-control" style="margin-top:10px;">
+                            <option value="">状态：不限</option>
+                            <option value="0">正常</option>
+                            <option value="1">已使用</option>
+                            <option value="99">取消</option>
+                        </select>
+                        <script>{if isset($_GPC['ordertype'])}$('#ordertype').val('{$_GPC['ordertype']}');{/if}</script>
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="70"><label class="mp0"><input type="checkbox" class="check" onclick="all_y();" style="display:none;"/>编号</label></th>
+                    <th>(UID)会员</th>
+                    <th width="150">排号</th>
+                    <th>排号时间</th>
+                    <th>状态</th>
+                    <th width="120">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr data-id="{$list['id']}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"
+                                      style="display:none;"/>{$list['id']}</label></td>
+                    <td>({$list['userid']})<a href="{php echo urido('member')}&keyval={$list['userid']}&keytype=userid">{$list['username']}</a></td>
+                    <td>{$list['num']}</td>
+                    <td>
+                        {php echo date('Y-m-d H:i:s',$list['indate'])}
+                    </td>
+                    <td class="status_cn">{php echo str_replace(array(0,1,99),array('正常','已使用','取消'),$list['status'])}</td>
+                    <td>
+                        <a class="normal-link" href="{php echo urido('tobelist')}&okid={$list['id']}"
+                           onClick="JavaScript:return confirm('标记为已使用但不通知会员！确定？')">已使用</a>
+                        <a class="normal-link" href="{php echo urido('tobelist')}&cancelid={$list['id']}"
+                           onClick="JavaScript:return confirm('标记为取消排号但不通知会员！确定？')">取消</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="6" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        var keytype = $('#keytype').val();
+        var ordertype = $('#ordertype').val();
+        /*
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{$urlarr['3']}1/"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        */
+        if (keytype == ''){
+            alert("请选择搜索类型"); $('#keytype').focus(); return;
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval)+"&keytype="+keytype+"&ordertype="+ordertype;
+    }
+    $(function(){
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+        $("td.status_cn").each(function(){
+            if ($(this).text() == "正常") {
+                $(this).css("color", "#ff0000");
+            }
+        });
+        $("#hujiao").click(function(){
+            var tthis = $(this);
+            if (tthis.attr("data-next") == "3") {
+                $.alert("请稍等...");
+                window.location.reload();
+            }
+            if (tthis.attr("data-next") == "1") {
+                tthis.text("点击叫号").attr("data-next", 0);
+                return false;
+            }
+            if (tthis.attr("data-next") == "0") {
+                tthis.text("准备叫号,点击取消").attr("data-next", 1);
+                setTimeout(function(){
+                    if (tthis.attr("data-next") == "1") {
+                        tthis.text("正在发送叫号...").attr("data-next", 2);
+                        $.ajax({
+                            type: "GET",
+                            url: "{php echo urido('tobelist')}&next=1",
+                            dataType: "json",
+                            success: function (msg) {
+                                if (msg.success == "1"){
+                                    tthis.text("发送呼叫成功").attr("data-next", 3).removeClass("btn-success").addClass("btn-info");
+                                }else{
+                                    tthis.text(msg.message).attr("data-next", 3).removeClass("btn-success").addClass("btn-warning");
+                                    if (msg.messagealert) {
+                                        alert(msg.messagealert);
+                                    }
+                                }
+                            },
+                            error: function (msg) {
+                                tthis.text("呼叫错误").attr("data-next", 3).removeClass("btn-success").addClass("btn-warning");
+                            }
+                        });
+                    }
+                }, 1500);
+            }
+        });
+    });
+</script>
+{template 'common/footer'}

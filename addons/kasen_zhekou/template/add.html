@@ -1,0 +1,26 @@
+{template 'common/header'}
+	<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">批量添加优惠券</div>
+  <div class="panel-body">
+    <p>一行一个，单个优惠券长度不要超过100字符，不要有中文，不要有多余回车</p>
+  </div>
+  <form action="" method="post" style='width:300px;padding:15px;'>
+  <div class="form-group">
+	<label for="exampleInputEmail1">选择所属优惠券类型</label>
+	<select class="form-control" name='pid'>
+	<option value='0'>默认</option>	
+	{loop $accounts $row}
+	  <option value='{$row['pid']}'>{$row['name']}</option>	  
+	 {/loop}
+	</select>
+<br />
+    <label for="exampleInputEmail1">优惠券</label>
+    <textarea name='contentt' class="form-control" rows="20" ></textarea>
+  </div>
+  <input name="token" type="hidden" value="{$_W['token']}" />
+  <input type="submit" name="submit" value="添加" />
+</form>
+</div>
+	
+{template 'common/footer'}

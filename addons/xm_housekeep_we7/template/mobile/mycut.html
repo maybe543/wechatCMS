@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>我的提成</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+	<div class="ub-f1">
+    	<div id="main" class="main" style="padding-top:3rem">
+            <div class="hd fix c-wh" style="width:100%">
+                <ul class="ub ubb b-bla01 tx-c">
+                    <a href="{php echo $this->createMobileUrl('Mycut',array('name'=>'xm_housekeep_we7'))}" class="block ub-f1 uinn5 ulev-3 t-gra on">应得提成:{$sum1}</a>
+                    <a href="{php echo $this->createMobileUrl('Mycut1',array('name'=>'xm_housekeep_we7'))}" class="block ub-f1 uinn5 ulev-3 t-gra">到手提成{$sum2}</a>
+                </ul>
+            </div>
+		
+            <div>
+            {loop $list1 $val}
+                <div class="ub ubb b-bla01 uinn8 ub-ac">
+                	<div class="ub-f1 ub ub-ver">
+                    	<!--<div class="t-bla">{php echo $this->getnickname($val['staff_openid'])}</div>-->
+                        <div class="ub">
+                        	<div class="ulev-1 t-dgra ub-f1">金额{$val['cut']}</div>
+							<div class="ulev-1 t-dgra ub-f1">日期{$val['addtime']}</div>
+                        </div>
+                    </div>
+                 </div>   
+                {/loop}
+            </div>			
+        </div>
+
+    </div>
+    <div class=" umar-t1" style="height:3em"></div>
+    
+	{template 'footer'}
+</div>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/zepto1.3.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+</body>
+</html>

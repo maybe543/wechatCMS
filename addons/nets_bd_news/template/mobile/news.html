@@ -1,0 +1,127 @@
+<?php$pagetitle="读赚天下";?>
+{template 'mobile_head'}
+<header class="header-fixed">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">读赚天下</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide" id="head_menu">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="main-item fix-header">
+  <div style="-webkit-transform:translateX(0px)">
+    <div class="main-content" style="transform: translateX(0px);"> 
+	<span class="on" value="0"><a name="licaiwap_fundlist_tab_index"  onclick="shownews({$c['id']})">热点</a></span> 
+	{loop $category $c}
+	<span  value="{$c['id']}" id="menu_{$c['id']}"><a name="licaiwap_fundlist_tab_my" >{$c['name']}</a></span> 
+	{/loop}
+  </div>
+  </div>
+  <i></i> </section>
+ <div class="fix-content item-content" style="position: relative;">
+  <section class="content-wrapper " id="content">
+  <?php $i=0; ?>
+  {loop $news $item}
+  <div class="zc-list ScrollZoomShow" id="page_{$pindex}" total_page="{$total_page}">
+     <section class="box bond-box scroll-ajax-anim" style="opacity: 1;">
+	 <?php if(strstr($item['picture'],"http://")){$imgurl=$item["picture"];}else{$imgurl="/attachment/".$item["picture"];} ?>
+	  <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=newsinfo&m=nets_bd_news&id={$item['id']}"  id="new_{$item['id']}">
+      <div class="bond-top">
+        <div class="title-line">
+		{if !empty($item["picture"])}
+		<div class="title-left-img"><img src="{$imgurl}"  onerror="$(this).parent().hide();" ></img></div>
+		{/if}
+ 		<div class="title-right-info">
+         {if !empty($item['tag'])} <span class="type">{$item['tag']}</span> {/if}
+		<p>{$item['title']}</p>
+		<p style="font-size:11px;color:gray;">{$item['brief']}</p>
+        <div class="bond-bottom1">
+        <ul>
+          <li><i class="browse"></i><span><?php echo sprintf("%.1f",intval($item['click_num'])/1000)?>k</span></li>
+          <li><i class="message"></i><span><?php echo sprintf("%.1f",intval($item['comment_num'])/1000)?>k</span></li>
+          <li><i class="share"></i><span><?php echo sprintf("%.1f",intval($item['share_num'])/1000)?>k</span></li>
+		  <li><i class="Collection"></i><span><?php echo sprintf("%.1f",intval($item['like_num'])/1000)?>k</span></li>
+        </ul>
+      </div>
+        </div>
+		</div>
+      </div>
+      </a>
+    </section>
+     </div>
+	 {/loop}
+  </section>
+  <section class="content-wrapper " id="no-content" style="display:none;">
+  <div class="zc-list ScrollZoomShow">
+     <section class="box bond-box scroll-ajax-anim" style="opacity: 1;">
+      <div class="bond-top">
+        <div class="title-line" >
+		<p style="text-align:center;">没有更多的了</p>
+		</div>
+      </div>
+    </section>
+     </div>
+  </section>
+  </div>
+<div class="fix-content item-content">
+  <section class="f-products-box"> </section>
+</div>
+<!--滚动自动加载js 调用之前先声明js 变量-->
+<script>
+	var uniacid="{$_W['uniacid']}";
+	var page="{$pindex}";
+	var total_page="{$total_page}";
+	var append_divid="content";
+	var cid=0;
+	var cookie_id="{$_GPC['history_newid']}";
+	var cookie_cid="{$_GPC['history_newcid']}";
+	
+</script>
+<script src="/addons/nets_bd_news/template/style/js/ajax.js"></script>
+<script>
+//滚动条下拉事件的分页
+window.onscroll = function(){
+
+var h1=parseInt(getScrollTop() + getWindowHeight());
+var h2=parseInt(getScrollHeight());
+//alert(h1+"_"+h2);
+　　if(h1 == h2){
+		if(page==total_page){/*fyt$("no-content").style.display="block";*/return;}
+		page=parseInt(page)+1;
+		sendAjaxRequest("/app/index.php?c=entry&do=ajax_newslist&m=nets_bd_news&i="+uniacid+"&page="+page+"&cid="+cid,appendNewsList);
+　　}else{
+		
+	}
+};
+
+</script>
+<!--底部菜单[[-->
+<section class="detail-bottommenu" id="UIDropMenu">
+  <ul class="detail-bottommenu-list">
+    <li class="detail-bottommenu-share"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=news&m=nets_bd_news"> <i class="hover"></i>
+      <p>资讯</p>
+      </a> </li>
+    <li class="detail-bottommenu-care"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=money&m=nets_bd_news"> <i></i>
+      <p>抢钱</p>
+      </a> </li>
+  </ul>
+</section>
+
+{template 'mobile_footer'}
+{template 'common_share'}
+<script>
+	//alert(cookie_cid);
+if(cookie_cid!=""){
+	
+	$(".main-content span").removeClass("on");
+	$("#menu_"+cookie_cid).addClass("on");
+	page=1;
+	shownews_init(cookie_cid);
+	
+}
+</script>

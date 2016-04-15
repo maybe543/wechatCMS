@@ -1,0 +1,198 @@
+{php $bootstrap_type = 3;}
+{if empty($_W['isajax'])}
+{template 'header'}
+{template 'common'}
+
+<script language="javascript" src="../addons/hx_zhongchou/images/touchslider.min.js"></script>
+<script language="javascript" src="../addons/hx_zhongchou/images/swipe.js"></script>
+
+<style>
+   .td_a { height:7em; text-align: center}
+   /* clock */
+.clock{width:auto;height:auto;margin:0 5px 0 5px; line-height:normal !important; margin-top:12px; float:left;transform:translate(-50%, -50%);color:#fff;font-family:"Lato", sans-serif;}
+.clock div{position:relative;float:left;background:#333; color:#fff;border-radius:0px;width:16px;height:22px;line-height:22px;text-align:center;font-size:14px;margin:0px 2px; box-shadow:0px 1px 0px #CCC;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style.css?{TIMESTAMP}">
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style_new.css?{TIMESTAMP}">
+<link rel="stylesheet" href="../addons/hx_zhongchou/images/jquery.skippr.css">
+ 
+{php  $sql = 'SELECT COUNT(*) FROM ' . tablename('hx_zhongchou_order') . ' WHERE `status` = 1 and `weid` = '.$_W['uniacid'];}
+{php $total = pdo_fetchcolumn($sql);}
+<div class="i_d_2" style="position:relative; padding-left:10px !important;">
+<div style="float:left">已有</div>
+<div class='clock'>
+</div> 份爱心<label id="shuzi" style="display:none;"> {$total}</label> 
+<div style="clear:both"></div>
+    <div class="f_r" >
+   <!-- <a href="http://gongyichina.org/app/index.php?i=2&j=2&c=entry&status=1&do=myorder&m=hx_zhongchou" style="color:#fff; ">-->
+    <a href="http://gongyichina.org/app/index.php?i={$_W['uniacid']}&j=2&c=entry&status=1&do=myorder&m=hx_zhongchou" style="color:#fff; ">
+    <img src="http://gongyichina.org/mobilehtml/img/touxiang.png"  height='24px' style="margin-top:-5px"/> <span style=" font-size:14px; vertical-align:top; color:#706d5e; line-height:50px">我的</span>
+
+    </a>
+    </div>
+     <div class="clear"></div>
+    </div>
+    
+<div id="banner_box" class="box_swipe" style='width:100%;float:left;'>
+	<ul>
+		{loop $advs $adv}
+		<li>
+			<a href="{if empty($adv['link'])}#{else}{$adv['link']}{/if}">
+				<img src="{php echo tomedia($adv['thumb']);}" title="{$adv['advname']}" height='200px'/>
+			</a>
+			<span class="title">{$adv['advname']}</span>
+		</li>
+		{/loop}
+	</ul>
+	<ol>
+	{php $slideNum = 1;}
+	{loop $advs $adv}
+		<li{if $slideNum == 1} class="on"{/if}></li>
+		{php $slideNum++;}
+	{/loop}
+	</ol>
+</div>
+
+
+
+<div class="hero">
+
+            <div id="random"> 
+                
+        {loop $advs $adv}
+            <a href="{if empty($adv['link'])}#{else}{$adv['link']}{/if}">
+	     <div style="background-image: url({php echo tomedia($adv['thumb']);})"> </div></a>
+		{/loop}
+                
+            </div>  
+           
+        </div>
+        
+        
+        
+        
+<script>
+	$(function() {
+		new Swipe($('#banner_box')[0], {
+			speed:500,
+			auto:3000,
+			callback: function(){
+				var lis = $(this.element).next("ol").children();
+				lis.removeClass("on").eq(this.index).addClass("on");
+			}
+		});
+		var value = $("#shuzi").text().replace(/[^0-9]/ig,""); 
+for (var i = 0; i < value.length; i++) {
+    
+   $(".clock").append(
+   "<div class="+"'shake shake-slow'"+">"+value[i]+"</div>"
+   );}
+	});
+</script>
+
+<!--推荐项目-->
+<div class="i_d_3" style="height:auto !important;">
+           	  {loop $listhot $itemhot}
+	
+     <a href="{php echo $this->createMobileUrl('detail', array('id' => $itemhot['id']))}"> <div class="i_d_3_1" style=" border-right:1px solid #f7f7f7; ">
+      <div class=" i_d_3_1_img" style=" width:100%; padding:0 10px !important; box-sizing:border-box;"> <img src="{$_W['attachurl']}{$itemhot['thumb']}" style="width:100%; border-radius:5px; margin:0 !important; box-sizing:border-box;"/> </div>
+      <div class=" i_d_3_1_text" style="width:100% !important; padding-top:5px; padding-left:10px !important; box-sizing:border-box;"><span class="i_d_t_i">{$itemhot['title']}</span>
+     <div style="margin-top:00px;"> 共<span style="color:#e39a65;">{$itemhot['finish_price']}</span>元爱心</div>
+     </div>
+      <div class="clear"></div>
+      </div>
+     </a>
+	  {/loop}
+      
+      
+      <div class="clear"></div>
+    </div>
+    
+    
+<div class="list-tips" style='float:left;width:100%;border-bottom: 1px solid #ececec;font-size:14px;color:#565a5d; padding-top:10px;padding-left:10px; padding-bottom:10px; margin-top:10px; background:#fff;'>公益项目</div>
+{/if}&nbsp;
+<div class="shopping-main" style="padding:0; margin-top:-20px">
+	<div class="clear"></div>
+ <div class="list" id="list_rec" style="margin-top:-10px;">
+	 
+	  {loop $rlist $item}
+		 {template 'list_item'}
+	  {/loop}
+ </div>
+</div>
+<div class="gdfl">
+ <div class="gdfl_title">
+ 更多项目分类
+ </div>
+ <div class="gdfl_1">
+ {loop $category $item}
+   <a href="{php echo $this->createMobileUrl('list2', array('pcate' => $item['id']))}">
+   <div class="gdfl_1_1">
+    {$item['name']}<span class="span_yelow"></span></div></a>
+    
+   {/loop}
+   <div class="clear"></div>
+ </div>
+
+</div>
+
+<script src="../addons/hx_zhongchou/images/jquery.skippr.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#random").skippr();
+            });
+ </script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+ <script>
+ 
+	wx.config({
+		debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: 'wxe89fbe468173b2cc', // 必填，公众号的唯一标识
+		timestamp:'{php echo $time}', // 必填，生成签名的时间戳
+		nonceStr: '{php echo $nonceStr}', // 必填，生成签名的随机串
+		signature: '{php echo $signature}',// 必填，签名，见附录1
+		jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		
+    });
+	
+	
+
+wx.ready(function () {
+    // 在这里调用 API
+	
+	wx.onMenuShareAppMessage({
+	  title: '公益联盟', // 分享标题
+	  desc: '公益联盟 与您一起传递爱', // 分享描述
+	  link: '{php echo $url}', // 分享链接
+	  imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+	  type: '', // 分享类型,music、video或link，不填默认为link
+	  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	  success: function () { 
+		  // 用户确认分享后执行的回调函数
+	  },
+	  cancel: function () { 
+		  // 用户取消分享后执行的回调函数
+	  }
+});
+
+ 
+ 
+ 	 wx.onMenuShareTimeline({
+		title: '公益联盟', // 分享标题
+		link: '{php echo $url}', // 分享链接
+		imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+		success: function () { 
+			// 用户确认分享后执行的回调函数
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+		  }
+    });  
+	
+ });	
+ 
+	</script>
+
+
+{template 'footer'}

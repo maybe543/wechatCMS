@@ -1,0 +1,82 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo  $this->createWebUrl('staff', array('name'=>'xm_housekeep_we7'));}">员工管理</a></li>
+    
+	{if in_array('1', $power)}
+	<li><a href="{php echo  $this->createWebUrl('staffadd', array('name'=>'xm_housekeep_we7'));}">添加员工</a></li>
+	{/if}
+</ul>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            员工列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr class="active">
+                    	<td>姓名</td>
+                        <td>性别</td>
+                        <td>手机号码</td>
+						<td>识别码</td>
+						<td>得到提成</td>
+						<td>到手提成</td>
+						<td>接受预约</td>
+						<!--<td>综合评分</td>-->
+                        <td width="300">操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	{loop $list $val}
+                	<tr>
+                    	<td>{$val[name]}</td>
+                        <td>{php echo getSex($val[sex])}</td>
+						<td>{$val[mobile]}</td>
+						<td>{$val[flag]}</td>
+						<td>{$val[cutmoney]}</td>
+						<td>{$val[getmoney]}</td>
+						<td>
+							{if $val[accept] == 1}
+							是
+							{else}
+							否
+							{/if}
+                        </td>
+						
+                        <td style="overflow:visible;">
+                        	<div class="btn-group btn-group-sm">
+								{if in_array('1', $power)}
+                                <a class="btn btn-default" href="{php echo $this->createWebUrl('staffadd',array('id'=>$val['id'],'name'=>'xm_housekeep'));}"><i class="fa fa-edit"></i> 编辑</a>
+                                <a class="btn btn-default" href="{php echo $this->createWebUrl('staffdelete', array('id'=>$val['id'],'name'=>'xm_housekeep'))}" onclick="confirm('确认删除改员工信息?');"><i class="fa fa-remove"></i> 删除</a>
+								{/if}
+								<a class="btn btn-info" href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={$val['ticket']}";><i class="fa fa-file-image-o"></i> 查看二维码</a>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+        
+		 <div class="panel-footer">
+            <span style="color:red;">接受预约是在用户提交订单后，该员工会收到订单消息，在基础数据上只能选择一个</span>
+        </div>
+		
+        <div class="panel-footer">
+            {if in_array('1', $power)}
+			<a class="btn btn-default" href="{php echo $this->createWebUrl('staffadd', array('name'=>'xm_housekeep_we7'))}">新增员工</a>
+			{/if}
+        </div>
+        
+    </div>
+</div>
+
+
+{template 'common/footer'}

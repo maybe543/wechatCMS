@@ -1,0 +1,108 @@
+{php include $_template->template('header')}
+<main id="panel" class="panel">
+<link href="http://a1.jmstatic.com/91f179567fa39f33/common.css" rel="stylesheet" type="text/css"/>
+<link href="http://a5.jmstatic.com/1bea7cf6230e9af5/ui.css" rel="stylesheet" type="text/css"/>
+<link href="http://a1.jmstatic.com/5ab60ad284bc262c/deals_new.css" rel="stylesheet" type="text/css"/>
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/jmtouch.css?v={TIMESTAMP}"  media="screen" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/deal_details.css?v={TIMESTAMP}" media="screen"  charset="utf-8" />
+
+<div class="views content_title">
+  <a id="back" class='js-slideout-toggle' href="{php echo $this->createMobileUrl('Nav')}">
+    <img src="http://s1.jmstatic.com/templates/touch/css/v3/image/search_list.png?v=37" class="return">
+  </a>
+
+  <!--a id="back" class='js-slideout-toggle' href="#sideNav">
+    <img src="http://s1.jmstatic.com/templates/touch/css/v3/image/search_list.png?v=37" class="return">
+  </a-->
+  <span id="page_title">{if empty($this->module['config']['shopname'])}设置本标题:参数设置-品牌名称{else}{php echo $this->module['config']['shopname']}{/if}</span>
+  <a class="go_home" href="{php echo $this->createMobileUrl('List')}"><img src="http://s1.jmstatic.com/templates/touch/css/v3/image/go_home.png" alt=""></a>
+</div>
+
+<!--活动列表-->
+<section id="global-deals-new" class="global-deals-new">
+    <section id="deals-header">
+    <ul id="ui-slider-boxs" class="ui-slider-boxs">
+      {loop $advs $adv}
+      <li>
+      <a data-index="0" href="{if empty($adv['link'])}#{else}{$adv['link']}{/if}" rel='{$_W['attachurl']}{$adv['thumb']}'><img src="{$_W['attachurl']}{$adv['thumb']}" alt="" /></a>
+      </li>
+      {/loop}
+    </ul>
+    </section>
+
+    {php include $_template->template('search-form')}
+
+    <section id="deals-icon" class="deals-icon">
+    <ul class="clear">
+      <li>
+      <a href="#">
+        <img src="http://mp1.jmstatic.com/c_zoom,w_120,q_70/mobile/card_material/item_7072_512_512-ipad2048.jpg?t=1418367877"/>
+      </a>
+      </li>
+      <li>
+      <a href="#">
+        <img src="http://mp1.jmstatic.com/c_zoom,w_120,q_70/mobile/card_material/item_7073_512_512-ipad2048.jpg?t=1418367986"/>
+      </a>
+      </li>
+      <li>
+      <a href="#">
+        <img src="http://mp1.jmstatic.com/c_zoom,w_120,q_70/mobile/card_material/item_7074_512_512-ipad2048.jpg?t=1418368083"/>
+      </a>
+      </li>
+      <li>
+      <a href="#">
+        <img src="http://mp1.jmstatic.com/c_zoom,w_120,q_70/mobile/card_material/item_7075_512_512-ipad2048.jpg?t=1418368220"/>
+      </a>
+      </li>
+    </ul>
+    </section>
+
+
+
+  <section id="deals-content" class="deals-content">
+    <!--栏目一-->
+    {loop $recommendcategory $c}
+    {if !empty($c['list'])}
+    <div class="deals-content-header" id="list_{$c['parentid']}_{$c['id']}">
+      <span>{$c['name']}</span>
+      <a href="{php echo murl('entry/module/List2', array('pcate'=>$c['id'], 'm'=>'quickshop'))}"><em style="padding-right:4px;float:right;color:rgb(65,69,71);font-size:15px;">更多<i class="fa fa-caret-square-o-right" style="padding:0px 4px 0px 2px;color:rgb(244,93,86)"></i></em></a>
+    </div>
+    <ul class="touch-activity-detail clear">
+      {loop $c['list'] $item}
+      {php include $_template->template('list_item')}
+      {/loop}
+    </ul>
+    </section>
+    {/if}
+    {/loop}
+    <!--栏目一 end-->
+</section>
+
+    <!--购物车图标-->
+    <a class="touch-float-car" href="{php echo $this->createMobileUrl('MyCart')}">
+      <img src="http://s1.jmstatic.com/templates/touch/css/v3/image/float_car.png?v=34">
+      {if !empty($carttotal)}<div class="shoping-car-num">{$carttotal}</div>{/if}
+    </a>
+    <div class="ui-bg"></div>
+
+    <footer class="touch-footer-container">
+    <div class="top-line"></div>
+    <div class="bottom-rights">
+      {if !empty($_W['account']['siteinfo']['footer'])}
+        <p>{php echo htmlspecialchars_decode($_W['account']['siteinfo']['footer'])}</p>
+      {else}
+        <p>©2015 {$_W['account']['name']}</p>
+      {/if}
+    </div>
+    </footer>
+
+    <script type="text/javascript" src="{$_tpl_dir_path}/css/v3/js/jumei.js"></script>
+    <script type="text/javascript" src="{$_tpl_dir_path}/css/v3/js/ui.js"></script>
+    <!--script type="text/javascript" src="http://a5.jmstatic.com/daf74efcc8331433/ui.js"></script-->
+    <script type="text/javascript" src="http://a2.jmstatic.com/7d11baec538cfdeb/deals_new_main.js"></script>
+
+</main>
+
+{php include $_template->template('sidenav')}
+{php include $_template->template('footer')}
+

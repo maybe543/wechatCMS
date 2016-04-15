@@ -1,0 +1,50 @@
+{loop $listgg $id $data}
+				{php $pic = iunserializer($data['pic'])}
+				{php $credit = iunserializer($data['credit'])}
+
+				{php $picnum = count($pic)}
+				{if $picnum <= 4}
+					<div class="list-item list4"><a name="{$data['id']}" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><span class="u-img2"><img class="img" src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}"></span><span class="p-txt">{$data['title']} </span><div class="info"><span class="tag type1">转发赚钱 单价{$credit['share']} 浏览{$credit['click']}</span>
+					<span class="resource">{$data['source']}</span>
+					</div></a>
+					</div>
+				{else}
+					<div class="list-item list5"><a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><p class="tit">{$data['title']}</p><ul>
+					<?php $j = 1 ?>
+					{loop $pic $key $picsome} 
+
+					{if $j <= 3}
+					<li><img class="img" src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" width="200" height="80"></li>
+					 {/if}
+				  	 <?php $j++ ?> 
+					 {/loop}
+					</ul><div class="info2"><span class="tag type1">转发赚钱 单价{$credit['share']} 浏览{$credit['click']}</span><span class="resource">{$data['source']}</span>
+					</div></a></div>
+				
+				{/if}
+				 {/loop}
+
+
+				 {loop $list $id $data}
+				{php $pic = iunserializer($data['pic'])}
+				{php $credit = iunserializer($data['credit'])}
+
+				{php $picnum = count($pic)}
+				{if $picnum <= 4}
+					<div class="list-item list4"><a name="{$data['id']}" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><span class="u-img2"><img class="img" src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}"></span><span class="p-txt">{$data['title']} </span><div class="info"><span class="resource">{$data['source']} </span></div></a>
+					</div>
+				{else}
+					<div class="list-item list5"><a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><p class="tit">{$data['title']}</p><ul>
+					<?php $j = 1 ?>
+					{loop $pic $key $picsome} 
+
+					{if $j <= 3}
+					<li><img class="img" src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" width="200" height="80"></li>
+					 {/if}
+				  	 <?php $j++ ?> 
+					 {/loop}
+					</ul><div class="info2"><span class="resource">{$data['source']}</span></div></a></div>
+				
+				{/if}
+				 {/loop}
+				

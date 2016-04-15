@@ -1,0 +1,104 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('member');}">用户管理</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('mingxi',array('member_id'=>$member_id));}">打赏明细</a></li>
+    <li><a href="{php echo $this->createWebUrl('huodong');}">红包发放</a></li>
+    
+    <li><a href="{php echo $this->createWebUrl('setting');}">活动管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('api');}">接口参数</a></li>
+</ul>
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">{$user_member['nickname']}收到红包的详细数据  |  总数:{$total}  |  总打赏金额:{$sum}元</div>
+
+		<div class="panel-body table-responsive">
+
+		    <form action="" method="post" onsubmit="">
+
+			<table class="table table-hover">
+
+				<thead class="navbar-inner">
+
+					<tr>
+
+						<th style="width:30px;" class="row-first">选择</td>
+
+						<th style="width:80px;">昵称</th>
+
+						<th style="width:80px;">头像</th>
+
+						<th style="width:100px;">打赏金额</th>
+
+						<th style="width:150px;">打赏时间</th>
+
+					
+					</tr>
+
+				</thead>
+
+				<tbody id="main">
+
+				{php $i=1;}
+
+					{loop $member $row}
+
+					<tr>
+
+					    <td><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+
+					    <td>{$row['nickname']}</td>
+
+						<td><img style="width:70px" src="{$_W['attach_url']}{$row['avatar']}"></td>
+
+						<td>{$row['budget']}元</td>                            
+
+						<td>{php echo date('m-d H:i:s', $row['createtime']);}</td>
+  
+
+					</tr>
+
+					{php $i++;}
+
+					{/loop}
+
+				</tbody>
+
+			</table>
+
+
+			</form>			
+
+	    </div>
+
+	</div>
+
+	{$pager}
+
+</div>
+
+<script type="text/javascript">
+require(['jquery', 'util'], function($, util){
+	$(function(){
+		util.clip($('#needCopy')[0], $('#needCopy').text());
+	});
+});
+</script>
+
+<script>
+
+$(function(){   
+
+    $(".check_all").click(function(){
+
+       var checked = $(this).get(0).checked;
+
+       $("input[type=checkbox]").attr("checked",checked);
+
+    });	
+
+});
+
+</script>
+
+{template 'common/footer'}

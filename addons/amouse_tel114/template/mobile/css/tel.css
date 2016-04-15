@@ -1,0 +1,518 @@
+body {
+    font-family: microsoft yahei, Verdana, Geneva, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.sr_wrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+.sr_header {
+    width: 100%;
+    height: 45px;
+    background: #d53925;
+    position: fixed;
+    z-index: 9;
+    display: block;
+    overflow: hidden;
+    top: 0px !important;
+    right: 0px !important;
+    left: 0px !important;
+}
+.bigbox {
+    display: block;
+    position: relative;
+}
+.sr_header .hb {
+    padding: 0 12px;
+}
+.ht {
+    height: 45px;
+    overflow: hidden;
+}
+.sr_header .sr_logo {
+    margin-top: 11px;
+}
+.sr_header .sr_logo img {
+    width: 75px;
+    height: 23px;
+    display: block;
+}
+.sr_header .sr_member {
+    margin: 0px 0px 0px 9px;
+}
+.sr_header .sr_member img {
+    width: 45px;
+    height: 45px;
+    display: block;
+    overflow: hidden;
+}
+.sr_header .sr_more {
+    margin: 0 0 0 9px;
+}
+.sr_header .sr_more img {
+    width: 45px;
+    height: 45px;
+    display: block;
+    overflow: hidden;
+}
+.sr_telbox .no_colum {
+    border: 1px solid #FEB;
+    background: none repeat scroll 0% 0% rgba(255, 249, 224, 0.94);
+    color: #EB7350;
+    padding: 9px;
+    text-align: center;
+    margin-top: 9px;
+}
+
+.pager {
+    text-align: center;
+    margin-top: 9px;
+    font-size: 100%;
+}
+.pager a {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #e0e0e0;
+    text-decoration: none;
+    color: #666;
+    margin: 0 0 0 9px;
+}
+.pager a.selected {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #d53925;
+    color: #fff;
+    margin: 0 0 0 9px;
+}
+.pager strong {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #d53925;
+    text-decoration: none;
+    color: #fff;
+    margin: 0 0 0 9px;
+}
+.pager a.prev {
+}
+.pager label {
+    display: none;
+}
+.pager a.prev {
+}
+.pager a.nxt {
+}
+/* end 114cate or less */
+#menu {
+    width:150px;
+    font-size:16px;
+    display:none;
+    position: fixed;
+    top: 45px;
+    right: 0px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    z-index: 10;
+    box-shadow: 2px 2px 5px #999;
+}
+#menu a {
+    display: block;
+    padding: 12px 15px;
+    border-bottom: 1px dashed #f0f0f0;
+    text-decoration: none;
+    color: #666;
+}
+#menu a:active {
+    background: #f0f0f0;
+}
+.arrow_top {
+    width: 0px;
+    height: 0px;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid #FFF;
+    position: absolute;
+    top: -9px;
+    right: 25px;
+    z-index: 3;
+    display: block;
+    overflow: hidden;
+}
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="text"],
+select,
+button {
+    -webkit-appearance: none;
+}
+
+.l {
+    float: left;
+}
+.r {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+.sr_search {
+    width: 100%;
+    padding: 9px 0;
+    background: #e0e0e0;
+    margin: 0 auto;
+    text-align: center;
+}
+.sr_search form {
+    width: 95%;
+    margin: 0 auto;
+    position: relative;
+}
+.sr_search .inputext {
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    box-sizing: border-box;
+    padding: 0px 85px 0px 9px;
+    border: 1px solid #E0E0E0;
+    font-family: microsoft yahei,Verdana,Geneva,sans-serif;
+    color: #666;
+    font-size: 14px;
+}
+.inputbtn {
+    height: 35px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #d53925;
+    font-size: 100%;
+    font-family: microsoft yahei, Verdana, Geneva, sans-serif;
+    color: #fff;
+    z-index: 3;
+}
+.footer {
+    text-align: center;
+    margin-top: 9px;
+    background: #f5f5f5;
+    padding: 6px 0px;
+    color: #999;
+    font-size: 12px;
+}
+.footer a {
+    color: #999;
+    text-decoration: none;
+}
+
+/* for 114cate or less */
+.sr_telcate {
+    width: 100%;
+}
+.sr_telcate .sr_telcon {
+}
+.sr_cate_list {
+    padding: 1.5% 2.5%;
+    background: #f0f0f0;
+    position: relative;
+    border-bottom: 2px solid #e0e0e0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+.sr_telcate .sr_telcon ul {
+    white-space: nowrap;
+}
+.sr_telcate .sr_telcon ul li {
+    display: inline-block;
+}
+.sr_telcate .sr_telcon ul li em {
+    font-style: normal;
+    color: #000;
+}
+.sr_telcate .sr_telcon ul li a {
+    padding: 2px 9px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #999;
+    display: block;
+}
+.sr_telcate .sr_telcon ul li a.cateon {
+    padding: 2px 9px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #d53925;
+    display: block;
+    background: #d53925;
+    color: #fff;
+    border-radius: 5px;
+}
+.sr_tel {
+    padding: 0 9px;
+    font-size: 14px;
+}
+.sr_tel img {
+    max-width: 100%;
+    border: none;
+}
+.sr_telbox ul li {
+    background: #fff;
+    overflow: hidden;
+    font-size: 100%;
+    margin-top: 9px;
+    position: relative;
+}
+.sr_telbox ul li .tel_merchant {
+}
+.sr_telbox ul li .tel_merchant img {
+    width: 100px;
+    height: 100px;
+    float: left;
+    border-radius: 5px;
+}
+.sr_telbox ul li .tel_con {
+    float: left;
+    padding: 12px 0px 12px 12px;
+    width: 71%;
+}
+.sr_telbox ul li .telto {
+    float: right;
+    padding: 0px;
+    background: #F5F5F5;
+    width: 69px;
+    height: 69px;
+    position: relative;
+}
+.sr_telbox ul li .telto a {
+    width: 69px;
+    height: 69px;
+    display: block;
+}
+.sr_telbox ul li .telto a:active {
+    width: 69px;
+    height: 69px;
+    display: block;
+    background: #e0e0e0;
+}
+.sr_telbox ul li .telto img {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    margin: auto;
+}
+.sr_telbox ul li .telto .arrow_rb {
+    width: 0;
+    height: 0;
+    border-bottom: 9px solid #d53925;
+    border-left: 9px solid transparent;
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+}
+.sr_telbox ul li .tel_tit {
+    font-size: 14px;
+    color: #666;
+    float: left;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    width: 76%;
+}
+
+.sr_telbox ul li .tel_num {
+    font-size: 105%;
+    margin-top: 2.5%;
+}
+.sr_telbox ul li .tel_num a {
+    color: #d53925;
+    text-decoration: none;
+}
+.sr_telbox ul li .tel_icon {
+    margin-right: 2.5%;
+}
+
+.pager {
+    text-align: center;
+    margin-top: 9px;
+    font-size: 100%;
+}
+.pager a {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #e0e0e0;
+    text-decoration: none;
+    color: #666;
+    margin: 0 0 0 9px;
+}
+.pager a.selected {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #d53925;
+    color: #fff;
+    margin: 0 0 0 9px;
+}
+.pager strong {
+    padding: 5px 9px;
+    display: inline-block;
+    background: #d53925;
+    text-decoration: none;
+    color: #fff;
+    margin: 0 0 0 9px;
+}
+.pager a.prev {
+}
+.pager label {
+    display: none;
+}
+.pager a.prev {
+}
+.pager a.nxt {
+}
+/* end 114cate or less */
+
+.hf {
+    height: 45px;
+    overflow: hidden;
+}
+.sr_footer {
+    width: 100%;
+    height: 35px;
+    position: fixed;
+    padding: 5px 0;
+    bottom: 0px;
+    background: #f9f9f9;
+    border-top: 1px solid #eaeaea;
+    display: block;
+    overflow: hidden;
+}
+.sr_footer .bh {
+    height: 35px;
+    border-right: 1px solid #ddd;
+}
+.dibu {
+    text-align: center;
+}
+.dibu img {
+    width: 50%;
+    height: auto;
+    margin-top: 15px;
+}
+.sr_header .sr_share img {
+    width: 45px;
+    height: 45px;
+    display: block;
+    overflow: hidden;
+}
+.hide{display:none;}
+
+.sharebox {
+    width: 100%;
+    position:fixed;
+    bottom:-200px;
+    -moz-box-flex:1.0; /* Firefox */
+    -webkit-box-flex:1.0; /* Safari and Chrome */
+    margin: auto;
+    -moz-border-radius: 20px;
+    -webkit-border-radius:20px;
+    -khtml-border-radius:20px;
+    -moz-box-shadow: 0 1px 5px #333;
+    -webkit-box-shadow: 0 1px 5px #333;
+    z-index: 999;
+}
+.sbg {
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.5);
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index: 99;
+}
+.fx-tit {
+    padding: 9px 0;
+    color: #333;
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 2px 0 10px #333;
+}
+.fx-content {
+    background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.95);
+    padding:25px 0;
+    overflow: hidden;
+    color: #666;
+}
+.bdshare-button-style0-32 a {
+    width: 100% !important;
+    height: 45px !important;
+    clear: both !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.bdshare-button-style0-32 ul li {
+    width: 20%;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+}
+.bdshare-button-style0-32 ul li div {
+    clear: both !important;
+    margin-top: 3px;
+    overflow: hidden;
+    color: #666;
+}
+.bdshare-button-style0-32 .bds_qzone {
+    background: url(../images/qqspace.png) no-repeat !important;
+    background-size: 45px 45px !important;
+    background-position: top center !important;
+}
+.bdshare-button-style0-32 .bds_tsina {
+    background: url(../images/sina.png) no-repeat !important;
+    background-size: 45px 45px !important;
+    background-position: top center !important;
+}
+.bdshare-button-style0-32 .bds_tqq {
+    background: url(../images/qqwb.png) no-repeat !important;
+    background-size: 45px 45px !important;
+    background-position: top center !important;
+}
+.bdshare-button-style0-32 .bds_renren {
+    background: url(../images/renren.png) no-repeat !important;
+    background-size: 45px 45px !important;
+    background-position: top center !important;
+}
+.bdshare-button-style0-32 .bds_weixin {
+    background: url(../images/weixin.png) no-repeat !important;
+    background-size: 45px 45px !important;
+    background-position: top center !important;
+}
+#boxclose {
+    font-size: 14px;
+    overflow: hidden;
+}
+a#boxclose {
+    padding: 12px 0;
+    text-align: center;
+    display: block;
+    background: #f0f0f0;
+    color: #666;
+    text-decoration: none;
+    overflow: hidden;
+}
+a:active#boxclose {
+    padding: 12px 0;
+    text-align: center;
+    display: block;
+    background: #ccc;
+    color: #666;
+    text-decoration: none;
+    overflow: hidden;
+}

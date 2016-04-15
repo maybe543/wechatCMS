@@ -1,0 +1,186 @@
+{template 'common/header'}
+
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" id="setting-form">
+	<div class="panel panel-default">
+		<div class="panel-heading">基本参数设置</div>
+		<div class="panel-body">
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">有效层数</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[level]" value="{$settings['level']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">推广人数限制</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[num]" value="{$settings['num']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">是否开启群主功能</label>
+				<div class="col-sm-5">
+					<label class="radio-inline">
+						<input type="radio" name="dat[enableleader]" value="1"{if $settings['enableleader']==1}checked{/if}>
+						开启
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="dat[enableleader]" value="0"{if $settings['enableleader']==0}checked{/if}>
+						关闭
+					</label>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">群主层级</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[leaderlevel]" value="{$settings['leaderlevel']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">群主条件</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[leadercondition]" value="{$settings['leadercondition']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">平台管理员UID</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[uid]" value="{$settings['uid']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">平台管理员微信号</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[wechat]" value="{$settings['wechat']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">平台管理员QQ号</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[qq]" value="{$settings['qq']}" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">平台管理员手机号</label>
+				<div class="col-sm-5">
+					<input type="text" class="form-control" name="dat[mobile]" value="{$settings['mobile']}" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">层级红包设置</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-1 control-label">1层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money1]" value="{$settings['level_money1']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">2层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money2]" value="{$settings['level_money2']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">3层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money3]" value="{$settings['level_money3']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">4层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money4]" value="{$settings['level_money4']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">5层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money5]" value="{$settings['level_money5']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">6层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money6]" value="{$settings['level_money6']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">7层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money7]" value="{$settings['level_money7']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">8层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money8]" value="{$settings['level_money8']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-1 control-label">9层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money9]" value="{$settings['level_money9']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">10层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money10]" value="{$settings['level_money10']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">11层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money11]" value="{$settings['level_money11']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+				<label class="col-sm-1 control-label">12层</label>
+				<div class="col-sm-2">
+					<div class="input-group"  style="float:left">
+						<input class="form-control" type="text" name="dat[level_money12]" value="{$settings['level_money12']}">
+						<span class="input-group-addon">元</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input name="token" type="hidden" value="{$_W['token']}" />
+			<input type="submit" class="btn btn-primary col-lg-1" name="submit" value="提交" />
+		</div>
+	</div>
+	</form>
+</div>
+
+{template 'common/footer'}

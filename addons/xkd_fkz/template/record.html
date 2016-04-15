@@ -1,0 +1,88 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="javascript:;">会员升级记录</a></li>
+</ul>
+<div class="clearfix">
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+		<form action="" method="get" class="form-horizontal" role="form">
+		<input type="hidden" name="c" value="site">
+		<input type="hidden" name="a" value="entry">
+		<input type="hidden" name="op" value="display">
+		<input type="hidden" name="do" value="record">
+		<input type="hidden" name="m" value="jiexi_aaa">
+				<div class="form-group">
+				<label class="col-sm-12 col-md-2 control-label"><span class="text-danger">*</span> 申请起止时间</label>
+				<div class="col-sm-12 col-md-7">
+					{php echo tpl_form_field_daterange('apply', $apply, true)}
+				</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">申请人UID/昵称/微信号</label>
+					<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+						<input type="text" class="form-control" name="apply_member" value="{$_GPC['apply_member']}" >
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">批准人UID/昵称/微信号</label>
+					<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+						<input type="text" class="form-control" name="approval_member" value="{$_GPC['approval_member']}" >
+					</div>
+					<div class=" col-xs-12 col-sm-2">
+						<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			会员升级记录列表
+		</div>
+		<div class="table-responsive panel-body">
+		<form action="" method="post" id="form1" >
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th style="min-width:60px;">记录ID</th>
+						<th>申请人</th>
+						<th>升到级数</th>
+						<th>上层</th>
+						<th>群主</th>
+						<th>红包</th>
+						<th>状态</th>
+						<th style="width:160px;">申请时间</th>
+						<th style="width:160px;">批准时间</th>
+						<th style="width:100px;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $list $item}
+					<tr>
+						<td>{$item['record_id']}</td>
+						<td>{$item['apply_name']}</td>
+						<td>{$item['upgrade']}</td>
+						<td>{$item['approval_name']}</td>
+						<td>{if !empty($item['manager_name'])}{$item['manager_name']}{else}无{/if}</td>
+						<td>{$item['packet']}元</td>
+						<td>{if $item['a_flag'] == 1 || $item['m_flag'] == 1}待批准{else}已批准{/if}</td>
+						<td>{php echo date('Y-m-d H:i:s', $item['apply_time']);}</td>
+						<td>{if !empty($item['approval_time'])}{php echo date('Y-m-d H:i:s', $item['approval_time']);}{else}还未批准{/if}</td>
+						<td>
+							{if $item['a_flag'] == 1 || $item['m_flag'] == 1}
+							<a href="{php echo $this->createWebUrl('record',array('op' => 'approval', 'record_id' => $item['record_id']))}" data-toggle="tooltip" data-placement="top" title="审批" class="btn btn-default btn-sm"><i class="fa fa-check-square-o"></i>批准</a>
+							{/if}
+						</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+			<div class="panel-body text-right">
+				{$pager}
+			</div>
+		</form>
+		</div>
+	</div>
+</div>
+{template 'common/footer'}

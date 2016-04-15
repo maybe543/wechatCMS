@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$timeline['title']}</title>
+    <link href="{MON_TIMELINE_RES}css/common_mobile.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <style type="text/css">
+        body{ background:#000;}
+        .body_bg{ position:fixed; left:0; right:0; top:0; bottom:0; z-index:0}
+        .body_bg img{ width:100%; height:100%}
+        .ico_up{ position:fixed;z-index:9; right:20px; bottom:20px; width:30px; height:30px; background:url({MON_TIMELINE_RES}images/up.png) no-repeat 0 0; background-size:30px 30px; text-indent:-9999px; cursor:pointer}
+        .list_view{ position:relative; z-index:1; min-height:100%; margin:0 10px 0px 80px; padding-left:15px; border-left:solid 2px #ccc;border-left:solid 2px rgba(255,255,255,.5)}
+        .list_view li{ padding:10px 0}
+        .list_view li .date{ position:relative; float:left;  width:62px;margin-left:-90px; text-align:right}
+        .list_view li .date strong{ display:block; color:#b6b6b6; font-weight:normal}
+        .list_view li .date p{color:#b6b6b6}
+        .list_view li .date i{ position:absolute; right:-16px; top:15px; width:8px; height:8px; background:#ccc; border-radius:4px; line-height:0; font-size:0}
+        .list_view li .t_cnt{ position:relative; padding:8px 10px; background:#737373; border-radius:5px}
+        /*.list_view li:hover .t_cnt{background:rgba(255,255,255,.3);}*/
+        .list_view li .t_cnt .arrow{ position:absolute; left:-8px; top:12px; width:8px; height:16px; background:url({MON_TIMELINE_RES}images/arrow.png) no-repeat 0 0; background-size:8px 16px; opacity:.1}
+        /*.list_view li:hover .t_cnt .arrow{opacity:.3}*/
+        /*.list_view li:hover .date *{ color:#fff; text-shadow:0 1px 2px #555}*/
+        .list_view li h2{ color:#fff; font-size:14px; text-shadow:0 1px 2px #555; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+        .list_view li .desc{ color:#bbb;text-shadow:0 1px 2px rgba(0,0,0,.2);}
+        .list_view li .t_cnt a{ display:block}
+        .list_view li .pic{ margin-top:10px; text-align:center;position:relative;}
+        .list_view li .pic img{ max-width:100%; max-height:300px; margin:0 auto}
+
+        .list_view li .pic .play{
+            position:absolute;
+            left:50%;
+            top:50%;
+            width:50px;
+            height:50px;
+            margin:-25px 0 0 -25px;
+            /*background:url(/static/images/wz/ico_play.png) no-repeat 0 0;*/
+            background-size:50px 50px;
+            text-intent:-9999px;
+        }
+
+
+        .myscroll{width:100%;overflow:hidden;}
+
+
+    </style>
+</head>
+<script src="{MON_TIMELINE_RES}js/jquery-1.10.2.js"></script>
+
+<script src="{MON_TIMELINE_RES}js/iscroll_5.js" type="text/javascript"></script>
+<script src="{MON_TIMELINE_RES}js/tool.js"></script>
+<body>
+<span id="sss" style="position:fixed;height:30px;background:#000;width:100%;z-index:100;opacity:0.7;top:0px;"></span>
+<span id="ddd" style="position:fixed;line-height:30px;color:#fff;width:100%;z-index:101;text-align:center;top:0px;">加载中...</span>
+
+<div class="body_bg"><img src="{php echo MonUtil::defaultImg(MonUtil::$IMG_LIST_BG,$timeline)}"></div>
+<div class="myscroll">
+    <div class="listDiv" style="position:relative;">
+        <ul class="list_view">
+
+
+
+        </ul>
+    </div>
+</div>
+<a href="#"><span class="ico_up">上滑</span></a>
+</body>
+<script type="text/javascript">
+    var listScroll;
+    function loaded() {
+        listScroll = new IScroll('.myscroll',{
+            click:true,
+            scrollbars: true,
+            deceleration:0.002
+        });
+        listScroll.on('scrollEnd', function(){
+            //判断触底事件
+            //alert('ge');
+            var bottomY = (listScroll.maxScrollY + 10);
+            if(listScroll.y < bottomY)
+            {
+                //$('#sss').html('到底了');
+
+                if(hasNextPage)
+                {
+                    if(isLoaded)
+                    {
+                        isLoaded = false;
+                        loadData();//加载新一页
+                        $('#sss').show();
+                        $('#ddd').show();
+                    }
+                }
+            }
+            //$('#sss').html(listScroll.y+'--000000'+s);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', loaded, false);
+</script>
+<script>
+    var isFisrtLoad = true;
+    var nextpage = 1;
+    //var per_page = 6;
+    var hasNextPage = true; //是否还有下一页
+    var isLoaded = true;//是否加载完成
+    $(document).ready(function() {
+        $('.myscroll').height($(window).height());
+        loadData();
+    });
+
+
+    loadData = function(){
+
+        $.get(
+                "{php echo MonUtil::str_murl($this->createMobileUrl('AjaxItem',array('tid' => $timeline['id']),true))}&page="+nextpage,
+
+                function(data){
+                    if(data.result)
+                    {
+
+                        var html = '';
+                        $.each(data.data, function(i, item){
+                            //console.log(item.id);
+                            var link = '';
+                            var item_pic = "{$_W['attachurl']}"+item.pic;
+                            link = item.url;
+                            var img = '';
+                            if(item.pic !== '')
+                            {
+                                img = '<img src="'+item.pic+'">';
+                            }
+                            var playbtn = '';
+
+                            html ='<li>'+
+                            '<div class="date"><i></i><strong>'+item.year+'.'+item.mon+'.'+item.mday+'</strong><p>'+item.hours+':'+item.minutes+'</p></div>'+
+                            '<div class="t_cnt" style="background: '+item.i_bgcolor+'">'+
+                            '<span class="arrow"></span>'+
+                            '<a href="'+link+'">'+
+                            '<h2>'+item.title+'</h2>'+
+                            '<div class="desc">'+item.text+'</div>'+
+                            '<div class="pic"><img src="'+item_pic+'">'+playbtn+'</div>'+
+                            '</a>'+
+                            '</div>'+
+                            '</li>';
+
+                            $('.list_view').append(html);
+
+                        });
+
+                        //监听window的scroll
+                        //listenScroll();
+
+                        if(nextpage >= data.count)
+                        {
+                            hasNextPage = false;
+                        }
+
+                        nextpage ++;
+                        $('.list_view').ready(function(){
+                            //alert('gse');
+                            $('.pic img').load(function(){
+                                listScroll.refresh();
+                            });
+
+                        });
+
+                    }
+                    else
+                    {
+                        hasNextPage = false;
+                    }
+                    isLoaded = true;
+                    $('#sss').hide();
+                    $('#ddd').hide();
+
+                    if(isFisrtLoad)
+                    {
+                        isFisrtLoad = false;
+                        $('.iScrollVerticalScrollbar').width(4);
+                        $('.ico_up').click(function(){
+                            listScroll.scrollTo(0,0);
+                        });
+                    }
+                },
+                'json'
+        );
+    }
+
+</script>
+
+{php echo register_jssdk(false);}
+<script type="text/javascript">
+
+
+
+    wx.ready(function () {
+        sharedata = {
+            title: "{$timeline['share_title']}",
+            desc: "{$timeline['share_content']}",
+            link: window.location.href,
+            imgUrl: "{$_W['attachurl']}{$timeline['share_icon']}",
+            success: function(){
+
+            },
+            cancel: function(){
+
+            }
+        };
+        wx.onMenuShareAppMessage(sharedata);
+        wx.onMenuShareTimeline(sharedata);
+    });
+
+
+</script>
+
+</html>

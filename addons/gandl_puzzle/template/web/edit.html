@@ -1,0 +1,208 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('add')}">创建解密活动</a></li>
+	<li><a href="{php echo $this->createWebUrl('list')}">管理解密活动</a></li>
+	<li class="active"><a>编辑解密活动</a></li>
+</ul>
+
+<form id="the_form" class="form-horizontal form" action="{php echo $this->createWebUrl('edit')}" method="post" enctype="multipart/form-data"><input type="hidden" name="puzzle[id]" value="{$puzzle['id']}" />
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			基本信息
+		</div>
+		<div class="panel-body">
+
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">解密主题</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="puzzle[topic]" class="form-control" value="{$puzzle['topic']}" />
+					<div class="help-block">请尽量用简单的语言描述解密活动的主题</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">顶部宣传图</label>
+				<div class="col-sm-9 col-xs-12">
+					 {php echo tpl_form_field_image('puzzle[cover]',$puzzle['cover'])}
+					 <div class="help-block"></div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">详细说明</label>
+				<div class="col-sm-8">
+					<!---<textarea style="height:200px;" class="richtext-clone" name="puzzle[detail]">{$puzzle['detail']}</textarea>-->
+					{php echo tpl_ueditor('puzzle[detail]',$puzzle['detail'])}
+					<div class="help-block">
+						对本次活动的玩法，规则，奖品等进行说明
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动时间</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo tpl_form_field_daterange('puzzle[time]', $puzzle['time'], true)}
+					<span class="help-block">解密活动的时间范围</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			解密信息
+		</div>
+		<div class="panel-body">
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">设定线索</label>
+				<div class="col-sm-9 col-xs-12">
+                    <textarea name="puzzle[keys]" class="form-control" rows="5">{$puzzle['keys']}</textarea>
+					<div class="help-block">参与者可能获得的解密线索，每行写一个</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">正确答案</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="puzzle[truth]" class="form-control" value="{$puzzle['truth']}" />
+					<div class="help-block">该解密活动的答案</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">答案选项</label>
+				<div class="col-sm-9 col-xs-12">
+                    <textarea name="puzzle[truth_options]" class="form-control" rows="5">{$puzzle['truth_options']}</textarea>
+					<div class="help-block">不填则为输入模式，填写此项则为选择模式。选项为每行写一个</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">答案解释</label>
+				<div class="col-sm-9 col-xs-12">
+                    <textarea name="puzzle[truth_remark]" class="form-control" rows="5">{$puzzle['truth_remark']}</textarea>
+					<div class="help-block">解释线索与答案的关系</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">解答限制</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="puzzle[keys_least]" class="form-control" value="{$puzzle['keys_least']}" />
+					<div class="help-block">提交答案前至少需收集到线索的个数</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			宝藏奖品
+		</div>
+		<div class="panel-body">
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">获奖人数</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="puzzle[award]" class="form-control" value="{$puzzle['award']}" />
+					<div class="help-block">最终获奖人数，按提交答案的时间排列前几位获奖</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">领奖说明</label>
+				<div class="col-sm-9 col-xs-12">
+                    <textarea name="puzzle[award_remark]" class="form-control" rows="5">{$puzzle['award_remark']}</textarea>
+					<div class="help-block">引导获奖者领取奖品</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			其他设置
+		</div>
+		<div class="panel-body">
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="puzzle[share_title]" class="form-control" value="{$puzzle['share_title']}" />
+					<div class="help-block">分享给好友或朋友圈时的标题</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享图片</label>
+				<div class="col-sm-9 col-xs-12">
+					 {php echo tpl_form_field_image('puzzle[share_img]',$puzzle['share_img'])}
+					 <div class="help-block">分享给好友或朋友圈时的图片</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享描述</label>
+				<div class="col-sm-9 col-xs-12">
+					 <textarea name="puzzle[share_desc]" class="form-control" rows="5">{$puzzle['share_desc']}</textarea>
+					 <div class="help-block">分享给好友或朋友圈时的描述</div>
+				</div>
+			</div>
+			<!--
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">引导关注链接</label>
+				<div class="col-sm-9 col-xs-12">
+					 {php echo tpl_form_field_image('puzzle[follow_link]',$puzzle['follow_link'])}
+					 <div class="help-block">用户未关注时访问跳转链接! 推荐用微信平台的素材库，转成短地址 <a href="http://www.dwz.cn/" target="_blank">短网址转换</a></div>
+				</div>
+			</div>
+			-->
+
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">底部广告</label>
+				<div class="col-sm-8">
+					{php echo tpl_ueditor('puzzle[ad]',$puzzle['ad'])}
+					<div class="help-block">
+						活动页面底部广告
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input type="hidden" name="submit" value="save" />
+			<input id="btn-submit" type="submit" value="提交" class="btn btn-primary col-lg-1" data-loading-text="正在提交..."/>
+		</div>
+	</div>
+
+</form>
+
+<script type="text/javascript">
+	require(['jquery','util'], function($, util){
+		$('#the_form').submit(function() {
+			$('#btn-submit').button('loading');
+			//tinyMCE.triggerSave();
+			$.post($(this).attr('action'),$(this).serialize(),function(resp) {
+				//resp=eval('('+resp+')');
+				if(resp.status==0){
+					$('#btn-submit').button('reset');
+					util.message(resp.info);
+				}else{
+					util.message(resp.info,resp.data);
+					//location.href=resp.data;
+				}
+			});
+			return false;
+        });
+	});
+</script>
+
+{template 'common/footer'}

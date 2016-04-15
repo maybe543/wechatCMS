@@ -1,0 +1,437 @@
+{template 'common/header'}
+{template 'common'}
+<script type="text/javascript" src="resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+<style>
+.form_short{
+  width: 5%;
+  height: 34px;
+  padding: 6px 12px;
+  margin: 0px 5px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/recruit/template/mobile/css/uploadify_t.css" />
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+		<input type="hidden" name="id" value="{$item['id']}" />
+		<div class="panel panel-default">
+			<div class="panel-heading">活动设置</div>
+			<div class="panel-body">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动标题</label>
+				<div class="col-sm-9 col-xs-12">
+					<input type="text" name="title" id="title" class="form-control" value="{$item['title']}" />
+				</div>
+			</div>
+						<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动始止时间</label>
+				<div class="col-sm-4 col-xs-6">{php echo tpl_form_field_date('stime', !empty($item['stime']) ? $item['stime'] : date('Y-m-d H:i'), 1)}</div>
+				<div class="col-sm-4 col-xs-6">{php echo tpl_form_field_date('etime', !empty($item['etime']) ? $item['etime'] : date('Y-m-d H:i'), 1)}</div>
+			</div>	
+						<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">游戏前是否必须关注</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" name="subscribe" value="1" {if $item['subscribe']==1}checked{/if}>是
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="subscribe" value="0" {if $item['subscribe']==0}checked{/if}>否
+						</label>
+						<span class="help-block">关注后可以翻红包</span>
+					</div>
+			
+					</div>	
+							<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">提现前是否必须关注</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" name="cashgz" value="1" {if $item['cashgz']==1}checked{/if}>是
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="cashgz" value="0" {if $item['cashgz']==0}checked{/if}>否
+						</label>
+						<span class="help-block">关注后可以提现</span>
+					</div>
+			
+					</div>	
+					<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则</label>
+				<div class="col-sm-9 col-xs-12">
+					每人最初有<input type="text" name="chance" id="chance" class="form_short" value="{$item['chance']}" />次翻红包机会，
+					分享好友后获得<input type="text" name="share_chance" id="share_chance" class="form_short" value="{$item['share_chance']}" />次机会
+				</div>
+			</div>
+		<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">规则描述</label>
+				<div class="col-sm-9 col-xs-12">
+					<textarea name="rule" class="form-control richtext1" cols="7" rows="10">{$item['rule']}</textarea>
+				</div>
+			</div>
+			
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动详情</label>
+				<div class="col-sm-9 col-xs-12">
+					<textarea name="adept" class="form-control richtext" cols="7" rows="10">{$item['adept']}</textarea>
+				</div>
+			</div>
+			
+			                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">图文消息素材</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="sucai" class="form-control" value="{$item['sucai']}">
+                        <span class="help-block">本次活动的图文素材, 用于引导关注. 请在微信公众平台中编辑的单条图文消息来介绍本次活动, 用于引导粉丝快速关注</span>
+                    </div>
+                </div>
+</div></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                活动限制参数
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动限制区域</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="row row-fix">
+                            <div class="col-sm-4 col-xs-2">
+                                <div class="input-group">
+                                    <input type="text" name="state" class="form-control" value="{$item['state']}">
+                                    <span class="input-group-addon" style="border-left:none;border-right:none;">省</span>
+                                    <input type="text" name="city" class="form-control" value="{$item['city']}">
+                                    <span class="input-group-addon">城市</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="help-block">如果要限制粉丝在特定区域才能领取, 请设置省和市</span>
+                        <span class="help-block"><strong>省份和城市需要按照微信个人资料中的位置设置. 如果设置错误, 将不能领取</strong></span>
+                    </div>
+                </div>
+            </div>
+            	<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">次数限制</label>
+				<div class="col-sm-9 col-xs-12">
+					每人活动期间共有<input type="text" name="times" id="times" class="form_short" value="{$item['times']}" />次翻红包机会
+					<span class="help-block"><strong>包括分享好友获得额外的机会加一起，建议200次</strong></span>
+				</div>
+				
+			</div>
+			
+        </div>
+		<div class="panel panel-default">
+			<div class="panel-heading">模板风格设置</div>
+			<div class="panel-body">
+		<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">主题</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" name="theme" value="0" {if $item[theme]==0}checked{/if}>自定义
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="theme" value="1" {if $item[theme]==1}checked{/if}>端午
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="theme" value="2" {if $item[theme]==2}checked{/if}>七夕
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="theme" value="3" {if $item[theme]==3}checked{/if}>中秋
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="theme" value="4" {if $item[theme]==3}checked{/if}>红包
+						</label>
+					</div>
+			
+					</div>		
+			<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">宣传图片</label>
+					<div class="col-sm-9 col-xs-12" id="apic">
+						{php echo tpl_form_field_image('apic', $item['apic'])}
+						<span class="help-block">参考图片大小：865px*1000px</span>
+					</div>
+					
+				</div>
+			<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">背景图片</label>
+					<div class="col-sm-9 col-xs-12" id="bgpic">
+						{php echo tpl_form_field_image('bgpic', $item['bgpic'])}
+						 <span class="help-block">参考图片大小：566px*864px</span>
+					</div>
+				</div>
+			<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否自定义6张封面</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline">
+							<input type="radio" name="custom" value="1" {if $item['custom']==1}checked{/if}>是
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="custom" value="0" {if $item['custom']==0}checked{/if}>否
+						</label>
+					</div>
+			
+					</div>	
+			<div class="form-group" id="redpic7" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">封面图片</label>
+					<div class="col-sm-9 col-xs-12" id="fpic">
+						{php echo tpl_form_field_image('fpic', $item['fpic'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+				
+
+			<div class="form-group" id="redpic1" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片1</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic1', $item['redpic1'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group" id="redpic2" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片2</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic2', $item['redpic2'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group" id="redpic3" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片3</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic3', $item['redpic3'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group" id="redpic4" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片4</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic4', $item['redpic4'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group" id="redpic5" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片5</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic5', $item['redpic5'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group" id="redpic6" style="display:none">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片6</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('redpic6', $item['redpic6'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+							<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">红包图片</label>
+					<div class="col-sm-9 col-xs-12" id="redpic">
+						{php echo tpl_form_field_image('redpic', $item['redpic'])}
+						<span class="help-block">参考图片大小：256px*325px</span>
+					</div>
+				</div>
+			<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">文字色</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_color('color', $item['color'])}
+					</div>
+				</div>
+			</div></div>	
+		<div class="panel panel-default">
+			<div class="panel-heading">分享设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享图标</label>
+					<div class="col-sm-9 col-xs-12" id="share_icon">
+						{php echo tpl_form_field_image('share_icon', $item['share_icon'])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="share_title" class="form-control" value="{$item['share_title']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享内容</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="share_content" class="form-control" value="{$item['share_content']}" />
+					</div>
+				</div>
+				</div></div>
+		<div class="panel panel-default">
+			<div class="panel-heading">提示词设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">单位</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="unit" class="form-control" value="{$item['unit']}" />
+						<span class="help-block">如：次机会，点体力，斗战斗粮</span>
+					</div>
+				</div>
+			<!-- 	<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">没有机会的提示词</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="nochance" class="form-control" value="{$item['nochance']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">中奖提示词</label>
+					<div class="col-sm-9 col-xs-12">
+						恭喜您中了{money}元，<input type="text" name="winning" class="form-control" value="{$item['winning']}" />
+					</div>
+				</div>
+								<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付模板入账详情</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="winning" class="form-control" value="{$item['winning']}" />
+					</div>
+				</div>-->
+				</div></div>
+		<div class="panel panel-default">
+			<div class="panel-heading">虚拟数据设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">参加人数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="vnum" class="form-control" value="{$item['vnum']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">虚拟金额范围</label>
+
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="row row-fix">
+                            <div class="col-sm-4 col-xs-2">
+                                <div class="input-group">
+                                    <input type="text" name="vmin" id="vmin" class="form-control ng-pristine ng-untouched ng-valid" value="{$item['vmin']}">
+                                    <span class="input-group-addon" style="border-left:none;border-right:none;">至</span>
+                                    <input type="text" name="vmax" id="vmax" class="form-control ng-pristine ng-untouched ng-valid" value="{$item['vmax']}">
+                                    <span class="input-group-addon">分</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                     </div>                    
+                </div>
+                  <div class="alert alert-info">
+					                           这里设置的虚拟红包范围是指：翻牌没中的其他5张牌上的红包金额（只做数据展示用，刺激用户分享）
+                        </div>
+				</div>
+				</div></div>
+
+
+<script language='javascript'>
+$(function() {
+	var custom="{$item[custom]}";
+	if(custom==1){
+		$("#redpic1").show();
+		$("#redpic2").show();
+		$("#redpic3").show();
+		$("#redpic4").show();
+		$("#redpic5").show();
+		$("#redpic6").show();
+	}else{
+		$("#redpic7").show();
+	}
+	$("input[name=custom]").click(function(){
+		var item=$(this).val(); 
+		if(item==1){
+			$("#redpic1").show();
+			$("#redpic2").show();
+			$("#redpic3").show();
+			$("#redpic4").show();
+			$("#redpic5").show();
+			$("#redpic6").show();
+			$("#redpic7").hide();
+		}else{
+			$("#redpic1").hide();
+			$("#redpic2").hide();
+			$("#redpic3").hide();
+			$("#redpic4").hide();
+			$("#redpic5").hide();
+			$("#redpic6").hide();
+			$("#redpic7").show();
+		}
+	})
+
+})
+	require(['jquery', 'util'], function($, u){
+		$(function(){
+			u.editor($('.richtext')[0]);
+			u.editor($('.richtext1')[0]);
+		});
+	});
+	
+	$("input[name=theme]").click(function(){
+		var item=$(this).val(); 
+		if(item==1){
+			//端午节
+			//$("#apic").text("q");
+	temp('dw');
+		}else if(item==2){
+	temp('qx');
+			
+		}else if(item==3){
+			temp('zq');
+		}else if(item==4){
+			temp('red');
+		}else{
+			temp('');
+		}
+	})
+	function temp(tmp){
+		if(tmp!=''){
+			$("#apic").html("{php echo $this->tpl_form_field_imagepic('apic', '../addons/enjoy_red/template/mobile/images/"+tmp+"/apic.jpg')}");
+			$("#bgpic").html("{php echo $this->tpl_form_field_imagepic('bgpic', '../addons/enjoy_red/template/mobile/images/"+tmp+"/bgpic.jpg')}");
+			$("#fpic").html("{php echo $this->tpl_form_field_imagepic('fpic', '../addons/enjoy_red/template/mobile/images/"+tmp+"/fpic.png')}");
+			$("#share_icon").html("{php echo $this->tpl_form_field_imagepic('share_icon', '../addons/enjoy_red/template/mobile/images/"+tmp+"/share.jpg')}");
+		if(tmp=='red'){
+			$("#redpic").html("{php echo $this->tpl_form_field_imagepic('redpic', '../addons/enjoy_red/template/mobile/images/"+tmp+"/redpic.png')}");
+		}
+		}else{
+			$("#apic").html("{php echo $this->tpl_form_field_imagepic('apic', $item[apic])}");
+			$("#bgpic").html("{php echo $this->tpl_form_field_imagepic('bgpic', $item[bgpic])}");
+			$("#fpic").html("{php echo $this->tpl_form_field_imagepic('fpic', $item[fpic])}");
+			$("#share_icon").html("{php echo $this->tpl_form_field_imagepic('share_icon', $item[share_icon])}");
+		}
+
+	}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+<div class="form-group col-sm-12">
+	<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" onclick='return formcheck()' />
+	<input type="hidden" name="token" value="{$_W['token']}" />
+	</div>
+	</form>
+</div>
+<script language='javascript'>
+	function formcheck(){
+		if($("#title").isEmpty()){
+			Tip.focus("title","请填写活动标题!");
+			return false;
+		}
+		return true;
+	}
+{template 'common/footer'}

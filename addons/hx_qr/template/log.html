@@ -1,0 +1,44 @@
+{template 'common/header'}
+<div class="main">
+<ul class="nav nav-tabs">
+	<li class="active"><a href="{php echo $this->createWebUrl('log',array('reply_id'=>$reply_id));}">积分排行</a></li>
+	<li><a href="{php echo $this->createWebUrl('credit');}">红包管理</a></li>
+</ul>	
+	<div style="padding:15px;">
+		<form action="" method="post">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th align="center" style="width:20px;text-align:center;">ID</th>						
+                    <th align="center" style="width:100px;text-align:center;">昵称</th>
+                    <th align="center" style="width:40px;text-align:center;">参与活动余额</th>
+					<th align="center" style="width:40px;text-align:center;">总余额</th>
+					<th align="center" style="width:40px;text-align:center;">直接邀请</th>
+					<th align="center" style="width:40px;text-align:center;">间接邀请</th>
+					<th align="center" style="width:60px;text-align:center;">邀请人</th>
+					<th align="center" style="width:60px;text-align:center;">参与时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $row}
+					<tr>
+                        <td align="center" style="text-align:center;">{$row['id']}</td>
+                        <td align="center" style="text-align:center;">{$row['nickname']}</td>
+                        <td align="center" style="text-align:center;">{php echo $reply['click_credit']*$row['first_level'] + $reply['sub_click_credit']*$row['secend_level'] + $reply['newbie_credit']}</td>
+                        {php $credit = mc_credit_fetch(mc_openid2uid($row['openid'],'credit2'))}
+                        <td align="center" style="font-size:12px; color:#666; text-align:center;"><a href="./index.php?c=mc&a=creditmanage&do=credit_record&type=credit2&uid={php echo mc_openid2uid($row['openid'])}" target="_blank">{$credit['credit2']}</a></td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$row['first_level']}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$row['secend_level']}</td>
+						{php $from_user_info = mc_fetch($row['sub_openid']);}
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$from_user_info['nickname']}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{php echo date('Y-m-d H:i:s',$row['createtime'])}</td>
+					</tr>
+				{php unset($from_user_info);unset($credit);}
+				{/loop}
+			</tbody>
+		</table>
+	</form>
+		{$pager}
+	</div>
+</div>
+{template 'common/footer'}

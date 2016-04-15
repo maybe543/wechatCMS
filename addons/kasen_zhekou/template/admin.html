@@ -1,0 +1,70 @@
+{template 'common/header'}
+<script language=javascript>
+function selectAll(){
+var a = document.getElementsByName("checks[]");
+if(a[0].checked){
+for(var i = 0;i<a.length;i++){
+if(a[i].type == "checkbox") a[i].checked = false;
+}
+}
+else{
+for(var i = 0;i<a.length;i++){
+if(a[i].type == "checkbox") a[i].checked = true;
+}
+}
+}
+</script>
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">优惠券管理</div>
+  <form  action="" method="post">
+  <div class="panel-body">
+    <p>查看优惠券管理，批量管理优惠券</p>
+	<input name="token" type="hidden" value="{$_W['token']}" />
+	<input type="button" name="select" onclick="javascript:selectAll()" value="全选/全不选"/>
+	<select name='steta'>
+	<option value='999'>选择</option>	
+	<option value='0'>设为使用</option>	
+	<option value='1'>作废选中</option>	
+	<option value='2'>删除选中</option>	
+	<option value='3'>发送选中</option>	
+	<option value='4'>设为未使用</option>	
+	<option value='5'>设为未作废</option>	
+	<option value='6'>设为未发送</option>	
+	</select> <input type="submit" name="submit" value="确定" />
+  </div>
+	
+  <!-- Table -->
+  
+  <table class="table">
+    <tr><td style='width:10%'><b>选择</b></td><td style='width:10%'><b>发送</b></td><td style='width:10%'><b>使用</b></td><td style='width:10%'><b>作废</b></td><td style='width:30%'><b>优惠券</b></td><td style='width:30%'><b>所属类型</b></td> </tr>
+	{loop $accounts $row}
+	<tr>
+	<td><input type="checkbox" name='checks[]' value={$row['id']}> </td>
+	<td>{if $row['send']==0}
+	否
+	{else}
+	<span style="color:#347600">是</span>
+	{/if}</td>	
+	<td>
+	{if $row['use']==0}
+	否
+	{else}
+	<span style="color:blue">是</span>
+	{/if}</td>
+	
+	<td>{if $row['void']==0}
+	否
+	{else}
+	<span style="color:red">是</span>
+	{/if}</td>
+	<td>{$row['code']}</td>
+	<td>{php $sql = 'SELECT * FROM ' . tablename('ks_yhq') . ' WHERE `pid` = :pid'; $params = array(':pid' => $row['pid']); $account = pdo_fetch($sql, $params); echo $account['name'];}</td>
+	</tr>
+	{/loop}
+  </table>
+  </form>
+</div>
+
+
+{template 'common/footer'}

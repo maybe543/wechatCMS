@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */ 
+ .search-form{padding:10px;}
+ .search-inner{position:relative;}
+ .search-inner .icon-search-gray{position:absolute;left:5px;z-index:2;}
+ .search-inner .search-input{position:absolute;left:0;width:100%;padding-left:28px;} 
+ .search-btn{display:none;float:right;width:18%;height:37px;line-height:35px;background:#fff;border:1px solid #ccc;box-shadow:inset 0 0 4px rgba(0,0,0,.2);font-size:14px;color:#333;outline:none;}
+ .search-btn:hover{background:#fff;color:#333;}
+ .search-btn:active{background:#ccc;}
+ .search-btn:link{background:#fff;}
+ .search-btn:visited{background:#fff;}
+ .search-class{margin-top:40px;}
+ .search-class-ul{margin:0;padding:0;list-style:none;border-top:1px solid #e1e1e1;}
+ .search-class-a{display:block;padding:12px 10px;color:#666;border-bottom:1px solid #e1e1e1;}
+ .search-class-a:active{background:#e1e1e1;}
+ .search-class-a .icon-arrow{float:right;margin-top:8px;background:url("../images/icon-ps.png") -55px 0;width:6px;height:11px;}

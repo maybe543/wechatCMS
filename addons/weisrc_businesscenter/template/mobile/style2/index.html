@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, target-densitydpi=medium-dpi" />
+<meta name="format-detection" content="telephone=no" />
+<title>{$setting['title']}</title>
+<link href="{RES}/themes/css/font.css" rel="stylesheet" type="text/css" />
+<link href="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/css/index.css" rel="stylesheet" type="text/css" />
+<link href="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/css/head.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Common/js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Common/js/jquery.form.js"></script>
+<script type="text/javascript" src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Common/js/functions.js"></script>
+<link href="Public/Common/asyncbox/skins/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Common/asyncbox/asyncbox.js"></script>
+<script type="text/javascript" src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/js/layer.min.js"></script>
+	<link rel="stylesheet" href="{RES}/swiper/css/swiper.min.css?v=1">
+<style>
+/*.list00{ width:65%;}*/
+.zhek {color:red; margin-right:0.2em; font-weight:blod; float:right; height:2.6em; width:3em; text-align:right;}
+.menu{ position:relative}
+.line1{ width:100%; height:1px; background:#efefef; position:absolute; top:50%;}
+.line2,.line4,.line3{height:100%; width:1px; background:#efefef; position:absolute;}
+.line2{  left:25%}
+.line3{ left:50%}
+.line4{ left:75%}
+</style>
+</head>
+<body>
+<!--头部-->
+<div id="head">
+	<a href="{php echo $this->createMobileurl('search', array(),true)}" id="serch"><img src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/images/search.png" /></a> <a
+		href="javascript:history.go(-1);" id="fan"><img src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/images/fan.png"/></a>
+    <!--<span id="fan" style="width:20px;"></span>-->
+    <h1>{$setting['title']}</h1>
+    <!--<div class="nav_t">-->
+     <!--<ul class="nav">-->
+        <!--<li><a href="/index.php/Wap/Index/city/cityid/365.html" id="address" >-->
+		<!--汕头市</a>-->
+      <!--</li>-->
+    <!--</ul> -->
+    <!--</div>-->
+</div>
+<div class="clear"></div>
+{if !empty($slide)}
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		{loop $slide $item}
+		<div class="swiper-slide">
+			<img src="{php echo tomedia($item['attachment']);}" width="100%"/>
+		</div>
+		{/loop}
+	</div>
+	<div class="swiper-pagination"></div>
+</div>
+{/if}
+
+<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/Public/Wap/images/banner.jpg"  style="width:100%; height:auto" />-->
+<!--导航-->
+<style>
+	.notification-section {
+		background-color: white;
+		padding: 0 10px;
+		border-bottom: 1px solid #dbdbdb;
+	}
+	.notification-section .notice {
+		border-top: 1px dotted #eeeeee;
+		padding: 8px 0;
+		padding-left: 30px;
+		line-height: 20px;
+	}
+	.red {
+		color: #f34b3f !important;
+	}
+	.notification-section .notice i {
+		display: block;
+		float: left;
+		margin-left: -30px;
+		text-align: center;
+		width: 30px
+	}
+</style>
+{if !empty($setting)&&$setting['scroll_announce_enable'] == 1}
+<div class="notification-section">
+	<div class="notice">
+		<i class="fa fa-volume-up red"></i>
+		<marquee behavior="scroll" scrollamount="{if empty($setting) || $setting['scroll_announce_speed']==0}6{else}{$setting['scroll_announce_speed']}{/if}" scrolldelay="1" class="ng-binding"><a href="{if !empty($setting['scroll_announce_link'])}{$setting['scroll_announce_link']}{else}#{/if}">
+			{$setting['scroll_announce']}
+		</a></marquee>
+	</div>
+</div>
+{/if}
+
+
+
+<div class="menu">
+	<ul>
+		{php $index=1;}
+		{loop $category $item}
+		<a href="{php echo $this->createMobileurl('list', array('cid' => $item['id'], true))}">
+			<li{if $index>4} style="padding-top:0px;"{/if}>
+				<img src="{php echo tomedia($item['logo']);}" name="img_bor"/><p name="cor_p">{$item['name']}</p>
+			</li>
+		</a>
+		{php $index++;}
+		{/loop}
+    </ul>
+    <!--<div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+    <div class="line4"></div>-->
+</div>
+
+<!--公告-->
+<div style="width:100%; height:0.4em;"></div>
+<div class="hei8"></div>
+<!--热门推荐-->
+<div class="main bor1 bors" >
+	<div class="main01" >
+        <div class="index_li_ti bor_le bor_ri">
+        	<h2 style="height:2.3em; font-size:1.1em; line-height:2.3em; padding-left:.3em; color:#00b9ef" >推荐商家</h2>
+			<!--<img src="Public/Wap/images/icofj.png" style="width:1.2em; float:left; margin-top:.5em" />-->
+        </div>
+		<!--附近商家没有获取到地理位置时显示推荐商家，获取到地理位置显示附近商家-->
+        <div class="index_list" id='xr_sj'>
+			{loop $hotstores $item}
+			<a href="{php echo $this->createMobileurl('shop', array('id' => $item['id'], true))}"><div class="main1 bor_bot2">
+				<div class="box2 d">
+					<img src="{php echo tomedia($item['logo']);}" class="f" />
+				</div>
+				<div class="list00">
+					<h3>{$item['title']}</h3>
+					<p>
+						{if !empty($item['discount'])}<span class='zhek' style='font-size:1.2em;'>{$item['discount']}折</span>{/if}
+						{$item['content']}
+					</p>
+				</div>
+			</div>
+			</a>
+			{/loop}
+        
+        	<!--<a href='/index.php/Wap/Shops/show/sid/1025.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140510/13997075910.26960000.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>喜相逢餐饮</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>9.0折</span>喜相逢火锅滋味浓郁，味道鲜美！中国的特色融入美食，就是一种精粹！相传，烤鸭之美，是源于名贵品种的北京鸭，它是当今世界最优质的一种肉食鸭！</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1011.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140702/14042925680.51105700.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>瓦伦丁西餐酒吧</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.5折</span>瓦伦丁节，又称情人节，是欧美和大洋洲的一些国家的民族节日。此节日的来源甚多，但一般是以罗马圣教徒瓦伦丁被处死，后被定为“情人节”较为普遍。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1016.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140702/14042908430.00014400.jpg" class="f" />-->
+					<!--<div class='qing'></div>					</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>臻味坊新派火锅（铜锣湾店）</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>9.5折</span>Tasty Shop为臻味坊的英译，标志以Tasty Shop为原型，在字母“O”的基础上，融入中国传统元素“味”字，顾名思义，臻味坊是制造健康、美味儿的地方，也表达了臻味坊品牌所传递的美食理念：不仅带给顾客健康、天然、营养、美味的餐品，还传递和引导人们健康饮食观念，臻味坊中西合璧的诠释了新派餐饮的内涵。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1014.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140510/13996949840.62544800.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>臻味坊新派火锅（医学院店）</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>9.5折</span>Tasty Shop为臻味坊的英译，标志以Tasty Shop为原型，在字母“O”的基础上，融入中国传统元素“味”字，顾名思义，臻味坊是制造健康、美味儿的地方，也表达了臻味坊品牌所传递的美食理念：不仅带给顾客健康、天然、营养、美味的餐品，还传递和引导人们健康饮食观念，臻味坊中西合璧的诠释了新派餐饮的内涵。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1018.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140509/13996186610.84700700.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>食话人生美食养生捞</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>9.0折</span>“食话人生”美食养生捞以健康养生为理念，主营一人一位的养生美食火锅，其现代的时尚格调融合独特的美食气息，让您回归美食最原始的味觉体验！</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1020.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140512/13998891430.51042500.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>新语咖啡</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.8折</span>选一家好的西餐厅，享用美味的西餐，不但可以好好地犒劳辛苦的自己，也能跟一起用餐的人进一步培养感情。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1395.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140816/14081614310.37036000.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>红馆酒吧</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.5折</span>“红馆” 位于红山体育馆对面的一间集娱乐、休闲、聚会、桌球会所为一体的酒吧。如果你幸运的话，在这里还可以看到咱们新疆本土歌手，涂志伟、艾尼瓦尔、安明亮，近距离欣赏到他们的歌声，因为他们都是老板的好朋友！有时，老板还会举办一些Hip-Hop的地下Party，咱们新疆有名街舞团队都会来这里表演。当人们被城市中的现代气息和无休止的欲望充斥着的时候，能有这样一家轻松舒适、品味独到又价格适中的酒吧，可以使人</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1024.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="{RES}/mobile/{php echo $this->cur_tpl}/var/chuan_tu/1033/wsp/20140510/13996923310.36015500.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>意佳西餐</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.8折</span>本西餐是一家以澳洲火山岩石香煎牛扒的主题西餐厅，精心选用进口美国牛肉和国产雪龙雪花牛肉为牛扒原料打造高端品味，口感纯正，回味悠长。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1035.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="var/chuan_tu/1033/wsp/20140513/13999533730.29630100.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>麻辣快乐营（青年路）</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.8折</span>麻辣快乐营是清油火锅倡导者，时尚优雅的环境，贴心入微的服务，麻辣，鲜，香的美味，百姓工薪的价位。清油火锅一改锅底用牛油的传统，用菜籽油炒制底料，清油不含胆固醇，比传统牛油火锅更爽口，不油腻，不加重胃的负担，更健康。</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a><a href='/index.php/Wap/Shops/show/sid/1036.html'><div class="main1 bor_bot2">-->
+				<!--<div class="box2 d">-->
+					<!--<img src="var/chuan_tu/1033/wsp/20140524/14009186130.63228000.jpg" class="f" />-->
+										<!--</div>-->
+					<!--<div class="list00">-->
+					<!--<h3>马语者西餐厅</h3>-->
+				<!--<p><span class='zhek' style='font-size:1.2em;'>8.8折</span>浪漫西餐，从这里开始！</p>-->
+				<!--</div>-->
+				<!--</div>-->
+			<!--</a>		-->
+        </div>
+    </div>
+    
+</div>
+
+
+<script>
+wx.ready(function () {
+		//获取当前地理位置
+		wx.getLocation({
+	      success: function (res) {
+			var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+			var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+			var speed = res.speed; // 速度，以米/每秒计
+			var accuracy = res.accuracy; // 位置精度			
+			//获取周边商家返回
+			$.getJSON("/index.php/Wap/Shops/libshops.html", { latitude:latitude,longitude:longitude}, function(data){
+				 $str = '';
+				 $.each(data, function(i, field){
+					 $str=$str+'<a href="/index.php/Wap/Shops/show/sid/'+field.sid+'.html">';
+					 $str=$str+'<div class="main1 bor_bot2">';
+					 $str=$str+'	<div class="box2 d">';
+					 $str=$str+'		<img src="'+field.thumb+'" class="f">';
+					if(field.muslim==1){
+						$str=$str+'	<div class="qing"></div>';
+					}
+					 $str=$str+'</div>';
+					 $str=$str+'<div class="list00">';
+					 $str=$str+'<h3><span class="fr" style="color:#ccc;">'+field.juli+'</span>'+field.name+'</h3>';
+					 $str=$str+'<p><span class="zhek" style="font-size:1.2em;">'+field.rebate+'折</span>'+field.description+'</p>';
+					 $str=$str+'</div>';
+					 $str=$str+'</div>';
+					 $str=$str+'</a>';
+					});
+				 $("#xr_sj").html($str);
+			});
+			
+			
+		  },
+	      cancel: function (res) {
+	        fhalert('用户拒绝授权获取地理位置');
+	      }
+	    });
+});
+</script>
+<script type="text/javascript" src="Public/Wap/js/juzhong.js" ></script>
+<!--底部导航-->
+{php include $this->template($this->cur_tpl.'/_footer');}
+<script src="{RES}/swiper/js/swiper.min.js"></script>
+<!-- Initialize Swiper -->
+<script>
+	var swiper = new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+		loop:true,
+		autoplay: 2500,
+		paginationClickable: true
+	});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{template 'common/header'}
+	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">优惠券类型管理</div>
+	  <div class="panel-body">
+		<p>查看优惠券类型列表，删除优惠券类型</p>
+	  </div>
+		
+	  <!-- Table -->
+	  <table class="table">
+		<tr><td style='width:5%'><b>ID</b></td><td style='width:10%'><b>类型</b></td><td style='width:10%'><b>描述</b></td><td style='width:10%'><b>代码</b></td><td style='width:30%'><b>图片</b></td><td style='width:10%'><b>操作</b></td></tr>
+		{loop $accounts $row}
+		<tr><td>{$row['pid']}</td><td>{$row['name']}</td><td>{$row['desc']}</td><td>{$row['code']}</td><td><img src="{php echo tomedia($row['images'])}" /></td><td>
+		<form  action="" method="post">
+			<input name="pid" type="hidden" value="{$row['pid']}" />
+			<input name="token" type="hidden" value="{$_W['token']}" />
+			<input type="submit" name="submit" value="删除" />
+		</form></td></tr>
+		{/loop}
+	  </table>
+	</div>
+{template 'common/footer'}

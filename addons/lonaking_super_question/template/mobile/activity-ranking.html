@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-openid="{$html['user']['openid']}" data-load-person-ranking-url="{$urls['load_activity_ranking_url']}" data-activity-id="{$html['activity']['id']}" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+    <title>{$activity['name']}-玩家排名</title>
+    <link href="resource/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../addons/lonaking_super_question/template/mobile/share-assets/share.css">
+    <link href="../addons/lonaking_super_question/template/mobile/css/person-ranking.css" rel="stylesheet">
+    <link href="../addons/lonaking_super_question/template/mobile/font/iconfont.css" rel="stylesheet">
+    <script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="resource/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/js/activity-ranking.js"></script>
+</head>
+<body>
+<div class="container">
+    <!-- 头部-->
+    <div class="row head">
+        <div class="col-lg-2 col-md-3 col-xs-3 col-sm-3 head-img">
+            <div class="">
+                <img src="{$html['user']['headimgurl']}" class="img-circle" width="80px" height="80px">
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-9 col-xs-9 col-sm-9 head-context">
+            <div class="row">
+                <div class="first-line head-name">{$html['user']['nickname']}</div>
+                <div class="second-line">
+                    <div class="score">
+                        <span class="score-num">{$html['record']['score']}</span>分
+                    </div>
+                    <div class="time-and-ranking">
+                        <span class="time">用时<time>{$html['record']['answer_seconds']}秒</time></span>
+                        <span class="ranking">
+                            排名第<span class="ranking-num">{$html['user']['rank']}</span>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row content-body">
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th style="padding-left: 10px;">昵称</th>
+                    <th>得分</th>
+                    <th>用时</th>
+                    <th>排名</th>
+                </tr>
+            </thead>
+            <tbody class="rank-tbody">
+            </tbody>
+        </table>
+        <div class="row center-block">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="alert alert-warning text-center no-more" style="display: none">
+                    没有更多了......
+                </div>
+                <button data-page="2" data-size="10" data-end="0" class="btn btn-success btn-block load-more">加载更多...</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

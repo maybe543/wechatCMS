@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>{$reply['title']}--{$_W['account']['name']}</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta name="Description" content="{$reply['description']}" />
+<!-- Mobile Devices Support @begin -->
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta name="apple-mobile-web-app-capable" content="yes" /> <!-- apple devices fullscreen -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- Mobile Devices Support @end -->
+<link href="{MODULE_URL}template/css/style.css?{php echo time()}" rel="stylesheet" type="text/css" />
+<script src="{$_W['siteroot']}app/resource/js/lib/jquery-1.11.1.min.js?{php echo time()}"></script>
+<script type="text/javascript" src="{MODULE_URL}template/js/zepto.min.js?{php echo time()}"></script>
+<link href="{MODULE_URL}template/css/common.css?{php echo time()}" rel="stylesheet" type="text/css">
+<link href="{MODULE_URL}template/css/exam.css?{php echo time()}" rel="stylesheet" type="text/css">
+<link href="{MODULE_URL}template/css/survey.css?{php echo time()}" rel="stylesheet" type="text/css">
+<style>
+html{color:{$template['textcolor']};}
+html{background-image: url({php echo toimage($template['bgimg'])});}
+html{background-color: {$template['bgcolor']};}
+body{font-size:{$template['fontsize']}px;color:{$template['textcolor']};}
+a:link, a:visited, a:hover, a:active { color:{$template['textcolorlink']}; text-decoration:none; } 
+.mingdan{background-color:{$template['buttoncolor']};}
+.biaoti{color:{$template['buttontextcolor']};}
+.biaoti a{ color:{$template['buttontextcolor']};}
+.mingdaninfo{background-color:{$template['rulecolor']};	border:1px {$template['rulecolor']} solid ;color:{$template['ruletextcolor']};}
+
+.top,.question{z-index: 2;position: relative;}
+.top{position: relative;height: 150px;}
+.time{ background: url({MODULE_URL}template/images/timeout.png) no-repeat;background-size: 52px 60px;background-color:{$template['buttoncolor']};font-size: 40px; line-height:60px;color: {$template['buttontextcolor']};text-align: center;width: 100%;position: absolute;height:60px;-moz-border-radius: 5px; -webkit-border-radius: 5px;}
+.score{
+    background: url({MODULE_URL}template/images/bg_exam.png) top center;
+	background-color:{$template['rulecolor']};
+	position: absolute;top: 80px;
+	font-size: 20px; height:54px;
+	line-height:54px;width:100%;
+	text-align:center;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+.question .title{
+	font-size: 20px;
+	background-color:{$template['awardcolor']};
+	color:{$template['awardtextcolor']};
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 10px;
+	line-height: 26px;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.question .options{
+    margin-top: 10px; padding-right:10px;
+	background-color:{$template['navcolor']};
+	color:{$template['navtextcolor']};
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;}
+.question .option{position: relative;}
+.question .option .text{position: relative;line-height: 35px;overflow: hidden;}
+.question .option .oimg,.question .option .oimg-sel{position: absolute;top: 4px;left: 10px;width: 300px;}
+.question .option .oimg-sel{display: none;}
+.question .option-sel .oimg{display: none;}
+.question .option-sel .oimg-sel{display: block;}
+.result-timeout .timg{
+	margin-left: -40px;
+}
+
+.question .option .i {
+float: left;
+margin-left: 50px;
+padding-top: 4px;font-size:18px;
+}
+.question .option .otext {
+margin-left: 70px;line-height: 20px;
+overflow: hidden;
+max-width: 560px;
+padding-top: 11px;
+}
+#skip{padding: 0 10px;height:50px;}
+#submit{padding: 0 10px;height:50px;}
+.container {
+    border-color: #ebebeb;
+    border-style: solid;
+    border-width: 1px;
+    float: none;
+    height: 30%;
+    margin-top: 0;
+    overflow: hidden;
+    padding: 1px 20px 1px 38px;
+    position: relative;
+}
+</style>
+</head>
+<body>
+<div>
+    <div class="nou">
+	    <div style="margin:10px;" class="adpic">
+		{if !empty($reply['adpic'])}{if !empty($reply['adpicurl'])}<a href="{$reply['adpicurl']}">{/if}<img id="top_img" style="max-width: 100%;height: auto;width: auto\9;"  src="{php echo toimage($reply['adpic'])}" width="100%" border="0">{if !empty($reply['adpicurl'])}</a>{/if}{/if}
+        </div>       
+        <div class="zhuan1 wrapper" id="lottery">
+			<div class="top">
+			    <div class="time"><img src="{MODULE_URL}template/images/times.png"></div>
+			    <div class="score">{$question['figure']} 积分</div>
+		    </div>
+			<div class="question">
+			    <div class="title">{$question['question']}</div>
+			    <input type="hidden" name="qestionid"  id="qestionid" value="{$question['id']}" />
+				<div class="options">
+				    {if !empty($question['optionA'])}
+					<div class="option" data-value="A">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">A</div>
+					        <div class="otext">{$question['optionA']}</div>
+					    </div>
+				    </div>
+					{/if}
+					{if !empty($question['optionB'])}
+					<div class="option" data-value="B">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">B</div>
+					        <div class="otext"> {$question['optionB']}</div>
+					    </div>
+				    </div>
+					{/if}
+					{if !empty($question['optionC'])}
+					<div class="option" data-value="C">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">C</div>
+					        <div class="otext"> {$question['optionC']}</div>
+					    </div>
+				    </div>
+					{/if}
+					{if !empty($question['optionD'])}
+					<div class="option" data-value="D">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">D</div>
+					        <div class="otext"> {$question['optionD']}</div>
+					    </div>
+				    </div>
+					{/if}
+					{if !empty($question['optionE'])}
+					<div class="option" data-value="E">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">E</div>
+					        <div class="otext"> {$question['optionE']}</div>
+					    </div>
+				    </div>
+					{/if}
+					{if !empty($question['optionF'])}
+					<div class="option" data-value="F">
+					    <img class="oimg" src="{MODULE_URL}template/images/option_bg_blue.png" />
+						<img class="oimg-sel" src="{MODULE_URL}template/images/option_sel_bg_blue.png" />
+						<div class="text">
+					        <div class="i">F</div>
+					        <div class="otext"> {$question['optionF']}</div>
+					    </div>
+				    </div>
+					{/if}
+				</div>
+				<div style="margin-top:30px;">
+					{if $reply['skip']==1 && $fans['last_credit']>=$reply['marking']}<div style="float:left;width:30%"><img id="skip" src="{MODULE_URL}template/images/skip.png?v1" /></div>{/if}
+					<div style="float:right;{if $reply['skip']==1 && $fans['last_credit']>=$reply['marking']}width:70%;text-align:right;{else}width:100%;text-align:center;{/if}"><img id="submit" src="{MODULE_URL}template/images/submit.png?v1" /></div>
+				</div>
+			</div>			
+			<div class="result-right loading-mask">
+				<div class="content">
+					<img class="timg" src="{MODULE_URL}template/images/tick.png">
+					<div class="text">恭喜你，答对了</div>
+					<button class="next-btn">进入下一题</button>
+				</div>
+			</div>
+			<div class="result-wrong loading-mask">
+				<div class="content">
+					<img class="timg" src="{MODULE_URL}template/images/wrong.png">
+					<div class="text">对不起，你答错了。</div>
+					<div class="answer">正确的答案是：<strong></strong></div>
+					<button class="next-btn">进入下一题</button>
+				</div>
+			</div>
+			<div class="result-timeout loading-mask">
+				<div class="content">
+					<img class="timg" src="{MODULE_URL}template/images/timeout.png">
+					<div class="text">啊哦，答题超时了</div>
+					<div class="timeout">正确的答案是：<strong></strong></div>
+					<button class="next-btn">进入下一题</button>
+				</div>
+			</div>
+			<div id="loading" class="loading-mask">
+		        <img class="gimg" src="{MODULE_URL}template/images/loading.gif">
+	        </div>
+			<audio id="musicBg" src="{MODULE_URL}template/audio/timer.mp3" preload="auto" autoplay loop></audio>
+			<audio id="musicRight" src="{MODULE_URL}template/audio/right.mp3" preload="auto"></audio>
+			<audio id="musicWrong" src="{MODULE_URL}template/audio/wrong.wav" preload="auto"></audio>
+			<audio id="musicNear" src="{MODULE_URL}template/audio/timerNear.mp3" preload="auto"></audio>
+        </div>
+    </div>
+</div>
+{template 'jssdkhide'}
+<script>
+    var answertime = '<?php echo $reply['answertime'];?>';
+	$(function(){
+		{if $reply['skip']==1 && $fans['last_credit']>=$reply['marking']}
+		$("#skip").on("click",function(e){
+			window.location.href="{php echo murl('entry//fighting',array('m'=>'stonefish_fighting', 'rid'=>$rid, 'qid'=>$question['id'], 'skip'=>$question['id'], 'istheanswer'=>$istheanswer))}";
+		});
+		{/if}
+		$(".option").on("click",function(){
+			var $option = $(this);
+			if(!$option.hasClass("option-sel")){
+				$option.addClass("option-sel");
+			}else{
+			    $option.removeClass("option-sel");
+			}
+		});
+		$(".next-btn").on("click",function(e){
+			window.location.href="{php echo murl('entry//fighting',array('m'=>'stonefish_fighting', 'rid'=>$rid, 'qid'=>$question['id'], 'istheanswer'=>$istheanswer))}";
+			return false;
+		}).on("touchstart",function(e){
+			$(this).addClass("hover");
+		}).on("touchend",function(e){
+			$(this).removeClass("hover");
+		});
+		
+		$("#submit").on("click",function(){
+			var $btn = $(this);
+			var endTime = new Date();
+			if((endTime - startTime)/1000 > answertime){
+				maxtime = -1;
+				$(".time").text("00:00");
+				alert("对不起，您的回答已超时！");
+				return false;
+			}
+			if($btn.hasClass("disabled")) return;
+			var $answer = $(".options .option-sel");
+			if($answer.size() == 0){
+				alert("请选择一个答案!");
+				return;
+			}else{
+				answer = '';
+				for(var i=0; i<$answer.size(); i++){
+				    answer = answer+$answer.eq(i).attr("data-value");
+                }
+			}
+			var qestionid = $("input[name='qestionid']").val();
+			var submitData = {
+				"qestionid":qestionid,
+				"answer":answer
+			};
+			$btn.addClass("disabled");
+			clearInterval(timer);
+			$("#musicBg")[0].pause();
+            var ajaxurl = "{php echo murl('entry//getAnswer',array('m'=>'stonefish_fighting', 'rid'=>$rid, 'istheanswer'=>$istheanswer),true)}";
+			$.ajax({
+		        type: "post",
+		        url: ajaxurl,
+		        data: submitData,
+		        dataType: "json",
+		        success: function (data) {
+		        	$btn.removeClass("disabled");
+					var $mask;
+					if (data.resultCode==1){
+						$("#musicRight")[0].play();
+						$mask = $(".result-right");
+					}else if(data.resultCode == 3){
+					    alert(data.msg);
+						window.location.href='{php echo $this->createMobileUrl('myanswer', array('rid' => $rid))}';
+					}else if(data.resultCode == 2){
+						$("#musicWrong")[0].play();
+						$mask = $(".result-wrong"); 
+						$mask.find(".answer strong").text(data.msg);
+					}else if(data.resultCode == 0){
+						$("#musicWrong")[0].play();
+						$mask = $(".result-timeout"); 
+						$mask.find(".timeout strong").text(data.msg);
+					}
+					$mask.show();
+		        },
+		        error: function(data) {
+		            alert("error:" + data.responseText);
+					window.location.reload();
+		        }
+		    });
+		    return false;
+		});
+		
+		//一个小时，按秒计算，可以自己调整时间
+		var maxtime = answertime * 100;
+		function CountDown() {   
+			if(maxtime>=0) {
+				seconds = Math.floor(maxtime/100);   
+				milliseconds = Math.floor(maxtime%100); 
+				seconds = seconds<10?("0" + seconds) : seconds;
+				milliseconds = milliseconds<10?("0" + milliseconds) : milliseconds;
+				$(".time").text(seconds + ":" + milliseconds);
+				if(maxtime == 270){
+					$("#musicNear")[0].play();
+				}
+				maxtime -= 10;   
+			}else{
+				clearInterval(timer);   
+				var $btn = $(this);
+			    if($btn.hasClass("disabled")) return;
+			    var $answer = $(".options .option-sel");
+			    if($answer.size() >=1){
+				    answer = '';
+				    for(var i=0; i<$answer.size(); i++){
+				        answer = answer+$answer.eq(i).attr("data-value");
+                    }
+			    }else{
+				    answer = 'Z';
+				}
+			    var qestionid = $("input[name='qestionid']").val();
+			    var submitData = {
+				    "qestionid":qestionid,
+				    "answer":answer
+			    };
+			    $btn.addClass("disabled");
+			    clearInterval(timer);
+			    $("#musicBg")[0].pause();
+                var ajaxurl = "{php echo murl('entry//getAnswer',array('m'=>'stonefish_fighting', 'rid'=>$rid, 'timeout'=>1, 'istheanswer'=>$istheanswer),true)}";
+			    $.ajax({
+		            type: "post",
+		            url: ajaxurl,
+		            data: submitData,
+		            dataType: "json",
+		            success: function (data) {
+		        	    $btn.removeClass("disabled");
+					    var $mask;
+					    if (data.resultCode==1){
+						    $("#musicRight")[0].play();
+						    $mask = $(".result-right");
+					    }else if(data.resultCode == 3){
+					        alert(data.msg);
+						    window.location.href='{php echo $this->createMobileUrl('myanswer', array('rid' => $rid))}';
+					    }else if(data.resultCode == 2){
+						    $("#musicWrong")[0].play();
+						    $mask = $(".result-wrong"); 
+						    $mask.find(".answer strong").text(data.msg);
+					    }else if(data.resultCode == 0){
+						    $("#musicWrong")[0].play();
+						    $mask = $(".result-timeout"); 
+						    $mask.find(".timeout strong").text(data.msg);
+					    }
+					    $mask.show();
+		            },
+		            error: function(data) {
+		                alert("error:" + data.responseText);
+					    window.location.reload();
+		            }
+		        });
+		        return false;				
+			}   
+		} 
+		timer = setInterval(CountDown, 100);
+		var startTime = new Date();
+		$(document).on('ajaxBeforeSend', function(e, xhr, options){
+			$("#loading").show();
+		}).on("ajaxComplete ",function(e, xhr, options){
+			$("#loading").hide();
+		});
+	});
+</script>
+</body>		
+</html>

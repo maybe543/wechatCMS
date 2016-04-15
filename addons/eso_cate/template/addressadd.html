@@ -1,0 +1,144 @@
+{template 'common/header'}
+{php $_item=-1;}
+{php $_itemp=3;}
+{template 'menu'}
+<div class="main w98auto">
+
+
+<div id="setfieldtemp" style="display:none;">
+    <div class="setfield">
+        顺序：<input name="field_order[]" type="text" class="form-control t" id="field_order">
+        显示名称：<input name="field_title[]" type="text" class="form-control" id="field_title">
+        输入框样式：<select name="field_inputtype[]" class="form-control" id="field_inputtype">
+            <option value="0">默认样式</option>
+            <option value="100">100%宽度</option>
+        </select>
+        输入类型：<select name="field_type[]" class="form-control" onchange="_field_type(this);" id="field_type">
+            <option value="text">单行输入框</option>
+            <option value="textarea">多行输入框</option>
+            <option value="select">下拉选择框</option>
+        </select>
+        <span class="cut" onclick="_field_del(this);">-</span>
+        <div class="typesel">
+            下拉选项：(格式:选项名称1|选项值1)<br/>
+            <textarea name="field_typesel[]" class="form-control" id="field_typesel"></textarea>
+            注明:两个选项之间用“换行符”分割
+        </div>
+    </div>
+</div>
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}收货地址配置</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100"><span>名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>状态</span></td>
+                                <td class="form-reg">
+                                    <select name="status" id="status" class="form-control wi">
+                                        <option value="启用">启用</option>
+                                        <option value="停用">停用</option>
+                                    </select>
+                                    {if value($content,'status')}
+                                    <script>$("#status").val('{php echo value($content,'status')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>自定义项目</span></td>
+                                <td>
+                                    <a href="javascript:;" onclick="addfield(this);" id="afield" class="normal-link">添加自定义字段</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('address')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script id="settingfield" type="text/plain" style="display:none;">
+{php echo json_encode(value($content,'setting|field',true))}
+</script>
+<script type="text/javascript">
+    //添加字段
+    function addfield(obj, data) {
+        $intemp = $($("#setfieldtemp").html())
+        if (data) {
+            $intemp.find("#field_order").val(data.order);
+            $intemp.find("#field_title").val(data.title);
+            $intemp.find("#field_inputtype").val(data.inputtype);
+            $intemp.find("#field_type").val(data.type);
+            $intemp.find("#field_typesel").val(data.typesel);
+            if (data.type == "select") {
+                $intemp.find(".typesel").show();
+            }
+        }
+        $(obj).before($intemp);
+    }
+    //选择字段类型
+    function _field_type(obj) {
+        if ($(obj).val() == "select") {
+            $(obj).parent().find(".typesel").show();
+        }else{
+            $(obj).parent().find(".typesel").hide();
+        }
+    }
+    //删除字段
+    function _field_del(obj) {
+        $(obj).parent().remove();
+    }
+    $(document).ready(function() {
+        //
+        var _json = eval($("#settingfield").html());
+        for(var i=0; i<_json.length; i++){
+            addfield($("#afield"), _json[i]);
+        }
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('address')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

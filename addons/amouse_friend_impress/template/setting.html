@@ -1,0 +1,139 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="./index.php?c=profile&a=module&do=setting&m=amouse_friend_impress">参数设置</a></li>
+</ul>
+<div class="main">
+
+    <form action="" method="post" class="form-horizontal form" onsubmit="return validate(this);" id="setting-form">
+        <div class="panel panel-default">
+            <div class="panel-heading">设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>关注引导</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" id="followurl" class="form-control span7"  name="followurl" value="{$settings['followurl']}">
+                        <div class="help-block">未关注的粉丝，关注引导链接,如果出现错误请使用
+                            <a target="_blank" href="http://www.dwz.cn/">短网址转换</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">分享设置</div>
+            <input type="hidden" id="enable_hid" name="enable_hid" value="{$settings['enable']}"/>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否强制开启到关注</label>
+                    <div class="col-sm-9">
+                        <label for="enable1" class="radio-inline">
+                            <input type="radio" name="enable" value="1" id="enable1" {if $settings['enable']==1}checked{/if} /> 是
+                        </label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="enable0" class="radio-inline">
+                            <input type="radio" name="enable" value="0" id="enable0"  {if $settings['enable']==0 || empty($settings)}checked{/if} /> 否
+                        </label>
+                    </div>
+                </div>
+                <div id="isshow">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">强制关注外链</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <input type="text" id="gzDwz" class="form-control span7"  name="gzDwz" value="{$settings['gzDwz']}">
+                        <div class="help-block">
+                            <label style="color: red;">
+                                {php echo $_W['siteroot']."app/".substr($this->createMobileUrl('gz',array('uid'=>$uid),true), 2)}
+                                </label>
+                            复制红色部分进行
+                            <a target="_blank" href="http://www.dwz.cn/">短网址转换</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">诱导关注微信号</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <input type="text" name="weixinid" value="{$settings['weixinid']}" class="form-control">
+                        <span class="help-block">诱导关注微信号</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码图片</label>
+                    <div class="col-xs-12 col-sm-9">
+                        {php echo tpl_form_field_image('qrcode_thumb',$settings['qrcode_thumb']);}
+                        <span class="help-block">二维码图片</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">借用高级权限（非认证服务号）</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">APPID</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="appid" class="form-control" value="{$settings['appid']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">AppSecret:</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input type="text" name="secret" class="form-control" value="{$settings['secret']}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1"/>
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function(){
+        $("#enable{php echo $settings['enable'];}").attr("checked", true);
+        var isoauth_hid =$("#enable_hid").val();
+        if(isoauth_hid==0){
+            $("#isshow").hide();
+        }
+        $("input[name='enable']").on("change", function(){
+            var type = $("input[name='enable']:checked").val();
+            //不弹出
+            if(type == 0) {
+                $("#isshow").hide();
+            } else {
+                $("#isshow").show();
+            }
+        });
+    });
+
+    function validate() {
+        var type = $("input[name='enable']:checked").val();
+        if(type==1) {
+            var gzDwz=$("#gzDwz").val();
+            if(gzDwz.length==0){
+                alert('必须填写强制关注外链，建议用短网址.');
+                return false;
+            }
+
+            if($.trim($(':text[name="weixinid"]').val()) == '') {
+                alert('必须填写微信ID.');
+                return false;
+            }
+            if($.trim($(':text[name="qrcode_thumb"]').val()) == '') {
+                alert('必须上传二维码图片.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+</script>
+
+{template 'common/footer'}

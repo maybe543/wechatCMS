@@ -1,0 +1,22 @@
+{template 'common/header'}
+<div class="panel-heading">生成KEY</div>
+<form action="" method="post" style='width:300px;padding:15px;'>
+  <div class="form-group">
+    <label for="exampleInputEmail1">长度</label>
+    <input name='line' type='text' class="form-control" rows="20" />
+	 <label for="exampleInputEmail1">数量</label>
+    <input name='num' type='text' class="form-control" rows="20" />
+  </div>
+  <input name="token" type="hidden" value="{$_W['token']}" />
+  <input type="submit" name="submit" value="生成" />
+</form>
+{if $skey<>null}
+{loop $skey $row}
+	<ul>
+		<li>{$row}</li>
+	</ul>
+{/loop}
+{else}
+请生成
+{/if}
+{template 'common/footer'}

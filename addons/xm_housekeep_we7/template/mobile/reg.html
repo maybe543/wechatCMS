@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">    
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<title>完善信息</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/swiper307.min.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<script>
+function submit1(){
+	var realname = document.getElementById('realname').value;
+	var mobile = document.getElementById('mobile').value;	
+				
+	if(realname.length<2){
+		alert("请输入姓名,不少于2个字符");
+		return;
+	}
+	if(!mobile){
+		alert("请输入电话");
+		return;
+	}
+	if (!/^1[358]{1}[0-9]{9}/.test(mobile)) {
+		alert('请输入正确的手机号码！');
+		return;
+	}
+			
+	$.ajax({
+		url: "{php echo $this->createMobileUrl('regok', array());}",
+		type:"POST",
+		data:$("#form1").serialize(),
+		dataType:"json",
+		success: function(res){
+			if(res == "0"){
+				alert('对不起，改手机号已注册！请重新填写！');
+			}else{
+				alert('恭喜您，信息更新成功！');
+				location.href = "{php echo $this->createMobileUrl('usercenter', array());}";
+			}
+		}
+	});
+				
+}
+</script>
+</head>
+<body>
+
+<div id="page0" class="c-gra1 ub ub-ver">
+	<form class="form-horizontal ub ub-f1 ub-ver" id="form1" action="javascript:;" method="post">
+        <div class="ub-f1 ub ub-ver">
+            <div class="ub ub-ver ub-ac ub-pc" style="height:8em">
+                <div class="uc-a50 c-gra ub-img1" style="height:4em; width:4em; background-image:url({$headurl})"></div>
+                <div class=" umar-t1">{$niname}</div>
+            </div>
+            <div class="uinn8 c-wh  ubt ubb b-bla01">
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">姓名：</div>
+                    <input type="text" name="realname" id="realname" placeholder="请填写真实姓名" value="{$members['realname']}" style="width:10em" class="uinn uba b-bla01 ulev0 ub-f1 uc-a1" />
+                </div>
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">手机：</div>
+                    <input type="tel" name="mobile" id="mobile" placeholder="请填写手机号" value="{$members['mobile']}" style="width:10em" class="uinn uba b-bla01 ulev0 ub-f1 uc-a1" />
+                </div>
+
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">性别：</div>
+                    <div class="ub-f1">
+                        <label class="i-checks radio-inline">
+                            <input type="radio" name="gender" value="0" {if $members['gender'] == 0} checked {/if}>
+                            <i></i>
+                            保密
+                        </label>
+						<label class="i-checks radio-inline">
+                            <input type="radio" name="gender" value="1" {if $members['gender'] == 1} checked {/if}>
+                            <i></i>
+                            男
+                        </label>
+                        <label class="i-checks radio-inline">
+                            <input type="radio" name="gender" value="2" {if $members['gender'] == 2} checked {/if}>
+                            <i></i>
+                            女
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-wh ub-f1">
+                <div class="uinn"></div>
+                <div class="t-gra tx-c ulev-1 uinn1">以上信息将用于您的会员身份识别<br />请如实填写</div>
+                <div class="uinn8 ub">
+                    <!--<a href="#" onclick="checkform()" class="uinn c-org ub ub-pc uc-a1" style="margin-bottom:0.5em"><span class="ulev0 t-wh">保存</span></a>-->
+                    <button class="uinn211 c-org block uc-a1 ub-f1 tx-c t-wh ulev0"  onClick="submit1()" style="margin-bottom:0.5em;" type="submit">保存信息</button>
+					<!--<input onClick="submit1()" type="submit" value="保存信息" class="uinn c-org ub ub-pc uc-a1" style="margin-bottom:0.5em" />-->
+					<input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+        </div>
+    </form>
+	
+	{template 'footer'}
+</div>
+
+<!--<script type="text/javascript" src="js/zepto1.3.min.js"></script>-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/jquery_min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+</body>
+</html>

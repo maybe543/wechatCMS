@@ -1,0 +1,7 @@
+<div class="list-item">
+  <div>
+    <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}"><img src="{$_W['attachurl']}{$item['thumb']}"></a>
+    <span class="title"><a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">{$item['title']}</a>{if $item['type'] == '2'}(虚拟){/if}</span>
+
+  </div>
+</div>

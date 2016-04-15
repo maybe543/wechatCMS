@@ -1,0 +1,157 @@
+{template 'common/header'}
+<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<style>
+  .list-block{margin:0.8rem 0px;}
+  .modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050; width:100%;opacity:10;margin-left:0;
+    -webkit-transform:translate3d(0,0,0) scale(1);transform:translate3d(0,0,0) scale(1);}
+</style>
+  <header class="bar bar-nav">
+  <h1 class="title">会员中心</h1>
+</header>
+<div class="content main">
+
+            <!-- 这里是页面内容区 -->
+ {if $op == 'tw'}
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="theform">
+
+ <div class="list-block">
+    <ul>
+      <li>
+        <div class="item-content">          
+          <div class="item-inner">
+           
+            <div class="item-input">
+              <select name="pcate" required>
+				<option value="">请选择分类</option>
+                 {loop $category $data}
+      				<option name="pcate" value="{$data['id']}">{$data['name']}</option>
+      			{/loop}
+
+                
+              </select>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="wxurl" placeholder="请黏贴微信图文链接" required>
+            </div>
+          </div>
+        </div>
+      </li>
+     
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="credit[limit]" placeholder="微信分享赠送余额总价" required>
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="credit[share]" placeholder="微信分享后赠送余额" required>
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="credit[click]" placeholder="微信分享后阅读赠送余额" required>
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">微信图文链接为自动采集，提交后请耐心等待，不要重复点击提交按钮，采集完自动跳转
+          </div>
+        </div>
+      </li>
+     <li>
+        <div class="item-content">          
+          <div class="item-inner">填写分享转发，可使转发人，获得报酬，可提高快速传播效率，请认真填写
+          </div>
+        </div>
+      </li>
+    </ul>
+  
+  </div>
+  <div class="content-block">
+    <input name="submit" type="submit" class="button button-big button-fill button-success" value="提交">
+     <input type="hidden" name="token" value="{$_W['token']}" />
+  </div>
+	</form> 
+	<p style="text-align: center">
+          <img src="{MODULE_URL}images/fabu.jpg" alt="" width="75%" style="text-align: center">
+      </p>
+	</div>
+{/if}
+ {if $op == 'tp'}
+   <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="theform">
+ <div class="list-block">
+    <ul>
+     <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="title" placeholder="广告标题" required>
+            </div>
+          </div>
+        </div>
+      </li>
+  <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="zongjia" placeholder="点击总价" required>
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="jiage" placeholder="每次点击价格" required>
+            </div>
+          </div>
+        </div>
+      </li>
+     <div class="form-group">
+          
+          <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('thumb', $item['thumb'])}            
+          </div>
+        </div>
+        <li>
+        <div class="item-content">          
+          <div class="item-inner">
+            <div class="item-input">
+              <input type="text" name="link" placeholder="链接网址，如微店，淘宝等" required>
+            </div>
+          </div>
+        </div>
+      </li>
+         </ul>
+  
+  </div>
+ 
+  <div class="content-block">
+    <input name="submit" type="submit" class="button button-big button-fill button-success" value="提交">
+     <input type="hidden" name="token" value="{$_W['token']}" />
+  </div>
+  </form> 
+ 
+
+ {/if}
+{template 'footer'}
+{template 'common/footer'}

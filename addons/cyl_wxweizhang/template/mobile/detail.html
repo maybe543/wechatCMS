@@ -1,0 +1,329 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$contents['title']}</title>
+    <meta name="x5-page-mode" content="no-title">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">  
+    <meta name="format-detection" content="telephone=no">    
+    <script>
+    (function() {
+        var baseFontSize = 100;
+        var baseWidth = 320;
+        var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+        var innerWidth = Math.max(Math.min(clientWidth, 480), 320);
+
+        var rem = 100;
+
+        if (innerWidth > 362 && innerWidth <= 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.9);
+        }
+        
+        if (innerWidth > 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.84);
+        }
+
+        document.querySelector('html').style.fontSize = rem + 'px';
+    })();
+</script>
+
+<link rel="stylesheet" type="text/css" href="{MODULE_URL}images/detail.css" />
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css" />
+<link rel="stylesheet" type="text/css" href="http://www.bootcss.com/p/buttons/css/buttons.css" />
+<link rel="stylesheet" type="text/css" href="http://3gimg.qq.com/wap30/infoapp/touch/wx_choice2/css/home-16012101.css"/>
+<link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve2a7a3f.css">
+<link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_combo2a7a3f.css">
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+<style>
+	body{font-family: 微软雅黑}
+</style>
+</head>
+<body>
+{php echo register_jssdk($debug);} 
+
+            <div class="lincoapp-header2" data-code="0">
+                <h2 class="title" style="line-height: 0.44rem;text-align: left"><a href="{php echo $this->createMobileUrl('index');}" class="logo"></a></h2>
+                <span class="iright iwxshare" onclick="document.getElementById('mcover').style.display='block';">分享朋友圈</span>
+            </div>
+
+            <div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display:none;">
+                    <img src="{MODULE_URL}images/share.png" width="260" />
+            </div>
+
+            <div class="lincoapp-article-content" style="background: #fff">
+                <section class="lincoapp-article">
+                    <div class="wx-area" style="margin: 0px">
+                    <div class="rich_media_inner">
+            <div class="rich_media">
+        
+        
+                
+
+        <div class="rich_media_inner">
+            <div id="page-content">
+                <div id="img-content" class="rich_media_area_primary">
+                    <h2 class="rich_media_title">
+                        {$contents['title']}
+                    </h2>
+                       
+
+                    <div class="rich_media_meta_list" style="margin-bottom: 0px">
+                    <em id="post-date" class="rich_media_meta rich_media_meta_text">{php echo date('Y-m-d',$contents['createtime'])}</em>
+                    <em class="rich_media_meta rich_media_meta_text"> 
+                      {if $contents['sharelink']}
+                        <a  href="{$contents['sharelink']}">{$contents['source']}</a>
+                        {else}
+                        <a  href="{$settings['sharelink']}">{$contents['source']}</a><br>
+                      {/if}
+                    </em>
+                    </div>                    
+                    {if $credit['status']==1 && $credit['limit'] >= 0}
+    <img src="https://mmbiz.qlogo.cn/mmbiz/yqVAqoZvDibG3130Y2hAXktGHLUh928RJOMWFa6azEYBwfPDzI0FnjKbC8NfPOJewIz6GgQ3jQ7n5JDKZx54rHQ/0?wx_fmt=gif" alt="" width="100%"> 
+  <p class="weui_btn weui_btn_plain_primary" style="padding: 0px;font-size: 100%">关注后转发即可获得{$credit['share']}
+  {if $contents['jifen'] ==1 }元{/if} {if $contents['jifen'] ==2 }积分{/if}，朋友浏览可获得{$credit['click']}{if $contents['jifen'] ==1 }元{/if} {if $contents['jifen'] ==2 }积分{/if} </p>
+
+                    {/if}
+                    <div class="rich_media_content " id="js_content">                        
+                       {$contents['content']}
+                    </div>
+                   
+                  
+                    
+                    
+                                        
+                                        
+                                        <div class="rich_media_tool" id="js_toobar3">
+                                         {if $contents['linkurl']}
+        
+     
+                     <a class="media_tool_meta meta_primary" id="js_view_source" href="{$contents['linkurl']}">阅读原文</a>{else}<a class="media_tool_meta meta_primary" id="js_view_source" href="{$settings['sharelink']}">阅读原文</a>    {/if}
+                        <a class="media_tool_meta tips_global meta_extra" href="{php echo $this->createMobileUrl('detail', array('id'=>$id,'op'=>'liuyan'));}">写留言</a>
+                      
+                    </div>
+                </div>             
+               
+            </div>            
+        </div>
+    </div>
+    <div class="weui_panel">
+            <div class="weui_panel_hd">评论</div>
+           <div class="weui_panel_bd">
+                <div class="weui_media_box weui_media_small_appmsg weui_media_text">
+                    <div class="weui_cells weui_cells_access">
+                    {loop $message $item}   
+        {if $item['status']}    
+                        <a class="weui_cell" href="javascript:;">
+                            <div class="weui_cell_hd"><img src="{$item['avatar']}" alt="" style="width:40px;margin-right:15px;display:block;border-radius:50%"></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <p class="weui_media_desc">{$item['nickname']}</p>
+                                <p class="weui_media_desc">{$item['content']}</p>
+                                 <ul class="weui_media_info">
+			                        
+			                        <li class="weui_media_info_meta">时间</li>
+			                        <li class="weui_media_info_meta weui_media_info_meta_extra">{php echo relatively_date($item['time'])}</li>
+			                    </ul>
+
+                            </div>
+                            
+                        </a>
+                        {if $item['huifu']}
+                         <a class="weui_cell" href="javascript:;">
+                            <div class="weui_cell_hd" style="width:55px"></div>
+                            <div class="weui_cell_bd weui_cell_primary">
+                                <p class="weui_media_desc">作者回复:</p>
+                                <p class="weui_media_desc">{$item['huifu']}</p>
+                            </div>
+                            
+                        </a>
+                        {/if}
+                    {/if}  
+{/loop}    
+                    </div>
+                    
+                </div>
+            </div>
+        </div>      
+                   
+
+                    <div class="art-extend">
+                        <span class="like ifavorite" id="vote-btn"><em>{$contents['click']}
+                        </em>人看过了</span>
+                        <span class="favorite icollect " id="fav-btn">{$shang_total}人赞赏</span>
+                    </div>
+
+                    <div style="text-align: center;margin: 10px 0px 20px 0px" class="container js_container">
+                        <a id="showActionSheet" class="button button-3d button-caution" href="{php echo $this->createMobileUrl('detail', array('id'=>$id,'op'=>'shang'));}" style="border-radius:10px">赞赏</a>
+
+                    </div>
+                   	<div class="weui_uploader_bd" style="padding:5px 50px">
+                            <ul class="weui_uploader_files">
+                             {loop $shang $data}  
+                              <li class="weui_uploader_file" style="background-image:url({$data['avatar']});width:30px;height:30px;border-radius:50%"></li>                
+   
+  {/loop}
+                                                          
+                            </ul>
+                            
+                        </div>
+                </section>
+				
+                
+                
+                {if $gg}
+                <section class="lincoapp-section">
+                    <div id="omgad-wechat-bigpic" class="lincoapp-publ-infonews5">
+                        <a href="{$gg['link']}" id="btn2">   
+                        <strong class="infonews-tit" style="color:#000">{$gg['title']}</strong>   
+                        <span class="infonews-u-img">       
+                        <img src="{php echo tomedia($gg['thumb'])}" alt="" style="box-shadow:2px 1px 15px #000">   
+                        </span>   
+                        <span class="btn-infonews">赞助广告</span>
+                        </a>
+                    </div>
+                </section>
+                {/if}       
+                
+
+              
+            </div>
+        </div>
+    </div>
+     <div class="weui_panel weui_panel_access">
+            <div class="weui_panel_hd">相关推荐</div>
+            <div class="weui_panel_bd">
+            {loop $list $id $data}
+                <a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="weui_media_box weui_media_appmsg">
+                    <div class="weui_media_hd">
+                        <img class="weui_media_appmsg_thumb" src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}" alt="">
+                    </div>
+                    <div class="weui_media_bd">
+                        <h4 class="weui_media_title">{$data['title']}</h4>
+                        <p class="weui_media_desc">{$data['description']}</p>
+                    </div>
+                </a>
+                {/loop}               
+            </div>
+
+            <a class="weui_panel_ft" href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page,'keyword'=>$keyword));}">查看更多{$category[$pcate]['name']}相关文章</a>
+        </div>       
+<?php
+$_share['title'] = !empty($_share['title']) ? $_share['title'] : $_W['account']['name'];
+$_share['imgUrl'] = !empty($_share['imgUrl']) ? $_share['imgUrl'] : '';
+if(isset($_share['content'])){
+  $_share['desc'] = $_share['content'];
+  unset($_share['content']);
+}
+$_share['desc'] = !empty($_share['desc']) ? $_share['desc'] : '';
+$_share['desc'] = preg_replace('/\s/i', '', str_replace(' ', '', cutstr(str_replace('&nbsp;', '', ihtmlspecialchars(strip_tags($_share['desc']))), 60)));
+if(empty($_share['link'])) {
+  $_share['link'] = '';
+  $query_string = $_SERVER['QUERY_STRING'];
+
+  if(!empty($query_string)) {
+    parse_str($query_string, $query_arr);
+    $query_arr['u'] = $_W['member']['uid'];      
+    $query_string = http_build_query($query_arr);
+    $_share['link'] = $_W['siteroot'].'app/index.php?'. $query_string;
+  }
+ 
+}
+?>
+<script type="text/javascript">
+
+wx.config(jssdkconfig);
+
+var $_share = {php echo json_encode($_share);};
+
+if(typeof sharedata == 'undefined'){
+  sharedata = $_share;
+} else {
+  sharedata['title'] = sharedata['title'] || $_share['title'];
+  sharedata['desc'] = sharedata['desc'] || $_share['desc'];
+  sharedata['link'] = sharedata['link'] || $_share['link'];
+  sharedata['imgUrl'] = sharedata['imgUrl'] || $_share['imgUrl'];
+}
+
+function tomedia(src) {
+  if(typeof src != 'string')
+    return '';
+  if(src.indexOf('http://') == 0 || src.indexOf('https://') == 0) {
+    return src;
+  } else if(src.indexOf('../addons') == 0 || src.indexOf('../attachment') == 0) {
+    src=src.substr(3);
+    return window.sysinfo.siteroot + src;
+  } else if(src.indexOf('./resource') == 0) {
+    src=src.substr(2);
+    return window.sysinfo.siteroot + 'app/' + src;
+  } else if(src.indexOf('images/') == 0) {
+    return window.sysinfo.attachurl+ src;
+  }
+}
+
+if(sharedata.imgUrl == ''){
+  var _share_img = $('body img:eq(0)').attr("src");
+  if(_share_img == ""){
+    sharedata['imgUrl'] = window.sysinfo.attachurl + 'images/global/wechat_share.png';
+  } else {
+    sharedata['imgUrl'] = tomedia(_share_img);
+  }
+}
+
+if(sharedata.desc == ''){
+  var _share_content = _removeHTMLTag($('body').html());
+  if(typeof _share_content == 'string'){
+    sharedata.desc = _share_content.replace($_share['title'], '')
+  }
+}
+
+wx.ready(function () {
+  wx.onMenuShareAppMessage(sharedata);
+  wx.onMenuShareTimeline(sharedata);
+  wx.onMenuShareQQ(sharedata);
+  wx.onMenuShareWeibo(sharedata);
+});
+
+  //文章点击和分享加积分
+  {if $user_click['sharenum'] >=1 && date('Y-m-d',$user_click['time']) == date('Y-m-d',time())}
+    {else}
+    {if $_GPC['u']} 
+      var url = "{php echo $this->createMobileUrl('handsel', array('id' => $contents['id'], 'action' => 'click', 'u' => $_GPC['u'],'uid'=>$contents['uid']));}";
+      $.post(url, function(dat){});
+    {/if}
+  {/if}
+  {if $user_total['sharenum'] >=1 && date('Y-m-d',$user_total['time']) == date('Y-m-d',time())}
+  {else}
+  sharedata.success = function(){
+     var url = "{php echo $this->createMobileUrl('handsel', array('id' => $contents['id'],'action' => 'share','uid'=>$contents['uid']));}";
+     $.post(url, function(dat){});
+  }
+  {/if}
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function (){
+ $("#btn2").click(function(){       
+   
+    $.post("{php echo $this->createMobileUrl('handsel',array('action'=>img))}",
+      {
+        ggid:"{$gg['id']}",   
+        
+        articleid:"{$contents['id']}"
+      },
+  function(data){
+    
+  });
+ 
+  });
+ });
+</script>
+<script src="http://weui.github.io/weui/zepto.min.js"></script>
+ {if $settings['dsfgg']}
+                 {$settings['dsfgg']}
+                {/if}
+</body>
+</html>

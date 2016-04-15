@@ -1,0 +1,311 @@
+{template 'common/header'}
+    <div class="panel panel-info">
+        <div class="panel-heading">导航菜单</div>
+        <div class="panel-body">
+           {php echo $this -> set_tabbar1($action, $schoolid);}
+        </div>
+    </div>
+{if $operation == 'display'}
+<script>
+require(['bootstrap'],function($){
+	$('.btn,.tips').hover(function(){
+		$(this).tooltip('show');
+	},function(){
+		$(this).tooltip('hide');
+	});
+});
+</script>
+<div class="main">
+    <style>
+        .form-control-excel {
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+    </style>
+    <div class="panel panel-info">
+        <div class="panel-heading">课程表管理</div>
+        <div class="panel-body">
+            <form action="./index.php" method="get" class="form-horizontal" role="form">
+                <input type="hidden" name="c" value="site" />
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="m" value="fm_jiaoyu" />
+                <input type="hidden" name="do" value="kcbiao" />
+				<input type="hidden" name="schoolid" value="{$schoolid}" />	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">按星期</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="xq_id" class="form-control">
+                            <option value="0">请选择星期搜索</option>
+                            {loop $xq $row}
+                            <option value="{$row['sid']}" {if $row['sid'] == $_GPC['xq_id']} selected="selected"{/if}>{$row['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">按时段</label>	
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="sd_id" class="form-control">
+                            <option value="0">请选择时段搜索</option>
+                            {loop $sd $row}
+                            <option value="{$row['sid']}" {if $row['sid'] == $_GPC['sd_id']} selected="selected"{/if}>{$row['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>										
+				</div>
+				 <div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">按班级</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="bj_id" class="form-control">
+                            <option value="0">请选择班级搜索</option>
+                            {loop $bj $row}
+                            <option value="{$row['sid']}" {if $row['sid'] == $_GPC['bj_id']} selected="selected"{/if}>{$row['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">按科目</label>	
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="km_id" class="form-control">
+                            <option value="0">请选择科目搜索</option>
+                            {loop $km $row}
+                            <option value="{$row['sid']}" {if $row['sid'] == $_GPC['km_id']} selected="selected"{/if}>{$row['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>						
+                    <div class="col-sm-2 col-lg-2">
+                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                    </div>					
+				</div>	
+            </form>
+        </div>
+    </div>	
+    <div class="panel panel-default">
+        <div class="table-responsive panel-body">
+        <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+		<input type="hidden" name="schoolid" value="{$schoolid}" />
+        <table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+                    <th class='with-checkbox' style="width: 20px;"><input type="checkbox" class="check_all" /></th>
+					<th style="width:5%">授课教师</th>
+					<th style="width:7%;">时间</th>
+					<th style="width:10%;">课程名称</th>	
+					<th style="width:7%;">授课班级</th>
+					<th style="width:7%;">授课科目</th>	
+					<th style="width:7%;">授课星期</th>
+					<th style="width:7%;">课节或时段</th>						
+					<th style="width:7%;">授课教室</th>
+                    <th style="width:7%;">课时</th>						
+                    <th style="width:5%;">状态</th>						
+					<th style="text-align:right; width:8%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+                    <td class="with-checkbox"><input type="checkbox" name="check" value="{$item['id']}"></td>
+					<td style="overflow:visible; word-break:break-all; text-overflow:auto;white-space:normal">{if !empty($teachers[$item['tid']])}{$teachers[$item['tid']]['tname']}{/if}</td>
+					<td style="overflow:visible; word-break:break-all; text-overflow:auto;white-space:normal">
+              	    <div><span class="label label-info">{php echo date('Y-m-d',$item['date'])}</span></div>                   
+                    </td>					
+					<td>{if !empty($kcming[$item['kcid']])}{$kcming[$item['kcid']]['name']}{/if}</td>	
+                    <td>
+                        {if !empty($category[$item['bj_id']])}{$category[$item['bj_id']]['sname']}{/if}
+                    </td>					
+                    <td>
+                        {if !empty($category[$item['km_id']])}{$category[$item['km_id']]['sname']}{/if}
+                    </td>
+                    <td>
+                        {if !empty($category[$item['xq_id']])}{$category[$item['xq_id']]['sname']}{/if}
+                    </td>					
+                    <td>
+                        {if !empty($category[$item['sd_id']])}{$category[$item['sd_id']]['sname']}{/if}
+                    </td>	
+                    <td>{if !empty($kcming[$item['kcid']])}{$kcming[$item['kcid']]['adrr']}{/if}</td>					
+					<td>第<span class="label label-warning">{$item['nub']}</span>课</td>
+                    <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+                    {if $item['date']>TIMESTAMP}<span class="label label-default">未开始</span>{/if}         
+                    {if $item['date']<TIMESTAMP}<span class="label label-warning">已结束</span>{/if}
+                    </td>                  					
+					<td style="text-align:right;">
+						<a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('kcbiao', array('id' => $item['id'], 'op' => 'post', 'schoolid' => $schoolid))}" title="编辑"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('kcbiao', array('id' => $item['id'], 'op' => 'delete', 'schoolid' => $schoolid))}" onclick="return confirm('此操作不可恢复，确认删除？');return false;" title="删除"><i class="fa fa-times"></i></a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+			<tr>
+				<td colspan="10">
+					<input name="token" type="hidden" value="{$_W['token']}" />
+                    <input type="button" class="btn btn-primary" name="btndeleteall" value="批量删除" />
+				</td>
+			</tr>
+		</table>
+        {$pager}
+    </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+<!--
+	var category = {php echo json_encode($children)};
+//-->
+$(function(){
+    $(".check_all").click(function(){
+        var checked = $(this).get(0).checked;
+        $("input[type=checkbox]").attr("checked",checked);
+    });
+
+    $("input[name=btndeleteall]").click(function(){
+        var check = $("input[type=checkbox][class!=check_all]:checked");
+        if(check.length < 1){
+            alert('请选择要删除的课程!');
+            return false;
+        }
+        if(confirm("确认要删除选择的课程?")){
+            var id = new Array();
+            check.each(function(i){
+                id[i] = $(this).val();
+            });
+            var url = "{php echo $this->createWebUrl('kcbiao', array('op' => 'deleteall', 'schoolid' => $schoolid))}";
+            $.post(
+                url,
+                {idArr:id},
+                function(data){
+                    alert(data.error);
+                    location.reload();
+                },'json'
+            );
+        }
+    });
+
+});
+</script>
+{elseif $operation == 'post'}
+<div class="panel panel-info">
+   <div class="panel-heading"><a class="btn btn-primary" onclick="javascript :history.back(-1);"><i class="fa fa-tasks"></i> 返回</a></div>
+</div>
+<div class="main">
+<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+		<input type="hidden" name="tid" value="{$item['tid']}" />
+		<input type="hidden" name="kcid" value="{$item['kcid']}" />
+		<input type="hidden" name="bj_id" value="{$item['bj_id']}" />
+		<input type="hidden" name="km_id" value="{$item['km_id']}" />
+		<input type="hidden" name="schoolid" value="{$schoolid}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                修改课程
+            </div>
+            <div class="panel-body">
+			    <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">课程名称：</label>
+                    <div class="col-sm-9">                       
+                      {if !empty($kcming[$item['kcid']])}{$kcming[$item['kcid']]['name']}{/if}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">教师姓名:</label>
+                    <div class="col-sm-9" style="color:red;">
+                      {if !empty($teachers[$item['tid']])}{$teachers[$item['tid']]['tname']}{/if}
+                    </div>
+				</div>	
+				<div class="form-group">	
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">授课地址：</label>
+                    <div class="col-sm-2 col-lg-2">
+                         <div class="input-group">					
+                      {if !empty($kcming[$item['kcid']])}{$kcming[$item['kcid']]['adrr']}{/if}
+                         </div>
+					</div>	
+               <!-- <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">人数限制：</label>
+                    <div class="col-sm-2 col-lg-2">
+                       <div class="input-group">
+                           <div class="input-group">							 
+                            <input type="text" class="form-control" name="minge" value="20" />
+                           </div>
+					   </div>
+					</div>	-->					
+                </div>
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">班级:</label>
+                    <div class="col-sm-2 col-lg-2">                                         
+                         {if !empty($category[$item['bj_id']])}{$category[$item['bj_id']]['sname']}{/if}
+                    </div>
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">科目:</label>
+                    <div class="col-sm-2 col-lg-2">                       
+                         {if !empty($category[$item['km_id']])}{$category[$item['km_id']]['sname']}{/if}
+                    </div>
+				</div>	
+				<div class="form-group">
+                   <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">开始时间:</label>
+                     <div class="col-sm-2 col-lg-2">
+				        <div class="input-group">
+				     {php echo date('Y-m-d', $kcming[$item['kcid']]['start'])}	
+                        </div>
+				     </div>
+                   <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">结束时间:</label>
+                     <div class="col-sm-2 col-lg-2">
+				        <div class="input-group">
+				    {php echo date('Y-m-d', $kcming[$item['kcid']]['end'])}
+                        </div>
+				     </div>					 
+                </div>	
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">选择星期:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="xq" class="form-control">
+                            <option value="{$item['xq_id']}">{if !empty($category[$item['xq_id']])}{$category[$item['xq_id']]['sname']}{/if}</option>
+                            {loop $xq $it}
+                            <option value="{$it['sid']}" {if $it['sid'] == $item['xq_id']} selected="selected"{/if}>{$it['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">选择时段:</label>
+                    <div class="col-sm-2 col-lg-2">
+                        <select style="margin-right:15px;" name="sd" class="form-control">
+                            <option value="{$item['sd_id']}">{if !empty($category[$item['sd_id']])}{$category[$item['sd_id']]['sname']}{/if}</option>
+                            {loop $sd $it}
+                            <option value="{$it['sid']}" {if $it['sid'] == $item['sd_id']} selected="selected"{/if}>{$it['sname']}</option>
+                            {/loop}
+                        </select>
+                    </div>
+				</div>	
+				<div class="form-group">
+                   <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">本节日期:</label>
+                     <div class="col-sm-2 col-lg-2">
+				        <div class="input-group">
+				     {php echo tpl_form_field_date('date',date('Y-m-d',$item['date']))}	
+                        </div>
+				     </div>
+                   <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label" style="width: 100px;">课程编号:</label>
+                     <div class="col-sm-2 col-lg-2">
+				        <div class="input-group">
+				            <div class="col-sm-9">                       
+                              <input type="text" class="form-control" name="nub" value="{$item['nub']}" /><i style="color:red;">必须为整数</i>
+                            </div>
+                        </div>
+				     </div>					 
+                </div>				
+             </div>											   
+		</div>	
+        <div class="form-group col-sm-12">
+            <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+    </form>
+</div>	
+<script type="text/javascript">
+    <!--
+    var category = {php echo json_encode($children)};
+    //-->
+</script>
+{/if}
+{template 'common/footer'}

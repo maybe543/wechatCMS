@@ -1,0 +1,440 @@
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">    
+  <title>{$contents['title']}</title>
+
+  Set render engine for 360 browser
+  <meta name="renderer" content="webkit">
+
+  No Baidu Siteapp
+  <meta http-equiv="Cache-Control" content="no-siteapp"/> 
+
+  Add to homescreen for Chrome on Android
+  <meta name="mobile-web-app-capable" content="yes"> 
+
+  Add to homescreen for Safari on iOS
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">  
+
+  Tile icon for Win8 (144x144 + tile color)
+  
+  <meta name="msapplication-TileColor" content="#0e90d2">
+<link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.5.2/css/amazeui.min.css">
+<link rel="stylesheet" href="{MODULE_URL}images/app.css">   
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css">  
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<style type="text/css">
+  body{font-family: 微软雅黑}
+  .am-thumbnail{margin-bottom: 1px}
+</style> 
+{php echo register_jssdk($debug);} 
+</head>
+  <body style="background:#fff">
+  
+    <article data-am-paragraph="{ tableScrollable: true, pureview: true }" class="am-paragraph am-paragraph-default pet_content_article am-no-layout content" data-am-widget="paragraph"  style="background:#fff;padding-top:2rem">
+  <h2 class="pet_article_title">{$contents['title']}</h2>
+  <hr>
+  <div class="pet_article_user_time" style="font-size:1.2rem">
+                {if $contents['sharelink']}
+                <a  href="{$contents['sharelink']}" style="color: #607fa6;font-weight: bold;font-size: 1.2rem" external>{$contents['source']}</a>
+        {else}
+        <a  href="{$settings['sharelink']}" style="color: #607fa6;font-weight: bold;font-size:1.2rem" external>{$contents['source']}</a><br>
+        {/if} {if $contents['author']}
+          {$contents['author']}
+        {/if} {php echo date('Y-m-d',$contents['createtime'])} <br>
+        {if $credit['status']==1 && $credit['limit']>=0}
+        <span class="am-list-item-time am-badge am-badge-danger am-round">转发即可获得{$credit['share']}元，朋友浏览可获得{$credit['click']}元 </span> 
+     {/if}
+        </div>
+
+        <hr>
+    {$contents['content']}
+   {if $_W['account']['level'] == 4}
+  <div class="am-text-center" style="margin-top: 10px"> 
+    <a class="am-icon-btn am-danger" data-am-modal="{target: '#my-actions'}">赏</a>
+  </div>
+  {if $shang_total > 0}
+   <div class="am-panel am-panel-danger" style="margin-top: 10px">
+    <div class="am-panel-hd am-text-center btn-danger">{$shang_total}人赞赏</div>
+    <div class="am-panel-bd " style="overflow: hidden">          
+    {loop $shang $data}             
+    <img src="{$data['avatar']}" style="width:50px;float: left" /> 
+  {/loop}
+    </div>
+  </div>
+  {/if}
+  {/if}
+
+  </article>
+  <div class="pet_article_dowload">
+      <div class="pet_article_dowload_title">
+        {if $contents['linkurl']}
+          <a  href="{$contents['linkurl']}" style="color: #607fa6;font-weight: bold">阅读原文</a>
+        {/if}
+        阅读 {$contents['click']}
+        <a  style="color: #607fa6;font-weight: bold" class="am-fr" data-am-modal="{target: '#my-popup'}">写留言<span class="am-icon-edit"></span></a> 
+      </div>      
+  </div>
+  
+  {loop $message $item}   
+        {if $item['status']}    
+  <article class="am-comment am-margin-top">
+  <a href="#link-to-user-home">
+    <img src="{$item['avatar']}" alt="" class="am-comment-avatar" width="48" height="48"/>
+  </a>
+
+  <div class="am-comment-main">
+   
+
+    <div class="am-comment-bd">    
+    {$item['content']}
+        
+    {if $item['huifu']}
+    <blockquote>管理员回复：{$item['huifu']}</blockquote>
+    {/if}
+    </div>
+     <header class="am-comment-hd">
+      <h3 class="am-comment-title">评论标题</h3>
+      <div class="am-comment-meta">
+        <a class="am-comment-author">{$item['nickname']}</a>
+        留言于 <time>{php echo relatively_date($item['time'])}</time>
+      </div>
+    </header>
+  </div>
+</article>
+ {/if}  
+{/loop}  
+<hr>
+<?php
+$_share['title'] = !empty($_share['title']) ? $_share['title'] : $_W['account']['name'];
+$_share['imgUrl'] = !empty($_share['imgUrl']) ? $_share['imgUrl'] : '';
+if(isset($_share['content'])){
+  $_share['desc'] = $_share['content'];
+  unset($_share['content']);
+}
+$_share['desc'] = !empty($_share['desc']) ? $_share['desc'] : '';
+$_share['desc'] = preg_replace('/\s/i', '', str_replace(' ', '', cutstr(str_replace('&nbsp;', '', ihtmlspecialchars(strip_tags($_share['desc']))), 60)));
+if(empty($_share['link'])) {
+  $_share['link'] = '';
+  $query_string = $_SERVER['QUERY_STRING'];
+
+  if(!empty($query_string)) {
+    parse_str($query_string, $query_arr);
+    $query_arr['u'] = $_W['member']['uid'];      
+    $query_string = http_build_query($query_arr);
+    $_share['link'] = $_W['siteroot'].'app/index.php?'. $query_string;
+  }
+ 
+}
+?>
+<script type="text/javascript">
+
+wx.config(jssdkconfig);
+
+var $_share = {php echo json_encode($_share);};
+
+if(typeof sharedata == 'undefined'){
+  sharedata = $_share;
+} else {
+  sharedata['title'] = sharedata['title'] || $_share['title'];
+  sharedata['desc'] = sharedata['desc'] || $_share['desc'];
+  sharedata['link'] = sharedata['link'] || $_share['link'];
+  sharedata['imgUrl'] = sharedata['imgUrl'] || $_share['imgUrl'];
+}
+
+function tomedia(src) {
+  if(typeof src != 'string')
+    return '';
+  if(src.indexOf('http://') == 0 || src.indexOf('https://') == 0) {
+    return src;
+  } else if(src.indexOf('../addons') == 0 || src.indexOf('../attachment') == 0) {
+    src=src.substr(3);
+    return window.sysinfo.siteroot + src;
+  } else if(src.indexOf('./resource') == 0) {
+    src=src.substr(2);
+    return window.sysinfo.siteroot + 'app/' + src;
+  } else if(src.indexOf('images/') == 0) {
+    return window.sysinfo.attachurl+ src;
+  }
+}
+
+if(sharedata.imgUrl == ''){
+  var _share_img = $('body img:eq(0)').attr("src");
+  if(_share_img == ""){
+    sharedata['imgUrl'] = window.sysinfo.attachurl + 'images/global/wechat_share.png';
+  } else {
+    sharedata['imgUrl'] = tomedia(_share_img);
+  }
+}
+
+if(sharedata.desc == ''){
+  var _share_content = _removeHTMLTag($('body').html());
+  if(typeof _share_content == 'string'){
+    sharedata.desc = _share_content.replace($_share['title'], '')
+  }
+}
+
+wx.ready(function () {
+  wx.onMenuShareAppMessage(sharedata);
+  wx.onMenuShareTimeline(sharedata);
+  wx.onMenuShareQQ(sharedata);
+  wx.onMenuShareWeibo(sharedata);
+});
+
+  //文章点击和分享加积分
+  {if $user_click['sharenum'] >=1 && date('Y-m-d',$user_click['time']) == date('Y-m-d',time())}
+    {else}
+    {if $_GPC['u']} 
+      var url = "{php echo $this->createMobileUrl('handsel', array('id' => $contents['id'], 'action' => 'click', 'u' => $_GPC['u'],'uid'=>$contents['uid']));}";
+      $.post(url, function(dat){});
+    {/if}
+  {/if}
+  {if $user_total['sharenum'] >=1 && date('Y-m-d',$user_total['time']) == date('Y-m-d',time())}
+  {else}
+  sharedata.success = function(){
+     var url = "{php echo $this->createMobileUrl('handsel', array('id' => $contents['id'],'action' => 'share','uid'=>$contents['uid']));}";
+     $.post(url, function(dat){});
+  }
+  {/if}
+
+
+
+
+</script>
+ 
+  <style type="text/css">
+      .am-list li{padding: 5px}
+  </style>
+<div class="am-modal-actions" id="my-actions">
+<div class="am-modal-actions-group">
+  <ul class="am-list">
+    <li class="am-modal-actions-header"><a class=" am-btn am-btn-danger" href="{php echo $this->createMobileUrl('pay', array('fee' => '1','id'=>$contents['id'],'uid'=>$contents['uid']));}" >赏1元</a></li>
+    <li class="am-modal-actions-header"><a class=" am-btn am-btn-danger" href="{php echo $this->createMobileUrl('pay', array('fee' => '5','id'=>$contents['id'],'uid'=>$contents['uid']));}">赏5元</a></li>
+    <li class="am-modal-actions-header"><a class=" am-btn am-btn-danger" href="{php echo $this->createMobileUrl('pay', array('fee' => '10','id'=>$contents['id'],'uid'=>$contents['uid']));}">赏10元</a></li>
+    <li class="am-modal-actions-header"><a class=" am-btn am-btn-danger" href="{php echo $this->createMobileUrl('pay', array('fee' => '20','id'=>$contents['id'],'uid'=>$contents['uid']));}">赏20元</a></li>
+    <li class="am-modal-actions-header"><a class=" am-btn am-btn-danger" href="{php echo $this->createMobileUrl('pay', array('fee' => '50','id'=>$contents['id'],'uid'=>$contents['uid']));}">赏50元</a></li>
+    
+  </ul>
+</div>
+<div class="am-modal-actions-group">
+<form  id="form" action="{php echo $this->createMobileUrl('pay',array('uid'=>$contents['uid']))}"  method="post"  class="form-inline"  enctype="multipart/form-data"> 
+    <input type="text" name="fee" value="" placeholder="输入其他金额" class="am-form-field am-radius" style="width: 100%">
+    <input name="submit" type="submit" class="weui_btn weui_btn_primary" value="提交">
+    <input type="hidden" name="token" value="{$_W['token']}" />
+    <input type="hidden" name="id" value="{$contents['id']}" />
+</form>      
+</div>
+
+
+
+
+</div>
+
+<div class="am-popup" id="my-popup">
+  <div class="am-popup-inner">
+    <div class="am-popup-hd">
+      <h4 class="am-popup-title">留言</h4>
+      <span data-am-modal-close
+            class="am-close am-close-alt am-icon-times"></span>
+    </div>
+    <div class="am-popup-bd">
+      <h3 class="weui_cells_title">{$contents['title']}</h3>
+      <form  id="form" action="" method="post" class="form-inline" enctype="multipart/form-data">
+      <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+          <div class="weui_cell_bd weui_cell_primary">
+            <textarea name="content" class="weui_textarea" placeholder="请输入评论" rows="3"></textarea>           
+          </div>
+        </div>
+      </div>       
+      <input name="submit" type="submit" class="weui_btn weui_btn_primary" value="提交">
+      <input type="hidden" name="token" value="{$_W['token']}" />
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="am-panel am-panel-danger">
+<div class="am-panel-hd">相关推荐</div>
+<div class="am-panel-bd" style="padding:0px">
+  
+<div class="pet_mian">
+  <div class="pet_content_main" style="padding:0px">
+<div data-am-widget="list_news" class="am-list-news am-list-news-default" >
+<div class="am-list-news-bd">
+<ul class="am-list">
+{if $contents['articlegg'] || $contents['articledsfgg']}
+          {if $contents['articlegg']}
+                <div style="background: #f7f7f8;text-align: center;padding:0.6rem">赞助广告</div>
+                <a href="{$contents['articlelink']}" ><img style="padding:0.6rem" src="{$_W['attachurl']}{$contents['articlegg']}" width="100%"></a>
+                {else}
+                 <div style="background: #f7f7f8;text-align: center;padding:0.6rem">赞助广告</div>
+                <a href="{$settings['link']}" ><img style="padding:0.6rem" src="{$_W['attachurl']}{$settings['gg']}" width="100%"></a>
+                {/if}               
+                {if $contents['articledsfgg']}
+                 {$contents['articledsfgg']}
+                 {else}
+                 {$settings['dsfgg']}
+                {/if}
+
+        {else}
+              
+                <div style="background: #f7f7f8;text-align: center;padding:0.6rem">赞助广告</div>
+                <a href="{$gg['link']}" id="btn2"><img style="padding:0.6rem" src="{php echo tomedia($gg['thumb'])}" width="100%"></a>
+                            
+                {if $settings['dsfgg']}
+                 {$settings['dsfgg']}
+                {/if}
+              {/if}         
+ 
+ {loop $list $id $data}
+{php $pic = iunserializer($data['pic'])}
+{php $picnum = count($pic)}
+<li class="am-g am-list-item-desced am-list-item-thumbed am-list-item-thumb-right"> 
+ {if $picnum <= 4}
+<div class=" am-u-sm-8 am-list-main pet_list_one_nr">
+  <h3 class="am-list-item-hd pet_list_one_bt">
+    <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword));}">
+      {$data['title']}      </a>
+  </h3>
+  <div class="am-list-item-text">
+  {$data['description']}  
+  </div>
+ 
+</div>
+  <div class="am-u-sm-4 am-list-thumb">
+  <a class="am-thumbnail" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword));}">
+  <img  src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}" style="">
+  </a>
+  </div>
+{else}
+<div class=" am-u-sm-12 am-list-main pet_list_one_nr">
+  <h3 class="am-list-item-hd pet_list_one_bt">
+    <a class="" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword));}">
+      {$data['title']}      </a>
+  </h3>
+
+ 
+</div>
+<div class="am-g" style="margin-top:1rem">
+
+<div class="am-u-sm-3" style="padding:0px">
+ <a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword));}" class="am-thumbnail">
+  <img src="{$data['thumb']}" alt="" style="width:200px;height:50px"/> </a>
+</div>
+<?php $j = 1 ?>
+{loop $pic $key $picsome} 
+
+{if $j <= 3}
+
+
+<div class="am-u-sm-3" style="padding:0px">
+  <a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword));}" class="am-thumbnail">
+    <img src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" alt=""  style="width:200px;height:50px"/>
+  </a>
+</div>
+{/if}
+
+
+ <?php $j++ ?> 
+ {/loop}
+ 
+</div> 
+
+{/if}
+
+  <div class="pet_list_one_info">
+  <div class="pet_list_one_info_l">
+      <div class="pet_list_one_info_ico">
+        <img alt="" src="{$_W['account']['qrcode']}">
+      </div>
+      <div class="pet_list_one_info_name">
+      分类：{$category[$data['pcate']]['name']}  {php echo relatively_date($data['createtime'])} </div>
+  </div>
+  <div class="pet_list_one_info_r">
+     <div class="am-list-item-bar am-vertical-align-bottom am-vertical-align">
+      {if $data['ly']}
+      <span class="am-list-item-time">{$data['ly']}评论  </span>
+      {/if}
+      <span class="am-list-icon"><i class="am-icon-eye"></i> {$data['click']} </span>       
+  </div>      
+  </div>
+</div>
+</li>
+ 
+ {/loop}
+ 
+  </ul>
+
+</div>
+ <footer class="am-panel-footer"><div data-am-widget="list_news" class="am-list-news am-list-news-default" style="height:30px;line-height: 30px;padding-top: 5px">
+列表标题
+  <div class="am-list-news-hd am-cf" style="padding:0px 5px">
+     带更多链接
+      <a href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page,'keyword'=>$keyword));}" class="" style="color:#000">
+        <h2>查看更多{$category[$pcate]['name']}相关文章</h2>
+          <span class="am-list-news-more am-fr">更多 &raquo;</span>
+      </a>
+        </div>
+
+
+  </div> </footer>
+ 
+  </div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="am-list-news-ft" style="margin:3px 0px">
+    
+    <a class="am-list-news-more am-btn am-btn-danger am-fl" href="{php echo $this->createMobileUrl('index');}">去首页 &raquo;</a>
+    
+      <a data-am-widget="gotop" class="am-list-news-more am-btn am-btn-danger am-fr" href="#top">回顶部 &raquo;</a>
+     
+    </div>
+<script type="text/javascript">
+$(document).ready(function (){
+ $("#btn2").click(function(){       
+   
+    $.post("{php echo $this->createMobileUrl('handsel',array('action'=>img))}",
+      {
+        ggid:"{$gg['id']}",   
+        
+        articleid:"{$contents['id']}"
+      },
+  function(data){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+ 
+  });
+ });
+</script>
+
+<script src="http://cdn.amazeui.org/amazeui/2.5.2/js/amazeui.min.js"></script>
+<script src="{MODULE_URL}images/js.js"></script>
+
+
+ 
+ 
+
+
+
+  </body>  
+</html>

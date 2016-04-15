@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<title>{if $level >= 4}我的团队订单{else}我的订单{/if}</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../addons/hc_hunxiao/style/css/style.css?r=2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+<meta name="mobileOptimized" content="width" />
+<meta name="handheldFriendly" content="true" />
+<meta http-equiv="Cache-Control" content="max-age=0" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<style>
+.pagination li{
+	margin-left:12px;
+	background-color: #fa614b;
+	display: inline-block;
+	padding: 0 4%;
+	border-radius: 5px;
+}
+</style>
+
+<body>
+	{if empty($list)}
+		<h6>暂无订单</h6>
+	{else}
+	<section class="main animated fadeInDown">
+		<div class="main-box">
+			<div class="commission-detail">
+				<h6>{if $level >= 4}我的团队订单{else}{$level}级订单{/if}</h6>
+				{if empty($list)}
+					暂无订单
+				{else}
+					<p>
+						<span class="commission-time">时间</span>
+						<span class="commission-event">商品</span>
+						<span class="commission-money">佣金</span>
+						<span class="commission-total">数量</span>
+						<span class="commission-status">状态</span>
+					</p>
+					<p>
+						{loop $list $v}
+							<span class="commission-time">{php echo date('m-d', $v['createtime'])}</span>
+							<span class="commission-event">{php echo hehe($good[$v['goodsid']], 7)}</span>
+							<span class="commission-money">{$v['commission']}</span>
+							<span class="commission-total">{$v['total']}</span>
+							<span class="commission-status">
+								{php echo showStatus($v['flag'])}
+							</span>
+						{/loop}
+					</p>
+				{/if}
+			</div>
+		</div>
+	</section>
+	{/if}
+<footer class="foot"><a>&copy; {$_W['account']['name']}</a></footer>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}	
+<script>
+wx.config({
+	debug: false,   
+	appId: '<?php echo $signPackage["appId"];?>',
+	timestamp: '<?php echo $signPackage["timestamp"];?>',
+	nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	signature: '<?php echo $signPackage["signature"];?>',
+	jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+});
+
+wx.ready(function () {
+	var shareData = {
+		title: "{$profile['realname']}",
+		desc: "{$gzurl['description']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('fansindex',array('mid'=>$id))}",
+		imgUrl: "{$profile['headimg']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+	wx.onMenuShareTimeline(shareData);
+});
+</script>
+</body>
+</html>

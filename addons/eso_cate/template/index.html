@@ -1,0 +1,57 @@
+{template 'common/header'}
+{php $_item=0;}
+{template 'menu'}
+<div class="main w98auto">
+    <div class="main cf custom-menu">
+        <div class="mod">
+            <div class="main-bd" style="min-height:500px;">
+
+                <div class="member-info">
+                    <h1 class="title">统计概况</h1>
+                </div>
+
+                <div class="summary clearfix">
+                    <hr/>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div>
+                                    <span class="text">今天/昨天(交易金额)</span>
+                                    <span class="value">{$d_num}/{$d_nump}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span class="text">本周/上周(交易金额)</span>
+                                    <span class="value">{$w_num}/{$w_nump}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span class="text">本月/上月(交易金额)</span>
+                                    <span class="value">{$m_num}/{$m_nump}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span class="text">待确认/待发货</span>
+                                    <span class="value"><a href="{php echo urido('orderlist')}&ordertype={php echo urlencode("等待商家确认")}">{$q_num}</a>/<a href="{php echo urido('orderlist')}&ordertype={php echo urlencode("已付款")}">{$p_num}</a></span>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        //
+    });
+</script>
+
+{template 'common/footer'}

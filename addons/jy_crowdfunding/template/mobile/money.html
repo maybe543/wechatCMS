@@ -1,0 +1,9 @@
+
+
+<div class="pay-btn" id="wechat-panel">
+	<form action="{php echo url('mc/cash/wechat');}" method="post">
+		<input type="hidden" name="params" value="{php echo base64_encode(json_encode($params));}" />
+		<button class="btn btn-warning btn-block btn-lg"  type="submit" id="wBtn" value="wechat">微信支付</button>
+	</form>
+</div>
+

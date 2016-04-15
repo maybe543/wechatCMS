@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from chinaoctyada.cdjxyun.com/mfwxhtml/index.html?a=1&code=021548b3ee5a543b8f3b590741dd147k&state=1 by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 10 Aug 2015 04:03:24 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>&nbsp;</title>
+    <link href="css/skin.css" rel="stylesheet" />
+    <script src="js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="../../res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <style>
+        html
+        {
+            background-color: #151515;
+            height: 100%;
+        }
+        body
+        {
+            height: 100%;
+        }
+    </style>
+    <script>
+
+
+        var getParam = function (name) {
+            var search = document.location.search;
+            var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+            var matcher = pattern.exec(search);
+            var items = null;
+            if (null != matcher) {
+                try {
+                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                } catch (e) {
+                    try {
+                        items = decodeURIComponent(matcher[1]);
+                    } catch (e) {
+                        items = matcher[1];
+                    }
+                }
+            }
+            return items;
+        };
+
+        $(document).ready(function () {
+            var _code = getParam('code');
+            if (_code != null && _code != "") {
+                $.get('/WXAJAX.ashx?' + Math.random(), { Action: 'GetUser', code: _code, Type: "MFWXUser" }, function (ee) {
+                    var _obj = eval('(' + ee + ')');
+                    $("#nickname").html(_obj.nickname);
+                    $("#wxh").html("所在城市:" + _obj.city);
+                    $("#gimg").attr('src', _obj.headimgurl);
+                    $("#ming").attr('src', _obj.headimgurl);
+                });
+            }
+            $.get("/WXAJAX.ashx?" + Math.random(), { Action: 'DJAdd', Name: '华侨城.模仿微信', Number: 'MFWXUser', Type: 'Click' }, function (ee) {
+              
+            });
+
+            var _loc = location.href + '';
+            var _loc1 = _loc.substring(0, _loc.toLowerCase().indexOf('index.html'));
+            var m_link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5967600842bb5c15&amp;redirect_uri=http%3A%2F%2Fchinaoctyada.cdjxyun.com%2Fmfwxhtml%2Findex.html%3fa%3d1&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=1#wechat_redirect';
+            //var m_link = 'http://minyoun.cdjxyun.com/SCHtml/index.html';
+            var m_imgUrl = _loc1 + '/mfwxhtml/img/myshare.jpg';
+            var m_title = '一条神秘讯息，点开说走就走';
+            var m_desc = '点开有惊喜';
+            $.get("/WXAJAX.ashx?" + Math.random(), { Action: 'GetFXConfig', Loc: location.href }, function (ee) {
+                var constr = eval('(' + ee + ')');
+                if (constr.debug == false) {
+                    wx.config({
+                        debug: constr.debug,
+                        appId: constr.appId,
+                        timestamp: constr.timestamp,
+                        nonceStr: constr.nonceStr,
+                        signature: constr.signature,
+                        jsApiList: [
+                                'onMenuShareTimeline',
+                                'onMenuShareAppMessage'
+                                ]
+                    });
+                    //   m_link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + constr.appId + '&redirect_uri=http%3A%2F%2F' + _loc1.replace('http://', '') + '%2FWxyg%2Findex.html%3fa%3d1&response_type=code&scope=snsapi_base&state=1#wechat_redirect';
+                    wx.ready(function () {
+                        wx.onMenuShareAppMessage({
+                            title: m_title,
+                            desc: m_desc,
+                            link: m_link,
+                            imgUrl: m_imgUrl,
+                            trigger: function (res) {
+                            },
+                            success: function (res) {
+                                $.get("/WXAJAX.ashx?" + Math.random(), { Action: 'DJAdd', Name: '华侨城.模仿微信', Number: 'MFWXUser', Type: 'friend' }, function (ee) {
+
+                                });
+                            },
+                            cancel: function (res) {
+
+                            },
+                            fail: function (res) {
+
+                            }
+                        });
+
+                        wx.onMenuShareTimeline({
+                            title: m_title,
+                            link: m_link,
+                            imgUrl: m_imgUrl,
+                            trigger: function (res) {
+                            },
+                            success: function (res) {
+                                $.get("/WXAJAX.ashx?" + Math.random(), { Action: 'DJAdd', Name: '华侨城.模仿微信', Number: 'MFWXUser', Type: 'Circle' }, function (ee) {
+
+                                });
+                            },
+                            cancel: function (res) {
+
+                            },
+                            fail: function (res) {
+
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+
+        var password = "0805";
+        var _password = "";
+
+        function setTime() {
+            var _date = new Date();
+            var time = _date.getHours();
+            if (time < 10) time = "0" + time;
+            var m = _date.getMinutes();
+            if (m < 10) m = "0" + m;
+            time = time + ":" + m;
+            $("#time").html(time);
+        };
+    
+        var audio1 = false;
+        var audio2 = false;
+        function readAudio(path, fn) {
+            var audio = new Audio();
+            audio.volume = 0.1;
+            audio.src = path;
+            audio.play();
+            var t = setInterval(function () {
+                if (audio.readyState == 4) {
+                    clearInterval(t);
+                    fn();
+                }
+            });
+        }
+        $(function () {
+            function go() {
+                var i = 0;
+                var timer = setInterval(function () {
+                    if (i < 4) {
+                        if (i == 3) {
+                            addMsg(true);
+                        } else {
+                            addMsg();
+                        }
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, 500);
+                document.getElementById("slip").addEventListener("touchmove", function () {
+                    $(".password_plate").css("left", 0);
+                }, false);
+                $(".key").bind("touchend", clickBoard);
+                $(window).bind("touchmove", function (e) {
+                    // if ($(e.target).parents('.chat_plate').length == 0) {
+                    e.preventDefault();
+                    //  }
+                });
+            }
+            //            readAudio("1.mp3", function () {
+            //                audio1 = true;
+            //                if (audio1 && audio2) go();
+            //            });
+            //            readAudio("2.mp3", function () {
+            //                audio2 = true;
+            //                if (audio1 && audio2) go();
+            //            });
+            go();
+        });
+
+        function clickBoard(e) {
+            var index = $(this).data("index");
+            var count = $(".password").find(".full").length;
+            $(".password").find("span").eq(count).addClass("full");
+            _password += index;
+            if (count == 3) { //已输入四个
+                if (password == _password) { //输入密码正确
+                    $(".chat_plate").addClass("openPlate");
+                    starChat();
+                } else {
+                    $(".password").find(".full").removeClass("full");
+                    _password = "";
+                }
+            }
+        }
+
+        function addMsg(last) {
+
+
+            var html = '<li><img src="img/weixin.png" /><div class="index_msg_info"><span>微信</span>' +
+					'<label>现在</label><br /><span>幸福一家</span>';
+            if (last) {
+                html += '<br /><label>滑动来查看</label>';
+            }
+            html += '</div></li>';
+            var $con = $(".index_msg_list").find("ul");
+            $con.prepend(html);
+            $con.find("li").first().next().addClass("history");
+            var audio = new Audio();
+            audio.src = "1.mp3";
+            audio.play();
+
+        }
+
+        function starChat() {
+            setTitle("幸福一家")
+            var _init = 0;
+
+            function showChat() {
+                var audio = new Audio();
+                audio.src = "2.mp3";
+                audio.play();
+                $(".chat_item").eq(_init).fadeIn();
+            }
+            showChat();
+            var timer = setInterval(function () {
+                _init++;
+                if (_init < 4) {
+                    showChat();
+                } else {
+                    clearInterval(timer);
+                    $(".submit_keybord").show();
+                    $("#myMsg").focus();
+                    $("#myMsg").val("好我马上订票");
+                }
+            }, 1000);
+            $(".submit_keybord").bind("touchend", function () {
+                $(".submit_keybord").hide();
+                $("#myMsg").val("");
+                showChat();
+                setTimeout(function () {
+                    startMe();
+                }, 3000);
+            });
+        }
+
+        function startMe() {
+            setTitle("我");
+            $(".chat_plate").css("left", "100%");
+            $(".me_plate").css("left", "0");
+            $(".me_plate").find(".flash_button").bind("click", function () {
+                startMoney();
+            });
+        }
+
+        function startMoney() {
+            setTitle("零钱");
+            $(".me_plate").css("left", "100%");
+            $(".money_plate").css("left", "0");
+            $(".money_plate").find(".flash_button").bind("click", function () {
+                startMoneyFull();
+            });
+        };
+
+        function startMoneyFull() {
+            setTitle("零钱充值");
+            $(".moneyFull_plate").css("top", "0");
+            $(".moneyFull_plate").find(".flash_button").bind("click", function () {
+                $("#money_mask").show();
+                $(".moneyFull_plate").find(".flash_button").hide();
+            });
+        }
+        function setTitle(title) {
+            var $body = $('body');
+            document.title = title;
+            // hack在微信等webview中无法修改document.title的情况
+            var $iframe = $('<iframe src="http://chinaoctyada.cdjxyun.com/favicon.ico"></iframe>');
+            $iframe.on('load', function () {
+                setTimeout(function () {
+                    $iframe.off('load').remove();
+                }, 0);
+            }).appendTo($body);
+
+        }
+		</script>
+</head>
+<body>
+   
+    <div class="screen" id="lockScreen">
+        <div class="index_time">
+            <div class="time" id="time">
+                22:01</div>
+            <div class="day" id="day">
+                7月6日 星期一</div>
+        </div>
+        <script>
+            setTime();
+            setInterval(function () {
+                setTime();
+            }, 1000)
+            var _date = new Date();
+            var y = _date.getMonth() + 1;
+            var d = _date.getDate();
+            var x = _date.getDay();
+            var _x = "";
+            switch (x) {
+                case 1:
+                    _x = "一";
+                    break;
+                case 2:
+                    _x = "二";
+                    break;
+                case 3:
+                    _x = "三";
+                    break;
+                case 4:
+                    _x = "四";
+                    break;
+                case 5:
+                    _x = "五";
+                    break;
+                case 6:
+                    _x = "六";
+                    break;
+                case 0:
+                    _x = "日";
+                    break;
+            }
+            var day = y + "月" + d + "日  星期" + _x;
+            $("#day").html(day);
+			</script>
+        <div class="index_msg_list">
+            <ul>
+            </ul>
+        </div>
+        <div class="index_footer">
+            <div class="slip" id="slip">
+                <span>滑动来解锁</span></div>
+            <div>
+                <span class="bar"></span><span class="camera"></span>
+            </div>
+        </div>
+    </div>
+    <div class="password_plate">
+        <div class="prompt">
+            Touch ID 请输入密码
+        </div>
+        <div class="password">
+            <span>0</span><span>8</span><span>0</span><span>5</span></div>
+        <div class="keyboard">
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="1">
+                        <span>1</span></div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="4">
+                        <span>4</span>
+                        <br />
+                        <label>
+                            GHI</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="7">
+                        <span>7</span>
+                        <br />
+                        <label>
+                            PQRS</label>
+                    </div>
+                </div>
+                <div class="row empty">
+                    <span>&nbsp;</span></div>
+            </div>
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="2">
+                        <span>2</span>
+                        <br />
+                        <label>
+                            ABC</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="5">
+                        <span>5</span>
+                        <br />
+                        <label>
+                            JKL</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="8">
+                        <span>8</span>
+                        <br />
+                        <label>
+                            TUV</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="0">
+                        <span>0</span></div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="3">
+                        <span>3</span>
+                        <br />
+                        <label>
+                            EDF</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="6">
+                        <span>6</span>
+                        <br />
+                        <label>
+                            MNO</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="9">
+                        <span>9</span>
+                        <br />
+                        <label>
+                            WXYZ</label>
+                    </div>
+                </div>
+                <div class="row empty">
+                    <span>&nbsp;</span></div>
+            </div>
+        </div>
+        <script>
+            var kw = $(window).width() * 0.7;
+            $(".keyboard").width(kw);
+            $(".keyboard").height(kw * 4 / 3);
+			</script>
+        <div class="bottom">
+            <div>
+                紧急呼叫</div>
+            <div>
+                取消</div>
+        </div>
+    </div>
+    <div class="chat_plate">
+        <div class="chat_con">
+            <div style="position: absolute; min-height: 100%; bottom: 0px; width: 100%;">
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="img/wife.jpg" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            老婆</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>你看还是好久带娃儿去耍一圈嘛，我们办公室同事的娃儿都去三亚了
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="img/father.jpg" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            老丈人</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>就是，趁现在还是放暑假带娃儿出去耍下嘛
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="img/mather.jpg" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            丈母娘</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>张大妈的孙娃子都去香港迪士尼了，你们把娃儿带走了，我下礼拜也好约两场麻将
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="img/wife.jpg" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            老婆</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>路线我都看好了，等下发你，你先把机票，酒店那些订了
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item right" style="display: none;">
+                    <div class="thumb">
+                        <img src="img/me.jpg" id="ming" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_pop">
+                            <em></em><span></span>好我马上订票
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat_form">
+            <img src="css/image/a.jpg" class="left" />
+            <img src="css/image/b.jpg" class="right" />
+            <div class="form">
+                <form>
+                <textarea id="myMsg"></textarea>
+                </form>
+                <div class="mask">
+                </div>
+            </div>
+        </div>
+        <div class="submit_keybord" style="display: none;">
+            <img src="css/image/keybord.jpg">
+        </div>
+    </div>
+    <div class="me_plate">
+        <div class="my_info">
+            <img src="img/h.jpg" class="header" id="gimg" />
+            <div>
+                <span id="nickname">天晴的路</span>
+                <br />
+                <label id="wxh">
+                    微信号：yaoji63323787</label>
+            </div>
+        </div>
+        <div class="main_menu">
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="css/image/p.jpg"><span>相册</span></li>
+                    <li>
+                        <img src="css/image/f.jpg"><span>收藏</span></li>
+                    <li>
+                        <img src="css/image/pa.jpg"><span>钱包</span> <span class="flash_button"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="css/image/s.jpg"><span>表情</span></li>
+                </ul>
+            </div>
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="css/image/ap.jpg"><span>设置</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="foot_menu">
+            <div>
+                <img src="img/wx.jpg" />
+            </div>
+            <div>
+                <img src="img/txl.jpg" />
+            </div>
+            <div>
+                <img src="img/fx.jpg" />
+            </div>
+            <div>
+                <img src="img/w.jpg" />
+            </div>
+        </div>
+    </div>
+    <div class="money_plate">
+        <div class="money_image">
+            <img src="css/image/money.png" /></div>
+        <div class="money">
+            ￥5.00</div>
+        <div class="money_action">
+            <a href='javascript:void(0);' class='full'>充值<span class="flash_button"></span></a>
+            <a href='javascript:void(0);' class="get">提现</a>
+        </div>
+        <div class="money_footer">
+            <div>
+                <a href="javascript:void(0);">常见问题</a></div>
+            <div>
+                本服务由财付通提供底层技术支持</div>
+        </div>
+    </div>
+    <div class="moneyFull_plate">
+        <div class="money_info">
+            <ul>
+                <li><span class="txt">储蓄卡</span>
+                    <div>
+                        <a href="javascript:void(0);">建设银行(9625)</a></br>
+                        <label>
+                            单日交易限额￥10000.00</label>
+                    </div>
+                </li>
+                <li><span class="txt">金额(元)</span>
+                    <div>
+                        1000
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="money_action">
+            <a href='javascript:void(0);' class='full'>下一步<span class="flash_button"></span></a>
+        </div>
+        <div id="money_mask" style="display: none;">
+            <div class='money_mask'>
+                <div class="pop_prompt">
+                    <div>
+                        亲子出游？钱不够？
+                        <br />
+                        华侨城·原岸2015百万旅行计划
+                        <br />
+                        免费送你去旅行</div>
+                    <a href="http://chinaoctya.cdjxyun.com/BWJHHtml/index.html">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Mirrored from chinaoctyada.cdjxyun.com/mfwxhtml/index.html?a=1&code=021548b3ee5a543b8f3b590741dd147k&state=1 by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 10 Aug 2015 04:03:34 GMT -->
+</html>

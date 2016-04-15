@@ -1,0 +1,61 @@
+{template 'common/header'}
+
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news">营销设置</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadset&m=nets_bd_news">站点设置</a></li>
+	<li class="active"><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsaouthsite&m=nets_bd_news">授权管理</a></li>
+	<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadprice&m=nets_bd_news">广告价格</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadlist&m=nets_bd_news">广告管理</a></li>
+</ul>
+	
+		<div class="panel panel-default">
+			<div class="panel-heading">授权管理</div>
+			<div class="panel-body" style="padding:20px;">	
+				<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+				<div class="input-group form-group col-sm-8 col-xs-12">
+					<input type="hidden" name="id" value="0" />
+					<input type="hidden" name="op" value="post" />
+					<div style="margin-left:20px;">
+					<input type="text" name="site_name" style="width:120px;" class="form-control"  placeholder="站点名称"/>
+					</div>
+					<div style="margin-left:20px;">
+                    <input type="text" name="site_url" style="width:150px;" class="form-control"  placeholder="授权域名"/>
+					</div>
+					<div style="margin-left:20px;">
+					<input type="text" name="site_ip" style="width:130px;" class="form-control"  placeholder="授权IP"/>
+
+					</div>
+					<div style="margin-left:40px;">
+					<input type="submit" name="submit" value="添加" style="width:60px;" class="btn btn-primary col-lg-1" />
+					</div>
+                </div>
+				</form>
+				{loop $record $r}
+				<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+				<div class="input-group form-group col-sm-8 col-xs-12">
+					<input type="hidden" name="id" value="{$r['id']}" />
+					<input type="hidden" name="op" value="post" />
+                    <div style="margin-left:20px;">
+					<input type="text" name="site_name" value="{$r['site_name']}" style="width:120px;" class="form-control"  placeholder="站点名称"/>
+					</div>
+					<div style="margin-left:20px;">
+                    <input type="text" name="site_url"  value="{$r['site_url']}" style="width:150px;" class="form-control"  placeholder="授权域名"/>
+					</div>
+					<div style="margin-left:20px;">
+					<input type="text" name="site_ip"  value="{$r['site_ip']}" style="width:130px;" class="form-control"  placeholder="授权IP"/>
+					</div>
+					<div style="margin-left:20px;">
+					<input type="submit" name="submit" value="保存" style="width:60px;" class="btn btn-primary col-lg-1" />
+					<a class="btn btn-primary " href="/web/index.php?c=site&a=entry&op=del&do=Hxsadprice&m=nets_bd_news&id={$r['id']}"  />删除</a>
+					</div>
+                </div>
+				</form>
+				{/loop}
+				
+			</div>
+		</div>
+	
+</div>
+{template 'common/footer'}

@@ -1,0 +1,28 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    body{background-color:#FAFAFA}
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+    .list-group-item{margin-top:10px;font-weight: bold;line-height: 30px;font-size:16px;background-color: #ffffff;}
+    .list-group-item span{margin-left:15px;}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+        <img class="img-circle" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>提现</h3>
+    </div>
+</div>
+<ul class="list-group">
+    <li class="list-group-item">最低提现额 <span>{$lowmoney} 元</span></li>
+    <li class="list-group-item">总收益 <span>{$allmoney} 元</span></li>
+    <li class="list-group-item">可提现额 <span>{$allowmoney} 元</span></li>
+    <li class="list-group-item">到账额 <span>{$usedmoney} 元</span></li>
+</ul>
+<a class="btn btn-warning btn-lg btn-block" href="{php echo $this->createMobileUrl('cash', array('money'=>$allowmoney,'send'=>'fs'))}" role="button">提现</a>
+
+{template 'footbar'}
+{template 'footer'}

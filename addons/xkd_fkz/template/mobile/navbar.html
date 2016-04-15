@@ -1,0 +1,47 @@
+{if $this->m_setting['adv_open']}
+{php $col=3;$open=true;}
+{else}
+{php $col=4;$open=false;}
+{/if}
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="row">
+        <div class="col-xs-{$col}">
+            <div class="center-common">
+                <a href="{php echo $this->createMobileUrl('index')}">
+                    <div class="img-common"><img class="banner-img"
+                                                 src="../addons/xkd_fkz/template/mobile/image/home.png"></div>
+                    升级
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-{$col}">
+            <div class="center-common">
+                <a href="{php echo $this->createMobileUrl('waitup')}">
+                    <div class="img-common"><img class="banner-img"
+                                                 src="../addons/xkd_fkz/template/mobile/image/list.png"></div>
+                    管理
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-{$col}">
+            <div class="center-common">
+                <a href="{php echo $this->createMobileUrl('myinfo')}">
+                    <div class="img-common"><img class="banner-img"
+                                                 src="../addons/xkd_fkz/template/mobile/image/my.png"></div>
+                    我的
+                </a>
+            </div>
+        </div>
+        {if $open}
+        <div class="col-xs-{$col}">
+            <div class="center-common">
+                <a href="{php echo $this->createMobileUrl('adv')}">
+                    <div class="img-common"><img class="banner-img"
+                                                 src="../addons/xkd_fkz/template/mobile/image/pengyouquan.png"></div>
+                    朋友圈
+                </a>
+            </div>
+        </div>
+        {/if}
+    </div>
+</nav>

@@ -1,0 +1,459 @@
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+.col-25 {
+    float: left;
+    width: 25%;
+}
+.col-50 {
+    float: left;
+    width: 50%;
+}
+.checkbox,
+.radio {
+    margin: 10px 0;
+}
+.m0 {
+    margin: 0;
+}
+.p0 {
+    padding: 0;
+}
+.mp0 {
+    margin: 0;
+    padding: 0;
+}
+.wi {
+    width: auto;
+    display:inline;
+}
+.inline {
+    display:inline;
+}
+.navblank {
+    color: #bbbbbb;
+    padding: 0 5px;
+}
+.vipmenu {
+    position: relative;
+    width: 98%;
+    height:42px;
+    margin:0 auto;
+    padding-left:24px;
+    background-color: #fff;
+    border-bottom: 3px solid #0099cc;
+}
+.vipmenu a {
+    display:block;
+    float: left;
+    line-height: 42px;
+    padding:0 13px;
+    margin-right: 12px;
+    color: #0099cc;
+}
+.vipmenu a.active,
+.vipmenu a:hover {
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+    color: #fff;
+    font-weight: bold;
+    background-color: #0099cc;
+}
+.vipmenu div {
+    display: none;
+    border: 1px solid #0099cc;
+    border-top: 3px solid #0099cc;
+    background-color: #ffffff;
+    position: absolute;
+    top: 39px;
+    left: 0px;
+    z-index: 9999;
+}
+.vipmenu div a {
+    float: none;
+    margin:0;
+}
+.vipmenu div a.active,
+.vipmenu div a:hover {
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+.main-bd {
+    padding: 20px;
+}
+.main-page h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 25px;
+}
+.member-info .control-top {
+    padding-left: 0px;
+    margin-top: 10px;
+}
+.member-info h1.title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+.member-info ul li {
+    margin-right: 25px;
+    float: left;
+}
+
+.member-info ul li span {
+    color: #006699;
+    font-weight: bold;
+}
+
+.member-info ul li strong {
+    color: #ff6600;
+}
+#text-tooltip {
+    position:absolute;
+    background-color: #ffffff;
+    padding: 8px;
+    border:1px solid #cc7116;
+}
+#text-tooltip img {
+    display: block;
+    margin: 10px 0;
+    max-width: 300px;
+    max-height: 200px;
+}
+input.check {
+    margin: 0;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+.check label {
+    padding-right: 10px;
+}
+#u_moneyover {
+    color: #257ad0;
+    cursor: pointer;
+}
+#u_moneyover:hover {
+    text-decoration: underline;
+}
+.summary table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.summary td {
+    min-width: 190px;
+    max-width: 100%;
+}
+
+.summary td div {
+    height: 60px;
+    padding: 10px 0;
+    margin: 0 4px;
+    background-color: #f6f6f6;
+}
+
+.summary .text,
+.summary .value {
+    display: block;
+    line-height: 1;
+    text-align: center;
+}
+
+.summary .text {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+}
+
+.summary .value, .summary .value a {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff0000;
+}
+.summary .value a:hover {
+    color: #0000ff;
+    text-decoration: underline;
+}
+.goodslist img#put {
+    cursor: pointer;
+}
+.form-control-small {
+    width:160px;
+    border-radius: 3px;
+    padding: 6px 12px;
+    border: 1px solid #cccccc;
+}
+.form-control-tiny {
+    width:50px;
+    border-radius: 3px;
+    padding: 5px 3px;
+    border: 1px solid #cccccc;
+}
+.iconsadd {
+    background-image: url(../images/ui-icons_2e83ff_256x240.png);
+    background-position:0 -192px;
+    padding-right: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+.goodsattr {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+.goodsattr .button {
+    background-color: #57AABD;
+    border-color: #47a1bd;
+}
+.goodsattr .attrlist input {
+    width: 120px;
+    color: #333333;
+    border-radius: 2px;
+    padding: 3px 2px;
+    border: 1px solid #aaaaaa;
+
+}
+.goodsattr .attrlist input.small {
+    width: 50px;
+}
+.goodsattr .attrlist label {
+    padding-left: 5px;
+    display: none;
+}
+.goodsattr .attrlist label input {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+table.goodsattr tbody tr td {
+    padding: 8px 10px;
+    position: relative;
+}
+.goodsattr .attrlist .attradd {
+    padding:0 3px;
+    font-size: 18px;
+    color: #1d1d1d;
+    font-weight: 900;
+    cursor: pointer;
+}
+.goodsattr .attrlist .attraddp {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: 1px solid #57AABD;
+    padding: 2px 3px;
+    background-color: #57AABD;
+    color: #ffffff;
+    height: 18px;
+    line-height: 14px;
+    font-size: 12px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 1px 0 #ababab;
+    -moz-box-shadow: 0 1px 0 #ababab;
+    box-shadow: 0 1px 0 #ababab;
+    border-color: #47a1bd;
+    cursor: pointer;
+}
+.goodsattr .attrlist .attraddv {
+    background-image: url(../images/ui-icons_2e83ff_256x240.png);
+    background-position:0 -192px;
+    padding-right: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+.goodsattr .attrlist .attraddd {
+    background-image: url(../images/ui-icons_888888_256x240.png);
+    background-position:-16px -192px;
+    padding-right: 16px;
+    line-height: 16px;
+    cursor: pointer;
+}
+.goodsattr .attrlist .type {
+    width: 230px;
+    text-align: right;
+    padding-top: 15px;
+    border-right: 1px solid #cccccc;
+}
+.goodsattr .attrlist .type input {
+    margin-top: -4px;
+}
+.goodsattr tbody.attrlist {
+    border: 1px solid #cccccc;
+    border-bottom: 0px solid #cccccc;
+}
+.goodsattr tbody.attrlist tr {
+    border-bottom: 1px solid #cccccc;
+}
+.goodsattr tbody.attrlist tr .attrdiv {
+    padding: 3px 0;
+}
+.feiyinlist {
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+}
+.feiyinlist td {
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+}
+.feiyinlist span {
+    vertical-align: top;
+    display: block;
+    float: left;
+    margin-top: 10px;
+}
+.fen_list td {
+    text-align: center;
+}
+.fen_list th.lt,
+.fen_list td.lt {
+    text-align: left;
+}
+.fen_list #s_x input, .fen_list #s_y input {
+    width: 60px;
+}
+.fen_list #s_add {
+    line-height: 26px;
+    height: 26px;
+    overflow: hidden;
+    display: block;
+}
+.fen_list .form-order {
+    padding: 8px 5px;
+    width: 42px;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid #aaaaaa;
+}
+.fen_list .iconfont {
+    font-size: 16px;
+    color: #333333;
+}
+table.table-form tbody.feiyinlist tr td {
+    padding: 8px 10px;
+}
+.goodslist img#put {
+    cursor: pointer;
+}
+.goodslist #comm em {
+    font-style: normal;
+    padding-left: 5px;
+    color: #CD15F0;
+}
+.button {
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+    border-width: 1px;
+    border-style: solid;
+    /* font-weight: 300; */
+    font-size: 14px;
+    font-family: "Microsoft YaHei", SimSun, Tahoma, Verdana, Arial, sans-serif;
+    /* text-shadow: 0 1px 1px white; */
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    height: 30px;
+    line-height: 28px;
+    padding: 0 18px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 #ababab;
+    -moz-box-shadow: 0 1px 0 #ababab;
+    box-shadow: 0 1px 0 #ababab;
+    color: #fff;
+    background-color: #0099cc;
+    border-color: #018BB9;
+}
+.button.easy {
+    background-color: #6171C5;
+    border-color: #5864A5;
+}
+.button.long {
+    padding-left: 60px;
+    padding-right: 60px;
+    height: 38px;
+}
+.button:hover, .button-hover {
+    color: #fff;
+    background-color: #ffaa00;
+    border-color: #e67a00;
+}
+.setfield {
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px dotted #cccccc;
+}
+.setfield .form-control {
+    width:100px;
+    display: inline;
+    border-radius: 3px;
+    border: 1px solid #aaaaaa;
+    padding: 3px 2px;
+}
+.setfield .form-control.t {
+    width: 50px;
+}
+.setfield textarea.form-control {
+    width: 350px;
+    height: 80px;
+    margin-top: 5px;
+}
+.setfield select {
+    width: auto;
+}
+.setfield .typesel{
+    display: none;
+    margin-top: 5px;
+    padding-left: 42px;
+}
+.setfield .cut {
+    color: #FF0000;
+    font-size: 22px;
+    cursor: pointer;
+    padding-left: 5px;
+}
+.cartinfo {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.cartinfo tr {
+    border-top: 1px solid #E1E8F3;
+    border-left: 1px solid #E1E8F3;
+    border-bottom: 1px solid #E1E8F3;
+
+}
+.cartinfo tr td {
+    border-right: 1px solid #E1E8F3;
+    line-height: 40px;
+}
+.cartinfo tr th {
+    border-right: 1px dotted #E1E8F3;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 40px;
+}
+table.cartinfo tbody tr td {
+    padding-left: 10px;
+
+}
+.cartinfo tbody.goods {
+    background-color: #F3F6F8;
+}
+.orderbut {
+    margin-top: 30px;
+    text-align: center;
+}
+.orderbut a {
+    margin-right: 10px;
+}
+.w98auto {
+    width: 98%;
+    margin: 0 auto;
+}

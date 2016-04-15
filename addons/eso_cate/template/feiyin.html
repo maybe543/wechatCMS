@@ -1,0 +1,141 @@
+{template 'common/header'}
+{php $_item=-1;}
+{php $_itemp=5;}
+{template 'menu'}
+<div class="main w98auto">
+
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd">
+
+                <div class="control-group">
+                    <a class="button" href="{php echo urido('feiyinadd')}">+添加无线打印</a>
+                </div>
+
+                <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                    <table style="margin-bottom: 20px;" class="table table-primary" id="menu-table">
+                        <thead>
+                        <tr>
+                            <th width="180">名称</th>
+                            <th width="150">类型</th>
+                            <th width="220">编码标识</th>
+                            <th>描述</th>
+                            <th width="100">终端状态</th>
+                            <th width="100">使用状态</th>
+                            <th width="100">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="fen_list">
+                        {loop $lists $list}
+                        <tr class="align-center">
+                            <td>{$list['title']}</td>
+                            <td>{$list['printtype']}</td>
+                            <td>{$list['deviceno']}</td>
+                            <td title="{$list['descriptions']}">{php echo get_html($list['descriptions'],40)}</td>
+                            {if $list['status'] == "使用中"}
+                                {if $list['printtype'] == "飞印打印机"}
+                                    <td id="device" data-deviceno="{$list['deviceno']}" title="点击立即刷新终端状态"></td>
+                                {else}
+                                    <td data-deviceno="{$list['deviceno']}" title="飞印打印机才支持此项">...</td>
+                                {/if}
+                                <td>{$list['status']}</td>
+                            {else}
+                                <td title="查询终端状态请先修改使用状态为“使用中”"><span style="color:#999999">{$list['status']}</span></td>
+                                <td><span style="color:#999999">{$list['status']}</span></td>
+                            {/if}
+                            <td>
+                                <a href="{php echo urido('feiyinadd')}&id={$list['id']}" class="normal-link">修改</a>
+                                <a href="javascript:void(0);" onclick="_del({$list['id']});" class="normal-link">删除</a>
+                            </td>
+                        </tr>
+                        {/loop}
+                        {if !$lists}
+                        <tr>
+                            <td colspan="6" align="center" class="align-center">
+                                <div>无</div>
+                            </td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function _del(id){
+        var _del = art.dialog({
+            title: '删除提醒',
+            fixed: true,
+            lock: true,
+            icon: 'warning',
+            opacity: '.3',
+            content: '确定要删除并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.alert('正在删除',0);
+                    $.ajax({
+                        url: '{php echo urido('feiyindel')}&id='+id,
+                        dataType: 'json',
+                        success: function (data) {
+                            $.alert(0);
+                            if (data != null && data.success != null && data.success) {
+                                $.showModal(data.message, '{php echo get_url()}');
+                            } else {
+                                $.showModal(data.message);
+                            }
+                            _del.close();
+                        },error : function () {
+                            $.alert("删除失败！");
+                        },
+                        cache: false
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    $(document).ready(function() {
+        $("td#device").each(function(){
+            var eve = $(this);
+            eve.text("...").css("cursor","pointer")
+            $.ajax({
+                url: '{php echo urido('device')}&deviceno='+eve.attr("data-deviceno"),
+                dataType: 'json',
+                success: function (data) {
+                    if (data != null && data.success != null && data.success) {
+                        eve.html(data.message);
+                    }
+                },error : function () {
+                    eve.text("查询错误");
+                }
+            });
+        }).click(function(){
+            var eve = $(this);
+            eve.text("...");
+            $.ajax({
+                url: '{php echo urido('device')}&deviceno='+eve.attr("data-deviceno"),
+                dataType: 'json',
+                success: function (data) {
+                    if (data != null && data.success != null && data.success) {
+                        eve.html(data.message);
+                    }
+                },error : function () {
+                    eve.text("查询错误");
+                }
+            });
+        });
+    });
+</script>
+
+{template 'common/footer'}

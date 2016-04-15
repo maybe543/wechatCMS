@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$contents['title']}</title>
+    <meta name="x5-page-mode" content="no-title">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">  
+    <meta name="format-detection" content="telephone=no">    
+   
+<link rel="stylesheet" type="text/css" href="{MODULE_URL}images/detail.css" />
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css" />
+<link rel="stylesheet" type="text/css" href="http://www.bootcss.com/p/buttons/css/buttons.css" />
+<style>
+    .button{float: left;width: 29%;margin:2%;border-radius: 10px;padding: 0px}
+</style>
+</head>
+<body>
+<div class="weui_msg">
+    <div class="weui_icon_area">
+    <img src="{$_W['fans']['tag']['avatar']}" style="border-radius:60%" width="100">
+      
+    </div>
+    <div class="weui_text_area">
+            <h2 class="weui_msg_title">{$_W['fans']['nickname']}</h2>
+            
+        </div>
+    <div class="weui_text_area">
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '1','id'=>$contents['id'],'uid'=>$contents['uid']));}">1元</a>
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '5','id'=>$contents['id'],'uid'=>$contents['uid']));}">5元</a>
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '10','id'=>$contents['id'],'uid'=>$contents['uid']));}">10元</a>
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '20','id'=>$contents['id'],'uid'=>$contents['uid']));}">20元</a>
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '50','id'=>$contents['id'],'uid'=>$contents['uid']));}">50元</a>
+    <a class="button button-3d button-caution" href="{php echo $this->createMobileUrl('pay', array('fee' => '100','id'=>$contents['id'],'uid'=>$contents['uid']));}">99元</a>
+
+    <form  id="form" action="{php echo $this->createMobileUrl('pay',array('uid'=>$contents['uid']))}"  method="post"  class="form-inline"  enctype="multipart/form-data"> 
+    <input  type="text" name="fee" value="" class="button button-block button-rounded button-large" placeholder="请输入其他金额" style="width:95%">
+    <input name="submit" type="submit" class="weui_btn weui_btn_primary" value="提交">
+    <input type="hidden" name="token" value="{$_W['token']}" />
+    <input type="hidden" name="id" value="{$contents['id']}" />
+</form> 
+    </div>
+    <div class="am-modal-actions-group">
+     
+</div>
+ 
+</div>
+</body>
+</html>

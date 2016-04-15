@@ -1,0 +1,260 @@
+﻿<html>
+<head>
+<meta charset="UTF-8">
+<title>{$reply['title']}</title>
+<link rel="stylesheet" type="text/css" href="{CSS}main.css"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<script type="text/javascript" src="{JS}setviewport.js"></script>
+<script type="text/javascript" src="{JS}preloadjs-0.6.0.min.js"></script>
+<script type="text/javascript" src="{JS}jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{JS}soundjs-0.6.0.min.js"></script>
+<script type="text/javascript" src="{JS}TweenMax.min.js"></script>
+ <!--<script type="text/javascript" src="js/getnickname.js"></script>-->
+<script type="text/javascript" src="http://static.udache.com/gulfstream/webapp/js/didi.base.js"></script>
+ 
+<script type="text/javascript" src="http://js.miaozhen.com/wx.1.0.js"></script>
+<script type="text/javascript" src="{JS}main2.js"></script>
+</head>
+<body>
+
+<div class="main hide">
+    <div class="page" id="page">
+        <!--<div class="enterpage"></div>-->
+        <div class="longpage hide">
+            <div class="groupinfo radioBox"><div class="cont" style="color:white;">马云 阿里邀请你加入了“{$reply['title']}”群聊，群聊参与人还有：{$reply['name']}、刘强东 京东、王石 万科、柳传志 联想、潘石屹 SOHO中国、王思聪 国民老公-……</div></div>
+
+            <div id="msg1" class="massge hide" style="height: 160px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">马叔，今年是你的主场啊，今年又要大赚吧！</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg2" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx2.jpg" /></div>
+                <div class="mname">马云 阿里</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">别闹！我的首富位置刚被你爹抢了</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg3" class="massge hide" style="height: 180px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">发红包发红包！也让我们乐呵乐呵！<img src="http://wximg.zbs6.com/webapp/1212/images/bq1.png" style="margin-top: 10px;" /></div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg4" class="massge hide" style="height: 260px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div><img src="http://wximg.zbs6.com/webapp/1212/images/bq6.jpg" /></div>
+                </div>
+            </div>
+
+            <div id="msg5" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx5.jpg" /></div>
+                <div class="mname">潘石屹 SOHO中国</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">我闻到了红包的味道</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg6" class="massge hide" style="height: 233px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx2.jpg" /></div>
+                <div class="mname">马云 阿里</div>
+                <div class="redpick" id="redpick1">
+                    <img src="http://wximg.zbs6.com/webapp/1212/images/redpick.png" />
+                </div>
+<!--                <img class="circle"  src="images/circle.png" />
+                <img class="hand"  src="images/hand.png" />-->
+            </div>
+
+            <div id="msg7" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx4.jpg" /></div>
+                    <div class="mname">刘强东 京东</div>
+                    <div class="mcontent">
+                    <div class="mcla radioBox">擦，没抢到</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg8" class="massge hide" style="height: 150px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx5.jpg" /></div>
+                    <div class="mname">潘石屹 SOHO中国</div>
+                    <div class="mcontent">
+                    <div class="mcla radioBox">马总你怎么只发一个红包啊，不然让奶茶和强东来发个大的<img src="http://wximg.zbs6.com/webapp/1212/images/bq1.png" style="position: absolute;margin: 0 0 0 11px;width: 34px;" /></div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg9" class="massge hide" style="height: 145px;">
+                <div class="headimg"><img src="{php echo tomedia($reply['head'])}" /></div>
+                    <div class="mname">{$reply['name']}</div>
+                    <div class="mcontent">
+                    <div class="mcla radioBox">嘿嘿，手气真好，抢到马总的30亿大红包！我可不能独吞，发给大家！</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg10" class="massge hide" style="height: 192px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div><img src="http://wximg.zbs6.com/webapp/1212/images/bq8.jpg" /></div>
+                </div>
+            </div>
+
+            <div id="msg11" class="massge hide" style="height: 260px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx2.jpg" /></div>
+                <div class="mname">马云 阿里</div>
+                <div class="mcontent">
+                    <div><img src="http://wximg.zbs6.com/webapp/1212/images/bq9.jpg" /></div>
+                </div>
+            </div>
+
+            <div id="msg12" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">30亿啊，30亿大红包啊！</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg13" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox"><img src="http://wximg.zbs6.com/webapp/1212/images/bq3.png" /><img src="http://wximg.zbs6.com/webapp/1212/images/bq3.png" /><img src="http://wximg.zbs6.com/webapp/1212/images/bq3.png" /><img src="http://wximg.zbs6.com/webapp/1212/images/bq3.png" /></div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg14" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx7.jpg" /></div>
+                <div class="mname">柳传志 联想</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">抢了大红包要分享啊</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg15" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx6.jpg" /></div>
+                <div class="mname">王石 万科</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">顶楼上</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg16" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx1.jpg" /></div>
+                <div class="mname">王思聪 国民老公</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">顶楼上</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg15" class="massge hide" style="height: 120px;">
+                <div class="headimg"><img src="http://wximg.zbs6.com/webapp/1212/images/tx4.jpg" /></div>
+                <div class="mname">刘强东 京东</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">顶楼上</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg17" class="massge hide" style="height: 151px;">
+                <div class="headimg"><img src="{php echo tomedia($reply['head'])}" /></div>
+                <div class="mname">{$reply['name']}</div>
+                <div class="mcontent">
+                    <div class="mcla radioBox">嘿嘿，手气真好，抢到马总的30亿大红包！我可不能独吞，发给大家！</div>
+                    <div class="jb"><img src="http://wximg.zbs6.com/webapp/1212/images/pdj.png" /></div>
+                </div>
+            </div>
+
+            <div id="msg18" class="massge hide" style="height: 260px;">
+                <div class="headimg"><img src="{php echo tomedia($reply['head'])}" /></div>
+                <div class="mname">{$reply['name']}</div>
+                <div class="mcontent">
+                    <div><img src="http://wximg.zbs6.com/webapp/1212/images/bq5.jpg" /></div>
+                </div>
+            </div>
+
+            <div id="msg19" class="massge hide" style="height: 220px;">
+                <div class="headimg"><img src="{php echo tomedia($reply['head'])}" /></div>
+                <div class="mname">{$reply['name']}</div>
+                <div class="redpick" id="redpick2">
+                    <img src="http://wximg.zbs6.com/webapp/1212/images/redpick.png" />
+                </div>
+<!--                <img class="circle"  src="images/circle.png" />
+                <img class="hand"  src="images/hand.png" />-->
+            </div>
+            <div class="di"><img src="http://wximg.zbs6.com/webapp/1212/images/di.jpg"/></div>
+
+        </div>
+    </div>
+
+    <div id="hongbao" class="hongbao hide">
+        <img id="hb1" class="hide" src="http://wximg.zbs6.com/webapp/1212/images/hb1.jpg" />
+		
+        <img id="hb2" class="hide" src="{php echo tomedia($reply['hb'])}" />
+        <img id="hb1Open" class="hide" src="http://wximg.zbs6.com/webapp/1212/images/hb1_open.jpg" />
+        <div id="btn1"></div>
+        <div id="btn2"></div>
+        <div id="btn3" class="hide"></div>
+        <img class="circle hide"  src="http://wximg.zbs6.com/webapp/1212/images/circle.png" />
+        <img class="hand hide"  src="http://wximg.zbs6.com/webapp/1212/images/hand.png" />
+    </div>
+
+    <div id="hbnull" class="hbnull hide">
+        <img id="null1" class="hide" src="{php echo tomedia($reply['nullhb'])}" />
+		
+        <img id="null2" class="hide" src="{php echo tomedia($reply['adhb'])}" />
+        <div id="btn4" class="hide"></div>
+        <div id="btn5" class="hide"></div>
+        <div class="sharepop hide"><img src="http://wximg.zbs6.com/webapp/1212/images/sharepop.png" /></div>
+        <img class="circle hide"  src="http://wximg.zbs6.com/webapp/1212/images/circle.png" />
+        <img class="hand hide"  src="http://wximg.zbs6.com/webapp/1212/images/hand.png" />
+    </div>
+
+</div>
+<script type="text/javascript">
+	_mwx=window._mwx||{};
+	_mwx.siteId=8000292;
+	//_mwx.openId=xxxxxxxxxxx; //OpenID为微信提供的用户唯一标识,需要开发者传入，如果没有OpenID，去掉该代码即可。
+	_mwx.debug=true;//代码调试阶段，加入此代码，正式上线之后去掉该代码
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	{php echo register_jssdk(false);}
+	<script type="text/javascript">
+    wx.ready(function () {
+        sharedata = {
+            title: "{php echo $reply['share_title']}",
+            desc: "{php echo $reply['share_des']}",
+            link: "{php echo $url}",
+            imgUrl: "{php echo tomedia($reply['share_img'])}",
+            success: function(){
+                alert("更多好玩请关注官方微信号。");
+                window.location.href = '{php echo $reply['share_url']}';
+            },
+            cancel: function(){
+                alert("分享失败，可能是网络问题，一会儿再试试？");
+            }
+        };
+        wx.onMenuShareAppMessage(sharedata);
+        wx.onMenuShareTimeline(sharedata);
+    });
+	</script>	
+</body>
+</html>

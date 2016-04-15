@@ -1,0 +1,190 @@
+{template 'common/header'}
+{php $_item=-1;}
+{php $_itemp=1;}
+{template 'menu'}
+<div class="main w98auto">
+
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd">
+
+                <table class="table table-primary" id="menu-table">
+                    <thead>
+                    <tr>
+                        <th class="lt">付款名称</th>
+                        <th class="lt">描述</th>
+                        <th width="100">货到付款？</th>
+                        <th width="80">状态</th>
+                        <th width="70">排序</th>
+                        <th width="100">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="fen_list">
+
+                    {loop $lists $list}
+                    {php $listu = $list['u']}
+                    <tr>
+                        <td class="lt" title="{$listu['title']}"{php echo cot($listu['title_color'])}>{$listu['title']}</td>
+                        <td class="lt">{$listu['descriptions']}</td>
+                        <td>{$listu['cash']}</td>
+                        <td>{$listu['status']}</td>
+                        <td>{$listu['inorder']}</td>
+                        <td>
+                            {if $listu['id']}
+                            <a class="normal-link" href="javascript:;" id="win" d="add" d-id="{$listu['id']}">编辑</a>
+                            <a class="normal-link" href="javascript:;" id="win" d="del" d-id="{$listu['id']}">卸载</a>
+                            {else}
+                            <a class="normal-link" href="javascript:;" id="win" d="ins" d-id="{$list['id']}">安装</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/loop}
+                    {if !$lists}
+                    <tr>
+                        <td colspan="6" align="center" class="align-center">
+                            <div>无</div>
+                        </td>
+                    </tr>
+                    {/if}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="add_temp" style="display: none;">
+    <form action="{php echo get_url()}"  method="post" idid="saveform" class="form-services">
+        <table class="table table-form table-win" style="width:600px">
+            <tbody>
+            <tr>
+                <td width="100"><span>配送名称</span></td>
+                <td>
+                    <input type="text" class="form-control" idid="title" style="width:90%;display:inline">
+                    <img src="{IMG_PATH}colour.png" onclick="colorpicker(this);"/>
+                    <input type="hidden" idid="title_color"/>
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td><span>费用</span></td>
+                <td>
+                    <input idid="fare" class="form-control-small" value="0">
+                </td>
+            </tr>
+            <tr>
+                <td><span>描述</span></td>
+                <td>
+                    <textarea idid="descriptions" class="form-control" cols="30" rows="8"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td><span>支持货到付款</span></td>
+                <td>
+                    <input type="text" disabled idid="cash" class="form-control-small">
+                </td>
+            </tr>
+            <tr>
+                <td><span>是否启用</span></td>
+                <td>
+                    <select idid="status" class="form-control" style="width: auto;">
+                        <option value="使用中">使用中</option>
+                        <option value="停止使用">停止使用</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><span>排序</span></td>
+                <td>
+                    <input idid="inorder" class="form-control-small" value="0">
+                </td>
+            </tr>
+            </tbody>
+            <tbody idid="formhtml">
+            </tbody>
+        </table>
+        <input type="hidden" idid="id" value="put">
+        <input type="hidden" idid="dosubmit" value="put">
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("a#win,div#win").click(function(){
+            var d = $(this).attr("d");
+            if (d == "del"){
+                var did = $(this).attr("d-id");
+                window.location.href = "{php echo get_url()}&delclassid="+did;
+            }else if (d == "ins"){
+                var did = $(this).attr("d-id");
+                window.location.href = "{php echo get_url()}&classid="+did;
+
+            }else if (d == "add"){
+                var did = $(this).attr("d-id");
+                var _add = art.dialog({
+                    title: '修改配送方式',
+                    lock: true,
+                    opacity: '.3',
+                    content: $("#add_temp").html().replace(/idid/g, "id"),
+                    button: [{
+                        name: '保存',
+                        callback: function () {
+                            $('#saveform').submit();
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "{php echo get_url()}",
+                    dataType: "json",
+                    data: "dosubmit=info&id=" + did,
+                    success: function (msg) {
+                        if (msg.success == "1"){
+                            $("#id").val(did);
+                            $("#title").val(msg.title).css("color", msg.title_color);
+                            $("#fare").val(msg.fare);
+                            $("#title_color").val(msg.title_color);
+                            $("#descriptions").val(msg.descriptions);
+                            $("#cash").val(msg.cash);
+                            $("#status").val(msg.status);
+                            $("#inorder").val(msg.inorder);
+                            $("#formhtml").html(msg.formhtml);
+                        }else{
+                            $.alert("加载失败！");
+                        }
+                    },
+                    error: function (msg) {
+                        $.alert("加载错误！");
+                    }
+                });
+                $('#saveform').find("input,textarea,select").each(function(){
+                    $(this).attr("name", $(this).attr("id"));
+                });
+                $('#saveform').submit(function() {
+                    $(this).ajaxSubmit({
+                        dataType : 'json',
+                        success : function (data) {
+                            $.alert(data.message);
+                            if (data.success == "1"){
+                                window.location.reload();
+                                _add.close();
+                            }
+                        },
+                        error : function () {
+                            $.alert(0);
+                            $.alert("提交错误！");
+                        }
+                    });
+                    return false;
+                });
+            }
+        });
+    });
+</script>
+{template 'common/footer'}

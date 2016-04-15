@@ -1,0 +1,255 @@
+{php include $_template->template('header')}
+<style>
+  .collapse_img { line-height:0px !important; }
+</style>
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>商品详情</h1>
+    </header>
+    <!--header end-->
+    <!--content-->
+    <div class="content">
+        <!--banner-->
+        <div class="detail-img goods-detail-img">
+            <div id="banner_box" class="box_swipe">
+                <ul>
+                  {loop $piclist $row}
+                    <li>
+                    <a href="{php echo toimage($row)}" rel='{php echo toimage($row)}'>
+                        <img src="{php echo toimage($row)}" alt="" />
+                        <p><span>{$goods['title']}</span></p>
+                        </a>
+                    </li>
+                    {/loop}
+                </ul>
+                <ol>
+                  {php $slideNum = 1;}
+                  {loop $piclist $row}
+                    <li{if $slideNum == 1} class="on"{/if}></li>
+                    {php $slideNum++;}
+                  {/loop}
+                </ol>
+            </div>
+        </div>
+        <!--banner end-->
+        <!--商品信息-->
+        <div class="goods-content">
+        	<dl>
+            {if ($marketprice < $productprice) }
+                <dt><span>￥{$marketprice}元{if !empty($goods['unit'])} / {$goods['unit']}{/if}</span><del>市场价{$productprice}元</del></dt>
+            {else}
+                <dt><span>￥{$marketprice}元{if !empty($goods['unit'])} / {$goods['unit']}{/if}</span></dt>
+            {/if}
+            {if $goods['istime']}
+                <dd><p><span class="icon-time icon-2x"></span><em id="anticount">还剩<i>...</i></em></p></dd>
+                <script language='javascript'>
+                  var time_last = {$timelast};
+                  var time_wait = {$timewait};
+                  var time_show = 0;
+                  var int_time = setInterval(function(){
+                    refresh_anti_count({$goods['id']});
+                  },1000);
+                  function refresh_anti_count(id){
+                    time_last--;
+                    time_wait--;
+                    if (time_wait > 0 || time_last > 0) {
+                      if (time_wait > 0) {
+                        // 提示需要等待开始
+                        time_show = time_wait;
+                        $("#buy").unbind();
+                        $("#addtocart").unbind();
+                        $("#buy").click(function(){ alert('客官别急，抢购还没开始。'); });
+                        $("#addtocart").click(function(){ alert('客官别急，抢购还没开始。'); });
+                      } else if (time_last > 0) {
+                        // 可以购买了
+                        time_show = time_last;
+                        $("#buy").unbind();
+                        $("#addtocart").unbind();
+                        $("#buy").click(function(){ buy();});
+                        $("#addtocart").click(function(){ addtocart();});
+                      }
+                      // 提示倒计时
+                      var days = parseInt(time_show/86400)
+                      var remain = parseInt(time_show%86400);
+                      var hours = parseInt(remain/3600)
+                      var remain = parseInt(remain%3600);
+                      var mins = parseInt(remain/60);
+                      var secs = parseInt(remain%60);
+
+                      var ret = "";
+                      if(days>0){ days = days+""; if(days.length<=1) { days="0"+days;} ret+=days+" 天 "; }
+                      if(hours>0){ hours = hours+""; if(hours.length<2) { hours="0"+hours;} ret+=hours+"小时"; }
+                      if(mins>0){ mins = mins+""; if(mins.length<=1) { mins="0"+mins;} ret+=mins+"分"; }
+                      secs = secs+""; if(secs.length<=1) { secs="0"+secs;} ret+=secs+"秒";
+                      if (time_wait > 0) {
+                        $("#anticount").html( "即将开始&nbsp;<i>" + ret + "</i>");
+                      } else if (time_last > 0) {
+                        $("#anticount").html( "还剩<i>" + ret + "</i>结束");
+                      }
+                    } else {
+                      // 提示已经结束
+                      $("#anticount").html( "时间到已下架");
+                      $("#buy").unbind();
+                      $("#addtocart").unbind();
+                      $("#buy").click(function(){ alert('时间到已下架'); });
+                      $("#addtocart").click(function(){ alert('时间到已下架'); });
+                      window.clearInterval(int_time);
+                    }
+                }
+                </script>
+            {else}
+                <script language='javascript'>
+                  $(document).ready(function() {
+                    $("#buy").click(function(){ buy();});
+                    $("#addtocart").click(function(){ addtocart();});
+                  });
+                </script>
+            {/if}
+
+            {if !empty($goods['max_coupon_credit']) and $goods['max_coupon_credit'] > 0 }
+                <dd><p><span class="icon-time icon-2x"></span><em>积分可抵扣<i id="credit">￥{$goods['max_coupon_credit']} </i>元</em></p></dd>
+            {/if}
+            {if !empty($goods['sales'])}
+                <dd><p><span class="icon-time icon-2x"></span><em>已售<i id="sold">{$goods['sales']}</i>{if !empty($goods['unit'])} {$goods['unit']}{/if}</em></p></dd>
+            {/if}
+            {if $goods['total'] != -1}
+                <dd><p><span class="icon-time icon-2x"></span><em>还剩<i id="stock">{$goods['total']}</i>{if !empty($goods['unit'])} {$goods['unit']}{/if}</em></p></dd>
+            {/if}
+                <dd>
+                <div class="featuresNum">
+                  <div class="input-group" style="width:100px;float:left;margin-left:8px;">
+                    <span class="input-group-btn">
+                      <button style="margin-right:0px" class="btn btn-default btn-sm" type="button" onclick="reduceNum()"><i class="icon-minus"></i></button>
+                    </span>
+                    <input type="tel" class="form-control input-sm pricetotal goodsnum" style="border-left:0;width:50px;text-align:center" value="1" id="total"  />
+                    <span class="input-group-btn">
+                      <button class="btn btn-default btn-sm" type="button" onclick="addNum()"><i class="icon-plus"></i></button>
+                    </span>
+                  </div>
+                </div>
+                </dd>
+                {if !empty($specs)}
+                <dd>
+                <div class="spec">
+                  {loop $specs $spec}
+                  <div class="item{if !empty($spec['selected'])} selected{/if}"><a href="{$spec['ref']}" title="{$spec['title']}">{$spec['title']}</a></div>
+                  {/loop}
+                </div>
+                </dd>
+                {/if}
+            </dl>
+        </div>
+        <!--商品信息 end-->
+        <!--商品详情-->
+        <div id="goods_detail" class="goods-detail">
+          {$goods['content']}
+        </div>
+        <!--商品详情 end-->
+    </div>
+    <!--content end--> 
+   <!--footer-->
+    <footer id="goods-footer">
+    {if $goods['isminimode'] == 1}
+        <a id="buy" href="javascript:void(0)" class="buy-btn buy-btn-full">立即购买</a>
+    {else}
+        <a id="buy" href="javascript:void(0)" class="buy-btn buy-btn-disabled">立即购买</a>
+        <a id="addtocart" href="javascript:void(0)"  class="join-cart-btn">加入购物车</a>
+        <a href="{php echo $this->createMobileUrl('MyCart')}" class="shopping-cart-icon"><span class="icon-shopping-cart icon-3x"></span><em id="carttotal">{$carttotal}</em></a>
+    {/if}
+    </footer>
+    <!--footer end-->
+
+<script>
+  $(function() {
+
+    $('#goods_detail p').has('img').addClass('collapse_img');
+
+    $("#total").blur(function(){
+
+      var total = $("#total");
+      if(!total.isInt()){
+        total.val("1");
+      }
+      var stock = $("#stock").html()==''?-1:parseInt($("#stock").html());
+      var mb = maxbuy;
+      if(mb>stock && stock!=-1){
+        mb = stock;
+      }
+      var num = parseInt(total.val() );
+      if(num>mb && mb>0){
+        tip("您最多可购买 " + mb + " 件!",true);
+        total.val(mb);
+      }
+    })
+  });
+  function addtocart(){
+    tip("正在处理数据...");
+    var total = $("#total").val();
+    var stock = parseInt($('#stock').text());
+    if(stock == 0){
+      tip('库存不足，无法购买。');
+      return;
+    }
+
+    var url = '{php echo $this->createMobileUrl('mycart',array('op'=>'add','id'=>$goods['id']));}' + "&total=" + total;
+    $.getJSON(url, function(s){
+      if(s.result==0){
+        tip("只能购买 " + s.maxbuy + " 件!");
+      }else{
+        tip_close();tip("已加入购物车!");
+        $('#stock').text(stock - total);
+        $('#carttotal').css({'width':'50px', 'height':'50px', 'line-height':'50px'}).html(s.total).animate({'width':'20px', 'height':'20px', 'line-height':'20px'}, 'slow');
+      }
+    });
+  }
+  function buy(){
+    var stock = parseInt($('#stock').text());
+    if(stock == 0){
+      tip('库存不足，无法购买。');
+      return;
+    }
+    var total = $("#total").val();
+    location.href = '{php echo $this->createMobileUrl('confirm',array('id'=>$goods['id']));}'+ "&total=" + total;
+  }
+
+  var maxbuy = {php echo empty($goods['maxbuy'])?"0":$goods['maxbuy']};
+  function addNum(){
+    var total = $("#total");
+    if(!total.isInt()){
+      total.val("1");
+    }
+    var stock = $("#stock").html()==''?-1:parseInt($("#stock").html());
+    var mb = maxbuy;
+
+    if(mb>stock && stock!=-1){
+      mb = stock;
+    }
+    var num = parseInt(total.val() ) + 1;
+    if(num>stock){
+      tip("您最多可购买 " + stock + " 件!",true);
+      num--;
+    }
+    if(num>mb && mb>0){
+      tip("您最多可购买 " + mb + " 件!",true);
+      num = mb;
+    }
+
+    total.val(num);
+  }
+
+  function reduceNum(){
+    var total = $("#total");
+    if(!total.isInt()){
+      total.val("1");
+    }
+    var num = parseInt( total.val() );
+    if(num-1<=0){
+      return;
+    }
+    num--;
+    total.val(num);
+  }
+</script>
+
+{php include $_template->template('footer')}

@@ -1,0 +1,43 @@
+{template 'common/header'}
+
+<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<style>
+  .list-block{margin:0.8rem 0px;}
+  a{color:#000;}
+</style>
+  <header class="bar bar-nav">
+  <h1 class="title">会员中心</h1>
+</header>
+{template 'footer'}
+<div class="content">
+
+    {loop $listgg $data}
+    {php $credit = iunserializer($data['credit'])}
+  <div class="card">    
+    <div class="card-content">
+      <div class="list-block media-list">
+        <ul>
+          <a class="item-content" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'uid'=>$data['uid'],'op'=>'detail'));}">
+            <div class="item-media">
+              <img src="{$data['thumb']}" width="44">
+            </div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">{$data['title']}</div>
+              </div>
+             
+            </div>
+          </a>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span>{php echo relatively_date($data['createtime'])}</span>
+      <span>转发即可获得{$credit['share']}元 其他人浏览可获得{$credit['click']}元</span>
+    </div>
+  </div>           
+{/loop}
+     
+</div>
+
+{template 'common/footer'}

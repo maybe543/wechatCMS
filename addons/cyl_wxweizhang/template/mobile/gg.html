@@ -1,0 +1,108 @@
+{template 'common/header'}
+<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<link rel="stylesheet" href="http://lihongxun945.github.io/jquery-weui/dist/lib/weui.css">
+<style>
+  .list-block{margin:0.8rem 0px;}
+  .modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050; width:100%;opacity:10;margin-left:0;
+    -webkit-transform:translate3d(0,0,0) scale(1);transform:translate3d(0,0,0) scale(1);}
+    .label{padding:0px;font-size: 100%;text-align: left;}
+</style>
+  <header class="bar bar-nav">
+  <h1 class="title">会员中心</h1>
+</header>
+<div class="content">
+
+            <!-- 这里是页面内容区 -->
+ {if $op == 'display'}
+ {loop $shang $list}
+  <div class="card">    
+    <div class="card-content">
+      <div class="list-block media-list">
+        <ul>
+          <li class="item-content">
+            <div class="item-media">
+              <img src="{php echo tomedia($list['thumb'])}" width="44">
+            </div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">总价:{$list['zongjia']}元</div>
+              </div>
+              <div class="item-subtitle">单价:{$list['jiage']}元</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span><a class="btn btn-default" onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createMobileUrl('gg', array('op'=>'delete','id'=>$list['id']));}" title="删除">删除</a></span>
+      <span><a class="btn btn-default" href="{php echo $this->createMobileUrl('gg', array('op'=>'post','id'=>$list['id']));}" title="修改">修改</a></span>
+    </div>
+  </div> 
+{/loop}    
+  </div> 
+
+{/if}
+ {if $op == 'post'}
+   <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="theform">
+ <div class="list-block">
+    <ul>
+     <li>
+        <div class="item-content">          
+          <div class="item-inner">
+          <div class="item-title label" style="color:#000">广告标题</div>
+            <div class="item-input">
+              <input type="text" name="title" placeholder="" value="{$item['title']}">
+            </div>
+          </div>
+        </div>
+      </li>
+  <li>
+        <div class="item-content">          
+          <div class="item-inner">
+           <div class="item-title label" style="color:#000">总价</div>
+            <div class="item-input">
+              <input type="text" name="zongjia" placeholder="点击总价" value="{$item['zongjia']}">
+            </div>
+          </div>
+        </div>
+      </li>
+       <li>
+        <div class="item-content">          
+          <div class="item-inner">
+          <div class="item-title label" style="color:#000">单价</div>
+            <div class="item-input">
+              <input type="text" name="jiage" placeholder="每次点击价格" value="{$item['jiage']}">
+            </div>
+          </div>
+        </div>
+      </li>
+     <div class="form-group">
+          
+          <div class="col-sm-9 col-xs-12">
+            {php echo tpl_form_field_image('thumb', $item['thumb'])}            
+          </div>
+        </div>
+        <li>
+        <div class="item-content">          
+          <div class="item-inner">
+          <div class="item-title label" style="color:#000">广告链接</div>
+            <div class="item-input">
+              <input type="text" name="link" placeholder="链接网址，如微店，淘宝等" value="{$item['link']}">
+            </div>
+          </div>
+        </div>
+      </li>
+         </ul>
+  
+  </div>
+ 
+  <div class="content-block">
+    <input name="submit" type="submit" class="button button-big button-fill button-success" value="提交">
+     <input type="hidden" name="token" value="{$_W['token']}" />
+  </div>
+  </form> 
+ 
+
+ {/if}
+{template 'footer'}
+{template 'common/footer'}

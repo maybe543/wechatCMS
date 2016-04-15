@@ -1,0 +1,235 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('member');}">用户管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('huodong');}">红包发放</a></li>
+    <li  class="active"><a href="{php echo $this->createWebUrl('setting');}">活动管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('api');}">接口参数</a></li>
+</ul>
+
+<div class="main">
+	<form action="" method="post" class="form-horizontal form"
+		enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$item['id']}" />
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				活动设置
+			</div>
+			<div class="panel-body">
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动名称</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="aname" class="form-control"
+							   value="{$item['aname']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">关注链接URL</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="url" class="form-control"
+							   value="{$item['url']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">小时数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="hour" class="form-control"
+							   value="{$item['hour']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea style="height:180px;" class="form-control" name="rule" id="rule" >{$item['rule']}</textarea>
+					<span class="help-block">活动的相关说明</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('rule_bg', $item['rule_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('index', $item['index']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页/成功页活动介绍</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="index_text" class="form-control"
+							   value="{$item['index_text']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页button文字</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="index_button" class="form-control"
+							   value="{$item['index_button']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">发起活动页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('huodong', $item['huodong']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享引导页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('share_bg', $item['share_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">发起活动页button上部文字</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="huodong_button_top" class="form-control"
+							   value="{$item['huodong_button_top']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">发起活动页button下部文字</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="huodong_button_bottom" class="form-control"
+							   value="{$item['huodong_button_bottom']}" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">个人详情页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('geren', $item['geren']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">筹集成功页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('success', $item['success']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">筹集失败页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('fail', $item['fail']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('friend', $item['friend']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集页文案设置</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="friend_text" class="form-control"
+							   value="{$item['friend_text']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集/成功页底部广告文字设置</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="friend_ad_text" class="form-control"
+							   value="{$item['friend_ad_text']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集/成功页底部广告url设置</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="friend_ad_url" class="form-control"
+							   value="{$item['friend_ad_url']}" />
+						url前面要添加http://,例如http://www.baidu.com
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集页（已打赏过）背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('pay_done', $item['pay_done']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">支付页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('pay', $item['pay']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友筹集失败背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('f_end', $item['f_end']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">打赏详情上部banner图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('sharelist', $item['sharelist']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">打赏详情下部背景颜色</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_color('sharelist_color', $item['sharelist_color']);}
+						建议(不能使用白色，否则文字可能会显示不清晰)
+					</div>
+				</div>				
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="submit" type="submit" value="提交"
+							   class="btn btn-primary span3"> <input type="hidden"
+																	 name="token" value="{$_W['token']}" />
+					</div>
+				</div>
+
+			</div>
+			</div>
+	</form>
+</div>
+<script>
+require(['jquery', 'util'], function($, u){
+	$(function(){
+		u.editor($('#rule')[0]);
+		u.editor($('#terms')[0]);
+	});
+});
+</script>

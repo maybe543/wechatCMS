@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <title>{$_W['account']['name']} - 扫码收款</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="{MODULE_URL}/template/mobile/style.css">
+    <style type="text/css">
+    #loading,#qr-mask{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: 0.8;
+        display: none;
+        text-align: center;
+        z-index: 99;
+        top: 0;
+    }
+    #loading p{
+        top: 50%;
+        position: absolute;
+        margin-top: -37px;
+        left: 50%;
+        margin-left: -37px;
+        display: inline-block;
+    }
+    #qr{
+        vertical-align: middle;
+        display: table-cell;
+    }
+    #qr img{
+        display: inline-block!important;
+        border: 10px solid #fff!important;
+    }
+    #close-btn{
+        padding: 10px;
+        color: #fff;
+        border-radius: 21px;
+        border: 5px solid #fff;
+        width: 10px;
+        margin: 0 auto;
+        height: 10px;
+        line-height: 10px;
+        font-weight: bold;
+        position: fixed;
+        bottom: 20px;
+        z-index: 1000;
+        left: 50%;
+        margin-left: -11px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container ">
+        <div class="content free-cash ">
+            <div class="cashier-info-container center">
+                <div class="avatar cashier-avatar">
+                    <a href="#">
+                        <img class="circular" src="{$_W['account']['avatar']}" alt="">
+                    </a>
+                </div>
+                {if !empty($scan_class)}
+                <div style="padding: 10px 0;">
+                    <span>收款门店：</span>
+                    <select style="width:30%;height:30px;" name='' class='form-control' id='scan_class'>
+                        <option value=''>请选择</option>
+                        {loop $scan_class $row}
+                            <option value='{$row['id']}'>{$row['name']}</option>
+                        {/loop}
+                    </select>
+                </div>
+                {/if}
+                <div class="js-cashier-form block cashier-form text-left">
+                    <label for="cashier-price" class="font-size-12 cashier-label">收款金额（元）</label>
+                    <p class="cashier-field">
+                        <i class="money-text">¥</i>
+                        <input id="cashier-price" placeholder="" type="text" class="cashier-text" style="border-bottom: 1px solid #999;">
+                    </p>
+                </div>
+            </div>
+            <div class="action-container" id="js-cashier-action">
+                <div style="margin-bottom: 10px;">
+                    <button style="width: 100%;line-height:24px;font-size: 16px;" type="button" class="btn-pay btn btn-block btn-large btn-yzpay  btn-grey">
+                        生成扫码收款二维码
+                    </button>
+                </div>
+            </div>
+            <div class="center action-tip js-cashier-tip">每个二维码只能被支付一次</div>
+        </div>
+    </div>
+    <div class="footer" style="min-height: 86px;margin-top: 60px;">
+        <div class="copyright">
+            <div class="ft-copyright">
+                <a href="#" target="_blank">©{$_W['account']['name']}&nbsp;&nbsp;&nbsp;{php echo date('Y');}</a>
+            </div>
+        </div>
+    </div>
+    <div id="loading">
+        <p style="color:#fff">
+        <img src="{MODULE_URL}/template/mobile/loading.gif">
+        <br>
+        <span>正在生成...</span>
+        </p>
+    </div>
+    <div id="qr-mask" style="opacity:1;">
+        <div id="qr"></div>
+        <p id="close-btn">X</p>
+    </div>
+</body>
+<!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
+<!-- <script src="http://lib.sinaapp.com/js/zepto/0.8/zepto.min.js"></script> -->
+<script src="{MODULE_URL}/template/mobile/zepto.min.js"></script>
+<script src="{MODULE_URL}/template/mobile/qrcode.min.js"></script>
+<script type="text/javascript">
+    window.onload=function () {
+
+        $('#js-cashier-action button').removeClass('btn-grey').addClass('btn-green');
+        var w=parseInt($(window).width()*0.8);
+        var qrcode = new QRCode(document.getElementById("qr"), {
+            width : w,
+            height : w
+        });
+        var timer;
+        document.getElementById('js-cashier-action').onclick=function() {
+            // if ($('#js-cashier-action button').hasClass('btn-grey')) return;
+            var price=document.getElementById('cashier-price').value;
+            if ($('#scan_class')[0]) {
+                var selected=$('#scan_class option').not(function(){ return !this.selected }).val();
+                if (!selected) {
+                    alert('请选择收款门店');
+                    return;
+                };
+            }
+            if (price) {
+                if (/^[0-9]*(\.[0-9]{1,2})?$/.test(price)) {
+                    $('#loading').show();
+                    clearInterval(timer);
+                    $.post('{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('make_scan_qr');}', { fee: price,class_id:selected?selected:'' }, function(response){
+                        $('#loading').hide();
+                        if (/^weixin:\/\/.*$/.test(response)||/^http.*$/.test(response)) {
+                            var tmp=response.split('|');
+                            $('#qr-mask').css('display', 'table');
+                            qrcode.clear();
+                            qrcode.makeCode(tmp[0]);
+                            timer=setInterval(function () {
+                                $.post('{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('scan_query');}', {tid: tmp[1]}, function(response) {
+                                    if (response==1) {
+                                        clearInterval(timer);
+                                        $('#qr-mask').hide();
+                                        alert('该订单已支付成功');
+                                    };
+                                });
+                            },1500);
+                        }else{
+                            alert(response);
+                        }
+                    })
+                }else{
+                    alert('格式不对');
+                }
+            };
+        };
+        $('#close-btn').click(function(event) {
+            // if (confirm('确定关闭该二维码吗？'))
+            $('#qr-mask').hide();
+        });
+        // document.getElementById('cashier-price').focus()
+    }
+</script>
+</html>

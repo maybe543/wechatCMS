@@ -1,0 +1,592 @@
+<!doctype html>
+<html>
+<head>
+<link href="{MEEPO2}/Public/css/myshow2.css?t={php echo time();}" rel="stylesheet" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta content="telephone=no" name="format-detection" />
+<title>{$cfg['indexlistname']}</title>
+{php echo register_jssdk(false);}
+    <style>
+        html,body,div,span,iframe,h1,h2,h3,h4,h5,h6,p,pre,a,em,img,small,strong,b,i,dl,dt,dd,ol,ul,li,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,footer,header,menu,nav,section{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}aside,footer,header,menu,nav,section{display:block}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}a{display:inline-block;text-decoration:none;cursor:default}
+        body{background:#f0f0f0;color:#999;font-size:16px;height:100%;width:100%}html{height:100%;width:100%}a{display:inline-block;text-decoration:none;color:#75b9c6;background-color:rgba(0,0,0,0)}img{background:#f0f0f0 url({MEEPO2}/loading.gif) center center no-repeat;background-size:16px}.hidden{display:none}.pink{color:#ee3869}.yellow{color:#fff17e}.blue{color:#75b9c6}.waiting{width:104px;height:82px;line-height:120px;background:rgba(0,0,0,0.5) url({MEEPO2}/loading.gif) center 14px no-repeat;background-size:20px;position:fixed;left:50%;top:150px;margin:-41px 0 0 -52px;border-radius:10px;color:#fff;text-align:center;display:none;z-index:1000}.tips{width:80%;height:50px;overflow:hidden;line-height:50px;background:rgba(0,0,0,0.5);border-radius:10px;color:#fff;text-align:center;display:none;position:fixed;top:20%;left:10%;z-index:1000;border:1px solid #fff}.loading{display:none;width:100%;line-height:50px;text-align:center;font-size:14px;height:50px}.loading i{display:inline-block;height:20px;width:30px;margin-bottom:-4px;background:url({MEEPO2}/loading.gif) 10% center no-repeat;background-size:20px}.nav{width:100%;height:50px;line-height:50px;border-bottom:2px solid #1ebe5f;background:rgba(249,249,249,1);text-align:center;position:fixed;left:0;top:0;right:0;z-index:100;box-shadow:1px 1px 2px rgba(0,0,0,0.1)}.nav h2{color:#555;font-size:16px;font-weight:bold}.nav .left,.nav .right{display:block;font-size:16px;position:absolute;top:0;height:50px;color:#555;padding:0 10px}.nav .left{left:0}.nav .right{right:0}.nav .le_trg{margin:18px 0 0 0}.le_trg{display:inline-block;width:9px;height:9px;border-right:2px solid #1ebe5f;border-bottom:2px solid #1ebe5f;transform:rotate(135deg);-webkit-transform:rotate(135deg);-moz-transform:rotate(135deg);-o-transform:rotate(135deg);-ms-transform:rotate(135deg)}.re_trg{display:inline-block;width:9px;height:9px;border-right:2px solid #ccc;border-bottom:2px solid #ccc;transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg);-o-transform:rotate(-45deg);-ms-transform:rotate(-45deg)}.bot_trg{display:inline-block;width:9px;height:9px;border-right:2px solid #ccc;border-bottom:2px solid #ccc;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);-ms-transform:rotate(45deg);margin-top:-10px}.top_trg{display:inline-block;width:9px;height:9px;border-right:2px solid #ccc;border-bottom:2px solid #ccc;transform:rotate(-135deg);-webkit-transform:rotate(-135deg);-moz-transform:rotate(-135deg);-o-transform:rotate(-135deg);-ms-transform:rotate(-135deg)}.top_blank{margin-top:52px}.content{padding:10px}.see_more{font-size:16px;display:block;height:42px;line-height:42px;background:#fff;color:#72bac6;text-align:center;margin:10px 0;box-shadow:1px 1px 2px rgba(0,0,0,0.1);font-weight:bold}.box-shadow{box-shadow:1px 1px 2px rgba(0,0,0,0.1)}.phone,.identity,.vip{display:inline-block;height:22px;line-height:22px;padding:0 5px 0 20px;border-radius:2px;margin-right:3px;color:#fff;font:12px/24px "寰蒋闆呴粦","Microsoft YaHei";font-style:normal}.phone{background:#00c5c4 url(/resources/v20/images/icon_phone.png) no-repeat 4px center;background-size:14px 14px}.identity{background:#2acb64 url(/resources/v20/images/icon_write.png) no-repeat 4px center;background-size:14px 14px}.vip{background:#f1668f;padding:0 7px}.noCheck{background-color:#d5d5d5}.icon-loading{background-image:url({MEEPO2}/loading.gif);background-size:contain;display:inline-block;width:16px;height:16px;margin:0 5px;vertical-align:middle}.loadApp{padding:8px 10px;background:#fff;position:relative;overflow:hidden}.loadApp dt{float:left;height:42px}.loadApp dt img{display:block;width:40px;height:40px}.loadApp dd{float:left;margin:0 0 0 8px}.loadApp dd b{display:block;color:#555;font-size:16px}.loadApp dd p{padding:7px 0 0;font-size:14px;color:#717171}.loadApp .upload_btn{position:absolute;right:10px;top:15px;display:block;width:72px;height:26px;line-height:26px;text-align:center;color:#ee356e;border:1px solid #f3c4d4}.attention{width:100%;height:54px;background:rgba(0,0,0,.7);position:fixed;left:0;bottom:0;padding:0 10px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;color:#fff;display:none}.attention dt{float:left}.attention dd{float:left;margin:8px 0 0}.attention dd>p{font-size:12px;margin:2px 0 0}.attention dt>img{display:block;width:38px;background:rgba(0,0,0,.0);margin:8px 10px 0 0}.attention .atte_btn{position:absolute;right:10px;top:12px;display:block;width:74px;height:30px;line-height:30px;color:#fff;background:#ec2e90;font-size:12px;text-align:center;border-radius:3px}.min_nav{width:100%;height:50px;line-height:50px;background:#fafafa;position:fixed;left:0;top:0;right:0;z-index:100;box-shadow:1px 1px 2px rgba(0,0,0,0.1);text-align:center}.min_nav .title{color:#555;font-weight:bold}.min_nav .title .vip{display:inline-block;width:24px;height:14px;line-height:14px;background:#ef678f;text-align:center;border-radius:2px;color:#fff;font-size:10px;margin:0 0 0 4px}.min_nav .reture{position:absolute;left:0;top:0}.min_nav .reture .le_trg{float:left;margin:20px 0 0 10px}.min_nav .reture .but,.min_nav .next{display:inline;float:left;color:#555;font-size:1em}.min_nav .next,.min_nav .repair{position:absolute;right:10px;top:0;color:#555;font-size:.9em}.min_nav .repair .house_icon{display:block;width:20px;height:50px;background:url(../images/house.png) center center no-repeat;background-size:16px}.min_nav .seach_sure{display:block;width:50px;height:26px;line-height:26px;background:#ed376a;position:absolute;right:10px;top:7px;text-align:center;color:#fff;border-radius:3px;font-size:.9em}.min_nav .give_up{position:absolute;left:10px;top:0}.personIcon{width:22px;height:22px;display:inline-block;position:relative;bottom:-4px;margin-left:5px;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;display:none;background:url('/resources/v20/images/personIcon.png') no-repeat center center,-webkit-radial-gradient(#fff7d7,#ffd739);background:url('/resources/v20/images/personIcon.png') no-repeat center center,-moz-radial-gradient(#fff7d7,#ffd739);background:url('/resources/v20/images/personIcon.png') no-repeat center center,radial-gradient(#fff7d7,#ffd739);background-size:100%}.mask{width:100%;height:100%;background:rgba(0,0,0,.5);position:fixed;left:0;top:0;z-index:200}.msg_tip{width:240px;height:154px;background:#fff;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;border-radius:5px;position:absolute;top:50%;left:50%;margin-top:-75px;margin-left:-120px;color:#646464;overflow:hidden;box-shadow:0 0 5px rgba(245,245,245,.2)}.msg_tip h3,.checkInfor h3{height:30px;font:bold 14px/30px '宋体';padding-left:12px;border-bottom:1px solid #ccc;margin-bottom:10px}.msg_tip p,.checkInfor p{font:14px/24px '宋体';padding:0 10px}.msg_tip ul{width:100%;height:34px;border-top:1px solid #ccc;margin-top:6px}.msg_tip ul li{width:50%;font:bold 14px/34px '宋体';color:#fff;height:34px;text-align:center;float:left}.msg_tip ul li:nth-child(1){background:#ff729a}.msg_tip ul li:nth-child(2){background:#ff3c8f}@font-face{font-family:'icomoon';src:url('{MEEPO2}/Public/images/icomoon.eot');src:url('{MEEPO2}/Public/images/icomoon.eot?#iefix-z8fok3') format('embedded-opentype'),url('{MEEPO2}/Public/images/icomoon.woff') format('woff'),url('{MEEPO2}/Public/images/icomoon.ttf') format('truetype'),url('{MEEPO2}/Public/images/icomoon.svg') format('svg');font-weight:normal;font-style:normal}[class^="icon-"],[class*=" icon-"]{font-family:'icomoon';speak:none;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-right:before{content:"\100"}.icon-pencil:before{content:"\101"}.icon-face:before{content:"\102"}.icon-message:before{content:"\103";margin:0 4px}.icon-talk:before{content:"\104";margin:0 4px}.icon-male:before{content:"\105"}.icon-female:before{content:"\106"}.icon-delete:before{content:"\107"}.icon-area:before{content:"\108";margin:0 4px}.icon-love:before{content:"\109"}.icon-like:before{content:"\10a";margin:0 4px;vertical-align:baseline}.icon-spinner3:before{content:"\10b"}.icon-plus:before{content:"\10c"}.float{float:left}img{vertical-align:middle}
+        @charset "utf-8";.see_bigPhoto{width:100%}.delete{width:90px;height:40px;line-height:40px;text-align:center;color:#fff;background:rgba(0,0,0,.4);position:fixed;right:10px;bottom:10px;border-radius:20px}.delete>.icon-delete{margin:0 4px 0 0}.simple_info{width:80%;height:142px;border-radius:5px;background:#fff;position:fixed;left:50%;top:50%;margin:-72px 0 0 -40%;text-align:center;z-index:1001;overflow:hidden}.simple_info .title{height:40px;border-bottom:1px solid #e9e9e9;font-size:1.2em}.simple_info .title span{display:block;width:35%;height:40px;line-height:40px;color:#e76589;border-bottom:1px solid #ed6b8f}.simple_info .abolish{padding:24px 10px 0;text-align:center;color:#333}.simple_info .col2_btn{display:block;width:100%;position:absolute;left:0;bottom:0;color:#72bac6;height:40px;line-height:40px;background:#f5a3ba}.simple_info .col2_btn>a{display:block;width:50%;height:40px;line-height:40px;float:left;text-align:center;color:#fff;border-right:1px solid rgba(255,255,255,.2);box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box}.simple_info .col2_btn>a:last-child{border:0}.face_sendbox{position:relative;height:auto}.face_sendbox .face_send{width:100%;margin:0 auto;font-size:14px;display:block;resize:none;height:150px;border-radius:3px;border:0;padding:8px;margin:0;box-sizing:border-box;box-sizing:-moz-border-box;box-sizing:-webkit-border-box;box-sizing:-ms-border-box;box-sizing:-o-border-box}.face_sendbox .hint_word{position:absolute;left:10px;top:10px;color:#c4c4c4;font-size:14px}.face_sendbox .num_word{position:absolute;right:10px;bottom:10px;color:#c4c4c4;font-size:14px}.upload_photo{margin:10px 0 0;height:60px}.upload_photo>li{float:left;width:60px;height:60px;border:1px solid #cfcfcf;border-radius:5px;margin:0 10px 0 0;position:relative}.upload_photo>li>img{width:60px;height:60px;border-radius:5px}.upload_photo>li.add{font-family:'icomoon';font-size:38px;line-height:60px;text-align:center;color:#888}.promit{clear:both;font-size:14px;margin:10px 0 0;line-height:20px}.promit_pic{display:inline-block;width:130px;margin:15px 0 0;background:0}.min_nav .pink{color:#ee3869}.who_praise{overflow:hidden;padding:10px 0 0}.who_praise .info-list>li.foot-icon,.who_praise .info-list>li.foot-icon>img{width:33px}.who_praise .pr_1{width:100%;border-bottom:1px solid #e6e6e6}.who_praise .pr_1>.mession{background:#fff;overflow:hidden;padding:10px;position:relative}.who_praise .pr_1>.mession>dt,.who_praise .pr_1>.mession>dt>img{display:block;width:35px;border-radius:3px}.who_praise .pr_1>.mession>dd{width:77%;padding:0 0 0 7px;overflow:hidden}.who_praise .pr_1>.mession>dd .tit{display:block;padding:2px 0 6px;color:#555}.who_praise .pr_1>.mession>dd .bot{color:#999;font-size:12px}.who_praise .pr_1>.mession .right{position:absolute;right:10px;top:10px;text-align:right;color:#999;font-size:.8em}.who_praise .pr_1>.speak{padding:5px 10px 20px;background:#FFF;color:#333;line-height:18px}.pr_1>.btn,.you_heart .scoll_date>.state_1 .re .btn{width:100%;height:36px}.pr_1>.btn>li>a,.you_heart .scoll_date>.state_1 .re .btn>li>a{display:inline-block;width:50%;height:18px;line-height:16px;text-align:center;margin:5px 0 0;border-right:1px solid #efefef;box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;color:#999;float:left}.pr_1>.btn>li:last-child>a,.you_heart .scoll_date .state_1 .re .btn>li:last-child>a{border:0}.btn>li>a span,.btn>li.active>a{color:#ee537f}.btn>li.active>a span{color:#999}.pr_1>.btn>li>a>img,.you_heart .scoll_date .state_1 .re .btn>li>a>img{display:inline-block;width:18px;margin:0 5px 0 0;background:0}.pr_1>.btn,.you_heart .scoll_date>.state_1 .re .btn{height:36px;width:100%;background:#fff;font-size:14px}.pr_1>.btn>li{background:#fff}.local{height:40px;line-height:40px;background:#fff;border-bottom:1px solid #e6e6e6;padding:0 10px;position:relative}.local .bot_trg{margin:0 0 2px}.value_select{height:100%;margin:0;opacity:0;padding:0;position:absolute;right:0;top:0;width:100%}.topic{overflow:hidden;position:relative;padding:10px;background:#fff;margin:10px 0}.topic>dt{width:64px;height:64px;background:url(/resources/v20/images/hauti.png) center center no-repeat #f15e88;background-size:40px;float:left}.topic>dd{float:left;margin:0 0 0 10px;width:50%;word-break:break-all}.topic>dd .name{display:block;color:#ee366c;font-weight:normal}.topic>dd p.center{overflow:hidden;font-size:14px;padding:6px 0;color:#555;text-overflow:ellipsis;white-space:nowrap}.topic>dd .num{color:#a8a8a8;font-size:14px}.part_in{display:block;width:70px;height:30px;font-size:14px;line-height:30px;text-align:center;border:1px solid #66cae1;color:#2cacc9;position:absolute;right:10px;top:27px}.theme{display:block;padding:3px 10px;background:#c1cfd2;color:#fff;font-size:12px;position:absolute;right:0;top:0;border-radius:0 0 0 5px}a.depict{background:none repeat scroll 0 0 rgba(250,90,134,0.9);border:2px solid rgba(255,255,255,0.9);border-radius:50px;bottom:10px;box-shadow:1px 1px 2px rgba(0,0,0,0.1),-1px -1px 2px rgba(0,0,0,0.1);color:#fff;font-size:30px;right:10px;padding:14px;position:fixed;z-index:100}.mood_photo{width:100%;overflow:hidden;display:box;display:-webkit-box;display:-moz-box;display:-o-box;display:-ms-box;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box}.mood_photo>li{margin:20px 10px 0 0;box-flex:1;-moz-box-flex:1;-webkit-box-flex:1;-o-box-flex:1;-ms-box-flex:1}.mood_photo>li:last-child{margin:20px 0 0}.mood_photo>li>img{width:100%;border-radius:3px}.shadow_box{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.5)}.write_mask{background:#fff;z-index:2000;display:none}.art_photo_1{width:100%;padding:0 50% 15px 0;position:relative}.seePhoto{height:94%;padding:0}.bigPhoto_box{height:100%}.seeBig{position:fixed;top:0;left:0;z-index:1100;height:100%;width:100%}.bigPhoto_box{background:#fff}
+    </style>
+	<style>
+						 #change_icon input {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 10;
+background: rgba(0,0,0,0.3);
+border-radius: 70px;
+opacity: 0;
+}
+.checking {font-size:.1em !important;}
+.group_radio{
+	border:1px solid #dedede;
+	
+	display:inline-block;
+	overflow:hidden;
+}
+
+.group_radio input[type="radio"]{
+	-webkit-appearance:button;
+	display:inline-block;
+	width:50px;
+	height:30px;
+	border-radius:0;
+	border:0;
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f2f2f2));
+}
+.group_radio span{
+	position:relative;
+	display:inline-block;
+	height:30px;
+	width:50px;
+	float:left;
+	border-right:1px solid #ccc;
+}
+.group_radio span:last-of-type{
+	border:0;
+}
+
+
+.group_radio span label{
+	content:attr(data-title);
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:10;
+	color:red;
+	display:inline-block;
+	width:50px;
+	line-height:30px;
+	text-align:center;
+	overflow:hidden;
+	color:#666666;
+	pointer-events:none;
+}
+.group_radio input[type="radio"]:checked{
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#0fa442), to(#1ebe5f));
+}
+.group_radio input[type="radio"]:checked+label{
+	color:#fff;
+}
+
+						</style>
+						<style>
+ #del2{
+display: block;
+width: 100%;
+height: 16px;
+line-height: 16px;
+text-align: center;
+color: #fff;
+background: rgba(0,0,0,0.5);
+position: absolute;
+left: 0;
+top: 0;
+}
+#submitBtn{
+display: block;
+width: 50px;
+height: 26px;
+line-height: 26px;
+background: #1ebe5f;
+position: absolute;
+right: 10px;
+top: 12px;
+text-align: center;
+color: #fff;
+border-radius: 3px;
+font-size: .8em;
+}
+</style>
+</head>
+<body>
+<div class="top_blank"></div>
+<div class="min_nav">
+    <h2 class="title">我要秀</h2>
+    <div class="reture goBack">
+        <i class="le_trg" style="color: #1ebe5f;"></i>
+        <span class="but">返回</span>
+    </div>
+    <span  id="submitBtn" style="color: #fff">{if empty($user['content'])}发布{else}保存{/if}</span>
+</div>
+<section class="content">
+        {if $cfg['contentstatus'] == '1' && $user['status'] == '0'}<p class="top"><font color="#0fa442">你还没通过审核、联系{$cfg['contactweixin']}吧！</font> </p>{/if}
+        <p class="top"><font color="#0fa442">No1</font> 说说你此时的心情吧！</p>
+		<hr>
+    <div id="msg" class="face_sendbox">
+        <textarea class="face_send disbox_sizing" maxlength="150" placeholder="写下此刻想说的…不能少于15个字哦~">{$user['content']}</textarea>
+        <span class="num_word"><span class="len">0</span>/150</span>
+    </div>
+	<p class="top" style="margin-top:30px"><font color="#0fa442">No2</font> 晒几张靓照吧！</p>
+	<hr>
+    <ol class="upload_photo">
+        <li id="add_photo" class="add" style="color:#1ebe5f;">&#x10c;</li>
+        {if empty($photoss)}<img class="promit_pic imgH" src="{MEEPO2}/Public/images/promit_add_photo.png" />{/if}
+		 {if !empty($photoss)}
+   
+	  {loop $photoss $row}
+	  
+     <li class="oldfather"><a id="del2"  onclick="return confirm('确认删除吗？');return false;" href="{php echo $this->createMobileUrl('deletephotos',array('id'=>$row['id']))}">删除</a><img src="{$_W['attachurl']}{$row['thumbpath']}" class="imgbtn" date="{$row['id']}" /><input type="hidden" id="check{$row['id']}" value="{$_W['attachurl']}{$row['picurl']}" />{if $row['status']!=1}<div class="loading" style="font-size:16px">待审核</div>{/if}</li>
+	 
+	  {/loop}
+   {/if}
+    </ol>
+    <p class="promit">友情提示：请勿上传色情或其他不健康的图片。最多上传3张图片，单张图大小不能超过5M</p>
+	<p class="top" style="margin-top:30px"><font color="#0fa442">No3</font> 是否在首页显示:</p>
+		<hr>
+		               {if !empty($user['yingcang'])}
+							   <div class="group_radio">
+                                 <span >
+                                <input type="radio" name="order_type" value="2" 
+								
+								  {if $user['yingcang']=='2'}
+								    checked="checked"
+								   {/if} 
+								 
+								id="zhilong" style="margin:0px;" />
+                                <label>显示</label>
+                                  </span>
+                                  <span>
+                                <input type="radio" name="order_type" value="1" id="zhilong" {if $user['yingcang']=='1'}checked="checked"{/if} style="margin:0px;"/>
+                                <label>隐藏</label>
+                               </span>
+                               </div>
+						{else}
+						<div class="group_radio">
+                                 <span >
+                                <input type="radio" name="order_type" value="2" 
+								
+								  {if $cfg['yingcang']=='2'}
+								    checked="checked"
+								   {/if} 
+								 
+								id="zhilong" style="margin:0px;" />
+                                <label>显示</label>
+                                  </span>
+                                  <span>
+                                <input type="radio" name="order_type" value="1" id="zhilong" {if $cfg['yingcang']=='1'}checked="checked"{/if} style="margin:0px;"/>
+                                <label>隐藏</label>
+                               </span>
+                               </div>
+						{/if}
+	<p class="promit">听说: 隐藏了谁也看到不了呢！</p>
+</section>
+<form id="heartMsgForm" action="{php echo $this->createMobileUrl('update2')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="content" name="content">
+    <input style="opacity:0;z-index:-100;" type="file" name="images" id="images" multiple="multiple" accept="images/*">
+</form>
+<div class="mask write_mask">
+    <div class="top_black"></div>
+    <nav class="nav">
+       <div id="del" class="left"><i class="le_trg" style="color: #1ebe5f;"></i>返回</div>'
+    </nav>
+    <section class="My" style="height:90%;">
+        <div class="bigPhoto_box disbox-center"></div>
+        <div class="delete del_jpg"><i class="icon-delete"></i>删除</div>
+        <div class="simple_info hidden">
+            <p class="title"><span>友情提示</span></p>
+            <p class="abolish">确定删除照片？</p>
+            <div class="col2_btn">
+               <a class="btn1">考虑一下</a>
+                <a class="btn2">确定删除</a>
+               </div>
+           </div>
+        </section>
+    <div class="shadow_box hidden"></div>
+    </div>
+<input id="theme" type="hidden" value="" />
+</body>
+<script src="{MEEPO2}/Public/js/zepto2.js"></script>
+<script>
+    $.stopPropagation = function(a) {
+	a = a || window.event;
+	if (a.stopPropagation) {
+		a.stopPropagation()
+	} else {
+		a.cancelBubble = true
+	}
+};
+
+function getCookie(c) {
+	var e = document.cookie;
+	var a = e.split("; ");
+	for (var d = 0; d < a.length; d++) {
+		var b = a[d].split("=");
+		if (b[0] == c) {
+			return b[1]
+		}
+	}
+	return ""
+}
+function browser() {
+	var a = navigator.userAgent.toLowerCase(),
+		c = Index.getTarget();
+
+	function b(d) {
+		$(".book_mark").hide();
+		if (c && c == "myspace") {
+			if (d.length > 0) {
+				d.show()
+			}
+		} else {
+			$("body").on("tap", ".see_more", function() {
+				var e = Index.getTarget();
+				if ((e && e == "found") || (e && e == "mail")) {
+					return
+				}
+				setTimeout(function() {
+					if (d.length > 0) {
+						d.show()
+					}
+				}, 1000)
+			})
+		}
+	}
+	switch (true) {
+	case a.indexOf("mqq") > -1 || a.indexOf("opios") > -1 || a.indexOf("uc") > -1 || a.indexOf("tiantian") > -1 || a.indexOf("360 aphone"):
+		b($(".book_mark_botCenter"));
+		break;
+	case a.indexOf("iphone") > -1 && a.indexOf("safari") > -1:
+		b($(".book_mark_botCenter"));
+		break;
+	case a.indexOf("sogou") > -1:
+		b($(".book_mark_bot_Right"));
+		break;
+	default:
+		$(".book_mark").hide();
+		break
+	}
+}
+$.fn.isShow = function() {
+	return $(this).css("display") != "none"
+};
+$("body").on("tap", "[data-goback]", function(b) {
+	$.stopPropagation(b);
+	var a = $(this).data("goback");
+	a = a ? a : -1;
+	window.history.go(a);
+	return false
+}).on("tap", "[data-remove]", function() {
+	$(".book_mark").remove();
+	document.cookie = "showBrowser=1;path=/"
+}).on("tap", ".close,.gray_col,.blue_col,.pink_col", function() {
+	$(".Receive_alert").addClass("hidden")
+});
+$.waiting = (function() {
+	if (window.youyuan && window.youyuan.showWaiting && window.youyuan.hideWaiting) {
+		return {
+			show: function(a) {
+				window.youyuan.showWaiting(a)
+			},
+			hide: function() {
+				window.youyuan.hideWaiting()
+			}
+		}
+	} else {
+		if ($(".waiting").length == 0) {
+			$('<div class="waiting"></div>').prependTo("body")
+		}
+		$(".waiting").empty().hide();
+		return {
+			show: function(a) {
+				$(".waiting").html(a).show()
+			},
+			hide: function() {
+				$(".waiting").empty().hide()
+			}
+		}
+	}
+})();
+$.tips = (function() {
+	if (window.youyuan && window.youyuan.toast) {
+		return function(a) {
+			window.youyuan.toast(a)
+		}
+	} else {
+		if ($(".tips").length == 0) {
+			$('<div class="tips"></div>').prependTo("body")
+		}
+		$(".tips").empty().hide();
+		return function(a) {
+			$(".tips").html(a).show();
+			setTimeout(function() {
+				$(".tips").empty().hide()
+			}, 2000)
+		}
+	}
+})();
+var Addphoto = (function() {
+	return {
+		sendFlg: false,
+		formData: null,
+		fileList: []
+	}
+})();
+$(function() {
+	Addphoto.sendFlg = false;
+	Addphoto.formData = new FormData();
+	Addphoto.fileList = [];
+	$("#add_photo").on("click", function() {
+		$("#images").click()
+	});
+	$("#images").on("change", function(b) {
+		if (!window.FileReader) {
+			return
+		}
+		var e = $(".upload_photo li").length - 1;
+		if (e >= 3) {
+			$.tips("3张照片正合适哦！");
+			return
+		}
+		
+		var j = 0;
+		var g = b.target.files;
+		for (var d = 0, h; h = g[d]; d++) {
+			if (!h.type.match("image.*")) {
+				j = 1;
+				continue
+			}
+			if (h.size > 5260000) {
+				j = 2;
+				continue
+			}
+			if ($(".upload_photo li").length - 1 >= 3) {
+				j = 3;
+				break
+			}
+			Addphoto.fileList.push(h);
+			$(".upload_photo").append('<li class="small_photo"><img class="new" img-name="' + Addphoto.fileList.length + '"/>{if $cfg['status']=='1'}<div class="loading" style="font-size:16px">待审核</div>{/if}</li>');
+			var c = $(".upload_photo img:last")[0];
+			var a = new FileReader();
+			a.onload = (function(i, f) {
+				return function(k) {
+					f.src = k.target.result
+				}
+			})(h, c);
+			a.readAsDataURL(h);
+			$(".promit_pic").hide()
+		}
+		if (j == 3) {
+			$.tips("3张照片正合适哦！");
+			$("#add_photo").hide()
+		} else {
+			if (j == 2) {
+				$.tips("照片太大了！")
+			} else {
+				if (j == 1) {
+					$.tips("只能上传照片，亲~")
+				}
+			}
+		}
+	});
+	$(".upload_photo").on("click", ".small_photo", function(e) {
+		$(".bigPhoto_box").find("img").remove();
+		var b = e || event;
+		var d = $(this).find("img").attr("img-name");
+		var c = $("<img data-nub=" + d + ' class="big_photo" width="100%" src=""/>');
+		$(".bigPhoto_box").append(c);
+		d = d ? (parseInt(d) - 1) : 0;
+		var a = new FileReader();
+		a.onload = (function(g, f) {
+			return function(h) {
+				f.src = h.target.result
+			}
+		})(Addphoto.fileList[d], c[0]);
+		a.readAsDataURL(Addphoto.fileList[d]);
+		$(".write_mask").show();
+		$("#del").on("click", function() {
+			$(".write_mask").css("display", "none")
+		});
+		$(".btn1").on("click", function() {
+			$(".simple_info,.shadow_box").addClass("hidden");
+			$(".mask").css("display", "none")
+		});
+		$(".delete").on("click", function() {
+			$(".simple_info,.shadow_box").removeClass("hidden")
+		});
+		$(".btn2").on("click", function() {
+			var f = $(".big_photo").attr("data-nub");
+			$("#add_photo").show();
+			Addphoto.fileList[f-1] = null;
+			console.log(Addphoto.fileList);
+			$(".small_photo").each(function(h, g) {
+				if ($(this).find("img").attr("img-name") == f) {
+					$(this).remove()
+				}
+			});
+			$(".bigPhoto_box").find("li").remove();
+			$(".write_mask").hide();
+			if ($(".upload_photo li").length < 2) {
+				$(".promit_pic").show()
+			}
+		});
+		e.stopPropagation();
+		b.cancelBubble = true
+	});
+	$("#submitBtn").click(function() {
+		
+		if (Addphoto.sendFlg || $(this).hasClass("false_fabu")) {
+			return
+		}
+		var d = $("#msg textarea").val();
+		$("#content").val(d);
+		if (!d) {
+			$.tips("心情内容不能为空！");
+			return
+		} else {
+			if (d.length < 15) {
+				$.tips("写这么少，能表达你的心情么？");
+				return
+			}
+		}
+		var meepo = $(".upload_photo li").length - 1;
+		if(meepo == 0){
+		   $.tips("至少上传一张照片的哦！");
+			return
+		}
+		var g = new FormData();
+		g.append("content", d);
+		var f = $("#theme").val();
+		if (f) {
+			g.append("themeId", f)
+		}
+		var chkObjs = document.getElementsByName("order_type");
+                for(var i=0;i<chkObjs.length;i++){
+                    if(chkObjs[i].checked){
+                        choose = chkObjs[i].value;
+                       
+                    }
+                }
+		g.append("choose", choose);
+		var h = [];
+		var c = Addphoto.fileList;
+		
+		
+		var a = 1;
+		var lo = 0;
+		for (var b in c) {
+			var e = "files_" + a;
+			if (c[b] != null) {
+				g.append(e, c[b]);
+				a += 1;
+				lo++;
+			}
+			
+		}
+		
+		Addphoto.sendFlg = true;
+		$.waiting.show("loading...");
+		$.ajax({
+			dataType: "json",
+			url: "{php echo $this->createMobileUrl('update2')}",
+			data: g,
+			type: "POST",
+			enctype: "multipart/form-data",
+			processData: false,
+			contentType: false,
+			success: function(i) {
+				$.waiting.hide();
+				if (i == 1) {
+					$.tips("发布成功！", function() {
+						window.location='{php echo  $this->createMobileUrl('index')}';  
+					});
+					$(".new").removeClass("new");
+					$(".del_jpg").remove();
+					window.location='{php echo  $this->createMobileUrl('index')}';  
+				} else {
+					
+						$.tips('发布成功，部分图片上传失败!');
+					    Addphoto.sendFlg = false
+				}
+			},
+			error: function(i) {}
+		})
+	});
+	$(".goBack").on("tap", function() {
+		window.location='{php echo  $this->createMobileUrl('index')}';  
+	});
+	$("#msg textarea").on("change", function() {
+		var a = $(this).val().length;
+		$(".len").html(a)
+	})
+});
+</script>
+<script type="text/javascript">
+  wx.ready(function () {
+     var shareData = {
+    title: "{$cfg['sharetitle']}",
+    desc: "{$cfg['sharecontent']}",
+    link: "{$cfg['sharelink']}",
+    imgUrl: "{$_W['attachurl']}{$cfg['sharepicurl']}",
+  };
+  
+  //分享朋友
+  wx.onMenuShareAppMessage({
+       title: shareData.title,
+      desc: shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+        
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+ //朋友圈
+  wx.onMenuShareTimeline({
+      title: shareData.title+"、"+shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+          
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });   
+    
+  });
+</script>
+<script>
+$(".imgbtn").live("click",function (event) {
+	var alli = new Array();
+	var newall = new Array();
+	var id = $(this).attr('date');
+	var b = $('#check'+id).val();
+	var allp = $(".upload_photo").children("li.oldfather");
+	for(var j=0;j<allp.length;j++){
+			alli[j]=allp.eq(j).find("input").val();
+			
+			
+			newall.push(alli[j]);
+	}
+	
+	wx.previewImage({
+       
+      current:b,
+      urls: newall
+	
+    });
+});
+
+</script>
+
+</html>

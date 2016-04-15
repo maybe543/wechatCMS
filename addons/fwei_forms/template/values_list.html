@@ -1,0 +1,60 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('values', array('id'=>$rid))}">数据列表</a></li>
+		<li class=""><a href="{php echo $this->createWebUrl('export', array('id'=>$rid))}"><i class="fa fa-arrow-circle-down"></i> 导出</a></li>
+	</ul>
+
+	{template 'forms_info'}
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			数据列表 <span style="height:16px;line-height:16px" class="label label-success">共 {$forms['total']} 人参与</span>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th style="width:60px;" class="row-first">ID</th>						
+	                    <th style="width:100px;">OPENID</th>
+	                    {loop $attrs $row}
+	                    {if $row['is_show']==1}
+	                    <th>{$row['title']}</th>
+	                    {/if}
+	                    {/loop}
+	                    <th>提交时间</th>
+	                    <th>状态</th>
+	                    <th style="width:100px; text-align:center;">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $fanslist $row}
+						<tr>		
+							<td class="row-first">{$row['fid']}</td>
+	                        <td><a href="{php echo url('mc/member/post', array('uid'=>$row['uid']))}" target="_blank">{$row['openid']}</a></td>
+	                        {loop $attrs $qrow}
+	                        {if $qrow['is_show']==1}
+	                        <td>
+	                        {if $qrow['type'] == 'images' && $row['totals'][$qrow['attr_id']]}
+							<a href="/attachment/{$row['totals'][$qrow['attr_id']]}" target="_blank"><img src="/attachment/{$row['totals'][$qrow['attr_id']]}" style="width:100px;" /></a>
+							{else}
+							{$row['totals'][$qrow['attr_id']]}
+							{/if}
+	                        </td>
+	                        {/if}
+	                        {/loop}
+	                        <td>{php echo date('m-d H:i:s',$row['created'])}</td>
+	                        <td>{if $row['status']==1}已处理{else}未处理{/if}</td>
+	                        <td align="center">
+								<a href="{php echo $this->createWebUrl('values', array('fid'=>$row['fid'],'id'=>$rid,'act'=>'detail'));}" >详情</a> | 
+	                        	<a href="{php echo $this->createWebUrl('values', array('fid'=>$row['fid'],'id'=>$rid,'act'=>'delete'));}" onclick="return confirm('删除记录后不可恢复,确定要删除吗?')" >删除</a>
+	                        </td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+			{$pager}
+		</div>
+	</div>
+</div>
+{template 'common/footer'}

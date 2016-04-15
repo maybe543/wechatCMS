@@ -1,0 +1,150 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    {if empty($article['id'])}
+    <li class="active"><a href="{php echo $this->createWebUrl('money', array('foo'=>'create'));}">新增文章</a></li>
+    {else}
+    <li class="active"><a href="{php echo $this->createWebUrl('money', array('foo'=>'modify', 'id'=>$article['id']));}">编辑文章</a></li>
+    {/if}
+</ul>
+<div class="clearfix">
+    <form id="theform" class="form form-horizontal" action="" method="post" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 文章基本信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">文章标题</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="title" value="{$article['title']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">文章描述</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="description" value="{$article['description']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享图片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('shareimg', $article['shareimg'])}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">文章内容</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:150px;" class="richtext-clone" name="content">{$article['content']}</textarea>
+                        <span class="help-block">要宣传的企业产品及品牌相关内容当选择类型为跳转时请在此写明将要跳转地址说明，给分享用户看的，被分享新用户是看不到的</span>
+                    </div>
+                    <script type="text/javascript">
+                        require(['jquery', 'util'],function($, util){
+                            window.editor = util.editor($('.richtext-clone')[0]);
+                        })
+                    </script>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">文章类型</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label for="isshow6" class="radio-inline"><input type="radio" name="type" value="0" id="isshow6"  {if $article['type'] == 0}checked="true"{/if} /> 文章</label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="isshow7" class="radio-inline"><input type="radio" name="type" value="1" id="isshow7" {if $article['type'] == 1}checked="true"{/if} />跳转 </label>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">跳转地址</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="reurl" value="{$article['reurl']}"/>
+                        <span class="help-block">完整的URL地址例如：https://www.baidu.com</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">文章状态</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label for="isshow1" class="radio-inline"><input type="radio" name="status" value="0" id="isshow1"  {if $article['status'] == 0}checked="true"{/if} /> 正常</label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="isshow2" class="radio-inline"><input type="radio" name="status" value="1" id="isshow2" {if $article['status'] == 1}checked="true"{/if} />冻结 </label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="isshow3" class="radio-inline"><input type="radio" name="status" value="2" id="isshow3"  {if $article['status'] == 2}checked="true"{/if} /> 欠费</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">奖励金额</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="money" value="{$article['money']}"/>
+                        <span class="help-block">每次点击奖励的红包金额例如:10(以分为单位)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">一级分润数量</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="first" value="{$article['first']}"/>
+                        <span class="help-block">一级会员点击时可得分润(以分为单位)比如：5，一二级相加得总奖励金额</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">二级分润数量</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="second" value="{$article['second']}"/>
+                        <span class="help-block">二级会员点击时可得分润(以分为单位)比如：5，一二级相加得总奖励金额</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">总投放金额</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="totalmoney" value="{$article['totalmoney']}"/>
+                        <span class="help-block">本次推广总投放的金额例如:100(以分为单位)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">文章作者</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="author" value="{$article['author']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">初始浏览量</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="viewnums" value="{$article['viewnums']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">发放数量限制</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="limit" value="{$article['limit']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">投放时间</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_daterange('time', $time, true)}
+                        <span class="help-block">投放的时间范围, 其他时间将不能访问</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否新粉丝</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label for="totalcnf1" class="radio-inline"><input type="radio" id="totalcnf1" name="allow" value="0" {if $article['allow']==0 || empty($article['allow'])} checked="true" {/if} /> 否</label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="totalcnf2" class="radio-inline"><input type="radio" id="totalcnf2" name="allow" value="1" {if $article['allow']==1} checked="true" {/if}/>是</label>
+                        <span class="help-block">选择是则只允许新关注粉丝参于</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input type="submit" value="保存" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+{template 'common/footer'}

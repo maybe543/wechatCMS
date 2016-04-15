@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}大家来领券{else}{$item['aname']}{/if}</title>
+<style>
+    @media screen and (min-width:321px) {
+        html,body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff
+        }
+        #bodybox {
+            position: relative;
+            margin: 0 auto;
+            height: 100%;
+            {if empty($item['index_bg'])}
+            background: url(../addons/jy_coupons/images/page1_bg.jpg) no-repeat;
+            {else}
+            background: url({$_W['attachurl']}{$item['index_bg']}) no-repeat;
+            {/if}
+            background-size: 100% 100%;
+            overflow: hidden;
+            max-width: 640px;
+        }
+    }
+    .notice{position: absolute;width: 100%;text-align: center;bottom: 12%;color: #00a4e2}
+    a:link{color: inherit;text-decoration: none}
+    a:visited{color: inherit;text-decoration: none}
+    #btn{width: 50%;position: absolute;left: 25%;bottom: 20%;height: 40px;font-size: 20px;border: none;
+        background-color: #00a4e2;color: #fff;border-radius: 3px;opacity: 0.5}
+
+    .image1{width: 44%;margin-left: 28%;margin-top: 14%;opacity: 0;
+        -moz-animation: translateY-animation 1s linear 0.5s;     /* Firefox */
+        -webkit-animation: translateY-animation 1s linear 0.5s;     /* Safari 和 Chrome */
+        -o-animation: translateY-animation 1s linear 0.5s;     /* Opera */
+        animation: translateY-animation 1s linear 0.5s;
+        -webkit-animation-fill-mode: forwards;
+        -webkit-backface-visibility: hidden;
+     -moz-backface-visibility: hidden;
+     -ms-backface-visibility: hidden;
+     backface-visibility: hidden;
+    }
+    .image2{width: 44%;margin-left: 28%;margin-top: 3%;opacity: 0;
+        -moz-animation: translateY-animation 1s linear 1.5s;     /* Firefox */
+        -webkit-animation: translateY-animation 1s linear 1.5s;     /* Safari 和 Chrome */
+        -o-animation: translateY-animation 1s linear 1.5s;     /* Opera */
+        animation: translateY-animation 1s linear 1.5s;
+        -webkit-animation-fill-mode: forwards;
+        -webkit-backface-visibility: hidden;
+         -moz-backface-visibility: hidden;
+         -ms-backface-visibility: hidden;
+         backface-visibility: hidden;
+    }
+    .image3{width: 44%;margin-left: 28%;margin-top: 3%;opacity: 0;
+        -moz-animation: translateY-animation 1s linear 2.5s;     /* Firefox */
+        -webkit-animation: translateY-animation 1s linear 2.5s;     /* Safari 和 Chrome */
+        -o-animation: translateY-animation 1s linear 2.5s;     /* Opera */
+        animation: translateY-animation 1s linear 2.5s;
+        -webkit-animation-fill-mode: forwards;
+        -webkit-backface-visibility: hidden;
+     -moz-backface-visibility: hidden;
+     -ms-backface-visibility: hidden;
+     backface-visibility: hidden;
+    }
+    @keyframes translateY-animation{0%{opacity:0;transform:translateY(-50%);-ms-transform:translateY(-50%);-moz-transform:translateY(-50%);-webkit-transform:translateY(-50%);-o-transform:translateY(-50%)}100%{opacity:1;transform:translateY(0%);-ms-transform:translateY(0%);-moz-transform:translateY(0%);-webkit-transform:translateY(0%);-o-transform:translateY(0%)}}@-moz-keyframes translateY-animation{0%{opacity:0;transform:translateY(-50%);-ms-transform:translateY(-50%);-moz-transform:translateY(-50%);-webkit-transform:translateY(-50%);-o-transform:translateY(-50%)}100%{opacity:1;transform:translateY(0%);-ms-transform:translateY(0%);-moz-transform:translateY(0%);-webkit-transform:translateY(0%);-o-transform:translateY(0%)}}@-webkit-keyframes translateY-animation{0%{opacity:0;transform:translateY(-50%);-ms-transform:translateY(-50%);-moz-transform:translateY(-50%);-webkit-transform:translateY(-50%);-o-transform:translateY(-50%)}100%{opacity:1;transform:translateY(0%);-ms-transform:translateY(0%);-moz-transform:translateY(0%);-webkit-transform:translateY(0%);-o-transform:translateY(0%)}}@-o-keyframes translateY-animation{0%{opacity:0;transform:translateY(-50%);-ms-transform:translateY(-50%);-moz-transform:translateY(-50%);-webkit-transform:translateY(-50%);-o-transform:translateY(-50%)}100%{opacity:1;transform:translateY(0%);-ms-transform:translateY(0%);-moz-transform:translateY(0%);-webkit-transform:translateY(0%);-o-transform:translateY(0%)}}
+    @media screen and (max-width:320px) {
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: #fff;
+        }
+        #bodybox {
+            position: relative;
+            margin: 0 auto;
+            height: 100%;
+            {if empty($item['index_bg'])}
+            background: url(../addons/jy_coupons/images/page1_bg.jpg) no-repeat;
+            {else}
+            background: url({$_W['attachurl']}{$item['index_bg']}) no-repeat;
+            {/if}
+            background-size: 100%;
+            overflow: hidden;
+            max-width: 640px;
+        }
+        .image1{width: 44%;margin-left: 28%;margin-top: 14%;}
+        .image2{width: 44%;margin-left: 28%;margin-top: 3%;}
+        .image3{width: 44%;margin-left: 28%;margin-top: 3%;}
+    }
+</style>
+</head>
+<body>
+    <div id="bodybox">
+        {if empty($item['index1'])}
+        <img class="image1" src="../addons/jy_coupons/images/page.png"/>
+        {else}
+        <img class="image1" src="{$_W['attachurl']}{$item['index1']}"/>
+        {/if}
+        {if empty($item['index2'])}
+        <img class="image2" src="../addons/jy_coupons/images/page1.png"/>
+        {else}
+        <img class="image2" src="{$_W['attachurl']}{$item['index2']}"/>
+        {/if}
+        {if empty($item['index3'])}
+        <img class="image3" src="../addons/jy_coupons/images/page2.png"/>
+        {else}
+        <img class="image3" src="{$_W['attachurl']}{$item['index3']}"/>
+        {/if}
+
+        <button id="btn" disabled="disabled" onclick="toNextPage()">{if empty($item['index_text'])}免费邀请{else}{$item['index_text']}{/if}</button>
+        <div class="notice">
+            <input id="checkBox" type="checkbox" onclick="Agreement()">&nbsp;
+            <a href="{php echo $this->CreateMobileUrl('rule')}"><span>我已阅读并接受此活动条款与规则</span></a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function(){
+            var width = document.documentElement.clientWidth;
+            if(width <= 320){
+                var height = 1138 * (width / 720);
+                document.getElementById("bodybox").style.height = Math.floor(height) + 'px';
+            }
+            if(document.getElementById("checkBox").checked == true){
+                document.getElementById("btn").style.opacity = 1;
+                document.getElementById("btn").disabled = false;
+            }
+        }
+        function Agreement(){
+            if(document.getElementById("checkBox").checked == true){
+                document.getElementById("btn").style.opacity = 1;
+                document.getElementById("btn").disabled = false;
+            }
+            else{
+                document.getElementById("btn").style.opacity = 0.5;
+                document.getElementById("btn").disabled = true;
+            }
+        }
+        function toNextPage(){
+            window.location.href = "{php echo $this->CreateMobileUrl('huodong')}";
+        }
+    </script>
+        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            {if empty($item['sharetitle'])}
+            title: "大家来领券",
+            {else}
+            title: "{$item['sharetitle']}",
+            {/if}
+            {if empty($item['desc'])}
+            desc: "大家来领券",
+            {else}
+            desc: "{$item['desc']}",
+            {/if}
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index')}",
+            {if !empty($item['sharelogo'])}
+            imgUrl: "{$item['sharelogo']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_coupons/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+                
+                },
+            cancel: function (res) {
+               
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

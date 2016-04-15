@@ -1,0 +1,42 @@
+{template 'common/header'}
+<form action="" method="post" class="form-horizontal form" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">模板设置</div>
+			<div class="panel-body">
+				
+				<div class="form-group clearfix">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">选择风格</label>
+					<div class="clearfix">
+						<div class="col-sm-4 col-lg-4 col-xs-12">
+							<select name="styleid" class="form-control" id="styleid">
+
+								<option value="1" {if $item['styleid'] == 1}selected='selected'{/if}>style1</option>
+								<option value="2" {if $item['styleid'] == 2}selected='selected'{/if}>style2</option>
+
+							</select>
+						</div>
+					</div>
+					<!-- <div>
+						<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label"></label>
+						<div class="col-sm-8 col-xs-12">
+							<span class="help-block">
+								新建分类风格时，请在您选择的风格对应的模板目录下新建“site”文件夹，
+								默认的列表页面为list.html，默认的内容页面为detail.html。
+							</span>
+						</div>
+					</div> -->
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-sm-12" style="margin-left:70px;">
+						<input name="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+						<input type="hidden" name="token" value="{$_W['token']}" />
+					</div>
+				</div>
+			</div>
+		</div>
+</form>
+
+
+{template 'common/footer'}

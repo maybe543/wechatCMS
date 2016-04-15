@@ -1,0 +1,78 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="">常见问题</a></li>
+</ul>
+
+<script>
+    /*
+	require(['jquery', 'util'], function($, u) {
+        $(function(){
+            $('#theform').submit(function(){
+				if($('input[name="name"]').val() == ''){
+					util.message('未填写问题名称.');
+					return false;
+				}
+
+				if($.trim($('textarea[name="question"]').val()) == ''){
+					util.message('未填写问题说明.');
+					return false;
+				}
+            });
+        });
+    });
+	*/
+</script>
+
+
+<div class="clearfix">    
+    <form id="theform" class="form form-horizontal" action="{php echo $this->createWebUrl('serviceok', array('name'=>'xm_housekeep_we7'));}" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                添加服务说明
+            </div>
+            <div class="panel-body">
+                <input type="hidden" name="id" value="{$item['id']}" />
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务名称</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="name" id="name" value="{$item['name']}" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">服务说明</label>
+                    <div class="col-sm-9 col-xs-12">
+                    	{php echo tpl_ueditor('content', $item['content']);}
+                        <!--<textarea class="form-control richtext" name="content" id="content" rows="10">{$item['content']}</textarea>-->
+                        <!--
+                        <textarea style="height:350px;" class="richtext-clone" name="content" id="content">{$item['content']}</textarea>
+                        -->
+                        <span class="help-block">常见服务的详细说明</span>
+                    </div>
+                    <script type="text/javascript">
+						var category = <?php  echo json_encode($children)?>;
+						require(['jquery', 'util'], function($, u){
+							$(function(){
+								u.editor($('.richtext')[0]);
+							});
+						});
+						
+					</script>
+                </div>
+                
+				{if in_array('11', $power)}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input name="submit" type="submit" value="保存" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+				{/if}
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{template 'common/footer'}

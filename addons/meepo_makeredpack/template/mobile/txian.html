@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>最新提现记录</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/css/css.css" />
+	<script src="{MODULE_URL}template/mobile/js/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/js/sweetalert.css?t={php echo time();}" />
+	{php echo register_jssdk(false);}
+	<script type='text/javascript' src='resource/js/lib/jquery-1.11.1.min.js'></script>
+	<script type="text/javascript" src="{MODULE_URL}template/mobile/js/textSlider.js"></script>
+	<style type="text/css">
+	
+	</style>
+</head>
+<body>
+<div class="area_box" id="area_box" style="top:.5em;left:.5em;"><a href="javascript:history.go(-1);" class="current_areat_button"><span class="name" id="btn_active_rule">还去领礼物</span><span class="arrow_right"></span></a></div>
+<style type="text/css" >
+.area_box{
+	position: fixed;
+	z-index: 1111;
+}
+.area_box .current_areat_button{
+	margin:0;
+	background: rgba(185,52,20,0.9);
+	overflow: hidden;
+	padding:0.31em 0.34em;
+	display: inline-block;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+}
+.area_box .current_areat_button .name{
+	color: #fff;
+	float: right;
+	font-size: 1em;
+	
+}
+.area_box .current_areat_button .arrow_right{
+	float: right;
+	width:0.4375em;
+	height:0.4375em;
+	background: url("../images/city.png")  0 0 no-repeat;
+	background-size:100% auto;
+	-moz-background-size:100% auto;
+	-webkit-background-size:100% auto;
+	margin-top:0.38em;
+}
+.area_box .area_select_box{
+	position: fixed;
+	top:0;
+	left: 110%;
+	height: 100%;
+	width: 100%;
+	background: #f8f8f8;
+	padding-bottom:0.3em;	
+	-webkit-transition: left 0.5s;
+	-moz-transition: left 0.5s;
+	transition: left 0.5s;
+	z-index: 999;
+	overflow: auto;
+}
+.area_box_active .area_select_box{
+	left: 0;
+}
+.area_box .area_select_box .title{
+	position: relative;
+}
+.area_box .area_select_box .title h1{
+	text-align: left;
+	color: #333;
+	font-size: 1em;
+	font-weight: normal;
+	padding:0.9em 0 0.6em 0.5em;
+	border-bottom: 1px solid #e9e9e9;
+}
+.area_box .area_select_box h2{
+	background: #f1f1f1;
+	color: #121212;
+	font-size: 0.9em;
+	padding:0.5em 0.7em;
+	font-weight: normal;
+	border-top:1px solid #e9e9e9;
+	border-bottom:1px solid #e9e9e9;
+	margin-top:-1px;
+	font-family:Arial,"STHeiti","黑体-简","黑体","Microsoft Yahei"!important;
+}
+.area_box .area_select_box .title p{
+	text-align: left;
+	color: #121212;
+	font-size: 0.75em;
+	padding:0.7em 0.7em;
+}
+.area_box .area_select_box ul{
+	margin:0;
+	overflow: hidden;
+}
+.area_box .area_select_box ul li{
+	float: left;
+	width:33%;
+	border-bottom: 1px solid #e9e9e9;
+}
+.area_box .area_select_box ul li:nth-child(3n){
+	border-right: none;
+	width:34%;
+}
+.area_box .area_select_box ul li a{
+	border-right: 1px solid #e9e9e9;
+	display: block;
+	padding:0.62em 0.3em;
+	text-align: center;
+	color:#121212;
+	border-left:1px solid #f8f8f8;
+	border-top:1px solid #f8f8f8;
+	border-bottom:1px solid #f8f8f8;
+}
+.area_box .area_select_box ul li:nth-child(3n) a{
+	border-right: none;
+}
+.area_box .area_select_box ul li a span{
+	font-size:0.87em;
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
+}
+.area_box .area_select_box ul li a.active{
+	background: rgb(255, 226, 223);
+	border: 1px solid rgb(255, 146, 146)
+}
+.area_box .area_select_box .btn_close{
+	background: url(../images/close2.png") right center no-repeat;
+	height: 1.2em;
+	width:2em;
+	background-size:auto 100%;
+	-moz-background-size:auto 100%;
+	-webkit-background-size:auto 100%;
+	display: block;
+	position: absolute;
+	right:0.7em;
+	top:0.6em;
+}
+.active_rule_box{
+	width: 82%;
+	left:9%;
+	position: fixed;
+	top:10%;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius:6px;
+	overflow: hidden;
+	z-index: 999999;
+
+}
+.active_rule_box .title{
+	background: #f03425;
+	padding:5px;
+	position: relative;
+	text-align: center;
+}
+.active_rule_box .title h2{
+	color:#fff;
+	font-weight: normal;
+}
+.active_rule_box .close{
+	background: url("http://wl.dcx4.cn/addons/mon_qmshake/images/close2.png") right center no-repeat;
+	height: 1.2em;
+	width:2em;
+	background-size:auto 100%;
+	-moz-background-size:auto 100%;
+	-webkit-background-size:auto 100%;
+	display: block;
+	position: absolute;
+	right:0.7em;
+	top:0.6em;
+}
+.active_rule_box .content{
+	padding:1.2em 1em;
+	background: #fff;
+}
+.active_rule_box .content p{
+	overflow: hidden;	
+	color: #808080;
+	margin:0px;
+}
+.active_rule_box .content p span{
+	line-height: 2em;
+	font-size: 0.81em;
+}
+.active_rule_box .content p span.name{
+	float: left;
+}
+.active_rule_box .content p span.info{
+	margin-left:1em;
+	display: block;
+}
+.active_rule_box .content p span.info span{
+	font-size: 1em;
+}
+/**/
+#J-album {
+	margin: 0 auto;
+	/*background-color: #FFFFFF;*/
+	width: 100%;
+	overflow: hidden;
+}
+#J-album-wp {
+	width: 100%;
+	margin: 0 auto;
+	height: auto;
+	
+	overflow: hidden;
+	z-index: 1;
+}
+.scroller {
+	height: auto;
+	overflow: hidden;
+}
+.scroller ul {
+	display: block;
+	
+	overflow: hidden;
+	height: auto;
+	margin: auto;
+	padding: 0;
+	text-align: center;
+}
+.scroller li {
+	width: auto;
+	height: auto;
+	display: block;
+	float: left;
+	text-align: center;
+}
+
+#J-album-nav {
+	float:right;
+	right: 3%;
+	margin-top: -37px;
+	padding: 0;
+	position: relative;
+	width: auto;
+	z-index: 3;
+}
+#indicator > li {
+	display: block;
+	float: left;
+	list-style: none;
+}
+#indicator {
+	display: block;
+	margin: 0 8px;
+	padding: 0;
+	width: auto;
+}
+#indicator > li {
+	text-indent: -9999em;
+	width: 8px;
+	height: 8px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #888;
+	overflow: hidden;
+	margin-right: 4px;
+}
+#indicator > li.active {
+	background: #DDDDDD;
+}
+ #indicator > li:last-child {
+	margin: 0;
+}
+#poptip { display:block;position: fixed; top:30%;left:50%;width:160px;margin-left:-80px;height: 80px;background:#000; opacity: 0.7;filter:alpha(opacity=0.7); color:#fff;z-index: 999;  border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;}
+#poptip_content { display:block;position: fixed; top:30%;left:50%;width:160px;margin-left:-80px; height: 27px; color:#fff;text-align:center;font-size:14px;z-index: 9909;text-align:center;line-height:80px}
+ul,li{margin:0;padding:0}
+	#scrollDiv{ overflow:auto}
+	.scrollText{width:100%;height:200px;min-height:50px;line-height:50px;border:#ccc 1px solid; float:left;overflow:hidden}
+	.scrollText li{height:50px;border-bottom:1px solid gray}
+	.up{ margin-left:310px; width:100%; height:100px; background:#F90}
+	.down{ margin:0 0 0 310px; zoom:1; width:100%; height:100px; background:#960}
+</style>
+<img src="{if empty($reply['topbg'])}{MODULE_URL}template/mobile/images/back.png{else}{$_W['attachurl']}{$reply['topbg']}{/if}" width="100%" />
+<div style="clear: both;"></div>
+<img class="avatar" src="{$user['headimgurl']}" width="60" height="60" style="margin: 0px auto 0px auto;" />
+<p class="nickname">钱包余额:<font color=red>{$user['money']}</font>元 | 已提现:<font color=red>{php echo $userrecord/100}</font>元</p>
+<p class="red">由于微信支付最低1元的限制、低于1元无法提现、本公司郑重承诺、领取红包、大于1元一定可以提现！</p>
+<a class="gourl" style="text-decoration: none;background: rgba(185,52,20,0.9);;color:#fff" id="tixian">我要提现</a>
+<a class="gourl" style="text-decoration: none;background: rgba(185,52,20,0.9);;color:#fff" onclick="show2()">活动规则</a>
+<div class="already-get">最新提现记录...</div>
+<div id="scrollDiv2" disabled>
+<div class="scrollText content" disabled style="margin:0;padding:0">
+  <ul disabled style="margin:0;padding:0">
+  {if !empty($list)}
+    {loop $list $row}
+	<li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$row['headimgurl']}" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">{$row['nickname']}</span>
+                            <span class="time">{php echo date('m/d H:i',$row['createtime'])}</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现{php echo sprintf('%.2f', $row['fee'] / 100)}元&nbsp;&nbsp;</div>
+                    </div>
+	</li>
+    {/loop}
+	{else}
+       <li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$_W['attachurl']}images/global/avatars/avatar_1.jpg" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">高**</span>
+                            <span class="time">刚刚</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现2.02元&nbsp;&nbsp;</div>
+                    </div>
+	  </li>
+	  <li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$_W['attachurl']}images/global/avatars/avatar_2.jpg" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">女王**</span>
+                            <span class="time">30秒前</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现1.8元&nbsp;&nbsp;</div>
+                    </div>
+	  </li>
+	  <li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$_W['attachurl']}images/global/avatars/avatar_3.jpg" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">糊涂**</span>
+                            <span class="time">1分钟前</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现1.1元&nbsp;&nbsp;</div>
+                    </div>
+	  </li>
+	  <li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$_W['attachurl']}images/global/avatars/avatar_4.jpg" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">美丽**</span>
+                            <span class="time">2分钟前</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现6.55元&nbsp;&nbsp;</div>
+                    </div>
+	  </li>
+	  <li disabled style="margin:0;padding:0">
+	               <img class="receiver_avatar" width="36" height="36" src="{$_W['attachurl']}images/global/avatars/avatar_5.jpg" />
+                    <div class="receiver_info">
+                        <div style="margin-bottom: 2px;">
+                            <span class="nickname">拉登**</span>
+                            <span class="time">3分钟前</span>
+                        </div>
+                    </div>
+                    <div class="receiver_flow">
+                        <div class="red" style="font-size:12px;">提现1.15元&nbsp;&nbsp;</div>
+                    </div>
+	  </li>
+	{/if}
+  </ul>
+</div>
+</div>
+<!--随机广告-->
+  <div id="bannerDowm" class="app-guide" >
+        <a class="guide-cont ad_link" href="{$adv['advurl']}">
+            <img class="guide-logo" alt="{$adv['title']}" src="{$_W['attachurl']}{$adv['logo']}">
+            <div class="guide-slogon">{$adv['title']}</div>
+        </a>
+        <span class="guide-close" onclick="goto2()">关闭</span>
+    </div>
+<!--随机广告-->
+<script>
+function goto2(){
+	 $('#bannerDowm').hide();
+}
+</script>
+  <style type="text/css">
+  #active_rule_box{
+	position: fixed;
+	top:20%;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius:6px;
+	overflow: hidden;
+	z-index: 999999;
+  }
+ .descinfo-box{color: #3d3d3d; line-height: 1.6rem; font-size: 12px; padding: 5%; margin: 0 5%; background: rgba(255,255,255,0.85); border-radius: 3px; position: absolute; bottom: 5%; display: none; opacity: 0;}
+ .descinfo-box span{color: #00c177;}
+ .descinfo-box .link{color: #00c177; text-decoration: underline;}
+ .descinfo-box:after{content: "\200B"; height: 0; position: absolute; bottom: -10px; right: 7%; border-width:5px; border-style: solid; border-color: rgba(255,255,255,0.85) transparent transparent transparent;}
+ .descinfo-box-in{ bottom: 11%; opacity: 1; -webkit-transition: all 0.5s ease-in-out; z-index:10;}
+ .descinfo-box-out{ bottom: 5%; opacity: 0; -webkit-transition: all 0.5s ease-in-out; z-index:0;}
+ .descinfo-close{position: absolute; right: 0; top: 0; width: 3rem; height: 3rem; text-align: center; line-height: 3rem; font-size: 2rem; color:#666;}
+
+
+	   </style>
+         <section class="descinfo-box descinfo-box-in" style="display:none;" id="active_rule_box">
+            <div>{php echo html_entity_decode($reply['guize']);}</div>
+            <a href="javascript:void(0);" class="descinfo-close" id="J_descinfo-close" onclick="close2();">×</a>
+        </section>
+<script type="text/javascript">
+$(document).ready(function(){
+        $("#scrollDiv2").textSlider({line:2,speed:500,timer:3000});
+});
+</script>
+<script type="text/javascript">
+    $('#tixian').click(function(){
+	      tip('提现中。。。。');
+          $.ajax({
+            type : "POST",
+            url: '{php echo $this->createMobileUrl('txhb',array('rid'=>$rid,'id'=>$userid))}',
+            data:{},
+            dataType:'JSON',
+            success: function (data) {
+                tip_close();
+				if(data.errno==-1){
+				    swal({
+					title: "错误提示",
+					type:'error',
+					text: "你还没有关注本平台，无法提现！",  
+					type: "error",   
+					confirmButtonText: "马上关注",   closeOnConfirm: false }, function(){ 
+						window.location.href="{$reply['gzurl']}"; 
+					});
+				}else if(data.errno==0){
+				      swal({
+					title: "温馨提示",
+					type:'success',
+					text: "提现成功，请到微信钱包查收！",  
+					confirmButtonText: "知道了",   closeOnConfirm: false }, function(){ 
+						 location.reload();
+					});
+					  
+						
+				}else{
+				     swal({
+					title: "错误提示",
+					type:'error',
+					text: data.error,  
+					type: "error",   
+					confirmButtonText: "知道了",   closeOnConfirm: false }, function(){ 
+						swal.close();
+					});
+				}
+            }   
+        });
+   });
+   function tip(msg,autoClose){
+	var div = $("#poptip");
+	var content =$("#poptip_content");
+	if(div.length<=0){
+		div = $("<span id='poptip'></span>").appendTo(document.body);
+		content =$("<span id='poptip_content'>" + msg + "</span>").appendTo(document.body);
+	}else{
+		content.html(msg);
+		content.show(); 
+		div.show();
+	}
+	if(autoClose) {
+		setTimeout(function(){
+			content.hide();
+			div.hide();
+		},2000);
+	}
+   }
+	function tip_close(){
+		$("#poptip").hide();
+		$("#poptip_content").hide();
+	}
+	function show2(){
+		$('#active_rule_box').show();
+	     
+	}
+	function close2(){
+	    $('#active_rule_box').hide();
+	}
+</script>
+<script type="text/javascript">
+<?php 
+$surl =$_W['siteroot']."app/".$this->createMobileurl('redpack',array('rid'=>$rid,'fatherid'=>$userid));
+$surl = str_replace('./','',$surl);
+$settings['share_link'] = $surl;
+?>
+ wx.ready(function () {
+    var shareData = {
+    title: "{$settings['share_title']}",
+    desc: "{$settings['share_content']}",
+    link: "{$settings['share_link']}",
+    imgUrl: "{$_W['attachurl']}{$settings['share_img']}",
+  };
+  
+  //分享朋友
+  wx.onMenuShareAppMessage({
+       title: shareData.title,
+      desc: shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+        
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+ //朋友圈
+  wx.onMenuShareTimeline({
+      title: shareData.title+"~~~~~~"+shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+          
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert("分享失败网络超时！！！！");
+      }
+    });   
+    
+  });
+
+</script>
+</body>
+</html>

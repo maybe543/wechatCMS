@@ -1,0 +1,67 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        {if in_array('18', $power)}
+		<li ><a href="{php echo $this->createWebUrl('cut');}">提成列表</a></li>
+		{/if}
+		<li class="active"><a href="">提成流水</a></li>
+    </ul>
+	
+	<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<div class="panel-body">
+				<form action="./index.php" method="get" class="form-horizontal" role="form">
+					<input type="hidden" name="c" value="site" />
+					<input type="hidden" name="a" value="entry" />
+					<input type="hidden" name="m" value="xm_housekeep" />
+					<input type="hidden" name="do" value="Cut" />
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+						<div class="col-sm-8 col-lg-9">
+							<input class="form-control" name="keyword" placeholder="提成员工关键字"  type="text" value="{$_GPC['keyword']}">
+						</div>
+						<div class=" col-xs-12 col-sm-2 col-lg-2">
+							<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+						</div>
+					</div>
+					<div class="form-group">
+					</div>
+				</form>
+			</div>
+	
+		</div>
+	
+	
+		<div class="panel panel-default">
+			<div class="table-responsive panel-body">
+	
+		<div style="padding:15px;">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				<tr>
+					<th width="400">订单信息</th>
+					<th>用户昵称</th>
+					<th>所属员工</th>
+					<th>订单金额</th>
+					<th>提成金额</th>
+					<th>提成时间</th>
+				</tr>
+				</thead>
+				<tbody>
+				{loop $list $row}
+				<tr>
+					<td>{php echo $this->getOrder($row[orderformid])} </td>
+					<td>{php echo $this->getnickname($row[openid])} </td>
+					<td>{php echo $this->getwaiter($row[staff_id])} </td>
+					<td>{$row[closemoney]}</td>
+					<td>{$row[cut]}</td>
+					<td>{$row[addtime]} </td>
+				</tr>
+				{/loop}
+				</tbody>
+			</table>
+			{$pager}
+		</div>
+	</div>
+</div>
+{template 'common/footer'}

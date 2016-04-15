@@ -1,0 +1,165 @@
+{template 'common/header'}
+
+<link rel="stylesheet" href="../addons/qw_zf/assets/css/common.css">
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+
+<style>
+.tishi{background-color:orange;font-size:16px;margin-top:3px;text-align:left;padding:10px;}/*
+#wenxin{padding-left:5px;}*/
+</style>
+<div class="margin-30 text-center" id="shouye">
+    <img src="{$_W['attachurl']}{$set['logo']}" class="img-sround" />
+    <h3>{$set['title']}</h3>
+    <div class="padding-10">
+        
+           <input type="number" class="form-control height-60" name="jine"  placeholder="请输入付款金额" value="" id="jine" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'') " onafterpaste="this.value=this.value.replace(/[^[1-9\.]\d]/g,'') "  />
+            <input type="button"  value="确认支付" id="send" class="btn btn-success btn-block text-center enter height-60" />
+                              
+                               <input type="hidden" name="token" value="{$_W['token']}" />
+       
+        <div class="tishi"><h4>温馨提示：</h4><xmp id="wenxin">{$set['info']}</xmp></div>
+
+    </div>
+    
+   </div>
+
+
+
+
+<div id="zhifu">
+	<h4>订单信息</h4>
+<div class="panel">
+	<div class="clearfix" style="padding-top:10px;">
+		<p>商品名称 :<span class="pull-right otitle">{$params['title']}</span></p>
+		<p>订单编号 :<span class="pull-right ordersn" >{$params['ordersn']}</span></p>
+		<p>商家名称 :<span class="pull-right shangjia">{$_W['account']['name']}</span></p>
+		<p>支付金额 :<span class="pull-right jine">￥{php echo sprintf('%.2f', $params['fee']);} 元</span></p>
+		
+	</div>
+</div>
+	<div class="pay-btn" id="wechat-panel">
+				<form action="{php echo url('mc/cash/wechat');}" method="post">
+					<input type="hidden" name="params" value=""  />
+				   <input type="hidden" name="token" value="{$_W['token']}" />
+					<button class="btn btn-success btn-block col-sm-12" disabled="disabled" type="submit" id="wBtn" value="wechat">微信支付(必须使用微信内置浏览器)</button>
+				</form>
+			</div>
+			
+			<script type="text/javascript">
+				document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+					$('#wBtn').removeAttr('disabled');
+					$('#wBtn').html('微信支付');
+				});
+			</script>
+
+</div>
+
+<div id="guanzhu" class="text-center margin-50">
+	
+	
+	<h3>请长按二维码关注后使用</h3>
+	
+	<img src="{$_W['account']['qrcode']}" width="300px" height="300px"/>
+</div>
+
+<!--<footer>
+    <img src="../addons/qw_zf/assets/img/banner.png" class="img-responsive" />
+</footer>-->
+</div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+	$(document).ready(function(){
+		
+		var jcflw = "{php echo $follow}";
+		if(jcflw!=1){
+			
+			
+			$("#shouye").hide();
+			$("#guanzhu").show();
+			
+		}else{
+			$("#shouye").show();
+			$("#guanzhu").hide();
+			
+		}
+		$("#zhifu").hide();
+		
+		$("#send").on('click',function(){
+			
+			var jine = $("#jine").val();
+			if(jine==''){
+				
+				alert("请输入金额");
+				
+				
+				return false;
+			}else{
+				
+		   var dot = jine.indexOf(".");
+            if(dot != -1){
+                var dotCnt = jine.substring(dot+1,jine.length);
+                if(dotCnt.length > 2){
+                    alert("小数位已超过2位！");
+                    return false;
+                }
+            }
+				
+			}
+			
+			
+			var Url = "{php echo $this->createMobileurl('fu')}";
+	  		$.post(Url,{fee:jine},function(data){
+			        		
+			        		
+							var data = $.parseJSON(data);
+							if(data.error=="1"){
+					         
+					        var result = data.arr;
+					        
+					      //  alert(result.shangjia);
+					        
+					        $("#shouye").hide(1000);
+					        
+					       //  $("#zhifu").show(100);
+					        $(".otitle").empty().append(result.xq);
+					        $(".ordersn").empty().append(result.ordersn);
+					        $(".shangjia").empty().append(result.title);
+					        $(".jine").empty().append(result.fee);
+					        
+					        //alert($(".shangjia").html()+$(".ordersn").html());
+					        
+					       // alert(data.params);
+					        $("input[name='params']").val(data.params);
+					        
+					        
+					   
+					    $("#wBtn").click();
+					        
+					        //提交到支付
+					        
+					     //提交成功后的操作
+					        
+					        //
+					
+					         
+					        }else{
+					        	
+					        	alert(data.message);
+					        	
+					        }
+			                 });
+			
+			
+			
+		});
+		
+	});
+</script>
+
+
+

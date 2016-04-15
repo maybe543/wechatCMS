@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>会员中心</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+</head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+	<div class="ub-f1">
+		<div class="ub bg-primary dk t-wh ub-ver" style="height:11rem">
+            <div class="ub-f1 ub ub-ver ub-ac ub-pc">
+            	<div class="uc-a50 c-gra ub-img1 umar-t1 uba1 b-wh50" style="height:4em; width:4em; background-image:url({$headurl})"></div>
+                <div class="umar-t umar-b">{$niname}</div>
+				积分：{$credit1}
+            </div>
+            <!--<div class="c-bla50" style="width:100%">
+            	<div class="uinn ub"> 
+                	<a href="iphoto.html" class="ub ub-ver ub-f1 tx-c ubr b-wh30">
+                    	<div class=" ulev1 umar-r umar-l t-blu2">12</div>
+                        <div class="ulev-1 umar-t t-wh">我的照片</div>
+                    </a>
+                    <a href="chongzhi-list.html" class="ub ub-ver ub-f1 tx-c ubr b-wh30">
+                    	<div class=" ulev1 umar-r umar-l t-blu2">￥800</div>
+                        <div class="ulev-1 umar-t t-wh">我的余额</div>
+                    </a>
+                    <a href="xiaofei-list.html" class="ub ub-ver ub-f1 tx-c">
+                    	<div class=" ulev1 umar-r umar-l t-blu2">￥1000</div>
+                        <div class="ulev-1 umar-t t-wh">我的消费</div>
+                    </a>
+                </div>
+            </div>-->
+        </div>
+        <ul class="ubt ubb b-bla01 userlist" >
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-dingdan ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('Myorderform',array('openid'=>$openid,'name'=>'xm_housekeep'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">我的订单</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+			{if $is == 1}
+			<li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-licaishouyi ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('Mycut',array('openid'=>$openid,'name'=>'xm_housekeep'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">我的提成</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+			
+			<li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-erweima ulev2 umar-r umar-l t-blu2"></i>
+                <!--<a href="{php echo $this->createMobileUrl('Myqrcode',array('code'=>123,'name'=>'xm_housekeep'));}" class="ub-f1 ub uinn ubb b-bla01 ub-ac ub-pc">-->
+				<a href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={$item[ticket]}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">我的二维码</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+			
+			{/if}
+			
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-nan ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('reg',array('name'=>'xm_housekeep_we7'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">我的资料</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="ubt ubb b-bla01 umar-t1 userlist">
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-sort ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('xmCover',array('name'=>'xm_housekeep_we7'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">服务项目</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-pinglun ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('Question',array('name'=>'xm_housekeep_we7'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">常见问题</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+            <li class="ub c-wh ub-ac ub-pc">
+            	<i class="iconfont icon-news ulev2 umar-r umar-l t-blu2"></i>
+                <a href="{php echo $this->createMobileUrl('Service',array('name'=>'xm_housekeep_we7'));}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                	<span class="ub ub-f1">服务说明</span>
+                    <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--<div class="umar-t1" style="height:3em"></div>-->
+    <div class="t-dgra uinn tx-c ulev-1">© {$_W['account']['name']}</div>
+</div>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/zepto1.3.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+
+</body>
+</html>

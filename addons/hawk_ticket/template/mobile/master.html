@@ -1,0 +1,60 @@
+{template 'header'}
+<style type='text/css'>
+    .sel { background:#e9342a; color:#fff;}
+    .nosel { background:#fff;color:#000}
+    red{color:red;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hawk_ticket/images/style.css?{TIMESTAMP}">
+<div class="head">
+    <span class="title">核销票据</span>
+</div>
+<div style='margin-bottom:40px;'>
+    <div class="myoder img-rounded">
+        <div class="myoder-hd">
+            <span class="pull-left">票据编号：{$check['id']}</span>
+		<span class="pull-right">{if $check['status']==3}核销时间:{php echo date('Y-m-d H:i', $check['scantime'])}{else}下单时间:{php echo date('Y-m-d H:i', $check['paytime'])} {/if}
+            {if $check['status']==2}
+			<span class="text-warning"><red>未使用</red></span>
+			{elseif $check['status'] == 3}
+			<span class="text-warning"><red>已使用</red></span>
+			{/if}
+		</span>
+        </div>
+        <div class="myoder-detail">
+            <a href="{php echo $this->createMobileUrl('detail', array('id' => $check['actid']))}">
+                <img src="{if empty($actdata['shareimg'])}../addons/hawk_ticket/images/ticket.png{else}{php echo tomedia($actdata['shareimg'])}{/if}" width="160" />
+            </a>
+            <div class="pull-left">
+                <div class="name"><a href="{php echo $this->createMobileUrl('detail', array('id' => $check['actid']))}">{$actdata['proname']}</a></div>
+                <div class="price">
+                    <span class="pull-left">{$check['fee']} 元/张</span>
+                </div>
+            </div>
+        </div>
+        <div class="myoder-detail">
+                <img src="{$buyinfo['avatar']}" width="160" />
+            <div class="pull-left">
+                <div class="name">购票人:{$buyinfo['nickname']}&nbsp;&nbsp;&nbsp;&nbsp;{if !empty($buyinfo['realname'])}姓名:{$buyinfo['realname']}{/if}</div>
+                <div class="price">
+                    <span>{if !empty($buyinfo['mobile'])}{$buyinfo['mobile']}{/if}</span>
+                </div>
+            </div>
+        </div>
+        {if !empty($check['checkname'])}
+        <div class="myoder-total">
+            <span>
+                核销人：<span class="false">
+                    {$check['checkname']}
+                    </span>
+            </span>
+        </div>
+        {/if}
+        {if $check['status']==2}
+        <div class="myoder-total">
+            <div style="height:30px;"><a href="{php echo $this->createMobileUrl('master', array('op' => $op,'id'=>$id,'isdo'=>1))}" class="btn btn-success pull-right btn-sm" >确认核销</a></div>
+        </div>
+        {/if}
+    </div>
+</div>
+{template 'footer'}
+{template 'footbar'}

@@ -1,0 +1,32 @@
+<?php $i=1; ?>
+  {loop $news $item}
+
+  <div class="zc-list ScrollZoomShow" id="page_{$pindex}" total_page="{$total_page}">
+     <section class="box bond-box scroll-ajax-anim" style="opacity: 1;">
+	 <?php if(strstr($item['picture'],"http://")){$imgurl=$item["picture"];}else{$imgurl="/attachment/".$item["picture"];} ?>
+	  <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=newsinfo&m=nets_bd_news&id={$item['id']}"  id="new_{$item['id']}">
+      <div class="bond-top">
+        <div class="title-line">
+		{if !empty($item["picture"])}
+		<div class="title-left-img"><img src="{$imgurl}"  onerror="$(this).parent().hide();" ></img></div>
+		{/if}
+ 		<div class="title-right-info">
+          {if !empty($item['tag'])} <span class="type">{$item['tag']}</span> {/if}
+		<p>{$item['title']}</p>
+		<p style="font-size:11px;color:gray;">{$item['brief']}</p>
+        <div class="bond-bottom1">
+			<ul>
+			  <li><i class="browse"></i><span><?php echo sprintf("%.1f",intval($item['click_num'])/1000)?>k</span></li>
+          <li><i class="message"></i><span><?php echo sprintf("%.1f",intval($item['comment_num'])/1000)?>k</span></li>
+          <li><i class="share"></i><span><?php echo sprintf("%.1f",intval($item['share_num'])/1000)?>k</span></li>
+		  <li><i class="Collection"></i><span><?php echo sprintf("%.1f",intval($item['like_num'])/1000)?>k</span></li>
+			</ul>
+		  </div>
+        </div>
+		</div>
+      </div>
+      </a>
+    </section>
+     </div>
+	 {/loop}
+  

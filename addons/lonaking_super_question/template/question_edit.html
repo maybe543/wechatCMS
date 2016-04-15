@@ -1,0 +1,178 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li><a href="{php echo $this->createWebUrl('ActivityManage');}">活动管理</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('QuestionManage');}">问题管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('ClassManage');}">问题类型</a></li>
+		<li><a href="{php echo $this->createWebUrl('TeamManage');}">战队管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('AdManage');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+	</ul>
+	<form class="form-horizontal form" id="setting-form" action=""
+		method="post">
+		<div class="panel panel-default">
+			<div class="panel-heading">活动编辑</div>
+			<div class="panel-body">
+				<!-- id-->
+				<div class="form-group hide">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">id</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[id]"
+							value="{$data['id']}" />
+							<span class="help-block">id,隐藏</span>
+					</div>
+				</div>
+				<!-- name-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">问题标题</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[title]"
+							value="{$data['title']}" required/>
+							<span class="help-block">问题标题</span>
+					</div>
+				</div>
+				<!-- 类别-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">问题类型</label>
+					<div class="col-sm-8">
+						<select name="data[class_id]" class='form-control'>
+							{loop $data['class_list'] $d}
+							<option value="{$d['id']}" {if $data['class_id'] == $d['id']} selected{/if}>{$d['name']}</option>
+							{/loop}
+						</select>
+						<span class="help-block">问题类型选择</span>
+					</div>
+				</div>
+				<!-- 图片-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">问题配图</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[pic]', $data['pic'])}
+						<span class="help-block">问题配图 建议图片比例：300*200</span>
+					</div>
+				</div>
+				<!-- 背景图片-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">题目背景</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[bg_pic]', $data['bg_pic'])}
+						<span class="help-block">题目背景图片（强烈建议使用虚化背景图片，效果倍佳），如果不设置，背景则为白色建议图片比例800*600</span>
+					</div>
+				</div>
+				<!-- 选项1-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选项一</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[option_a]"
+							   value="{$data['option_a']}" required/>
+						<span class="help-block">选项</span>
+					</div>
+				</div>
+				<!-- 选项2-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选项二</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[option_b]"
+							   value="{$data['option_b']}" required/>
+						<span class="help-block">选项</span>
+					</div>
+				</div>
+				<!-- 选项3-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选项三</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[option_c]"
+							   value="{$data['option_c']}"/>
+						<span class="help-block">选项，可以不填</span>
+					</div>
+				</div>
+				<!-- 选项4-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选项四</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[option_d]"
+							   value="{$data['option_d']}"/>
+						<span class="help-block">选项，可以不填</span>
+					</div>
+				</div>
+				<!-- 选项5-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">选项五</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[option_e]"
+							   value="{$data['option_e']}"/>
+						<span class="help-block">选项，可以不填</span>
+					</div>
+				</div>
+				<!-- 正确选项-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">正确选项</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[right_answer]" value="a" {if $data['right_answer'] == 'a'}checked="checked"{/if} />选项一
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[right_answer]" value="b" {if $data['right_answer'] == 'b'}checked="checked"{/if} />选项二
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[right_answer]" value="c" {if $data['right_answer'] == 'c'}checked="checked"{/if} />选项三
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[right_answer]" value="d" {if $data['right_answer'] == 'd'}checked="checked"{/if} />选项四
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[right_answer]" value="e" {if $data['right_answer'] == 'e'}checked="checked"{/if} />选项五
+						</label>
+						<span class="help-block">选择上面5个选项中哪一项是正确答案</span>
+					</div>
+				</div>
+				<!-- 默认奖励-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">默认答对奖励得分</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[score]"
+							   value="{$data['score']}"/>
+						<span class="help-block">默认得分,如果该问题与某个任务绑定后没有设置分数，则以此处设置的得分为准</span>
+					</div>
+				</div>
+				<!-- 默认扣除积分-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">默认错误扣除积分</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[de_score]"
+							   value="{$data['de_score']}"/>
+						<span class="help-block">默认扣减积分,如果该问题与某个任务绑定后没有设置分数</span>
+					</div>
+				</div>
+				<!-- 广告 -->
+				{if $ads}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">广告选择</label>
+					<div class="col-sm-9">
+						{loop $ads $ad}
+						<label class="radio-inline">
+							<input type="radio" name="data[ad_id]" value="{$ad['id']}" {if $data['ad_id'] == $ad['id']}checked="true"{/if}> {$ad['title']}
+						</label>
+						{/loop}
+						<label class="radio-inline">
+							<input type="radio" name="data[ad_id]" value="0" {if $data['ad_id'] == ''}checked="true"{/if}> 无广告
+						</label>
+						<span class="help-block">每个问题可以选择一个广告，不选择则不显示,此处广告尺寸比例建议：100*80</span>
+					</div>
+				</div>
+				{/if}
+
+			</div>
+		</div>
+
+		<!-- /网页内容设置 -->
+		<div class="form-group col-sm-12">
+			<input name="token" type="hidden" value="{$_W['token']}" />
+			<input type="submit" class="btn btn-primary col-lg-1" name="submit"
+				value="提交" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

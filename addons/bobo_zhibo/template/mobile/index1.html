@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>{$reply['title']}</title>
+		<link href="{RES}css/font-awesome.min.css" rel="stylesheet"/>
+		<link href="{RES}bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+		<style type="text/css">
+.list{
+	width: 90%;
+	margin: 15px 4% 15px 6%;
+	background: #f3f3f3;
+}
+.list p{
+	line-height: 30px;
+	padding: 0 20px;
+}
+.list .listimg{
+	width: 50%;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+.listimg img{
+	width: 100%;
+}
+.listhr{
+	width: 86%;
+	margin:auto;
+	padding-bottom:10px;
+	height:1px;border:none;border-top:1px solid gray;
+}
+</style>
+<script type="text/javascript" src="{RES}js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="{RES}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+function pinglun(zhiboziid){
+	$('#zhiboziid').val(zhiboziid);
+	$('#myModal').modal('show');
+}
+function tijiao(){
+	var zhiboziid=$('#zhiboziid').val();
+	var content=$('#content').val();
+	if(zhiboziid==''){
+		alert('参数错误！');
+		return false;
+	}
+	if(content==''){
+		alert('评论内容不能为空！');
+		return false;
+	}
+	$.ajax({
+        url: '{php echo $this->createMobileUrl('tijiao', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {zhiboziid: zhiboziid,content:content,randomshu:Math.random()},
+        success: function (result) {
+        	if(result.status==1){
+        		alert(result.msg);
+        		window.location.reload();
+        	}else{
+        		alert(result.msg);
+        		window.location.reload();
+        	}
+        }
+    });
+}
+</script>
+	</head>
+<body style="margin: 0;padding: 0;">
+	<h1 style="background: #f3f3f3;margin: 0;line-height: 70px;">【直播】{$reply['title']}</h1>
+	<p style="width: 96%;margin: 10px auto;"><b>实时观看人数</b>({if $reply['isjieshu']==1}<span style="color: red;">正在直播{else}已结束{/if}</span>):{$renshu}</p>
+	<div  style="width: 96%;margin: 10px auto;background: #f3f3f3;margin-bottom: 0px;">
+		<p style="padding: 10px;font-size: 16px;line-height: 26px;">{$reply['description']}</p>
+		<img src="../attachment/{$reply['start_picurl']}" style="margin: 10px 3%;width: 94%;margin-top: 0px;" />
+	</div>
+	{loop $zhibolist $row}
+	<div class="list">
+	{if $row['wenzi']}<p>{$row['wenzi']}</p>{/if}
+	{if $row['zhibo_picurl']}
+	<div class="listimg">
+	<img src="{$row['zhibo_picurl']}"/>
+	</div>
+	{/if}
+	<p style="text-align: right;"><i class="fa fa-comment-o " onclick="pinglun({$row['id']})"></i>({php echo $this->getpinglunsum($row['id'])})</p>
+	<hr class="listhr" />
+	{php $pinglunlist=$this->getpinglunlist($row['id'])}
+	{loop $pinglunlist $pinglun}
+		<p><img src="{$pinglun['img']}"  style='width: 25px;'/>&nbsp;&nbsp;{$pinglun['nickname']}：
+		<span style="font-size: 8px; display: block;float: right;">{php echo date('Y-m-d',$pinglun['cteate_at'])}</span>
+		<br/>
+		<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$pinglun['content']}</span>
+		</p>
+		
+	{/loop}
+	</div>
+	{/loop}
+	
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="margin-top: 30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加评论</h4>
+      </div>
+      <input type="hidden" id="zhiboziid" />
+      <div class="modal-body" style="text-align: center;">
+        <textarea id="content" rows="" cols="" style="width: 90%;border: 1px solid gray;height: 100px; resize:none;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="tijiao()">提交评论</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+wx.config({
+    debug: false,
+    appId: '{$signPackage["appId"]}',
+    timestamp: '{$signPackage["timestamp"]}',
+    nonceStr: '{$signPackage["nonceStr"]}',
+    signature: '{$signPackage["signature"]}',
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage'
+    ]
+});
+wx.ready(function () {
+	wx.onMenuShareTimeline({
+	    title: "{$reply['share_title']}",
+	    link: "{$reply['share_url']}",
+	    imgUrl: "{$reply['share_img']}",
+	  });
+	wx.onMenuShareAppMessage({
+	    title: "{$reply['share_title']}",
+	    desc: "{$reply['share_desc']}",
+	    link: "{$reply['share_url']}",
+	    imgUrl: "{$reply['share_img']}",
+	  });
+});
+    </script>
+</body>
+</html>

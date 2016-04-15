@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>首页</title>
+    <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css" media="screen, projection" />
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../addons/xkd_fkz/template/mobile/js/jquery.min.js"></script>
+</head>
+</head>
+<body style="background: url(../addons/xkd_fkz/template/mobile/image/pag.jpg) no-repeat;background-size: 200%, 100%;">
+<div class="container-fluid">
+	<form action="" method="post">
+	<div class="row clearfix">
+		<div class="col-xs-12">
+			<div class="thumbnail hdiv-common" style="margin-right:-15px;margin-left:-15px;height:240px;text-align:center;background: url(../addons/xkd_fkz/template/mobile/image/pag.jpg) no-repeat;background-size: 200%, 100%;">
+				<div style="margin-top:30px;">
+				<label class="">微信帐号</label>
+				<input type="text" id="wechat" name="wechat" value="{$member['wechat']}" class="formdd-control" placeholder="请输入微信号" style="width:80%;margin:0 auto;"></div>
+				<div style="margin-top:30px;">
+				<label class="">QQ号</label>
+				<input type="text" id="qq" name="qq" value="{$member['qq']}" class="formdd-control" placeholder="请输入QQ号" style="width:80%;margin:0 auto;"></div>
+				<div style="margin-top:30px;">
+				<label class="">手机号</label>
+				<input type="text" id="mobile" name="mobile" value="{$member['mobile']}" class="formdd-control" placeholder="请输入手机号" style="width:80%;margin:0 auto;"></div>
+				<div style="margin-top:25px;">
+				<button type="button" onclick="javascript:save();" class="btn bold-common" style="background:#00D13D;width:80%;color:#FFFFFF;height:55;font-size:16px;"id="click-safe">&nbsp; &nbsp; 确 定 &nbsp; &nbsp;</button></div>
+			</div>
+		</div>			
+	</div>
+	</form>
+	<div class="row clearfix">		
+		<div class="col-xs-12" style="margin-top:180px;">
+			<div>
+				<p style="font-size:16px;text-align:center;color:#000000;font-weight:bold;">游戏说明</p>
+				<p style="color:#000000">1、微信号是好友给你发红包的依据请正确填写</p>
+				<p style="color:#000000">2、微信号一旦填写不能修改请谨慎输入</p>
+				<p style="color:#000000">3、QQ号和手机号可以更方便下级好友联系到您</p>
+			</div>
+		</div>			
+	</div>
+</div>
+<footer class="footer">
+	<p>&nbsp;</p>
+</footer>
+<script>
+function save() {
+	mydata = {
+		'wechat' : $('#wechat').val(),
+		'qq' : $('#qq').val(),
+		'mobile' : $('#mobile').val()
+	};
+	$.post('{php echo $this->createMobileUrl('index', array('op' => 'edit'))}', mydata, function(data){
+		var info = eval(data);
+		alert(info.msg);
+	},'json');
+}
+</script>
+</body>
+</html>
+
+

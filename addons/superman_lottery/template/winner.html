@@ -1,0 +1,123 @@
+{template 'common/header'}
+
+{if $act == 'display'}
+<ul class="nav nav-tabs">
+	<li {if $act == 'display'} class="active" {/if}><a href="{php echo $this->createWebUrl('winner', array('do' =>'act'))}">中奖名单</a></li>
+</ul>
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="do" value="winner" />
+			<input type="hidden" name="m" value="superman_lottery" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">回复规则</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<select name="rid" class="form-control">
+						<option value="-1" selected="selected">全部</option>
+						{loop $rules $row}
+						<option value="{$row['id']}"{if $row['id'] == $_GPC['rid']} selected="selected"{/if}>{$row['name']}</option>
+						{/loop}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">会员</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<input class="form-control" name="keyword" placeholder="昵称 / uid" type="text" value="{$_GPC['keyword']}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<select name="status" class="form-control">
+						<option {if !isset($_GET['status'])||$_GET['status']==-2}selected{/if} value="-2">全部</option>
+						<option {if isset($_GET['status'])&&$_GET['status']==-1}selected{/if} value="-1">未中奖</option>
+						<option {if isset($_GET['status'])&&$_GET['status']==0}selected{/if} value="0">已中奖</option>
+						<option {if isset($_GET['status'])&&$_GET['status']==1}selected{/if} value="1">已领奖</option>
+					</select>
+				</div>
+				<div class="pull-right col-xs-12 col-sm-3 col-md-2 col-lg-2">
+					<button type="submit" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="alert alert-danger">
+	总参与人数：<strong>{$play_member_total}人</strong> 总抽奖次数：<strong>{$play_total}次</strong>
+</div>
+<div class="main panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+			<tr>
+				<th style="width:80px;">UID</th>
+				<th>会员</th>
+				<th>姓名</th>
+				<th>电话</th>
+				<th>地址</th>
+				<th>奖品</th>
+				<th style="width:100px;">抽奖总次数</th>
+				<th style="width:100px;">领奖状态</th>
+				<th style="width:180px;">抽奖时间</th>
+				<th style="width:180px;">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $list $item}
+			<tr>
+				<td>{$item['uid']}</td>
+				<td>
+					<div class="clear">
+						<div class="pull-left" style="width: 40px;height: 40px; overflow: hidden; border-radius: 50%;">
+							<img src="{php echo tomedia($item['avatar'])}" onerror="this.src='../app/resource/images/heading.jpg'" style="width: 100%" />
+						</div>
+						<div class="pull-left" style="line-height: 40px; margin-left: 10px;">
+							{if $item['nickname']!=''}{$item['nickname']}{else}{$item['uid']}{/if}
+						</div>
+					</div>
+				</td>
+				<td title="{if $item['status']>=0}{$item['realname']}{/if}">{if $item['status']>=0}{$item['realname']}{/if}</td>
+				<td title="{if $item['status']>=0}{$item['mobile']}{/if}">{if $item['status']>=0}{$item['mobile']}{/if}</td>
+				<td title="{if $item['status']>=0}{$item['address']}{/if}">{if $item['status']>=0}{$item['address']}{/if}</td>
+				<td title="{$item['_prize']}">{$item['prize']}</td>
+				<td>{$item['total']}</td>
+				<td>{if $item['status']==1}<span class="label label-success">已领奖</span>{else if $item['status']==0}<span class="label label-warning">未领奖</span>{else if $item['status']==-1}<span class="label label-default">未中奖</span>{/if}</td>
+				<td>{php echo date('Y-m-d H:i:s', $item['dateline'])}</td>
+				<td>
+					{if $item['status']>-1}
+					{if $item['status']==0}
+					<a class="btn btn-success" href="{php echo $this->createWebUrl('winner', array('act' => 'setstatus', 'uid' => $item['uid'], 'id' => $item['id'], 'status' => 1))}">标记领奖</a>
+					{elseif $item['status']==1}
+					<a class="btn btn-warning" href="{php echo $this->createWebUrl('winner', array('act' => 'setstatus', 'uid' => $item['uid'], 'id' => $item['id'], 'status' => 0))}">取消领奖</a>
+					{/if}
+					{/if}
+					<a class="btn btn-danger" onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('winner', array('act' => 'delete', 'id' => $item['id'], 'status' => 0))}">
+						<i class="fa fa-remove"></i> 删除
+					</a>
+				</td>
+			</tr>
+			{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+<div class="row">
+	<a class="btn btn-primary" target="_blank" href="{php echo $this->createWebUrl('winner', array('act' => 'export', 'keyword' => $_GPC['keyword'], 'status' => $_GPC['status']))}">导出数据</a>
+</div>
+<script>
+	require(['bootstrap'],function($){
+		$('.btn').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+	});
+</script>
+{/if}
+{template 'common/footer'}

@@ -1,0 +1,48 @@
+{php $bootstrap_type = 3;}
+<title>退款理由</title>
+{template 'header'}
+<style type='text/css'>
+    .sel { background:#e9342a; color:#fff;}
+    .nosel { background:#fff;color:#000}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hc_hunxiao/images/style.css?r=3">
+<div class="head">
+	<a href="javascript:history.back();" class="bn pull-left"><i class="fa fa-angle-left"></i></a>
+	<span class="title">退款理由</span>
+	<a href="{php echo $this->createMobileUrl('mycart')}" class="bn pull-right"><i class="fa fa-shopping-cart"></i></a>
+</div>
+<div>
+	<form action="{php echo $this->createMobileUrl('myorder', array('orderid' => $orderid, 'op' => 'refund', 'opp'=>'refund'))}" method="post">
+		<textarea style="margin-left:5%; margin-top:5%; width:90%; height:100px; border-radius:5px;" id="reason" name="refundreason"></textarea>
+		<br/><span style="margin-left:5%; width:90%;">请输入退款理册，商家会根据实际情况进行退款。</span>
+		<input type="submit" onclick="return refund();" style="margin-left:5%; margin-top:5%; width:90%; height:30px; background:#1694E7; color:white; border-radius:5px;" value="提交" />
+	</form>
+</div>
+<!--下方滑动条-->
+<link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/PreFoot.css">
+ <div class="fixed bottom">
+<dl class="sub-nav nav-b5">
+      <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('index')}"><i class="icon-nav-bag"></i>逛街</a></div>
+    </dd>
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('listCategory')}"><i class="icon-nav-search"></i>搜索</a></div>
+    </dd>
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('mycart')}"><i class="icon-nav-card"></i>购物车</a></div>
+    </dd>
+    <dd class="active">
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('myorder')}"><i class="icon-nav-heart"></i>我的订单</a></div>
+    </dd>
+</dl>
+</div>
+<script>
+function refund(){
+	var reason = document.getElementById('reason').value;
+	if(reason == ''){
+		alert('请输入退款理由！');
+		return false;
+	}
+	return confirm('申请退款后需要7个工作日才能收到回复，确认申请退款吗？');
+}
+</script>

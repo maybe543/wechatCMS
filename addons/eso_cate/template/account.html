@@ -1,0 +1,156 @@
+{template 'common/header'}
+{php $_item=6;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd">
+
+                <h2 class="title">会员账户详情</h2>
+                <div class="control-top clearfix" style="padding-left:0;margin-bottom:10px;">
+                    <div style="float:left;line-height:20px;" class="form form-inline">
+                        会员昵称：{$user['fullname']}<br/>
+                        会员UID：{$user['userid']}
+                        <a href="{php echo url('mc/member/post', array('uid'=>$user['userid']))}">会员资料</a>
+                        <a href="{php echo url('mc/creditmanage', array('type'=>1,'keyword'=>$user['userid']))}">余额积分</a>
+                    </div>
+                    <div style="float: right" class="form form-inline">
+                        <div class="form-group">
+                            按月查看账户情况 <select id="ddate" onchange="ddate(this);" class="form-control inp3">
+                                {loop $ddate $list}
+                                <option value="{$list}">{$list}</option>
+                                {/loop}
+                            </select>
+                            <script>{if $date}$('#ddate').val('{$date}');{/if}</script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body table-responsive">
+                        <table class="table table-primary goodslist" id="menu-table">
+                            <thead>
+                            <tr>
+                                <th width="70"><label><input type="checkbox" class="check" onclick="all_y();"/>编号</label></th>
+                                <th class="lt">消费产品</th>
+                                <th class="lt">备注</th>
+                                <th width="158">产生金额</th>
+                                <th width="158">产生时间</th>
+                            </tr>
+                            </thead>
+                            <tbody id="fen_list">
+                            {php $totalprice = 0}
+                            {php $_totalprice = 0}
+
+                            {php $listdata = cate::db('数据表:account,显示数目:10,分页显示:1,排序:indate desc>id desc', $wheresql)}
+                            {php $lists = $listdata['lists']}
+                            {php $pager = $listdata['page']}
+                            {loop $lists $list}
+                            <tr data-id="{$list['id']}">
+                                <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"/>{$list['id']}</label></td>
+                                <td class="lt" title="{$list['goodstitle']}">{if $list['goodsid']}{php echo get_html($list['goodstitle'],22)}{else}无{/if}</td>
+                                <td class="lt">{php echo get_html($list['content'],40)}</td>
+                                <td>{$list['totalprice']}</td>
+                                <td>{php echo date('Y-m-d H:i:s',$list['indate'])}</td>
+                            </tr>
+                            {if $list['totalprice'] > 0}
+                            {php $totalprice = $totalprice+$list['totalprice']}
+                            {else}
+                            {php $_totalprice = $_totalprice+$list['totalprice']}
+                            {/if}
+                            {/loop}
+                            {if !$lists}
+                            <tr>
+                                <td colspan="5" align="center" class="align-center">
+                                    <div>无</div>
+                                </td>
+                            </tr>
+                            {/if}
+                            </tbody>
+                        </table>
+                        <div class="clearfix" style="margin:5px;border-top:1px solid #ddd;padding-top:10px;">
+                            <select id='puttype' class="form-control" style="float:left;width:auto;">
+                                <option value="delete">删除记录</option>
+                            </select>
+                            <div class="button" style="float:left;margin-left:8px;" onclick="_del();">确定</div>
+                            <div style="float: right">
+                                <span>合计: <u>入￥{$totalprice}</u>、<u>出￥{$_totalprice}</u>、<u>对￥{php echo $totalprice+$_totalprice}</u></span>&nbsp;
+                                记录共{$listdata['pageinfo']['total_rows']}条
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {$pager}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function ddate(obj){
+        var ddv = $(obj).val();
+        if (ddv != "") {
+            window.location='{php echo urido('account')}&userid={$user['id']}&date='+ddv;
+        }
+    }
+    function _del()
+    {
+        var s = '';
+        $("input#y_id").each(function(){
+            if ($(this).is(':checked')){
+                s+= $(this).val()+",";
+            }
+        });
+        if (s == "") {
+            $.alert("请选择要删除的记录！");
+            return true;
+        }
+        art.dialog({
+            lock: true,
+            opacity: '.3',
+            content: '确定要删除这些记录并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "{php echo urido('accountdel')}",
+                        data: "id=" + s,
+                        dataType: "json",
+                        success: function (msg) {
+                            $.alert(msg.message);
+                            if (msg.success == "1"){
+                                window.location.reload();
+                            }
+                        },
+                        error: function (msg) {
+                            $.alert("操作错误！");
+                        }
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+</script>
+
+{template 'common/footer'}

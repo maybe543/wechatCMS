@@ -1,0 +1,25 @@
+{loop $this->_ad_temp_data $key $item}{php $$key = $item}{/loop}<div id="focus" class="focus">
+    <div class="hd">
+        <ul></ul>
+    </div>
+    <div class="bd">
+        <ul>
+            {loop $_ads $item}
+				<li>
+					<a href="{$item['url']}"><img src="{$item['img']}"/></a>
+				</li>
+            {/loop}
+        </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"leftLoop", 
+        autoPlay:true,//自动播放9297
+        autoPage:true, //自动分页
+        interTime:5000 //自动运行间隔
+    });
+</script>

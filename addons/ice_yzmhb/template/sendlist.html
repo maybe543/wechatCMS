@@ -1,0 +1,102 @@
+{template 'common/header'}
+<div class="main">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="width:70px;">获得者昵称</th>
+					<th style="width:100px;">获得时间</th>
+					<th style="width:70px;">领取状态</th>
+					<th style="width:70px;">关注状态</th>
+					<th style="width:70px;">红包类型</th>
+					<th style="width:100px;">红包金额</th>
+					<th style="width:100px;">批次</th>
+					<th style="width:100px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			{loop $list $row}
+			<tr>
+			{if count($list) > 0}
+				<td><div class="type-parent">{$row['nickname']}</div></td>
+				<td><div class="type-parent">{php echo date('Y-m-d H:i:s',$row['time'])}</div></td>
+				<td>
+					{if $row['status'] == 1}
+					<span class='label label-success'>已领取</span>
+					{elseif $row['status'] == 2}
+					<span class='label label-danger'>未领取</span>
+					{/if}
+				</td>
+				
+				<td>
+					{if $row['issub'] == 1}
+					<span class='label label-success'>已关注</span>
+					{elseif $row['issub'] == 2}
+					<span class='label label-danger'>未关注</span>
+					{/if}
+				</td>
+				
+				<td>
+					<span class='label label-success'>
+						{if $row['type'] == 1}
+					<span class='label label-success'>普通红包</span>
+					{elseif $row['type'] == 2}
+					<span class='label label-success'>裂变红包</span>
+					{elseif $row['type'] == 3}
+					<span class='label label-success'>小伙伴猜红包</span>
+					{elseif $row['type'] == 4}
+					<span class='label label-success'>小伙伴抢红包</span>
+					{elseif $row['type'] == 5}
+					<span class='label label-success'>实物红包</span>
+					{/if}
+					</span>
+				</td>
+				<td><div class="type-parent">{php echo $row['money']/100}元</div></td>
+				<td><div class="type-parent"><span class='label label-success'>{$row['pici']}</span></div></td>
+				<td>
+					{if $row['status'] == 2}
+					<span class='label label-success' onclick="send('{$row['id']}',this)"  style="cursor:pointer;">点击补发</span>
+					{/if}
+				</td>
+			{else}
+			还未有任何数据	
+			{/if}	
+			</tr>
+			{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+
+
+		<script type="text/javascript">
+		function send(sid,a){
+			//alert(sid);
+			//$(a).hide();
+			var url = "{php echo $this->createWebUrl('send');}";
+	        $.ajax({
+	            cache: true,
+	            type: "POST",
+	            url: url, // 提交的URL 
+	            data : { "sid" : sid },
+	            async: false,
+	            success: function (result) {
+	            	var res = result.split(',');
+	            	var res1 = res[0];
+	            	var res2 = res[1];
+	            	
+	            	if(res1 == "ok"){
+	            		alert("发放成功！");
+	            	 window.location.reload();
+	            	}else{
+	            		alert(res2);
+	            		return;
+	            	}
+	            	
+	            }
+	        });
+		}
+		
+		</script>
+{template 'common/footer'}

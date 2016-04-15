@@ -1,0 +1,126 @@
+
+<div id="modal-confirmsend" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">快递信息</h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="isexpress" class="control-label">是否需要快递: 
+          <input {if $item['sendtype'] == Dispatch::$EXPRESS}checked{/if} type="radio" name="isexpress" id="radio_1" value="1" onclick="$('#expresspanel').show();" autocomplete="off"> 是
+          <input {if $item['sendtype'] == Dispatch::$PICKUP}checked{/if} type="radio" name="isexpress" id="radio_2" value="0" onclick="$('#expresspanel').hide();" autocomplete="off"> 否
+        </label>
+
+        <div id="expresspanel" style="{if $item['sendtype'] == Dispatch::$PICKUP}display:none;{/if}">
+            <label for="express" class="control-label">快递公司</label>
+            <select name="express" id='express' class="form-control">
+              {template 'express-selector'}
+            </select>
+            <label for="expresssn" class="control-label">快递单号</label>
+            <input type="text" name="expresssn" class="form-control"/>
+            <input type='hidden' class='input span3' name='expresscom' id='expresscom'  />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary span2" name="confirmsend" value="yes">确认发货</button><a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="modal-cancelsend" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">取消发货</h4>
+      </div>
+
+      <div class="modal-body">
+            <label for="cancelreson" class="control-label">取消发货原因</label>
+            <textarea style="height:150px;" class="form-control" name="cancelreson" cols="70" autocomplete="off"></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary span2" name="cancelsend" value="yes">取消发货</button><a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="modal-close" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">关闭订单</h4>
+      </div>
+
+      <div class="modal-body">
+          <label for="reson" class="control-label">关闭订单原因</label>
+          <textarea class="form-control" style="height:150px;" name="reson" autocomplete="off"></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary span2" name="close" value="yes">关闭订单</button><a href="#" class="btn" data-dismiss="modal" aria-hidden="true">关闭</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div id="modal-changeprice" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">订单改价</h4>
+        </div>
+
+        <div class="modal-body">
+          <label class="control-label">原价：{$item['price']}元</label>
+          <div class="input-group">
+            <span class="input-group-addon">修改为：</span>
+            <input class="form-control" name="newprice" autocomplete="off" />
+            <span class="input-group-addon">元</span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary span2" name="changeprice" value="yes">确认改价</button>
+          <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消改价</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-talktouser" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">发送客服消息给用户</h4>
+        </div>
+
+        <div class="modal-body">
+          <label for="openid" class="control-label">发送给</label>
+          <input class="form-control" type="text" name="openid" value="{$item['user']['openid']}" />
+          <label for="talktouser_msg" class="control-label">客服消息</label>
+          <textarea style="height:150px;" class="form-control" name="talktouser_msg" cols="70" autocomplete="off"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary span2" name="talktouser" value="yes">发送</button>
+          <a class="btn btn-info" href="#" onclick="window.open('{php echo wurl('site/entry/center', array('m'=>'quickfans', 'op'=>'post', 'from_user'=>$item['from_user']))}#MsgHistory', 'go', 'width=700, height=400, scrollbars=yes, alwaysraised=yes,left=200,top=200');return false;" >对话记录</a>
+          <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消发送</a>
+        </div>
+
+      </div>
+    </div>
+  </div>

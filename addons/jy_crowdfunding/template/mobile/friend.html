@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}打赏活动{else}{$item['aname']}{/if}</title>
+<style>
+html,body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #a60003;
+}
+#bodybox {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    {if empty($item['friend'])}
+    background: url(../addons/jy_crowdfunding/images/page5_bg.jpg) no-repeat;
+    {else}
+    background: url({$_W['attachurl']}{$item['friend']}) no-repeat;
+    {/if}
+    background-size: 100% 100%;
+    max-width: 640px;
+}
+.head-image {
+    width: 17%;
+    position: absolute;
+    bottom: 42%;
+    left: 2%
+}
+.page5-text1 {
+    width: 75%;
+    position: absolute;
+    bottom: 45%;
+    right: 0;
+}
+.page5-text2 {
+    width: 100%;
+    position: absolute;
+    bottom: 32%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+}
+.page5-text2 span{color: #ffde00;}
+.page5-text3 {
+    width: 100%;
+    position: absolute;
+    bottom: 27%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+}
+.page5-text3 span{color: #ffde00;}
+.page5-text4 {
+    width: 100%;
+    position: absolute;
+    bottom: 22%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+}
+.page5-btn1 {
+    width: 40%;
+    position: absolute;
+    left: 5%;
+    bottom:9%;
+}
+.page5-btn2 {
+    width: 40%;
+    position: absolute;
+    right: 5%;
+    bottom:10%;
+}
+.page5-address {
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.1em;
+    position: absolute;
+    bottom: 37%;
+    width: 100%;
+}
+.dashangBtn {
+    position: absolute;
+    right: 4%;
+    top: 2%;
+    width: 25%;
+}
+.linkDiv{
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 4%;
+    left: 0;
+}
+a:link{color: #fff;}
+a:visited{color: #fff;}
+.page5-text1 {
+    width: 80%;
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    line-height: 16px;
+    text-indent: 2em;
+    float: right;
+}
+</style>
+</head>
+<body>
+    <div id="bodybox">
+        <a href="{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('sharelist',array('member_id'=>$huodong['id']))}"><img class="dashangBtn" src="../addons/jy_crowdfunding/images/dashangBtn.png"/></a>
+        {if empty($user['avatar'])}
+        <img class="head-image" src="../addons/crowdfunding/images/head.jpg"/>
+        {else}
+        <img class="head-image" src="{$_W['attach_url']}{$user['avatar']}"/>
+        {/if}
+        {if empty($item['friend_text'])}
+        <div class="page5-text1">窗外，风景那么好！窗外，风景那么好！窗外，风景那么好！窗外，风景那么好！窗外，风景那么好！窗外，风景那么好！</div>
+        {else}
+        <div class="page5-text1">{$item['friend_text']}</div>
+        {/if}
+        <div class="page5-address">我想：{$huodong['destination']}</div>
+        <div class="page5-text2">金额：<span>{$huodong['budget']}</span>元</div>
+        <div class="page5-text3">目前已有<span>{$num}</span>人打赏</div>
+        <div class="page5-text4">距目标金额还有{$left}元</div>
+
+        <a href="{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('pay',array('member_id'=>$huodong['id']))}"><img class="page5-btn1" src="../addons/jy_crowdfunding/images/page5_btn1.png"/></a>
+        <a href="{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index')}"><img class="page5-btn2" src="../addons/jy_crowdfunding/images/wofaqi.png"/></a>
+        
+        <div class="linkDiv">
+            {if empty($item['friend_ad_url'])}
+                <a href="http://mp.weixin.qq.com/s?__biz=MzAwMDQ3MTc2OQ==&mid=208782408&idx=1&sn=1b727ad1a3ccf0d3ea1cfda8471ad3e2#rd">{if empty($item['friend_ad_text'])}获取更多信息》》{else}{$item['friend_ad_text']}{/if}</a>
+            {else}
+                <a href="{$item['friend_ad_url']}">{if empty($item['friend_ad_text'])}获取更多信息》》{else}{$item['friend_ad_text']}{/if}</a>
+            {/if}
+        </div>
+        
+    </div>
+
+    <script>
+    function toWeiDianFunc() {
+        window.location.href = "http://wq.jd.com/mshop/gethomepage?venderid=124614";
+    }
+    </script>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            {if empty($title)}
+            title: "赐我打赏吧",
+            {else}
+            title: "{$title}",
+            {/if}
+            {if empty($desc)}
+            desc: "发起打赏活动吧",
+            {else}
+            desc: "{$desc}",
+            {/if}
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('friend',array('member_id'=>$huodong['id']))}",
+            {if !empty($user['avatar'])}
+            imgUrl: "{$user['avatar']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_crowdfunding/images/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+                
+                },
+            cancel: function (res) {
+               
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

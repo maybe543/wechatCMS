@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>个人中心</title>
+
+    <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css" media="screen, projection">
+</head>
+
+<body>
+<div class="container-fluid">
+{template 'navbar'}
+
+<style>
+	td{text-align: left;}
+	td.td-r{text-align: right;}
+	div.bgimg{height:240px;margin-bottom: 15px;}
+	.bgimg div.u-avatar-reg{float:left;text-align:center;width:130px;margin-top: 60px;}
+	.bgimg div.u-avatar{width:100px;height:100px;margin-top:10px;}
+	.bgimg div.u-profile-reg{text-align:left;margin-left:135px;margin-top: 72px;font-size:16px;}
+	.center-common p{
+		display: inline-block;
+		overflow: hidden;
+		height: 16px;
+		margin: 0px;
+		line-height: 16px;
+	}
+</style>
+<div class="row clearfix bgimg">
+	<div class="center-common u-avatar-reg">
+		&nbsp;<img src="{$member['avatar']}" style="width:90px;height:90px;" alt="头像" class="img-circle u-avatar">
+	</div>
+	<div class="center-common u-profile-reg">
+		  <p>用户编号：{$member['uid']}</p>
+		  <p>微信账号：{$member['wechat']}</p>
+		  <p>微信昵称：{$member['nickname']}</p>
+		  <p>用户等级：{$member['level_text']}</p>
+		  <p><a href="{php echo $this->createMobileUrl('index',array('op' => 'edit'))}" style="color:#477CDE">修改个人信息</a></p>
+	</div>
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-12">		
+		<div class="thumbnail" style="margin-left:-8px;margin-right:-8px;">
+			<div style="height:26px;">
+				<p style="color:#333333;font-weight:bold;">
+					&nbsp;
+					<span><img src="../addons/xkd_fkz/template/mobile/image/my_mi.png" width="26"></span>
+					&nbsp;我的收入
+					<span style="float:right;line-height: 25px;margin-right:10px;color:red;">
+						{$packet} 元
+					</span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+{loop $child_list $k $item}
+<div class="row clearfix">
+	<div class="col-md-12">
+		<div class="thumbnail" style="margin-left:-8px;margin-right:-8px;">
+			<a href="{php echo $this->createMobileUrl('myinfo',array('op' => 'child', 'parentid' => $uid, 'parent_name' => $member['nickname'], 'child_level' => $k))}">
+				<div style="height:26px;">
+					<p class="click-dis" style="font-weight:bold;"  data-value="">&nbsp;
+						<span><img src="../addons/xkd_fkz/template/mobile/image/level_{$k}.png" width="26">&nbsp;</span>					
+						<span style="color:#010207;">&nbsp;{$junior_list[$k]['name']}&nbsp;</span>
+						<span style="float:right;line-height: 25px;"><img src="../addons/xkd_fkz/template/mobile/image/down.jpg">&nbsp;&nbsp;</span>
+						<span style="float:right;color:#FFFFFF;font-weight:bold;background: url(../addons/xkd_fkz/template/mobile/image/noread.png);width: 34px;text-align:center;margin-top:4px;">{$item}</span>
+					</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+{/loop}
+<div class="row clearfix">
+	<div class="col-md-12">		
+		<div class="thumbnail hdiv-common" style="margin-left:-8px;margin-right:-8px;">
+			<div style="height:26px;margin-bottom:30px;">
+				{if $flag > 0}
+				<p style="color:red;font-size:12px;text-align:center;">
+					您还可以继续升级查看更多级别的用户哦！
+				</p>
+				<p style="font-size:14px;text-align:center;">
+				<a href="{php echo $this->createMobileUrl('index')}" style="color:#477CDE">
+					马上升级
+				</a>
+				</p>
+				{elseif $flag > 1}
+				<p style="color:red;font-size:12px;text-align:center;">
+					您已经拥有{$junior_list[$member['level']+1]['name']}会员，请及时升级，以免无法获取会员的升级红包
+				</p>
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<footer class="footer">
+	<p>&nbsp;</p>
+</footer>
+
+</body>
+</html>

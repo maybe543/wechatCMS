@@ -1,0 +1,100 @@
+<!-- 底部 -->
+<footer class="footer text-center">
+  {if !empty($kanjia["footer"])}
+  <div class="copyright">
+    {php echo(htmlspecialchars_decode($kanjia["footer"]));}
+  </div>
+  {else}
+  <div class="copyright">
+    <span>Copyright&nbsp;©&nbsp;2015</span>
+  </div>
+  <div class="copyright">
+    <span>{$_W['account']['name']}&nbsp;版权所有</span>
+  </div>
+  {/if}
+</footer>
+<div class="top">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="top-nav">
+          <li class="item">
+            <a href="{$_W["siteroot"]}app/{php echo $this->createMobileUrl("list");}">商城首页</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">排行榜</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('kanjia',array('id'=>$id,'id'=>$id),true)}">我的订单</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">关注我们</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<style media="screen">
+body{
+  padding-bottom: 4.4rem;
+}
+</style>
+<script type="text/javascript">
+  window.sysinfo = {
+  {if !empty($_W['uniacid'])}
+      'uniacid': '{$_W['uniacid']}',
+  {/if}
+  {if !empty($_W['acid'])}
+      'acid': '{$_W['acid']}',
+  {/if}
+  {if !empty($_W['openid'])}
+      'openid': '{$_W['openid']}',
+  {/if}
+  {if !empty($_W['uid'])}
+      'uid': '{$_W['uid']}',
+  {/if}
+      'siteroot': '{$_W['siteroot']}',
+      'siteurl': '{$_W['siteurl']}',
+      'attachurl': '{$_W['attachurl']}',
+  {if defined('MODULE_URL')}
+      'MODULE_URL': '{MODULE_URL}',
+  {/if}
+      'cookie' : {'pre': '{$_W['config']['cookie']['pre']}'}
+    };
+  function tomedia(src) {
+    if(typeof src != 'string')
+      return '';
+    if(src.indexOf('http://') == 0 || src.indexOf('https://') == 0) {
+      return src;
+    } else if(src.indexOf('../addons') == 0 || src.indexOf('../attachment') == 0) {
+      src=src.substr(3);
+      return window.sysinfo.siteroot + src;
+    } else if(src.indexOf('./resource') == 0) {
+      src=src.substr(2);
+      return window.sysinfo.siteroot + 'app/' + src;
+    } else if(src.indexOf('images/') == 0) {
+      return window.sysinfo.attachurl+ src;
+    }
+  }
+</script>
+<script type="text/javascript" src="{MODULE_URL}scripts/sweetalert.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/angular.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/scroll.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/sanitize.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/ngSweetalert.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/humanize.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/moment.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/ngTimer.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}scripts/app.min.js"></script>
+<script type="text/javascript">
+var LIST_URL = "{php echo $this->createMobileUrl('listajax')}";
+wx.ready(function () {
+	wx.onMenuShareAppMessage(SHARE_DATA);
+	wx.onMenuShareTimeline(SHARE_DATA);
+	wx.onMenuShareQQ(SHARE_DATA);
+	wx.onMenuShareWeibo(SHARE_DATA);
+});
+</script>
+</body>
+</html>

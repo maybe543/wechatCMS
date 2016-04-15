@@ -1,0 +1,165 @@
+{template 'header'}
+<style>
+.searchbox{ padding:10px; }
+.jcell-05{ width:0.5%}
+.jlabel{ font-size:12px; padding:1px 3px; display:inline-block; border-radius:3px}
+.j_list,.j_list li{list-style:none; margin:0; padding:0;}
+.j_list{}
+.j_list li{ border-bottom:#DDD 1px solid; padding:10px; margin-bottom:10px;background:#FFF; position:relative;}
+.j_list li .endbox{position:absolute;top:10px;left:10px; z-index:7; background:rgba(0,0,0,0.5) url(../addons/qw_cjhdpt/image/end.svg) center center no-repeat; background-size:60% 60%;}
+.j_list li .brank{ position:absolute;top:5px;left:5px; z-index:9}
+.j_list li .brank div{padding:3px 5px;color:#FFF; background:#FF4978; font-size:10px;}
+.j_list li .brank span{position:absolute; margin:-4px 0 0 2px;z-index:10; width:0; height:0;border:4px solid #C31945;border-color:transparent transparent #C31945 transparent;-webkit-transform:rotate(45deg);transform:rotate(45deg);}
+.j_list li:actvice{background:#EEE;}
+.j_list li .jcell{ overflow:hidden; vertical-align:top}
+.jcell h2{font-weight:bold;color:#333;font-size:14px;line-height:20px;text-align:left;}
+.j_list li .jcell:nth-child(2){ padding:0 5px;color:#999}
+.j_list li small{display:block; padding:1px 0;}
+.j_list li small i{ font-size:14px;width:22px}
+.j_list li img{border-radius:4px;}
+.in20{ text-indent:20px;}
+.fixed_first{ margin-top:76px; height:1px;}
+.content{overflow-y:scroll; position:relative;}
+</style>
+<Div class="header">
+	<div class="box">
+    	<div class="boxsize-2"><A href="{php echo $this->createMobileUrl('idqrcode')}"><i class="fa fa-credit-card"></i>证件</A></div>
+        <div class="boxsize-8">活动列表</div>
+        <div class="boxsize-2"><A href="javascript:scanQrcode()" id="scanbtn"><i class="fa fa-qrcode"></i> <span>签到</span></A></div>
+    </div>
+    <div class="box headermenu">
+    	<div class="boxsize-4 active"><A href="javascript:changeOrder(1,0);">报名时间<i class="fa fa-angle-down"></i></A></div>
+        <div class="boxsize-4"><A href="javascript:changeOrder(3,1);">活动时间<i class="fa fa-angle-down"></i></A></div>
+        <div class="boxsize-4"><A href="javascript:changeOrder(5,2);">活动费用<i class="fa fa-angle-down"></i></A></div>
+    </div>
+</Div>
+
+<div class="fixed_first">&nbsp;</div>
+<div class="content"> 
+  {if empty($list)}
+  <div class="alert alert-warning alert-dismissible" style="margin:10px;"> <strong>暂无您要的内容哦</strong> </div>
+  {/if}
+  <ul class="j_list">
+    
+  </ul>
+</div>
+<div class="text-center footer" style="margin:10px 0;text-align:center; word-break:break-all;">
+    {if !empty($_W['page']['footer'])}
+        {$_W['page']['footer']}
+    {else}
+        {if IMS_FAMILY != 'x'}<a href="#">&copy;路之达科技</a>{/if}
+    {/if}
+    &nbsp;&nbsp;{$_W['setting']['copyright']['statcode']}
+</div>
+<script language="javascript">
+$(document).ready(function(e){
+    getList();
+});
+nowpage=1;
+order=1;
+function changeOrder(n,num){
+	order=n;
+	$(".j_list").empty();
+	var nn=0;
+	if(n==1){
+		nn=2;
+	}else if(n==2){
+		nn=1;
+	}else if(n==3){
+		nn=4;
+	}else if(n==4){
+		nn=3;
+	}else if(n==5){
+		nn=6;
+	}else if(n==6){
+		nn=5;
+	}
+
+	$(".headermenu div").removeClass("active").eq(num).addClass("active").find("a").attr("href","javascript:changeOrder("+nn+","+num+")");
+	getList(1);
+	
+}
+function getList(){
+	$('j').Jetsum.loadbox({do:true,});
+	var _width=$(window).width();
+	var _height=$(window).height();
+	$(".content").height(_height-118);
+	_imgw=(_width-20)*0.4;
+	_imgh=(_width-20)*0.4/1.3;
+	_pagesize=parseInt(20);
+	_titlew=(_width-_imgw-_width*0.1-10)*0.9;
+	_world=parseInt(_titlew/12)*2-4;
+	if(arguments[0])nowpage=parseInt(arguments[0]);
+	$.getJSON("{php echo $this->createMobileUrl('ajaxget',array('op'=>'getlist'))}",{page:nowpage,psize:_pagesize,order:order},function(data){
+		if(data.success){
+			var item=data.item;
+			$(".pagenext").remove();
+			for(var i=0; i<item.length;i++){
+				var temp="<li style='-webkit-animation:opacitymove_show 0.3s;' onclick=\"location.href='"+item[i].link+"'\"><div class='jtable'><div class='jrow'>";
+				temp+="<div class='jcell jcell-4'> <img src='"+item[i].img+"' style='width:100%;height:"+_imgh+"px'/></div>";
+				temp+="<div class='jcell jcell-8' style='padding-left:10px'>";
+				temp+="<h2>"+item[i].title+"</h2>";
+				if(item[i].groupname)temp+="<span class='label label-info'>"+item[i].groupname+"</span>";
+				if(item[i].organizer)temp+="<small><i class='fa fa-star'></i> "+item[i].organizer+"</small>";
+				
+				temp+="<small><i class='fa fa-history'></i> "+item[i].time2+"</small>";
+				if(parseFloat(item[i].charge)>0){
+					temp+="<small><i class='fa fa-rmb'></i> &yen; "+item[i].charge+" 元/人</small>";
+				}
+				if(parseInt(item[i].quota)>0){
+					temp+="<small><i class='fa fa-user'></i> 报名人数："+item[i].joinnum+" / "+item[i].quota+" 人 </small>";
+				}else{
+					temp+="<small><i class='fa fa-user'></i> 报名人数："+item[i].joinnum+" 人</small>";
+				}
+				temp+="</div></div></div>";
+				if(item[i].label)temp+="<div class='brank'><div>"+item[i].label+"</div><span></span></div>";
+				if(item[i].status)temp+="<div class='endbox' style='height:"+_imgh+"px;width:"+_imgw+"px;'></div>";
+				temp+="</li>";
+				$(".j_list").append(temp);
+				//setTimeout(function(){$(".j_list").append(temp);},100*i);
+			}
+			nowpage++;
+			
+			$('j').Jetsum.loadbox({do:false,});
+		}
+	})
+}
+function scanQrcode(){
+	wx.scanQRCode({
+		needResult: 1, 
+		scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+		success: function (res) {
+			var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+			url="./index.php?i={$_W['uniacid']}&c=entry&m=qw_cjhdpt&do=ajax&str="+result+"&wxref=mp.weixin.qq.com#wechat_redirect";
+			//alert(url);
+			$.getJSON(url,'',function(data){
+				if(data.success){
+					alert(data.msg);
+					location.href="./index.php?i={$_W['uniacid']}&c=entry&m=qw_cjhdpt&do=view&id="+data.id+"&wxref=mp.weixin.qq.com#wechat_redirect";
+				}else{
+					alert('签到失败！\r\n原因:'+data.msg);
+				}
+			})
+		}
+	});
+}
+wx.ready(function () {
+	sharedata = {
+		title: "{$cfg['share_title']}",
+		desc: "{$cfg['share_info']}",
+		imgUrl:"{$_W['attachurl']}{$cfg['share_img']}",
+		link: "{$_W['siteurl']}",
+		
+		success: function(){
+			//alert('success');
+		},
+		cancel: function(){
+			//alert('cancel');
+		}
+	};
+	wx.onMenuShareAppMessage(sharedata);
+	wx.onMenuShareTimeline(sharedata);
+	wx.onMenuShareQQ(sharedata);
+	wx.onMenuShareWeibo(sharedata);
+});
+</script>

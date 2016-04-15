@@ -1,0 +1,37 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    .media-list{margin-top:20px;margin-bottom:30px;}
+    .media-left img{margin-left:10px;}
+    .media{height:70px;border-bottom:1px dashed #CCCCCC}
+    .media red{color:#FF0000;font-size:20px;font-weight:bold;margin-left:5px;margin-right:10px;}
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+        <img class="img-circle" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>土豪榜TOP10</h3>
+    </div>
+</div>
+<ul class="media-list">
+    {loop $data $item}
+    <li class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object" src="{if !empty($item['avatar'])}{$item['avatar']}{else}../addons/hawk_surpermoney/images/head-default.png{/if}"  style="width:60px;height:60px;">
+            </a>
+
+        </div>
+        <div class="media-body">
+            <h5>{$item['nickname']} &nbsp;&nbsp;&nbsp;&nbsp;{php echo date('Y-m-d', $item['createtime'])}</h5>
+             资产:<red>{$item['credit']}</red> | 家族成员:<red>{$item['memnums']}</red>
+        </div>
+    </li>
+    {/loop}
+</ul>
+{template 'footbar'}
+{template 'footer'}

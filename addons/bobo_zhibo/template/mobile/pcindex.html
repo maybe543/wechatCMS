@@ -1,0 +1,349 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/shared/css/rest.css" media="all">
+
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/shared/css/other-common.css" media="all">
+
+        <link rel="stylesheet" type="text/css" href="http://live.gfan.com/assets/gfan/portal/live/css/timeline.css" media="all">
+        <title>{$reply['zhibo_title']}</title>
+		<meta name="keywords" content="{$reply['zhibo_title']}" />
+        <meta name="description" content="​" />
+    </head>
+    <body youdao="bind" onload="loadFideIn()">
+
+        <!--content start-->
+        <div class="g_wapper">
+             <link href="{RES}css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="{RES}bootstrap/css/bootstrap1.min.css" rel="stylesheet"/>   
+<script type="text/javascript" src="{RES}js/jquery-2.0.0.min.js"></script>
+
+<script type="text/javascript" src="{RES}js/jquery.cookie.js"></script>
+<script type="text/javascript" src="{RES}bootstrap/js/bootstrap.min.js"></script>
+  <style type="text/css">
+.listhr{
+	width: 90%;
+	margin:auto;
+	height:1px;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+</style>
+<script>
+$(document).ready(function(){ 
+    $("#loadMore").click(function(){
+       loadmore();
+   });
+}); 
+
+
+   function loadmore(){
+       var daid=$('#daid').val();
+       var replyid=$('#replyid').val();
+       var hidguanggao=$('#hidguanggao').val();
+       $.ajax({
+           type: "POST",
+           url: '{php echo $this->createMobileUrl('getmore1', array())}',
+           dataType: 'json',
+           data: {hidguanggao:hidguanggao,replyid:replyid,daid:daid,randomshu:Math.random()},
+           success:function(result){
+               if(result.status==1){
+                   $('#daid').val(result.daid);
+                   $("#timeBox").append(result.html);
+               }else{
+                   $('#loadMore').html('无更多内容');
+               }
+               
+           }
+       });
+   }
+function pinglun(zhiboziid){
+	$('#zhiboziid').val(zhiboziid);
+	$('#myModal').modal('show');
+}
+function zan(zhiboziid){
+
+    $.ajax({
+        url: '{php echo $this->createMobileUrl('zan', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {zhiboziid: zhiboziid,randomshu:Math.random()},
+        success: function (result) {
+            if(result.status==1){
+                alert(result.msg);
+                window.location.reload();
+            }else{
+                alert(result.msg);
+                window.location.reload();
+            }
+        }
+    });
+}
+function tijiao(){
+	var zhiboziid=$('#zhiboziid').val();
+	var content=$('#content').val();
+	if(zhiboziid==''){
+		alert('参数错误！');
+		return false;
+	}
+	if(content==''){
+		alert('评论内容不能为空！');
+		return false;
+	}
+	$.ajax({
+        url: '{php echo $this->createMobileUrl('tijiao', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {zhiboziid: zhiboziid,content:content,randomshu:Math.random()},
+        success: function (result) {
+        	if(result.status==1){
+        		alert(result.msg);
+        		window.location.reload();
+        	}else{
+        		alert(result.msg);
+        		window.location.reload();
+        	}
+        }
+    });
+}
+//弹出层	  
+      function pictureShow(object){
+	    //遮罩层
+		$(".dialogbox").css({
+		  width:$(document).width(),
+		  height:$(document).height()
+		 });
+//遮罩层，图片层显示
+		 $(".dialogbox").show();
+		 $(".imagesBox").show();
+		 //锁屏，禁止滚动
+		 $("body").css("overflow","hidden");
+		 //清除imagesBox内容并追加图片
+		 $(".imagesBox").html("");
+		 $(".imagesBox").append("<div class='ib1'><img src="+object+" alt='' /><span onclick='closeImg();'>关闭</span></div>");
+		 $(".ib1 img").load(function(){
+			  //图片加载完成时
+			  if (this.complete||this.readyState=="complete") { 
+			  //图片高度
+			   var imgH=$(".ib1").find("img").height();
+			   //滚动条距顶点高度-（当前窗口高度/2）
+			   var t=$(document).scrollTop()+$(window).height()/2; 
+			   //图片高度/2
+			   var h=Number($(".imagesBox").find("img").height());
+			   //图片高度>窗口高度时
+			    $(".imagesBox").css({"top":t+"px","margin-top":"-"+(h+10)/2+"px"});
+			    $(".ib1").css({"width":"100%","height":h,"position":"relative","top":0,"left":0})
+			    var w=$(".imagesBox").find("img").width()/2;
+			    $(".imagesBox").css("margin-left","-"+w+"px");
+			   if(imgH > $(window).height()){
+				   //设置图片高度为窗口高度（“-10”为border共10px）
+				   $(".ib1 img").css("height",$(window).height()-10);
+				   //设置图片容器高度为窗口高度（"-10"为border共10px）
+				   $(".ib1").css("height",$(window).height()-10);
+				   //设置图片top值为滚动条距顶点高度即窗口高度100%；
+				   $(".imagesBox").css({"top":$(document).scrollTop(),"margin-top":"0"});
+				   var w=$(".imagesBox").find("img").width()/2;
+				   $(".imagesBox").css("margin-left","-"+w+"px");
+				 }
+				 $(".ib1 span").css({"position":"absolute","top":"0","right":"0","z-index":"9999","display":"block","background":"#fff","padding":"0 0 5px 5px"});
+			  }		   
+			})		 
+	  }
+
+       function closeImg(){
+	         $(".dialogbox").hide();
+             $(".imagesBox").hide();
+			 $("body").css("overflow","auto");
+		}
+      $(function(){
+		//关闭方法空白区域
+        $(".dialogbox").bind("click",function(e){
+	       if($(".imagesBox").is(":visible")){
+             var target  = $(e.target);
+           if(target.closest(".imagesBox").length == 0){
+	         $(".dialogbox").hide();
+             $(".imagesBox").hide();
+			 $("body").css("overflow","auto");
+          }
+		 }
+	    })
+
+        //定时刷新
+		//读取cookie
+		var timeSec=$.cookie('time');
+		$(".timeList li").each(function(){
+		  if(timeSec==$(this).find("span").text())
+		    $(this).hide().siblings("li").show()
+		})
+		if(timeSec!=null && timeSec=="∞")
+		$("#timeBox1").text(timeSec);
+		//存在cookie且值不为off时
+		if(timeSec!=null && timeSec!="∞"){
+		  //将cookie值传入div
+		  $("#timeBox1").text(timeSec+"s");
+		  //执行定时刷新
+		  setInterval(function(){
+			   timeSec--;
+			   $("#timeBox1").text(timeSec+"s");
+			   if(timeSec==0){
+			     location.reload();
+			   }
+			 },1000)
+		}
+		//点击显示，隐藏list
+	    $("#timeBox1").click(function(){
+	      $(".timeList").toggle();
+		})
+		$(".timeList li").click(function(){	  
+		  //获取当前li的值
+	      var second=$(this).find("span").text();
+		  //将当前值带入div
+		  if(!isNaN(second))
+		  $("#timeBox1").text(second+"s");
+		  //list隐藏
+		  $(".timeList").hide();
+		  //写入cookie
+		  $.cookie('time',null);
+		  $.cookie('time',second);
+		  console.log(second);
+		  //执行刷新
+		  location.reload();
+		})
+	  })
+</script>
+<div class="t-header bwhite mb10">
+        <img src="{$reply['zhibo_picurl']}" width="956" height="242"/>
+        <h1>{$reply['title']}</h1>
+    </div>
+    <div class="bwhite mb10">
+        <div class="introtit">
+            <i class="lt"></i><h2 class="txt"><span class="fl">概况</span><i class="split"></i></h2><i class="rt"></i>
+        </div>
+        <div>
+            <div class="introtxt">
+                <p>{$reply['zhibo_jianjie']}</p>
+            </div>
+          <img src="{$reply['zhibo_logo']}" alt="XXXX" width="296" height="166"/>
+        </div>
+    </div>
+    <!--end intro -->
+    <div class="w660 fl">
+        <div class="timelinetit">
+            <i class="lt"></i>
+            <h2 class="txt">
+			<span class="fl airing">{if $reply['isjieshu']==1}正在直播{else}已结束{/if}</span>                <!--<span class="fl airing">直播已结束</span> -->
+               <i class="split"></i>
+				<span class="fl" style="margin-left:130px;">自动刷新</span>
+				<div class="timeOut">
+                <span id="timeBox1" class="timeOutBox">&or;</span>
+                <ul class="timeList">
+                 <li><span>&infin;</span></li>
+                 <li><span>5</span>s</li>
+                 <li><span>30</span>s</li>
+                 <li><span>45</span>s</li>
+                 <li><span>60</span>s</li>
+                </ul>
+                </div>
+            </h2>
+            <i class="rt"></i>
+        </div>
+        <div class="tbox">
+            <dl class="toverbox clearfix">
+                <dt></dt>
+                <dd>
+                    <i class="point"></i>
+                    <div class="subbox bwhite">
+                        <p class="txt"><i class="over"></i><span class="overtit">{if $reply['isjieshu']==1}正在直播{else}已结束{/if}</span><span class="overtime">{if $reply['isjieshu']==1}{php echo date('Y-m-d H:i',$reply['create_at'])}{else}{php echo date('Y-m-d H:i',$reply['update_at'])}{/if}</span></p>
+                    </div>
+                </dd>
+            </dl>
+            <!--end item-->
+            <div class="timebox clearfix" id="timeBox">
+             {loop $zhibolist $key $zhibo}
+                <dl>
+    <dt>
+        <p class="time">{php echo date('H:i',$zhibo['create_at'])}</p>
+        <p class="date">{php echo date('Y-m-d',$zhibo['create_at'])}</p>
+    </dt>
+    <dd>
+        <i class="point"></i>
+        <div class="subbox bwhite">
+        {if $zhibo['zhibo_picurl']}
+                        <img src="{$zhibo['zhibo_picurl']}"  onClick="pictureShow(this.src);" width="500">
+                        {/if}
+                        {if $zhibo['zhibo_shipin']}
+                        <video id="video1" style="margin-top: 10px;">
+					    	<source src="{$zhibo['zhibo_shipin']}" type="video/mp4" />
+					  </video>
+                        {/if}
+                        {if $zhibo['zhibo_yinpin']}
+                        <audio src="{$zhibo['zhibo_yinpin']}" controls="controls" style="margin-top: 10px;width: 100%;"></audio>
+                        {/if}
+                                    <p class="txt">{$zhibo['wenzi']}</p>
+                    </div>
+		<div class="dialogbox"></div>
+		<div class="imagesBox"></div>
+			<p style="text-align: right;margin-top: 5px; width: 90%;"><i class="fa fa-thumbs-o-up" onclick="zan({$zhibo['id']})"></i>({php echo $this->getzan($zhibo['id'])})&nbsp;&nbsp;<i class="fa fa-comment-o " onclick="pinglun({$zhibo['id']})"></i>({php echo $this->getpinglunsum($zhibo['id'])})</p>
+			<hr class="listhr" />
+		{php $pinglunlist=$this->getpinglunlist($zhibo['id'])}
+                        {loop $pinglunlist $pinglun}
+                            <p style="width: 90%;"><img src="{$pinglun['img']}"  style='width: 28px; display:inline-block;' class="img-circle"/>&nbsp;&nbsp;{$pinglun['nickname']}：
+                            <span style="font-size: 10px; display: block;float: right;line-height:28px;">{php echo date('Y-m-d H:i',$pinglun['cteate_at'])}</span>
+                            <br/>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$pinglun['content']}</span>
+                            </p>
+                        {/loop}	      
+    </dd>
+</dl>
+{/loop}
+         </div>
+        </div>
+                <p class="loadmore" id="loadMore">加载更多</p>
+            </div>
+<div class="w300 fr bwhite">
+<div style="width:90%;">
+<h1>推广</h1>
+            {loop $guanggaolist $guanggao}
+            <div style="width:96%;margin:10px auto;">
+            {if $guanggao['url']}
+            <a href="{$guanggao['url']}">
+                <img src="{$guanggao['imgurl']}" style="width: 100%;" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            </a>
+            {else}
+            <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            {/if}
+            <hr>
+        </div>
+        {/loop}
+</div>
+</div>
+<script type="text/javascript">
+function loadFideIn(){
+    $("#timeBox dl").slideDown();
+}
+</script>
+        </div>
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="margin-top: 15%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加评论</h4>
+      </div>
+      <input type="hidden" id="zhiboziid" />
+      <div class="modal-body" style="text-align: center;">
+        <textarea id="content" rows="" cols="" style="width: 90%;border: 1px solid gray;height: 100px; resize:none;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="tijiao()">提交评论</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </body>
+</html>

@@ -1,0 +1,170 @@
+<html id="-am-page" class="am-touch js cssanimations"><head>
+    <meta charset="utf-8">
+<title>{$reply['zhibo_title']}</title>
+    <meta name="author" content="Allmobilize.DevTeam">
+    <meta name="copyright" content="AllMobilize.Inc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="{RES}css/mindex.css">
+    <link href="{RES}css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="{RES}bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <style type="text/css">
+.listhr{
+    width: 90%;
+    margin:auto;
+    height:2px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+._ih{
+    display: none;
+}
+</style>
+</head>
+<body class="single">    
+    <!-- hbs -->
+<div class="kn-header">
+    <a href="" class="kn-logo">
+        <img src="{$reply['zhibo_logo']}" alt="">
+    </a>
+</div>
+<!-- hbs -->
+<script type="text/javascript" src="{RES}js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="{RES}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://yuntv.letv.com/player/live/blive.js"></script>
+
+<script type="text/javascript">
+function liaotian(){
+    $('#zhibo').hide();
+    $('#liaotian').show();
+}
+function tuiguang(){
+    $('#liaotian').hide();
+    $('#zhibo').show();
+}
+function pinglun(){
+    $('#myModal').modal('show');
+}
+function addpinglun(){
+    var replyid=$('#replyid').val();
+    var content=$('#content').val();
+    if(replyid==''){
+        alert('参数错误！');
+        return false;
+    }
+    if(content==''){
+        alert('评论内容不能为空！');
+        return false;
+    }
+    $.ajax({
+        url: '{php echo $this->createMobileUrl('shipintijiao', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {replyid: replyid,content:content,randomshu:Math.random()},
+        success: function (result) {
+            if(result.status==1){
+                $('#myModal').modal('hide');
+                $('#liaotian').prepend(result.html);
+            }else{
+                alert(result.msg);
+            }
+        }
+    });
+}
+</script>
+  <article data-am-widget="paragraph" class="am-paragraph am-paragraph-one WIDGET-543b88744013db493b5b6a38 single-main am-no-layout" >
+      <div class="t-header bwhite mb10">
+        <h1>{$reply['zhibo_title']}<span style="font-size:14px;">—目前观看人数({$renshu})</span></h1>
+        <div id="player" style="width: 100%px;height:240px;margin:20px auto;"></div>
+        <script>
+            var p = new CloudLivePlayer();
+            p.init({"activityId":"{$huodongid}"}, "player");
+        </script>
+    </div>
+    <input type="hidden" id="replyid" value="{$replyid}" />
+            <span class="fl airing"><span onclick="tuiguang()">{if $reply['isjieshu']==1}正在直播{else}已结束{/if}</span><span style="float:right;" onclick="liaotian()">互动聊天</span></span>
+            <div id='zhibo' style="width:96%;margin:10px auto;">
+<div class="t-header bwhite mb10">
+        <h1>{$reply['zhibo_title']}</h1>
+        <img src="{$reply['zhibo_picurl']}" width="956" height="242">
+    </div>
+    <div class="introtxt">
+                <p>{$reply['zhibo_jianjie']}</p>
+            </div>
+            <hr>
+            <h1>推广</h1>
+            {loop $guanggaolist $guanggao}
+            <div style="width:96%;margin:10px auto;">
+            {if $guanggao['url']}
+            <a href="{$guanggao['url']}">
+                <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            </a>
+            {else}
+            <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            {/if}
+            <hr>
+        </div>
+        {/loop}
+            </div>
+            <p class="loadmore"  id="loadMore" onclick="pinglun()";>我要聊天</p>
+            <div id="liaotian" style="width:96%;margin:10px auto;display:none;border:1px solid gray;overflow:auto;height:200px; padding:10px;">
+               {loop $return_arr $pinglun}
+                            <p><img src="{$pinglun['img']}"  style='width: 28px; display:inline-block;' class="img-circle"/>&nbsp;&nbsp;{$pinglun['nickname']}：
+                            <span style="font-size: 10px; display: block;float: right;line-height:28px;">{php echo date('Y-m-d H:i',$pinglun['cteate_at'])}</span>
+                            <br/>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$pinglun['content']}</span>
+                            </p>
+              
+
+                        {/loop}   
+            </div>
+  </article>
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="margin-top: 30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加评论</h4>
+      </div>
+      <input type="hidden" id="zhiboziid" />
+      <div class="modal-body" style="text-align: center;">
+        <textarea id="content" rows="" cols="" style="width: 90%;border: 1px solid gray;height: 100px; resize:none;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="addpinglun()">提交评论</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+wx.config({
+    debug: false,
+    appId: '{$signPackage["appId"]}',
+    timestamp: '{$signPackage["timestamp"]}',
+    nonceStr: '{$signPackage["nonceStr"]}',
+    signature: '{$signPackage["signature"]}',
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage'
+    ]
+});
+wx.ready(function () {
+    wx.onMenuShareTimeline({
+        title: "{$reply['share_title']}",
+        link: "",
+        imgUrl: "{$reply['share_img']}",
+      });
+    wx.onMenuShareAppMessage({
+        title: "{$reply['share_title']}",
+        desc: "{$reply['share_desc']}",
+        link: "",
+        imgUrl: "{$reply['share_img']}",
+      });
+});
+    </script>
+</body>
+</html>

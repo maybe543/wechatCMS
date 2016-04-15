@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="zh-CN" class="">
+<!-- date: 2015-05-21 -->
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=0" />
+<title>匿名说出你对Ta的印象</title>
+    {php echo register_jssdk(false);}
+<link href="http://libs.malmam.com/bootstrap/3.3.2/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="http://libs.malmam.com/font-awesome-4.0.3/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{AMOUSE_FRIEND_IMPRESS_RES}/css/sweet-alert.css?ver=20150618">
+
+<style type="text/css">
+ /* chunk: 0 */
+
+ html,body {/* background-color:#fff;color:#555555;font-size:14px; */}
+ body {background-color:#f8f8f8;/*color:#666;*/}
+ h3 {/*color:#666;*/}
+ .page-main .page-frame {
+   padding-top:20px;
+   padding-bottom:20px;
+ }
+ a {color:#37a5be;}
+ a:hover {color:#37a5be;}
+
+ /* chunk: 1 */
+
+ body {
+   background-color:#eee;
+   background-image:none;
+   background-repeat:repeat;
+   background-position:50% 0;
+   color:#333;
+ }
+ .page-container {
+   max-width:500px;
+   background-image:none;
+   background-repeat:no-repeat;
+   background-position:50% 100%;
+ }
+ .page-container a {
+   text-decoration:none;
+ }
+
+ .highcol {
+   position:relative;
+   overflow:hidden;
+ }
+
+ .page-container .col-xs-12 {
+   padding:0;
+ }
+
+ h1 {
+   display:none;
+   margin:0;
+   padding:30px 0;
+   text-align:center;
+   font-size:30px;
+ }
+
+ .textf .panel {
+   margin:10px;
+   margin-top:50px;
+   box-shadow:none;
+   -webkit-box-shadow:none;
+   border:1px solid #ccc;
+ }
+
+ .textf .panel-body {
+   padding:5px;
+ }
+
+ .textf .fnickname {
+   border:none;
+   background-image:none;
+   box-shadow:none;
+   -webkit-box-shadow:none;
+   border-bottom:1px solid #ccc;
+   border-radius:0;
+   -webkit-border-radius:0;
+ }
+
+ .textf .fcontent {
+   border:none;
+   background-image:none;
+   box-shadow:none;
+   -webkit-box-shadow:none;
+
+ }
+
+ .textf .btn-submit {
+   border-color:#1ac5c5;
+   background-image:none;
+   box-shadow:none;
+   -webkit-box-shadow:none;
+   background-color:#1ab5b5;
+   text-shadow:none;
+   -webkit-text-shadow:none;
+ }
+
+ .textf .btn-submit:active {
+   background-color:rgb(0,142,135);
+ }
+ .textf .btn-submit:hover,
+ .textf .btn-submit:focus{
+   background-color:rgb(0,142,135);
+ }
+
+ .textf .btn-submit em {
+   font-style:normal;
+   /*color:#e52f8a;*/
+ }
+
+ .imgPool img {max-width:100%; display:none;} 
+</style>
+<script type="text/javascript" src="http://libs.malmam.com/jquery/jquery-1.11.0.min.js">
+</script>
+<script type="text/javascript" src="http://lxfm-s.malmam.com/js/global.js">
+</script>
+<script type="text/javascript" src="http://libs.malmam.com/bootstrap/3.3.2/js/bootstrap.min.js">
+</script>
+<script src="{AMOUSE_FRIEND_IMPRESS_RES}/js/sweet-alert.min.js"></script>　
+</head>
+<body>
+  <div class="container-fluid page-container">
+    <div class="row">
+      <div class="col-xs-12 highcol hdmain">
+	<h1>匿名说出你对Ta的印象</h1>
+	<form class="form textf" action="" method="post">
+	  <input type="hidden" name="uid" value="{$uid}" />
+	  <div class="panel">
+	    <div class="panel-body errbox hide">
+	      <div class="alert alert-danger" role="alert"></div>
+	    </div>
+
+	    <div class="panel-body">
+	      <textarea class="form-control fcontent" rows="6" name="content" placeholder="在这里输入你对Ta的印象，反正Ta也不知道你是谁..."></textarea>
+	    </div>
+	  </div>
+	  <div class="from-group" style="padding:0px 30px;">
+          <a href="javascript:;" id="tj" class="btn btn-default btn-success btn-block btn-submit">贴到<em>{$joinUser['nickname']}</em>的印象墙 
+          </a>
+	  </div>
+	</form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+   //<![CDATA[
+   $(function(){
+     var errT = $('.errbox .alert').text();
+     if(String(errT).replace(/^\s+/,'').replace(/\s+$/,'') != ""){
+       $('.errbox').removeClass('hide');
+     }
+   });
+
+ function _fixLayoutStyle(){
+   var w = $(window).width();
+   var h = $(window).height()
+   if(w>500) w=500;
+
+   $(document.body).append('<sty'+'le>' + ' .page-container .hdmain {height:'+h+'px;}' +'<\/sty'+'le>');
+ }
+
+ $(_fixLayoutStyle);
+ $(window).on("load",_fixLayoutStyle);
+
+   $("#tj").click(function () {
+       var  uid= $('input[name="uid"]').val();
+       var  content= $('textarea[name="content"]').val();
+
+       if ($.trim(content)=='') {
+           swal('请输入你对Ta的印象！', "", "error");
+           return;
+       }
+       var ajaxurl="{php echo murl('entry//ajax',array('m'=>'amouse_friend_impress'),true)}";
+       $.ajax({
+           url: ajaxurl,
+           data:{'uid':uid,'content':content},
+           dataType: "json",
+           success: function (e) {
+               if(e.code!=200){
+                   swal(e.msg, "", "error");
+				   return;
+               }else{
+				   window.setTimeout(function () {
+					   window.location.href="{php echo murl('entry//index',array('m'=>'amouse_friend_impress','uid'=>$uid),true)}";
+				   }, 50)
+			   } 
+           }
+       })
+   });
+
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+ var isAndroid = false;
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+  var wxShareDataArray = [
+    [
+      "匿名印象墙",
+      "快来说说你对我的印象吧，全部匿名哟！",
+      "http://lxfm-s.malmam.com/uploads/image/150522/2798205_5_73f78fe440_o.png",
+      "{$shareurl}&uid={$uid}"
+    ],
+    [
+      "匿名印象墙",
+      "快来说说你对我的印象吧，全部匿名哟！",
+      "http://lxfm-s.malmam.com/uploads/image/150522/2798205_5_73f78fe440_o.png",
+      "{$shareurl}&uid={$uid}"
+    ]
+  ];
+
+
+$(function(){
+
+    wx.ready(function(res){
+      //switchBtnTo(['start']);
+      changeWeixinShareData(isAndroid ? 1 : 0);
+    });
+    wx.error(function(res){
+    });
+});
+
+
+  function changeWeixinShareData(index){
+
+    wx.onMenuShareTimeline({
+      title: wxShareDataArray[index][1],
+      link: wxShareDataArray[index][3],
+      imgUrl: wxShareDataArray[index][2],
+      success: function () {
+    // 用户确认分享后执行的回调函数
+    //showAfterShareGuide();
+      },
+      cancel: function () {
+    // 用户取消分享后执行的回调函数
+    //showAfterShareGuide();
+      }
+    });
+
+    wx.onMenuShareAppMessage({
+      title: wxShareDataArray[index][0],
+      desc: wxShareDataArray[index][1],
+      link: wxShareDataArray[index][3],
+      imgUrl: wxShareDataArray[index][2],
+      //type: '', // 分享类型,music、video或link，不填默认为link
+      //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+      success: function () {
+    // 用户确认分享后执行的回调函数
+    //showAfterShareGuide();
+      },
+      cancel: function () {
+    // 用户取消分享后执行的回调函数
+    //showAfterShareGuide();
+      }
+    });
+  }
+//]]>
+</script><!-- layout -->
+</body>
+</html><!-- page processed by tidy, 2.053058 sec. -->

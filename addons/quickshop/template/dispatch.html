@@ -1,0 +1,115 @@
+{template 'common/header'}
+{template 'common'}
+<ul class="nav nav-tabs">
+  <li class="active"><a href="{php echo $this->createWebUrl('dispatch') }">编辑运费模板</a></li>
+</ul>
+<div class="main">
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+    <h4>模板方式设置</h4>
+    <div class="form-group">
+      {php echo FormTpl::label2('模板名称', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('text', 'dispatchname', $dispatch['dispatchname']); }
+      </div>
+    </div>
+
+    <div class="form-group">
+      {php echo FormTpl::label2('运费设置', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+
+        <div style="margin:5px 0px" class="row">
+          <div class="input-group">
+            <span class="input-group-addon">首重重量</span>
+            <select name="firstweight" id="firstweight" class='form-control'>
+              <option value="500" {if $dispatch['firstweight']==500}selected{/if}>0.5</option>
+              <option value="1000" {if $dispatch['firstweight']==1000 || empty($dispatch['firstweight'])}selected{/if}>1</option>
+              <option value="1200" {if $dispatch['firstweight']==1200}selected{/if}>1.2</option>
+              <option value="2000" {if $dispatch['firstweight']==2000}selected{/if}>2</option>
+              <option value="5000" {if $dispatch['firstweight']==5000}selected{/if}>5</option>
+              <option value="10000" {if $dispatch['firstweight']==10000}selected{/if}>10</option>
+              <option value="20000" {if $dispatch['firstweight']==20000}selected{/if}>20</option>
+              <option value="50000" {if $dispatch['firstweight']==50000}selected{/if}>50</option>
+            </select>
+            <span class="input-group-addon">KG</span>
+          </div>
+        </div>
+
+          <div style="margin:5px 0px" class="row">
+            <div class="input-group">
+              <span class="input-group-addon">首重费用</span>
+              {php echo FormTpl::getWebControl2('text', 'firstprice', $dispatch['firstprice'])}
+              <span class="input-group-addon">元</span>
+            </div>
+          </div>
+
+            <div style="margin:5px 0px" class="row">
+              <div class="input-group">
+                <span class="input-group-addon">续重重量</span>
+                <select name="secondweight" id="secondweight" class='form-control'>
+                  <option value="500" {if $dispatch['secondweight']==500}selected{/if}>0.5</option>
+                  <option value="1000" {if $dispatch['secondweight']==1000 || empty($dispatch['secondweight'])}selected{/if}>1</option>
+                  <option value="1200" {if $dispatch['secondweight']==1200}selected{/if}>1.2</option>
+                  <option value="2000" {if $dispatch['secondweight']==2000}selected{/if}>2</option>
+                  <option value="5000" {if $dispatch['secondweight']==5000}selected{/if}>5</option>
+                  <option value="10000" {if $dispatch['secondweight']==10000}selected{/if}>10</option>
+                  <option value="20000" {if $dispatch['secondweight']==20000}selected{/if}>20</option>
+                  <option value="50000" {if $dispatch['secondweight']==50000}selected{/if}>50</option>
+                </select>
+                <span class="input-group-addon">KG</span>
+              </div>
+            </div>
+
+            <div style="margin:5px 0px" class="row">
+              <div class="input-group">
+                  <span class="input-group-addon">续重费用</span>
+                  {php echo FormTpl::getWebControl2('text', 'secondprice', $dispatch['secondprice'])}
+                  <span class="input-group-addon">元</span>
+                </div>
+              </div>
+
+            <span class='help-block'>根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            {php echo FormTpl::label2('运费说明', 'col-xs-12 col-sm-3 col-md-2', true); }
+            <div class="col-xs-12 col-sm-9 col-md-10">
+              {php echo FormTpl::getWebControl2('textarea', 'description', $dispatch['description']); }
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            {php echo FormTpl::label2('&nbsp;', 'col-xs-12 col-sm-3 col-md-2'); }
+            <div class="col-xs-12 col-sm-9 col-md-10">
+              {if empty($dispatch['id']) }
+              <input name="submit" type="submit" value="提交" class="btn btn-primary">
+              {else}
+              <input name="submit" type="submit" value="更新 (不影响已提交订单)" class="btn btn-warning">
+              {/if}
+              <input type="hidden" name="token" value="{$_W['token']}" />
+              <input type="hidden" name="id" value="{$dispatch['id']}" />
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    <script language='javascript'>
+      function formcheck() {
+        if ($("#dispatchname").isEmpty()) {
+          Tip.focus("dispatchname", "请填写模板名称，便于管理!", "right");
+          return false;
+        }
+        if (!$("#firstprice").isNumber()) {
+          Tip.select("firstprice", "请填写数字首重价格!", "top");
+          return false;
+        }
+        if (!$("#secondprice").isNumber()) {
+          Tip.select("secondprice", "请填写数字续重价格!", "top");
+          return false;
+        }
+        return true;
+      }
+    </script>
+{template 'common/footer'}

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{$type_cn} - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .o-card{color: #55BD47}
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body>
+<header class="top">
+    <h1>{$type_cn}</h1>
+    {if value($_GET, "ona") == "no"}
+    <a class="back" href="{php echo urwdo('user')}">返回</a>
+    {else}
+    <a class="back" href="javascript:history.back(-1);">返回</a>
+    {/if}
+    <div class="right-s">
+        <a class="right-search" href="javascript:$('.mb-sou').toggleClass('mb-show');"></a>
+        <a class="right-home" href="{php echo urwdo('index')}"></a>
+    </div>
+</header>
+
+<div class="mb-sou{if $key} mb-show{/if}">
+    <form action="{php echo urwdo(0)}" id="saveform" method="get">
+    <div class="c-f-search">
+        <input placeholder="请输入关键字" type="search" name="key" value="{$key}" class="c-f-text J_autocomplete" autocomplete="off">
+        <input type="submit" value="&nbsp;" class="c-f-bton">
+        <input type="hidden" name="type" value="{$type}">
+    </div>
+    </form>
+</div>
+
+<div class="userorders" id="orderslist">
+    <ul>
+        {php $listdata = cate::db('数据表:cart,显示数目:20,分页显示:1,排序:`indate` DESC', $wheresql)}
+        {php $lists = $listdata['lists']}
+        {loop $lists $list}
+        {php $card = string2array($list['card'])}
+        <li id="order_{$list['id']}">
+            <div class="tit">
+                订单编号：{$list['ordernum']}
+                <span style="display:none">({$list['batch']})</span>
+                {if $card['success']}<span class="o-card" title="{$card['text']}">(券)</span>{/if}
+            </div>
+            {if $list['ismerge']}
+                {php $mergearr = string2array($list['mergearr']);}
+                {loop $mergearr $item}
+                    <div class="con pb" date-goodsid="{$item['goodsid']}">
+                        <div class="ol-l">
+                            <a href="{php echo urwdo('ordersinfo')}&id={$list['id']}">
+                                <img class="lazy" data-original="{php echo toimage($item['goodsimg'])}" src="{IMG_PATH}loading.png" />
+                            </a>
+                        </div>
+                        <div class="ol-r">
+                            <a class="fragment" href="{php echo urwdo('ordersinfo')}&id={$list['id']}">
+                                <h3><span>{$item['title']}</span></h3>
+                                <p class="r-total"> 共{$item['number']}{php echo $this->cate_unit($item['unit'])} </p>
+                                <p class="r-price">
+                                    实付款：¥<strong>{php echo $item['price']*$item['number']+$item['deliveryfare']}</strong>
+                                    {if $item['deliveryfare'] > 0}
+                                    (含 运费¥{$item['deliveryfare']})
+                                    {/if}
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                {/loop}
+            {else}
+                <div class="con pb" date-goodsid="{$list['goodsid']}">
+                    <div class="ol-l">
+                        <a href="{php echo urwdo('ordersinfo')}&id={$list['id']}">
+                            <img class="lazy" data-original="{php echo toimage($list['goodsimg'])}" src="{IMG_PATH}loading.png" />
+                        </a>
+                    </div>
+                    <div class="ol-r">
+                        <a class="fragment" href="{php echo urwdo('ordersinfo')}&id={$list['id']}">
+                            <h3><span>{$list['title']}</span></h3>
+                            <p class="r-total"> 共{$list['number']}{php echo $this->cate_unit($list['unit'])} </p>
+                            <p class="r-price">
+                                实付款：¥<strong>{php echo $list['price']*$list['number']+$list['deliveryfare']}</strong>
+                                {if $list['deliveryfare'] > 0}
+                                (含 运费¥{$list['deliveryfare']})
+                                {/if}
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            {/if}
+            <div class="con-btn">
+                <p class="r-status"> {php echo mallstatus($list['status'])} </p>
+                <p class="r-btn">
+                    {if $list['status'] == "待付款"}
+                    <a href="{php echo urwdo('buy')}&id={$list['id']}" class="c-btn">立即付款</a>
+                    <a href="javascript:_cancel({$list['id']});" class="c-btn">取消</a>
+                    {elseif $list['status'] == "等待商家确认"}
+                    <a href="javascript:_cancel({$list['id']});" class="c-btn">取消订单</a>
+                    {elseif $list['status'] == "商家已发货"}
+                    {php $setting = string2array($list['setting'],true)}
+                    <a href="javascript:_confirm({$list['id']},0);" class="c-btn">确认收货</a>
+                    {if value($setting, 'express|name')}
+                    <a href="javascript:_express({$list['id']});" class="c-btn">查看物流</a>
+                                    <span id="expressinfo" style="display:none;"
+                                          data-name="{php echo value($setting,'express|name')}"
+                                          data-code="{php echo value($setting,'express|code')}"
+                                          data-number="{php echo value($setting,'express|number')}"></span>
+                    {/if}
+                    {elseif $list['status'] == "交易成功" && !$list['comment']}
+                    <a href="javascript:_confirm({$list['id']},1);" class="c-btn">我要评价</a>
+                    {/if}
+                </p>
+            </div>
+        </li>
+        {/loop}
+        {if !$lists}
+        <li>
+            <div class="nodeals">您目前还没有任何订单喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+
+
+<!-- 取消订单 弹出 -->
+<div class="selectattrval min" id="selectcancel">
+    <div class="min-main">
+        <header>
+            <h1>取消订单</h1>
+        </header>
+        <section class="cancelorder" id="canceltype">
+            <label>我不想买了<input type="radio" value="我不想买了" name="reason" checked></label>
+            <label>信息填写错误，请重拍<input type="radio" value="信息填写错误，请重拍" name="reason"></label>
+            <label>卖家缺货<input type="radio" value="卖家缺货" name="reason"></label>
+            <label>同城见面交易<input type="radio" value="同城见面交易" name="reason"></label>
+            <label>其他原因<input type="radio" value="其他" name="reason"></label>
+            <div class="other"><input type="text" id="othertext" placeholder="请输入取消原因"></div>
+            <div class="redtxt"> 取消订单后，不能恢复 </div>
+            <div class="c-btn-oran-big" id="define">确定</div>
+        </section>
+        <footer>
+            <a class="back" href="javascript:history.go(-1);">关闭</a>
+        </footer>
+    </div>
+</div>
+
+
+<!-- 收货评论 弹出 -->
+<div class="selectattrval" id="selectconfirm">
+    <header>
+        <h1>确认收货</h1>
+        <a class="back" href="javascript:history.go(-1);">返回</a>
+    </header>
+    <section class="confirmorder">
+        <div class="confirmtemp">
+            <div class="oc-info" id="confirminfo">
+                <div class="oc-info-l">
+                    <img src="#">
+                </div>
+                <div class="oc-info-r">
+                    <h2></h2>
+                    <div> ￥<strong></strong> </div>
+                </div>
+            </div>
+            <div class="oc-star-fc">
+                <label> 评价等级： </label>
+                <div class="oc-star-n">
+                    <ul>
+                        <li val="1"> star1 </li>
+                        <li val="2"> star2 </li>
+                        <li val="3"> star3 </li>
+                        <li val="4"> star4 </li>
+                        <li val="5"> star5 </li>
+                    </ul>
+                </div>
+                <input type="hidden" id="orderscore" value="0">
+            </div>
+            <div class="oc-text">
+            <span class="c-f-textarea">
+                <textarea nullable="false" maxlength="500" id="ratecontent" placeholder="请输入评论内容"></textarea>
+            </span>
+            </div>
+        </div>
+        <div class="oc-star-inp">
+            <label> <input type="checkbox" class="c-f-checkbox" id="anony" value="1" checked> 匿名评论 </label>
+        </div>
+        <div class="oc-btn">
+            <a href="javascript:;" class="c-btn" onclick="_submitconfirm(0);">确认并评价</a>
+            <a href="javascript:;" class="c-btn" onclick="_submitconfirm(1);">仅确认</a>
+            <a href="javascript:;" class="c-btn" onclick="_submitconfirm(2);">发表评价</a>
+        </div>
+    </section>
+</div>
+
+
+<!-- 物流查询 弹出 -->
+<div class="selectattrval" id="selectexpress">
+    <header>
+        <h1>查看物流</h1>
+        <a class="back" href="javascript:void(0);" onclick="_express(-1);">返回</a>
+    </header>
+    <section class="expressorder">
+        <div class="oc-title">订单商品</div>
+        <div class="oc-info" id="expressinfo">
+            <div class="oc-info-l">
+                <img src="#">
+            </div>
+            <div class="oc-info-r">
+                <h2></h2>
+                <div><strong></strong></div>
+            </div>
+        </div>
+        <div class="oc-title">物流公司：<span id="expresscomp"></span></div>
+        <div class="oc-title">运单编号：<span id="expressnumb"></span></div>
+        <div class="oc-content"></div>
+    </section>
+</div>
+
+<!-- 列表加载中 -->
+<div id="divLoading" style="display:none;">
+    <div id="floatingCirclesG">
+        <div class="f_circleG" id="frotateG_01"></div>
+        <div class="f_circleG" id="frotateG_02"></div>
+        <div class="f_circleG" id="frotateG_03"></div>
+        <div class="f_circleG" id="frotateG_04"></div>
+        <div class="f_circleG" id="frotateG_05"></div>
+        <div class="f_circleG" id="frotateG_06"></div>
+        <div class="f_circleG" id="frotateG_07"></div>
+        <div class="f_circleG" id="frotateG_08"></div>
+    </div>
+</div>
+
+{template TEMPLET.'bottom'}
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    var _sel_show = function(eve, id){
+        var hash = window.location.hash;
+        var href = window.location.href.replace(new RegExp(hash,"g"), "");
+        window.location.href = href + '#gwin/' + id;
+        eve.addClass('show');
+    }
+    var _sel_hashchange = function(){
+        var hash = window.location.hash;
+        if (!/^\#gwin\//.test(hash)) {
+            $("div.selectattrval").removeClass("show");
+        }
+    };
+    window.addEventListener("hashchange", _sel_hashchange, false);
+    //
+    function _cancel(id) {
+        $('#selectcancel').attr("data-id", id);
+        _sel_show($('#selectcancel'), id)
+    }
+    function _confirm(id, t) {
+        var ave = $("#selectconfirm"),eve;
+        ave.find("#confirmtempcopy").remove();
+        var ove = $("#order_"+id);
+        ove.find(" > .con").each(function(index){
+            if (index == 0) {
+                eve = ave.find(".confirmtemp");
+            }else{
+                eve = $("<div class='confirmtemp' id='confirmtempcopy'>"+ave.find(".confirmtemp").html()+"</div>");
+                ave.find(".oc-star-inp").before(eve);
+            }
+            eve.find("img").attr("src", $(this).find("img").attr("src"));
+            eve.find("h2").text($(this).find("h3").text());
+            eve.find("strong").text($(this).find("strong").text());
+            eve.find("h2").attr("data-goodsid", $(this).attr("date-goodsid"));
+            eve.find(".oc-star-n ul li").click(function(){
+                $(this).parent().attr("class", "star"+$(this).attr("val"));
+                eve.find("#orderscore").val($(this).attr("val"));
+            });
+        });
+        $('#selectconfirm').attr("data-id", id);
+        _sel_show($('#selectconfirm'), id);
+        //
+        var _ave = ave.find(".oc-btn");
+        _ave.find("a").show();
+        if (t == 1){
+            _ave.find("a:eq(0)").hide();
+            _ave.find("a:eq(1)").hide();
+            ave.find("h1").text("评论商品");
+        }else{
+            _ave.find("a:eq(2)").hide();
+            ave.find("h1").text("确认收货");
+        }
+    }
+    function _express(id) {
+        var ave = $("#selectexpress");
+        if (id === -1) {
+            //$('body').css('overflow', 'auto');
+            window.history.go(-1);
+            return;
+        }else{
+            //$('body').css('overflow', 'hidden');
+        }
+        var eve = ave.find("#expressinfo");
+        var ove = $("#order_"+id);
+        if (ave.attr("data-id") == id && ave.find(".oc-content").text().indexOf("查询失败") == -1) {
+            _sel_show(ave, id);
+            return;
+        }
+        //
+        eve.find("img").attr("src", ove.find("img").attr("src"));
+        eve.find("h2").text(ove.find("h3").text());
+        eve.find("strong").text(ove.find(".r-total").text());
+        ave.find("#expresscomp").text(ove.find("#expressinfo").attr("data-name"));
+        ave.find("#expressnumb").text(ove.find("#expressinfo").attr("data-number"));
+        ave.find(".oc-content").html('<div class="status">正在查询物流信息请稍后...</div>');
+        ave.attr("data-id", id);
+        _sel_show(ave, id);
+        //
+        $.ajax({
+            type: "GET",
+            url: "{php echo urwdo('express')}&com="+
+                    ove.find("#expressinfo").attr("data-code")+
+                    "&nu="+ove.find("#expressinfo").attr("data-number")+
+                    "&scri="+encodeURIComponent('_express('+id+')'),
+            dataType: "html",
+            success: function (data) {
+                $("#selectexpress").find(".oc-content").html(data);
+            },
+            error: function (msg) {
+                $("#selectexpress").find(".oc-content").html("加载失败!");
+            }
+        });
+
+    }
+    function _submitconfirm(t){
+        var eve = $("#selectconfirm");
+        var s = "dosubmit=put" +
+                "&id="+eve.attr("data-id") +
+                "&score="+eve.find("#orderscore").val() +
+                "&text="+eve.find("#ratecontent").val() +
+                "&anony="+eve.find("#anony").is(":checked") +
+                "&type="+t;
+        eve.find(".confirmtemp").each(function(index){
+            s+= '&_goodsid['+index+']='+$(this).find("h2").attr("data-goodsid");
+            s+= '&_score['+index+']='+$(this).find("#orderscore").val();
+            s+= '&_text['+index+']='+$(this).find("#ratecontent").val();
+        });
+        //
+        $.alert("正在提交...", 0);
+        $.ajax({
+            type: "POST",
+            url: "{php echo urwdo('confirmorder')}",
+            data: s,
+            dataType: "json",
+            success: function (data) {
+                $.alert(data.message);
+                if (data != null && data.success != null && data.success) {
+                    window.location.reload();
+                }
+            },
+            error: function (msg) {
+                $.alert("提交错误！");
+            }
+        });
+    }
+    $(document).ready(function() {
+        $(".oc-star-n ul li").click(function(){
+            $(this).parent().attr("class", "star"+$(this).attr("val"));
+            $("#orderscore").val($(this).attr("val"));
+        });
+        $("#canceltype label input").click(function(){
+            if ($(this).val() == "其他") {
+                $("#canceltype").find(".other").show();
+            }else{
+                $("#canceltype").find(".other").hide();
+            }
+        });
+        $(".c-btn-oran-big").click(function(){
+            var t = $("#canceltype").find("input:checked").val();
+            var id = $("#selectcancel").attr("data-id");
+            if (t == "") {
+                $.alert("请选择取消原因！"); return;
+            }
+            if (t == "其他"){
+                t = $("#canceltype").find("#othertext").val();
+                if (t == "") {
+                    $.alert("请输入取消原因！"); return;
+                }
+            }
+            $.alert("正在提交...", 0);
+            $.ajax({
+                type: "POST",
+                url: "{php echo urwdo('cancel')}",
+                data: "dosubmit=put&id="+id+"&text="+t,
+                dataType: "json",
+                success: function (data) {
+                    $.alert(data.message);
+                    if (data != null && data.success != null && data.success) {
+                        window.location.reload();
+                    }
+                },
+                error: function (msg) {
+                    $.alert("提交错误！");
+                }
+            });
+
+        });
+        $("span.o-card").click(function(){
+            $.alert("卡包券：" + $(this).attr("title"));
+        });
+        $('img.lazy').lazyload({effect: 'fadeIn'});
+    });
+    //
+    window._loadlist = true;
+    window._loadpage = {php echo intval($listdata['pageinfo']['now_page'])};
+    $(window).scroll(function () {
+        if (window._loadlist){
+            if ($(window).scrollTop() + 200 >= $(document).height() - $(window).height()) {
+                window._loadlist  = false;
+                if (window._loadpage >= {php echo intval($listdata['pageinfo']['total_page'])}) return;
+                $("#divLoading").show();
+                var url = "{php echo urwdo(0)}&page=" + parseInt(window._loadpage + 1);
+                $("<div>").load(url + ' #orderslist ul > *', function() {
+                    $intemp = $($(this).html());
+                    $intemp.find('img.lazy').lazyload({effect: 'fadeIn'});
+                    $('#orderslist ul').append($intemp);
+                    $("#divLoading").hide();
+                    window._loadpage++;
+                    if (window._loadpage <= {php echo intval($listdata['pageinfo']['total_page'])}){
+                        window._loadlist  = true;
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{template 'common/header'}
+{php $_item=-1;}
+{php $_itemp=4;}
+{template 'menu'}
+<div class="main w98auto">
+
+
+<div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}飞印</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="120"><span>名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>打印机类型</span></td>
+                                <td class="form-reg">
+                                    <select name="printtype" id="printtype" class="form-control wi">
+                                        <option value="飞印打印机">飞印打印机</option>
+                                        <option value="其他短连接型">其他短连接型</option>
+                                    </select>
+                                    {if value($content,'printtype')}
+                                    <script>$("#printtype").val('{php echo value($content,'printtype')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>是否使用</span></td>
+                                <td class="form-reg">
+                                    <select name="status" id="status" class="form-control wi">
+                                        <option value="使用中">使用中</option>
+                                        <option value="暂停中">暂停中</option>
+                                    </select>
+                                    {if value($content,'status')}
+                                    <script>$("#status").val('{php echo value($content,'status')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr class="feiyinedit">
+                                <td><span>商户代码</span></td>
+                                <td>
+                                    <input name="membercode" type="text" class="form-control" id="membercode" value="{php echo value($content,'membercode')}">
+                                </td>
+                            </tr>
+                            <tr class="feiyinedit">
+                                <td><span>API 密钥</span></td>
+                                <td>
+                                    <input name="feyinkey" type="text" class="form-control" id="feyinkey" value="{php echo value($content,'feyinkey')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span id="bianma">设备编码</span></td>
+                                <td>
+                                    <input name="deviceno" type="text" class="form-control" id="deviceno" value="{php echo value($content,'deviceno')}">
+                                </td>
+                            </tr>
+                            <tr class="otheredit">
+                                <td><span>HTTP接口地址</span></td>
+                                <td>
+                                    {php echo str_replace('/./','/',$_W['siteroot'].'app/'.$this->createMobileUrl('print',array('rid'=>$_GPC['rid']),true))}&
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>描述</span></td>
+                                <td>
+                                    <textarea name="descriptions" id="descriptions" class="form-control">{php echo value($content,'descriptions')}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('feiyin')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#printtype").change(function(){
+            if ($(this).val() == "飞印打印机") {
+                $("tr.feiyinedit").show();
+                $("tr.otheredit").hide();
+                $("#bianma").text("设备编码");
+            }else{
+                $("tr.feiyinedit").hide();
+                $("tr.otheredit").show();
+                $("#bianma").text("连接标识");
+            }
+        }).change();
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('feiyin')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

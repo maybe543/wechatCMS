@@ -1,0 +1,94 @@
+<?php$pagetitle="余额提现"?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">余额提现</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line"> <span class="name">账户余额</span> </div>
+    <ul class="info  info2">
+      <li> <a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p class="positive">余额</p>
+        <p>{$members["credit2"]} 元</p>
+		<p></p>
+        </a> 
+	  </li>
+      <li> <a href="javascript:void(0);" id="fundNavVal">
+        <p class="positive" id="fundNav">积分</p>
+        <p>{$members["credit1"]} 分</p>
+        <p></p>
+        </a> </li>
+      <li> <a href="javascript:void(0);" class="toFundHistoryList" id="raiseDropParent">
+        <p class="positive">提现帐号</p>
+		{if !empty($_W['fans']['from_user'])}
+		<p>微信钱包</p>
+		{else}
+        <p>支付宝 {if empty($members["alipay"])}<a href="/app/index.php?i={$_W['uniacid']}&c=mc&a=profile">去完善</a>{else}{$members["alipay"]}{/if}</p>
+		{/if}
+		<p></p>
+		<p></p>
+        </a> </li>
+    </ul>
+  </div>
+</section>
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line"> <span class="name">我要提现</span> </div>
+    <ul class="info  info2">
+      <li> <a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p  style="text-align:center;">金额 &nbsp;<input type="text" id="mycash" style="border:solid 1px #CCCCCC;-webkit-box-flex: 1;border-radius: 5px;padding:5px;" />
+			<input type="hidden" id="cash" value="{$members['credit2']}"/>
+		</p>
+        </a> 
+	  </li>
+    </ul>
+  </div>
+  <div class="bond-top"  onclick="moneycash();">
+  <input type="button" style="border:1px solid #228fff;background:#228fff;-webkit-box-flex: 1;border-radius: 5px;color:#fff;font-size:20px;width:100%!important;padding:5px;" value="立即提现" />
+  </div>
+</section>
+{loop $cash $c}
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line">提现时间 <span class="name"><?php echo date("Y-m-d h:m:s",$c["createtime"])?></span> </div>
+    <ul class="info  info2">
+      <li> <a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p class="positive">金额 &nbsp;{$c["cash"]} 元
+		</p>
+        <p></p>
+		<p></p>
+        </a> 
+	  </li>
+      <li> 
+        <p class="positive" style="font-size:14px;color:#333!important;">
+		提现到 {if $c["cash_type"]==1}支付宝{else}微信{/if}，{if $c["state"]==0}未审核{else}成功{/if} 
+		</p>
+        </li>
+    </ul>
+  </div>
+</section>
+{/loop}
+{template 'common'}
+ <script>
+	var uniacid="{$_W['uniacid']}";
+	var sourceid="{$news['id']}";
+	var showtab="{$_GPC['mygame']}";
+	var min_cashmoney="{$set['min_cashmoney']}";
+	if(showtab==1){
+		headTabClick('game','mygame');
+	}
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+{template 'common_share'}
+</body>
+</html>

@@ -1,0 +1,96 @@
+        <!--订单item-->
+
+        <div class="orderList">
+        	<span class="orderList_icon_bg"></span>
+
+            <div class="orderItem">
+            	<!--订单信息-->
+            	<div class="orderItem_t">
+                {if $this->module['config']['enable_user_remove_order'] && ($item['status'] == Order::$ORDER_NEW or $item['status'] == Order::$ORDER_CANCEL)}
+                <a href="{php echo $this->createMobileUrl('MyOrder', array('op'=>'remove', 'orderid'=>$item['id']))}"><em class="icon-remove-sign icon-2x"></em></a>
+                {/if}
+                <p>订单编号<span>{$item['ordersn']}</span></p>
+                <p>下单时间<span>{php echo date('Y-m-d H:i', $item['createtime'])}</span></p>
+              </div>
+            	<!--订单信息 end-->
+                <!--订单列表-->
+                <ul>
+                  {loop $item['goods'] $goods}
+                    <li>
+                        <div class="orderItem_c">
+                          {if $op == 'detail'}
+                          <a href="{php echo $this->createMobileUrl('detail', array('id' => $goods['id']))}">
+                            {else}
+                          <a href="{php echo $this->createMobileUrl('MyOrder', array('op'=>'detail', 'orderid'=>$item['id']))}">
+                          {/if}
+                                <img src="{$_W['attachurl']}{$goods['thumb']}">
+                                <dl>
+                                  <dt>{$goods['title']}</dt>
+                                  <dd>单价：<span>{$goods['marketprice']}元{if $goods['unit']} / {$goods['unit']}{/if}</span></dd>
+                                  <dd>数量：<span>{$goods['ordertotal']} {if $goods['unit']} {$goods['unit']}{/if}</span></dd>
+                                </dl>
+                            </a>
+                        </div>
+                    </li>
+                    {/loop}
+                </ul>
+                <!--订单列表 end-->
+                <div class="my_order_amount">
+                  <p><span>商品金额：<em class="orderval"> ￥{$item['goodsprice']}元</em></span></p>
+                  {if $item['dispatchprice'] > 0}
+                  <p><span>快递：<em class="orderval"> + ￥{$item['dispatchprice']}元</em></span></p>
+                  {else}
+                  <p><span>快递：<em class="orderval">  包邮 </em></span></p>
+                  {/if}
+                  {if $item['usecredit'] }
+                  <p><span>积分折扣：<em class="orderval"> - ￥{$item['discount']}元</em></span></p>
+                  {/if}
+                  <p><span>实付款：<em class="orderval">￥{$item['price']}元</em></span></p>
+
+                  {if $item['status'] == Order::$ORDER_DELIVERED}
+                  <p><span>物流：<em class="orderval"><a target="_blank" href="http://m.kuaidi100.com/index_all.html?type={php echo trim($item['express'])}&postid={$item['expresssn']}&callback={php echo $_W['siteroot'] . $this->createMobileUrl('MyOrder')}">{$item['expresscom']} {$item['expresssn']}</a></em></span></p>
+                  {/if}
+                  <p><span>状态：<em>{php echo $_order->getOrderStatusName($item['status'], $item['goodstype'])}</em></span></p>
+                  {if $item['goodstype'] == 2}
+                  <ul>
+                      {if $item['status'] == Order::$ORDER_NEW}
+                      <li><a href="{php echo $this->createMobileUrl('pay', array('orderid' => $item['id']))}">付款</a></li>
+                      {elseif $item['status'] == Order::$ORDER_PAYED}
+                      <li><a href="javascript:alert('已经提醒商家,谢谢您的耐心等待')">提醒商家确认</a></li>
+                      {elseif $item['status'] == Order::$ORDER_DELIVERED}
+                      <li><a onclick="return confirm('如果您对服务满意，请完成订单？');" href="{php echo $this->createMobileUrl('MyOrder', array('op'=>'confirm', 'orderid'=>$item['id']))}">完成订单</a></li>
+                      {elseif $item['status'] == Order::$ORDER_RECEIVED}
+                      <li><a href="javascript:alert('请将您的问题通过微信发送给我们')">售后</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CONFIRMED}
+                      <li><a href="javascript:void()">已完成</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CANCEL}
+                      <li><a href="javascript:void()">已取消</a></li>
+                      {elseif $item['status'] == Order::$ORDER_FAIL}
+                      <li><a href="javascript:alert('支付未能成功，款项腾讯会自动退回到您的账户，请检查您的微信支付账户记录。如果您有任何疑问，请通过微信与我们联系')">交易失败</a></li>
+                      {/if}
+                    </ul>
+                {else}
+                    <ul>
+                      {if $item['status'] == Order::$ORDER_NEW}
+                      <li><a href="{php echo $this->createMobileUrl('pay', array('orderid' => $item['id']))}">付款</a></li>
+                      {elseif $item['status'] == Order::$ORDER_PAYED}
+                      <li><a href="javascript:alert('已经提醒卖家,谢谢您的耐心等待')">提醒卖家发货</a></li>
+                      {elseif $item['status'] == Order::$ORDER_DELIVERED}
+                      <!--li><a href="{php echo $this->createMobileUrl('logistics', array('orderid' => $item['id']))}">查物流</a></li-->
+                      <li><a onclick="return confirm('7天内遇到质量问题可以申请退还。确认收货？'); return false;" href="{php echo $this->createMobileUrl('MyOrder', array('op'=>'confirm', 'orderid'=>$item['id']))}">确认收货</a></li>
+                      {elseif $item['status'] == Order::$ORDER_RECEIVED}
+                      <li><a href="javascript:alert('请将您的问题通过微信发送给我们')">售后</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CONFIRMED}
+                      <li><a href="javascript:void()">已完成</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CANCEL}
+                      <li><a href="javascript:void()">已取消</a></li>
+                      {elseif $item['status'] == Order::$ORDER_FAIL}
+                      <li><a href="javascript:alert('支付未能成功，款项腾讯会自动退回到您的账户，请检查您的微信支付账户记录。如果您有任何疑问，请通过微信与我们联系')">交易失败</a></li>
+                      {/if}
+                    </ul>
+                  {/if}
+                </div>
+            </div>
+        </div>
+        <!--订单item end-->
+

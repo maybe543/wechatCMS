@@ -1,0 +1,187 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $operation == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('activity', array('op' => 'post'))}">添加地推活动</a></li>
+	<li {if $operation == 'list'}class="active"{/if}><a href="{php echo $this->createWebUrl('activity', array('op' => 'list'))}">地推活动</a></li>
+	{if $operation == 'detail'}
+	<li class="active"><a href="#">活动详情</a></li>
+	{/if}
+	{if $operation == 'records'}
+	<li class="active"><a href="#">推广记录</a></li>
+	{/if}
+	
+</ul>
+
+{if $operation == 'post'}
+
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{if empty($activity)}添加地推活动{else}编辑地推活动{/if}
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>地推活动名称</label>
+					<div class="col-sm-9 col-xs-12" >
+						<input type="text" required="required" name="activity[title]" class="form-control" value="{$activity['title']}"></input>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea type="text" name="activity[remark]" class="form-control" >{$activity['remark']}</textarea>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				推送图文信息
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>标题</label>
+					<div class="col-sm-9 col-xs-12" >
+						<input type="text" required="required" name="activity[msg][title]" class="form-control" value="{$activity['msg_title']}"></input>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>缩略图</label>
+					<div class="col-sm-9 col-xs-12" >
+						{php echo tpl_form_field_image('activity[msg][thumb]',$activity['msg_thumb']);}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">描述</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea type="text" name="activity[msg][remark]" class="form-control" >{$activity['msg_remark']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">链接</label>
+					<div class="col-sm-9 col-xs-12" >
+						<input type="text" required="required" name="activity[msg][link]" class="form-control" value="{$activity['msg_link']}"></input>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+
+{elseif $operation == 'list'}
+
+<div class="main">
+
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-striped">
+			<thead class="navbar-inner">
+				<tr >
+					<th class="col-xs-1">ID</th>
+					<th class="col-xs-3">地推活动名称</th>
+					<th class="col-xs-2" >统计(不包含重复扫描)</th>
+					<th class="col-xs-3" >最后编辑时间</th>
+					<th class="col-xs-3">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if empty($lists)}
+					<tr>
+						<td colspan="6">
+							<div class="jumbotron" style="text-align:center;"><h3>暂无地推活动</h3></span>
+						</td>
+					</tr>
+				{else}
+					{loop $lists $key $item}
+					<tr>
+						<td>{php echo ($key+1);}</td>
+						<td><span class="text-info">{$item['title']} </span></td>
+						<td>共扫描{$item['score']}次</td>
+						<td>{$item['modify_time']}</td>
+						<td style="text-align:center;">
+							<a href="{php echo $this->createWebUrl('activity', array('id' => $item['activity_id'], 'op' => 'addnew'))}"class="btn btn-default btn-sm" title="添加地推人员"><i class="fa fa-user"></i>添加地推员</a>&nbsp;&nbsp;
+							<a href="{php echo $this->createWebUrl('activity', array('id' => $item['activity_id'], 'op' => 'detail'))}"class="btn btn-success btn-sm " title="详细信息"><i class="fa fa-pencil"></i>详细</a>&nbsp;&nbsp;<br/>
+							<a href="{php echo $this->createWebUrl('activity', array('id' => $item['activity_id'], 'op' => 'post'))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="详细信息"><i class="fa fa-pencil"></i>编辑</a>&nbsp;&nbsp;
+							<a href="{php echo $this->createWebUrl('activity', array('id' => $item['activity_id'], 'op' => 'delete'))}" onclick="return confirm('与该推广活动的推广记录也会被删除，确定删除？');return false;" class="btn btn-default btn-sm" title="删除"><i class="fa fa-times"></i>删除</a>
+						</td>
+					</tr>
+					{/loop}
+				{/if}
+			</tbody>
+			
+		</table>
+	</div>
+	</div>
+</div>
+{elseif $operation == 'detail'}
+<div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">
+				推广活动：{$activity['title']}，总扫描数：<a class="btn btn-success" href="{php echo $this->createWebUrl('activity',array('op'=>'records','activity'=>$activity['activity_id']));}">{$activity['score']}</a>
+			</div>
+		</div>
+		<div class="panel-body table-response">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>地推人员</th>
+						<th>成绩(不包含重复扫描)</th>
+						<th>专属二维码</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				{loop $staffs $item}
+					<tr>
+						<td>{$item['wx']['nickname']}</td>
+						<td>净扫描数：<a class="btn btn-info" href="{php echo $this->createWebUrl('activity',array('op'=>'records','staff'=>$item['staff_id']));}">{$item['score']}</a></td>
+						<td>{if (is_array($item['hasQr']))}<a target="_blank" href="{php echo 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.urlencode($item['hasQr']['ticket']);}">查看</a>{else}请联系管理员重新生成{/if} </td>
+						<td><a href="{php echo $this->createWebUrl('activity', array('staff' => $item['staff_id'],'activity'=>$activity['activity_id'], 'op' => 'delstaff'))}" onclick="return confirm('与该人员相关的推广记录也会被删除，确定删除？');return false;" class="btn btn-default btn-sm" title="删除"><i class="fa fa-times"></i>删除</a></td>
+					</tr>
+				{/loop}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{elseif $operation == 'records'}
+<div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">
+				{$info}
+			</div>
+		</div>
+		<div class="panel-body table-response">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="width:40px;"></th>
+						<th>微信用户</th>
+						<th>第一次扫码关注时间</th>
+					</tr>
+				</thead>
+				<tbody>
+				{loop $records $key $item}
+					<tr>
+						<td>{php echo $key+($page_index-1)*$page_size+1;}</td>
+						<td>{$item['wx']['nickname']}</td>
+						<td>{php echo date('Y-m-d H:i:s',$item['scan_time']);}</td>
+					</tr>
+				{/loop}
+				</tbody>
+			</table>
+			{$pagination}
+		</div>
+	</div>
+</div>
+
+{/if}
+{template 'common/footer'}

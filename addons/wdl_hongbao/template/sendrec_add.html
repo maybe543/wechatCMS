@@ -1,0 +1,84 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li><a href="{php echo $this->createWebUrl('sendrec');}">发放红包管理</a></li>
+        <li class="active"><a href="{php echo $this->createWebUrl('sendrec_add');}">{php echo $data['id']>0?'编辑':'添加';}发放红包</a></li>
+    </ul>
+<form action="{php echo $this->createWebUrl('sendrec_add');}" class="form-horizontal form" method="post" enctype="multipart/form-data">
+<input type="hidden" name="id" value="{$data['id']}" />
+<div class="clearfix">
+    <div class="panel panel-default">
+        <div class="panel-heading">基本信息</div>
+        <div class="panel-body">
+<form action="" method="post" id="uploadForm" enctype="multipart/form-data">
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">批量上传</label>
+                    <div class="col-sm-8 col-xs-12">
+                    <input type="file" name="file_cumtomer" />
+                    <a href="{MODULE_URL}template/upFile/hongbao_tpl.xlsx">【点击下载用户Excel上传格式示例】</a>
+                    <input type="submit" value="提交" />
+                    </div>
+                </div>
+                        
+        
+</form>
+        
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">openid</label>
+                    <div class="col-sm-8 col-xs-12">
+						<input type="text" class="form-control" placeholder="" name="openid" value="{$data['openid']}">
+                    </div>
+                </div>        
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">发放红包金额</label>
+                    <div class="col-sm-8 col-xs-12" style="width:110px">
+                    	<input type="text" style="width:90px; float:left" class="form-control" placeholder="" name="money" value="{$data['money']}">
+                    </div>
+                    <div style="margin-top:8px">元，{if $fhb_send_type == 'f'}
+                        固定
+                        {else}
+                        随机【从{$data['fhb_send_money_from']}到{$data['fhb_send_money_to']}元】
+                        {/if}</div>
+                </div> 
+ 
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">备注</label>
+                    <div class="col-sm-8 col-xs-12">
+                    <textarea class="form-control" name="remark" rows="5">{$data['remark']}</textarea>
+                    </div>
+                </div>                
+{if $data['id']>0}      
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">发放时间</label>
+                    <div class="col-sm-8 col-xs-12">
+                        {$data['send_time']} 【{$data['send_res']}】                  
+                    </div>
+                </div> 
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">订单号码</label>
+                    <div class="col-sm-8 col-xs-12">
+                        {$data['bill_no']}                     
+                    </div>
+                </div>                 
+                
+      <div class="form-group">
+                    <label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">创建时间</label>
+                    <div class="col-sm-8 col-xs-12">
+                        {$data['createtime']}                     
+                    </div>
+                </div>                       
+{/if}            
+	  </div>
+    </div>
+{if $data['send_finish'] != 'Y'}    
+    <div class="form-group">
+        <div class="col-sm-12">
+            <input name="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+    </div>
+{/if}
+</form>
+</div>
+<script>chg_con_type('{$data['con_type']}');</script>
+{template 'common/footer'}

@@ -1,0 +1,56 @@
+{template 'common/header'}
+
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li
+        {if $operation== 'display'} class="active"{/if}><a href="{php echo $this->createWebUrl('Zf');}">语音祝福管理</a></li>
+        <li
+        {if $operation == 'post'} class="active"{/if}> <a
+            href="{php echo create_url('platform/reply/post',array('m'=>'mon_yyzf'));}">添加语音祝福</a></li>
+
+    </ul>
+
+    <div style="padding:15px;">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+            <tr>
+                <th >语音祝福名称</th>
+                <th>开始录制标题</th>
+                <th>播放状态标题</th>
+
+                <th width="40%" >操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {loop $list $row}
+            <tr>
+
+
+                <td>{$row['title']}</td>
+                <td>{$row['start_title']}</td>
+                <td>{$row['play_title']}</td>
+
+                <td>
+
+
+                    <a href="{php echo $this->createWebUrl('ZR', array('yid'=>$row['id']))}" class="btn"
+                       rel="tooltip" title="参加用户"><i class="glyphicon glyphicon-user"></i>参加祝福用户</a>
+                    <a class="btn" rel="tooltip"
+                       href="{php echo create_url('platform/reply/post', array( 'm' => 'mon_yyzf','rid'=>$row['rid']))}"
+                       title="编辑"><i class="glyphicon glyphicon-edit"></i>编辑</a>
+
+                    <a href="{php echo $this->createWebUrl('Zf', array( 'id' => $row['id'], 'op' => 'delete'))}"
+                       onclick="return confirm('此操作不可恢复，确认删除？');return false;" title="删除"
+                       class="btn btn-small"><i class="glyphicon glyphicon-remove"></i>删除</a>
+                </td>
+            </tr>
+            {/loop}
+
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+
+</div>
+
+{template 'common/footer'}

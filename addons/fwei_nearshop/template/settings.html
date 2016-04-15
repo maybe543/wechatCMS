@@ -1,0 +1,47 @@
+{template 'common/header'}
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				系统设置
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">LBS查询范围</label>
+					<div class="col-sm-2">
+						<div class="input-group">
+							<input type="text" value="{$settings['range']}" class="form-control" name="range"> 
+							<span class="input-group-addon">千米（KM）</span>
+						</div>
+                    </div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">无商家提示</label>
+					<div class="col-sm-9">
+						<input type="text" value="{$settings['msg']}" class="form-control" name="msg"> 
+						<span class="help-block">
+							当通过LBS查询周边商家无数据时的提示信息
+						</span>
+                    </div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">导航地图</label>
+					<div class="col-sm-9">
+                		<label class="radio-inline" for="isbaidu">
+							<input type="radio" id="isbaidu" value="baidu" name="ditu" {if $settings['ditu']=='baidu'}checked{/if}> 百度地图
+						</label>
+						<label class="radio-inline" for="issoso">
+							<input type="radio" id="issoso" value="soso" name="ditu" {if $settings['ditu']=='soso'}checked{/if}> 腾讯地图
+						</label>
+                    </div>
+				</div>
+			</div>
+        </div>
+
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

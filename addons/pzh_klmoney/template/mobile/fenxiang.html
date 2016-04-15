@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title><?php echo $theme; ?></title>	
+
+	<link type="text/css" rel="stylesheet" href="../addons/pzh_klmoney/template/mobile/css/style2.css">
+	<meta name="format-detection" content="telephone=no" />
+	<style type="text/css">
+	
+    .text
+    {
+	position: relative;
+	padding-top:<?php echo $top_percent; ?>%;
+	text-align: center;
+    }
+    .label
+    {
+    	position: relative;
+    	font-size: 5em;
+    	color: <?php echo $kling_color; ?>;
+
+    	margin-left: 20%;
+    	margin-right: 20%;
+    	font-family: "Courier New", Courier, monospace;
+    	text-decoration:none;
+
+    }
+    .title
+    {
+    	position: relative;
+    	font-size: 4em;
+    	color:<?php echo $title_color; ?>;
+    	margin-left: 15%;
+    	margin-right: 15%;
+    	font-family: "Courier New", Courier, monospace;
+    	text-decoration:none;
+    }
+
+    .tail
+    {
+       
+    	font-size: 4em;
+    	color:<?php echo $tail_color; ?>;
+    	margin-left: 15%;
+    	margin-right: 15%;
+    	font-family: "Courier New", Courier, monospace;
+    	text-decoration:none;
+    }
+	</style>
+</head>
+<body>
+
+	<img class="img" src=<?php echo $back_img; ?> />
+	<div class="text">
+		<div class="title">
+		<?php echo  nl2br($title); ?> 
+		
+		</div>
+       <?php for ($i=0; $i < $kouling_count ; $i++) { 
+          
+        ?> 
+		<div class="label">
+			<?php echo  $kouling_arr[$i]; ?>
+		</div>
+         <?php   } ?> 
+		
+		
+       <div class="tail">
+       <br/>
+		
+		<?php echo nl2br($tail); ?> 
+		</div>
+	    
+	</div>
+</body>
+</html>

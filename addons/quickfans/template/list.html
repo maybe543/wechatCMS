@@ -1,0 +1,109 @@
+{template 'common/header'}
+
+{template 'tabs'}
+{template 'common-config'}
+{if $op == 'display'}
+<style>
+  .s1 {margin: 0px; padding: 0px; border: 0px; color: rgb(68, 68, 68); font-family: 微软雅黑; font-size: 13px; line-height: 24px; white-space: normal;}
+  .s2{margin: 0px; padding: 0px; border: 1px solid rgb(0, 187, 236); text-align: center;}
+  .s3{margin: 1em auto; padding: 0px; border: 0.1em solid rgb(0, 187, 236); width: 12em; height: 12em; border-radius: 6em;}
+  .s4{margin: 0.4em auto; padding: 0px; border: 0px; display: table; width: 11em; height: 11em; border-radius: 5.5em; max-height: 11em; background-color: rgb(0, 187, 236);}
+  .s5{margin: 1em; padding: 0em; border: 0px; display: table-cell; vertical-align: middle; font-size: 1.5em; line-height: 1.2em; color: white; max-height: 11em;}
+  .s5 img{width:7em;}
+  .s6{margin: 1em 1em 2em; padding: 0.5em 1em; border: 0px; display: inline-block; color: white; font-size: 1em; line-height: 1.5em; border-radius: 1em; white-space: nowrap; max-width: 100%; background-color: rgb(0, 187, 236);
+  width:100px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .s7{ margin: 0px; padding: 1em; border-width: 0px 1px 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgb(0, 187, 236); border-bottom-color: rgb(0, 187, 236); border-left-color: rgb(0, 187, 236); color: rgb(0, 0, 0); text-align: center; font-size: 1em; line-height: 1.4em;}
+  .s8{ margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;}
+  .s9{ margin: 0px; padding: 0px; border: 0px;}
+  .s10{ color:red; }
+</style>
+
+<div class="main">
+	<div style="padding:15px;">
+    {template 'search'}
+  </div>
+</div>
+
+
+<div class="main">
+	<div style="padding:15px;">
+
+		<table class="table table-hover">
+			<tbody>
+    <?php
+      $cnt = 0;
+      $row_size = 5;
+    ?>
+    {if empty($list)}
+    {template '404'}
+    {/if}
+    {loop $list $item}
+    {if $cnt % $row_size == 0}
+				<tr>
+    {/if}
+          <td>
+<section class="s1">
+    <section class="s2">
+        <section class="s3">
+        <section class="s4">
+                <section class="s5">
+                <span class="refresh_img" data-from='{$item['from_user']}' title="刷新头像">
+                  <img class="img-circle" src="{$item['avatar']}"/>
+                </span>
+                </section>
+            </section>
+        </section>
+        <a href="{php echo $this->createWebUrl('Center', array('op'=>'post', 'from_user'=>$item['from_user']))}">
+          <section class="s6">{if !empty($item['follow'])}<span class="icon-user gold-level{$item['vip']}"></span>{/if}
+          {if empty($item['nickname'])}路人甲{else} {if $item['follow']==0}<s>{/if}{$item['nickname']}{if $item['follow']==0}</s>{/if}{/if}
+          </section>
+      </a>
+    </section>
+    <section class="s7">
+        <p class="s8">
+        级别:{if empty($item['vip'])}
+          普通用户
+        {else}
+        <span class="s10">VIP{$item['vip']}</span>
+          {/if}
+          <br class="s9"/>积分{$item['credit1']}&nbsp;余额{php echo sprintf("%.2f", $item['credit2'])}元
+        </p>
+    </section>
+</section>
+          </td>
+
+    {if $cnt % $row_size == $row_size - 1}
+				</tr>
+    {/if}
+    <?php
+    $cnt++;
+    ?>
+        {/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+
+{/if}
+<script>
+  $(function() {
+    $('.refresh_img').click(function(e) {
+      var obj = $(this);
+      var url = '{php echo $this->createWebUrl('Refresh')}' + "&from_user=" + obj.data('from');
+      $.getJSON(url, function(s){
+        console.log(s.message.avatar);
+        obj.find('img').attr('src',  s.message.avatar);
+      });
+      return false;
+    });
+  });
+
+  $(document).ready(function(){
+    var url = "http://wx.qlogo.cn/mmopen/vkcbK8GuuPtq3jYNTzcNy8YebRAVPWRJSxAicMlzhWpdBa3zyssDia0zOEY5rzexBgm6nzUbP9IqeFvPE0y6zDOTqXwGJDKIiaX/0";
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true, "username", "password");
+  });
+</script>
+{template 'common/footer'}

@@ -1,0 +1,74 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+{if $_GPC['op']=='add'}
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">添加今日分成</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">今日分成</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="false_income" class="form-control" value="{$record['false_income']}">
+						<div class="help-block">前台展示用的分成金额 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">实际分成</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="real_income" class="form-control">{$record['real_income']}</textarea>
+						<div class="help-block">实际分成金额 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="hidden" name="id" value="{$record['id']}"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+{/if}
+{if $_GPC['op']=='display' || $_GPC['op']=='divide'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        分成管理
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:150px;">今日分成</th>
+                    <th style="width:180px;">实际分成</th>
+                    <th style="width:100px;">时间</th>
+					<th style="width:100px;">状态</th>
+					<th style="width:80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $record $r}
+				<tr>
+                    <td style="white-space: inherit;"><p>{$r["false_income"]}</p></td>
+                    <td style="white-space: inherit;">{$r["real_income"]}  </td>
+                    <td><?php echo date("Y-m-d",$r["createtime"])?></td>
+					<td>{if empty($r["remark"])}未分成{else}{$r["remark"]}{/if}</td>
+					<td>
+					{if empty($r["remark"])}
+					<a href="/web/index.php?c=site&a=entry&op=divide&do=Hxsincome&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">分成</a>
+					{/if}
+					<a href="/web/index.php?c=site&a=entry&op=add&do=Hxsincome&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">修改</a>
+					<a href="/web/index.php?c=site&a=entry&op=del&do=Hxsincome&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">删除</a>
+					</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+		{$pager}
+    </div>
+</div>
+{/if}
+</div>
+{template 'common/footer'}

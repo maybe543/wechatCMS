@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body>
+
+
+<div class="mb-sou mb-top">
+    <div class="c-f-search">
+        <a class="c-f-back" href="{php echo urwdo('index')}">返回</a>
+        <span class="c-f-title">用户中心</span>
+        <span class="c-f-h-s">
+            <a class="c-f-home" href="{php echo urwdo('index')}"></a>
+            <a class="c-f-cart" href="{php echo urwdo('cart')}"><em id="c-f-cart-em">{php echo $this->doMobilecart_num(true);}</em></a>
+        </span>
+    </div>
+</div>
+
+<div class="usericon clearfix">
+    <ul>
+        <li class="pay"><a href="{php echo urwdo('orders')}&type=pay">待付款</a></li>
+        <li class="confirm"><a href="{php echo urwdo('orders')}&type=confirm">待确认</a></li>
+        <li class="rec"><a href="{php echo urwdo('orders')}&type=rec">待收货</a></li>
+        <li class="all"><a href="{php echo urwdo('orders')}&type=all">全部订单</a></li>
+        <li class="addr"><a href="{php echo urwdo('address')}">收货地址</a></li>
+        <li class="serves"><a href="{php echo urwdo('serves')}">客户服务</a></li>
+        <li class="property"><a href="{php echo urwdo('property')}">我的资产</a></li>
+        <li class="vipcard"><a href="{php echo url('mc/bond/card')}">我的会员卡</a></li>
+        {if $user['admin']}
+        <li class="admin"><a href="{php echo urwdo('admin')}">订单管理</a></li>
+        {/if}
+    </ul>
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        if ($("#c-f-cart-em").text() > 0) {
+            $("#c-f-cart-em").css('display','inline');
+        }
+    });
+</script>
+</body>
+</html>

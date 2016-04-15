@@ -1,0 +1,216 @@
+{template 'common/header'}
+{php load()->func('tpl')}
+<style>
+    .field label{float:left;margin:0 !important; width:140px;}
+        .page-nav {
+			float:left;
+            margin: 0 0 0 -1px;
+			padding:0;
+            width: 100%;
+            min-width: 800px;
+			height:50px;
+        }
+
+        .page-nav > li > a {
+            display: block;
+        }
+
+        .page-nav-tabs {
+            background: #f9f9f9;
+        }
+        .page-nav-tabs > li {
+            line-height: 50px;
+            float: left;
+            list-style: none;
+            display: block;
+            text-align: -webkit-match-parent;
+        }
+
+        .page-nav-tabs > li > a {
+            font-size: 14px;
+            color: #666;
+			height:50px;
+            line-height: 50px;
+            padding: 0 10px;
+            margin: 0;
+            border: 1px solid transparent;
+            border-bottom-width: 0px;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+			border-top:0;
+        }
+
+        .page-nav-tabs > li > a, .page-nav-tabs > li > a:focus {
+            border-radius: 0 !important;
+            background-color: #fcfcfc;
+            color: #999;
+            margin-right: -1px;
+            position: relative;
+            z-index: 11;
+            border-color: #d9edf7;
+            text-decoration: none;
+        }
+
+        .page-nav-tabs >li >a:hover {
+            background-color: #FFF;
+        }
+
+        .page-nav-tabs > li.active > a, .page-nav-tabs > li.active > a:hover, .page-nav-tabs > li.active > a:focus {
+            color: #576373;
+            border-color: #c5d0dc;
+            border-top: 2px solid #4c8fbd;
+            border-bottom-color: transparent;
+            background-color: #FFF;
+            z-index: 12;
+            margin-top: -1px;
+            box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+        }
+		.table{border-top:1px solid #d9edf7;}
+		.table-hover .navbar-inner tr th{line-height:30px;}
+		.status{border-radius:10px;}
+</style>
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('display')}">预约列表</a></li>
+    <li><a href="{php echo $this->createWebUrl('post')}">新建预约</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('manage', array('id' => $reid))}">预约记录</a></li>
+</ul>
+<div class="main">
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="./index.php" method="get" class="form-horizontal" role="form" id="form1">
+                <input type="hidden" name="c" value="site" />
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="m" value="dayu_yuyuepay" />
+                <input type="hidden" name="do" value="manage" />
+                <input type="hidden" name="id" value="{$reid}" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">姓名/手机</label>
+				<div class="col-sm-8 col-lg-5">
+					<input class="form-control" name="keywords" id="" type="text" value="{$_GPC['keywords']}" placeholder="可查询手机号 / 姓名"> 
+				</div>                  
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">单号/微信单号</label>
+				<div class="col-sm-8 col-lg-5">
+					<input class="form-control" name="orderid" id="" type="text" value="{$_GPC['orderid']}" placeholder="可查询订单号 / 微信订单号"> 
+				</div>                  
+			</div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">预约提交时间</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-3">
+						{php echo tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d', $starttime),'endtime'=>date('Y-m-d', $endtime)));}
+                    </div>
+                </div>
+                <div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class='btn-group'>
+                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <input type="submit" name="export" value="导出预约数据" class="btn btn-primary">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-info">
+<ul class="page-nav page-nav-tabs">
+	<li>
+	<a href="{php echo $this->createWebUrl('manage', array('id' => $reid))}">全部记录({$order_count_all})</a>
+	</li>
+	<li {if $status == '0' && $paystatus == '1'} class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('manage', array('status' => 0, 'paystatus' => '1', 'id' => $reid))}">未付款待确认({$order_count_confirm})</a>
+	</li>
+	<li {if $status == '0' && $paystatus == '2'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('manage', array('status' => '0', 'paystatus' => '2', 'id' => $reid))}">已付款待确认({$order_count_pay})</a>
+	</li>
+	<li {if $status == '1' && $paystatus == '2'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('manage', array('status' => '1', 'paystatus' => '2', 'id' => $reid))}">已付款已确认({$order_count_finish})</a>
+	</li>
+	<li {if $status == '2'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('manage', array('status' => 2, 'id' => $reid))}">已取消/拒绝({$order_count_cancel})</a>
+	</li>
+	<li {if $status == '3'}class="active"{/if}>
+	<a href="{php echo $this->createWebUrl('manage', array('status' => 3, 'id' => $reid))}">已完成({$order_count_end})</a>
+	</li>
+</ul>
+        <div class="panel panel-defaul">
+            <form action="" method="post" onsubmit="">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                        <tr>
+                            <th width="50px;">ID</th>
+                            <th width="80">粉丝</th>
+                            <th width="100">姓名</th>
+                            <th width="120px;">手机</th>
+                            <th style="width:150px">服务项目</th>
+                            <th style="width:140px;">预约时间</th>
+                            <th style="width:100px">处理状态</th>
+							<th style="width:120px;">订单号</th>
+							<th style="width:150px;">付款方式/状态</th>
+							<th style="max-width:200px;">微信支付单号</th>
+                            <th style="width:140px;">提交时间<i></i></th>
+                            <th width="100">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loop $list $row}
+				<?php $xm=$this->get_xiangmu($row['reid'],$row['xmid']);?>
+                        <tr><td>{$row['rerid']}</td>
+							<td>
+							{if !empty($row['openid'])}<span class="text-info" style="text-align:center;"><a href="{php echo url('mc/member/post', array('uid'=>$row['user']['uid']));}" target="_blank"><img src="{if !empty($row['user']['tag']['avatar'])}{$row['user']['tag']['avatar']}{else}resource/images/noavatar_middle.gif{/if}" width="48" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs" title="{$row['user']['nickname']}"></a></span>{/if}
+							</td>
+                    <td class="row-hover"><a href="javascript:;" title="{$row['from_user']}">{$row['member']}</a></td>
+                    <td class="row-hover">{$row['mobile']}</td>
+					<td style="color:#ce0000;">{$xm['title']} <span class="badge text-primary">&yen;{$row['price']}</span></td>
+                            <td style="font-size:12px; color:#ce0000;">{php echo date('Y-m-d H:i:s', $row[yuyuetime]);}</td>
+					<td>	
+            {if $row['status'] == 0} <span class="badge text-primary">等待确认</span>
+                {elseif $row['status'] == 1} <span class="label label-success status">已确认</span>
+                {elseif $row['status'] == 2} <span class="label label-warning status">已拒绝</span>
+                {elseif $row['status'] == 3} <span class="label label-primary status">已完成</span>
+                {elseif $row['status'] == -1} <span class="label label-warning status">客户取消</span>
+            {/if}</td>
+					<td>{$row['ordersn']}</td>
+					<td>{if $row['paytype'] == 1}<span class="label label-success" style="width:150px">&nbsp;&nbsp;在线支付&nbsp;&nbsp;</span>{elseif $row['paytype'] == 2}<span class="label label-info">店付或面付</span>{/if} 
+					{if $row['paystatus'] == 1}<span class="label label-warning">未支付</span>{/if}
+                    {if $row['paystatus'] == 2}<span class="label label-danger">已支付</span>{/if}</td>
+					<td title="{$row['transid']}">{$row['transid']}</td>
+                            <td style="font-size:12px; color:#666;">{php echo date('Y-m-d H:i:s', $row[createtime]);} </td>
+                            <td>
+								<a href="{php echo $this->createWebUrl('detail', array('id' => $row['rerid']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="查看详情">详情</a>
+								<a href="{php echo $this->createWebUrl('dayu_yuyuepaydelete', array('id' => $row['rerid']))}"  class="btn btn-default btn-sm" onclick="return confirm('删除预约记录，此操作不可恢复，确认删除？');return false;" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i></a>
+							</td>
+                        </tr>
+                        {/loop}
+                    </tbody>
+                </table>
+            </form>
+            {$pager}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	require(['daterangepicker'], function($){
+		$('.daterange').on('apply.daterangepicker', function(ev, picker) {
+			$('#form1')[0].submit();
+		});
+	});
+</script>
+<script language='javascript'>
+	function selectall(obj, name){
+		$('input[name="'+name+'[]"]:checkbox').each(function() {
+			$(this).get(0).checked =  $(obj).get(0).checked;
+		});
+	}
+	require(['bootstrap'],function($){
+		$('.btn').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+	});
+</script>
+{template 'common/footer'}

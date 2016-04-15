@@ -1,0 +1,165 @@
+{template 'common/header'}
+{template 'common'}
+<ul class="nav nav-tabs">
+  <li><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_PAYED))}"> <em class="fa fa-arrow-left"> 返回</em></a></li>
+</ul>
+
+{if $operation == 'display'}
+<div class="main">
+	<div style="padding:15px;">
+    <h4>{$status_text}订单数(需快递):{$total}</h4>
+    <span style="float:right"><label for="expresstemplate">快捷操作：将所有订单的快递公司设置为</label>
+      <select class="form-control" id="expresstemplate">{template 'express-selector'}</select>
+    </span>
+    <br/>
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:80px">编号</th>
+					<th style="width:90px">订单号</th>
+					<th style="width:100px;">姓名</th>
+					<th style="width:110px;">电话</th>
+					<th style="width:80px;">省份</th>
+					<th style="width:120px;">下单时间</th>
+          <th style="width:150px;">快递单号[<a href="#" id="autofill_ordersn">顺序填充</a>]</th>
+					<th style="width:150px;">快递公司</th>
+					<th style="width:120px; text-align:right;">操作</th>
+				</tr>
+			</thead>
+			<tbody id="allorders">
+        {php $seq = 0;}
+        {loop $list $item}
+          <tr>
+            <td><input type="checkbox" name="checkorderid" value="{$item['id']}" id="checkbox{$seq}" class="">{$item['id']}</td>
+            <td>{$item['ordersn']}</td>
+            <td>{$address[$item['addressid']]['realname']}</td>
+            <td>{$address[$item['addressid']]['mobile']}</td>
+            <td>{$address[$item['addressid']]['province']} </td>
+            <td>{php echo date('m-d H:i:s', $item['createtime'])}</td>
+            <td><input type="expresssn" name="expresssn" class="form-control" value="" /></td>
+            <td>
+              <select name="express" class="form-control">
+                {template 'express-selector'}
+              </select>
+              {php echo FormTpl::getWebControl('hidden', 'id', $item['id'], 3) }
+            </td>
+            <td style="text-align:right;"><a id="SubmitButton{$seq}" href="#" class="btn btn-primary SubmitButton">发货</a><em class="text-success fa fa-check hide"></em></td>
+          </tr>
+          {php $seq++;}
+				{/loop}
+			</tbody>
+			<tfoot>
+        <td><input type="checkbox" id="checkall">全选</td>
+        <td><a href="#" class="btn btn-danger" id="batchSubmitButton">批量发货 <em id="batchDone" class="text-success fa fa-check hide"></em></a></td>
+        <td colspan="7"></td>
+      </tfoot>
+		</table>
+		{$pager}
+	</div>
+</div>
+<script language='javascript'>
+     $(function(){
+        $("#expresstemplate").change(function(){
+          var obj = $(this);
+          var target_val =obj.find("option:selected").val();
+          $("#allorders select").each(function() {
+            var obj = $(this);
+            console.log(obj);
+            obj.val(target_val);
+          });
+        });
+
+        $("input[name='expresssn']").bind('keypress',function(event){
+          if(event.keyCode == "13") {
+            $(this).closest("tr").next("tr").find("input[name='expresssn']").focus();
+          }
+        });
+
+        $("#autofill_ordersn").bind('click',function(event){
+          var lastsn = parseInt($("input[name='expresssn']:eq(0)").val());
+          if (isNaN(lastsn)) {
+            alert('请填写第一个快递单号，才能自动填充后继快递单号。友情提示：除顺丰外，大部分快递公司快递编号为连号递增。');
+            return;
+          }
+          $("input[name='expresssn']").each(function() {
+             $(this).val(lastsn);
+             lastsn = parseInt(lastsn)+1;
+          });
+        });
+
+        $("#allorders select").change(function(){
+          var obj = $(this);
+          var sel =obj.find("option:selected").data("name");
+          var expresscom = obj.siblings("input[name='expresscom']").first();
+          if (expresscom) {
+            expresscom.val(sel);
+          }
+        });
+        $(".SubmitButton").click(function(){
+          var url_prefix = '{php echo $this->createWebUrl('AjaxConfirmSend', array('op' => 'submit'))}';
+          var root = $(this).closest("tr");
+          var btn        = root.find("a");
+          var tip        = root.find("em");
+          var id         = root.find("input[name='id']").val();
+          var expresscom = root.find("option:selected").data("name");
+          var express    = root.find("select").find("option:selected").val();
+          var expresssn  = root.find("input[name='expresssn']").val();
+          var url = url_prefix + '&expresscom=' + expresscom + '&express=' + express + '&expresssn=' + expresssn + '&id=' + id;
+          $.getJSON(url, function(data) {
+            var msg = data.message;
+            if (msg.errno !== 0) {
+              console.log(msg);
+              alert(msg.message);
+            } else {
+              tip.removeClass('hide');
+              btn.hide();
+            }
+          });
+          return false;
+        });
+
+        $("#batchSubmitButton").click(function(){
+          var valid = true;
+          $(".SubmitButton").each(function() {
+            var root = $(this).closest("tr");
+            var checked    = root.find("input[name='checkorderid']").prop('checked');
+            if (!checked) return true; // continue
+
+            var id         = root.find("input[name='id']").val();
+            var expresscom = root.find("option:selected").data("name");
+            var express    = root.find("select").find("option:selected").val();
+            var expresssn  = root.find("input[name='expresssn']").val();
+            if ('' == expresssn || '' == express || '' == expresscom) {
+              valid = false;
+              alert('发货信息没有填充完整');
+              return false;
+            }
+          });
+          if (valid) {
+            var total = {$seq};
+            var skip = false;
+            for (var i = 0; i < total; ++i) {
+              var id = "#SubmitButton" + i;
+              var root = $(id).closest("tr");
+              var checked    = root.find("input[name='checkorderid']").prop("checked");
+              var disabled   = root.find("input[name='checkorderid']").prop("disabled");
+              if (!checked || disabled) { skip = true;  continue; }
+              $(id)[0].click();
+            }
+            // 完成后取消掉所有checkbox
+            $("#allorders").find("input[name='checkorderid']").each( function() {
+              if (true == $(this).prop("checked")) {
+                $(this).prop("checked", false);
+                $(this).prop("disabled", true);
+              }
+            });
+          }
+        });
+        $("#checkall").click(function(){
+          $("#allorders").find("input[name='checkorderid']").prop("checked", $("#checkall").prop("checked"));
+        });
+    });
+</script>
+{/if}
+
+{template 'common/footer'}

@@ -1,0 +1,251 @@
+{if !empty($parent) }
+<div class="form-group">
+  <?php
+    echo FormTpl::label2('父商品名称', 'col-xs-12 col-sm-3 col-md-2');
+    echo FormTpl::plain($parent['title'], 'col-xs-12 col-sm-9 col-md-10');
+    ?>
+</div>
+{/if}
+
+<div class="form-group">
+  {php echo FormTpl::label2('商品名称', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'goodsname', $item['title']); }
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品单位</label>
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'unit', $item['unit']);}
+    <span class="help-block">如：个、件、张、斤等，会显示在商品页面。如10元/斤。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('商品属性', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="istime" class="checkbox-inline">
+      <input type="checkbox" name="istime" value="1" id="istime" {if $item['istime'] == 1}checked="true"{/if} /> 秒杀 
+    </label>
+    <label for="isdiscount" class="checkbox-inline">
+      <input type="checkbox" name="isdiscount" value="1" id="isdiscount" {if $item['isdiscount'] == 1}checked="true"{/if} /> 折扣商品
+    </label>
+
+    <label for="ishot" class="checkbox-inline">
+      <input type="checkbox" name="ishot" value="1" id="ishot" {if $item['ishot'] == 1}checked="true"{/if} /> 热卖推荐
+    </label>
+    <label for="isnew" class="checkbox-inline">
+      <input type="checkbox" name="isnew" value="1" id="isnew" {if $item['isnew'] == 1}checked="true"{/if} /> 新品推荐
+    </label>
+    <label for="isrecommend" class="checkbox-inline">
+      <input type="checkbox" name="isrecommend" value="1" id="isrecommend" {if $item['isrecommend'] == 1}checked="true"{/if} /> 首页推荐
+    </label>
+    <label for="isminimode" class="checkbox-inline" title="本模式下只显示购买按钮，不显示添加到购物车按钮">
+      <input type="checkbox" name="isminimode" value="1" id="isminimode" {if $item['isminimode'] == 1}checked="true"{/if} /> 启用一键购物模式
+      <i class="fa fa-question-circle" onclick="alert('本模式下只显示购买按钮，不显示添加到购物车按钮')"></i>
+    </label>
+
+  </div> <!-- 各种属性 -->
+</div>
+
+<div class="form-group" id="istime_setting">
+  {php echo FormTpl::label2('秒杀设置', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+    {php echo FormTpl::getWebControl2('time', 'timestart', $item['timestart'])}
+  </div>
+  <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+    {php echo FormTpl::getWebControl2('time', 'timeend', $item['timeend'])}
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('分类', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <select class="form-control" style="margin-right:15px;" id="pcate" name="pcate" onchange="fetchChildCategory(this.options[this.selectedIndex].value)"  autocomplete="off">
+      <option value="0">请选择一级分类</option>
+      {loop $category $row}
+      {if $row['parentid'] == 0}
+      <option value="{$row['id']}" {if $row['id'] == $item['pcate']} selected="selected"{/if}>{$row['name']}</option>
+      {/if}
+      {/loop}
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label">商品图</label>
+	<div class="col-sm-9 col-xs-12">
+		{php echo tpl_form_field_image('thumb', $item['thumb'], '', array('extras' => array('text' => 'readonly')))}
+    <span class="help-block">商品的缩略图 商品图片尺寸建议 360*200</span>
+	</div>
+</div>
+
+
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label">顶部幻灯片</label>
+	<div class="col-sm-9 col-xs-12">
+		{php echo tpl_form_field_multi_image('thumb_url',$piclist)}
+    <span class="help-block">为了避免图片变形，请保证上传的图片高度保持相同</span>
+	</div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('商品编号', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php echo FormTpl::getWebControl2('text', 'goodssn', $item['goodssn'])}
+	</div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('商品条码', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php echo FormTpl::getWebControl2('text', 'productsn', $item['productsn'])}
+	</div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('商品价格', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+	<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+		<div class="input-group">
+			<span class="input-group-addon">销售价</span>
+      {php echo FormTpl::getWebControl2('text', 'marketprice', $item['marketprice'])}
+			<span class="input-group-addon">元</span>
+		</div>
+		<br>
+		<div class="input-group">
+			<span class="input-group-addon">市场价</span>
+      {php echo FormTpl::getWebControl2('text', 'productprice', $item['productprice'])}
+			<span class="input-group-addon">元</span>
+		</div>
+		<br>
+		<div class="input-group">
+			<span class="input-group-addon">进货价</span>
+      {php echo FormTpl::getWebControl2('text', 'costprice', $item['costprice'])}
+			<span class="input-group-addon">元</span>
+		</div>
+    <span class="help-block">如果销售价小于原价，则在销售页面显示为"销售价100  <s>原价110"</s>。进货价是为了便于后期自动计算利润，可不填。</span>
+	</div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('积分购物', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      <span class="input-group-addon">积分可抵</span>
+      {php echo FormTpl::getWebControl2('text', 'max_coupon_credit', $item['max_coupon_credit'])}
+      <span class="input-group-addon">元(0.01元=1积分)</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('购买送积分', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'credit', $item['credit'])}
+      <span class="input-group-addon">积分</span>
+    </div>
+    <span class="help-block">给购买者奖励积分, 100积分=1元。如果不填写，则默认为不奖励积分。如果您设置了“积分购物”，这里依然可以选择送积分，也可选择不送积分。玩法随心！</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('重量', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'weight', $item['weight'])}
+      <span class="input-group-addon">克</span>
+      <span class="input-group-addon" id="esitimate_dispatch"></span>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('库存', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'total', $item['total'])}
+      <span class="input-group-addon">件</span>
+    </div>
+    <span class="help-block">当前商品的库存数量，-1则表示不限制。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('减库存方式', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+     <label for="totalcnf3" class="radio-inline"><input type="radio" name="totalcnf" value="3" id="totalcnf3" {if empty($item) || $item['totalcnf'] == 3}checked="true"{/if} /> 拍下减库存</label>
+    &nbsp;&nbsp;&nbsp;
+    <label for="totalcnf1" class="radio-inline"><input type="radio" name="totalcnf" value="1" id="totalcnf1"  {if !empty($item) && $item['totalcnf'] == 1}checked="true"{/if} /> 付款减库存</label>
+    &nbsp;&nbsp;&nbsp;
+    <label for="totalcnf2" class="radio-inline"><input type="radio" name="totalcnf" value="2" id="totalcnf2"  {if !empty($item) && $item['totalcnf'] == 2}checked="true"{/if} /> 永不减库存</label>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('最多购买数量', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'maxbuy', $item['maxbuy'])}
+      <span class="input-group-addon">件</span>
+    </div>
+    <span class="help-block">用户在本店购买本商品累计数量超过该值后无法继续购买。填0表示不限制购买数量。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('已售出数', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'sales', $item['sales'])}
+      <span class="input-group-addon">件</span>
+    </div>
+    <span class="help-block">当前商品的销售数量。</span>
+  </div>
+</div>
+
+<script language="javascript">
+
+$(function() {
+  function refresh_dispatch() {
+    var tip = $("#esitimate_dispatch");
+    var weight = $("#weight").val();
+    {if empty($dispatch)}
+      tip.html('<a href="{php echo $this->createWebUrl('Dispatch')}">请先设置物流模板</a>');
+      return;
+    {else}
+    if ($.isNumeric(weight)) {
+      weight = parseFloat(weight);
+      var firstprice = {$dispatch['firstprice']};
+      var secondprice = {$dispatch['secondprice']};
+      var firstweight = {$dispatch['firstweight']};
+      var secondweight = {$dispatch['secondweight']};
+      var dispatchprice = 0;
+      if (weight <= 0) {
+        dispatchprice = 0;
+      } else if (weight <= firstweight) {
+        dispatchprice = firstprice;
+      } else {
+        dispatchprice = firstprice;
+        mysecondweight = weight - firstweight;
+        if (mysecondweight % secondweight == 0) {
+          dispatchprice+= parseInt ( ( mysecondweight / secondweight ) * secondprice );
+        } else {
+          dispatchprice+= parseInt ( ( mysecondweight / secondweight + 1 ) * secondprice );
+        }
+      }
+      var unit = $("#unit").val().length > 0 ? ' / ' + $("#unit").val() : '';
+      tip.html('预计运费' + dispatchprice + '元' + unit);
+    } else {
+      tip.html('预计运费---');
+    }
+    {/if}
+  }
+  refresh_dispatch();
+  $("#weight").keyup(function(){
+    refresh_dispatch();
+  });
+});
+</script>

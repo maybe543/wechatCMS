@@ -1,0 +1,58 @@
+
+.main{
+	width:1124px;
+	position:relative;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+}
+
+.main .top{ height:137px; background:url(../images/top2.png) no-repeat;}
+.main .top .k{
+	padding:34px 0 0 650px;
+	color:#fff;
+	font-size:20px;
+	font-weight:bold;
+}
+.main .wall{ height:631px;}
+.main .left{
+	float:left;
+	width:117px;
+	height:625px;
+	background:url(../images/left.png) no-repeat;
+}
+.main .right{
+	float:right;
+	width:117px;
+	height:625px;
+	background:url(../images/right.png) no-repeat;
+}
+.main .center{ float:left; width:890px; }
+.main .list{
+	height:569px;
+	padding-left:4px;
+	overflow: auto;
+	overflow-x:hidden;
+}
+.main .footer{height:5px;background:url(../images/footer.png) no-repeat;}
+.main .l{width:892px;height:570px;background:url(../images/l.png) no-repeat;position:absolute;top:20px;left:656px;z-index:-2;}
+.main .r{width:892px;height:570px;background:url(../images/r.png) no-repeat;position:absolute;top:10px;right:616px;z-index:-2;}
+
+.list li{ -moz-border-radius:40px 0 40px 0; 
+    border-radius:40px 0 40px 0;
+-webkit-border-radius:40px 0 40px 0;
+float:left; display:inline; margin:2px 0 7px; width:883px; background:url(../images/libg.png) repeat;display:none;
+
+}
+.list li .pic{ float:left; padding:30px 14px 0 13px;}
+.list li .pic img{ background:#E8E8E8; border:#4E9B86 1px solid; padding:3px; font-size:0;}
+.list li .image{float:right;padding:25px 25px 0 13px;}
+.list li .image img{background:#E8E8E8; border:#4E9B86 1px solid; padding:3px; font-size:0;max-height:130px;}
+.list li .c{ float:left; width:736px; color:#eeeefd;}
+.list li .c span{ color:#C8FB80;}
+.list li .num{color:#fff;text-align:right;}
+.m1{float:left;width:887px;padding-bottom:13px;background:url(../images/m3.png) left bottom no-repeat;}
+.m2{float:left;width:883px;min-height:155px;padding-bottom:13px;background:url(../images/m5.png) left top no-repeat;}
+
+.mone{background:url(../images/m3.jpg) repeat;}

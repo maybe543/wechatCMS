@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>{$_W['account']['name']}二手机评估</title>
+<link rel="stylesheet" href="../addons/amouse_valuation/ui/css/jquerymobile.css?v=2015020301" type="text/css">
+<link rel="stylesheet" href="../addons/amouse_valuation/ui/css/bt_wx.css?v=2015020301" type="text/css">
+<script src="../addons/amouse_valuation/ui/js/jquery-1.9.1.min.js?v=2015020301"></script>
+<script src="../addons/amouse_valuation/ui/js/jquery.mobile-1.3.2.min.js?v=2015020301"></script>
+<script src="../addons/amouse_valuation/ui/js/gujia.js?v=2015020301"></script>
+<script src="../addons/amouse_valuation/ui/js/alert.js?v=2015020301"></script>
+</head>
+<body class="ui-mobile-viewport ui-overlay-c">
+<div style="min-height: 657px;" class="ui-page ui-body-c ui-page-active" tabindex="0" data-role="page"  id="page1" data-url="page1">
+    <div role="banner" class="ui-header ui-bar-a" data-role="header">
+        <h1 aria-level="1" role="heading" class="ui-title">{$_W['account']['name']}二手机评估</h1>
+    </div>
+
+    <div role="main" class="ui-content" data-role="content">
+        <div class="in68_topbar">
+            <a class="in68_home in68_left ui-link" data-ajax="false" id="in68_home" href="{php echo $this->createMobileUrl('index',array(),true)}" data-transition="flip"> 首页
+            </a>
+        </div>
+        <div class="progress">
+            <ul class="progress-1">
+                <li class="step-2"><b class="bg2">1</b>选择机型</li>
+                <li class="step-2"><b class="bg2">2</b>选择型号</li>
+                <li class="step-1 border_color"><b class="bg1">3</b>在线估价</li>
+            </ul>
+        </div>
+        <div id="pro_price" class="pro_price">
+            <br><br> {$model['title']} &nbsp;{$version['title']} <br>
+            专业估价系统，准确评估手机价值 <p></p>
+        </div>
+
+        <div id="describe">
+           {if !empty($parameters)}
+            {loop $parameters $parameter}
+            <select class="item_group" id="item_{$parameter['id']}" i_id="{$parameter['id']}" tips="请选择{$parameter['txt']}">
+                <option selected="selected" value="-1">{$parameter['txt']}</option>
+                <option value="{$parameter['priceA']}">{$parameter['optionA']}</option>
+                {if !empty($parameter['optionB'])}
+                <option value="{$parameter['priceB']}">{$parameter['optionB']}</option>
+                {/if}
+                {if !empty($parameter['optionC'])}
+                <option value="{$parameter['priceC']}">{$parameter['optionC']}</option>
+                {/if}
+                {if !empty($parameter['optionD'])}
+                <option value="{$parameter['priceD']}">{$parameter['optionD']}</option>
+                {/if}
+                {if !empty($parameter['optionE'])}
+                <option value="{$parameter['priceE']}">{$parameter['optionE']}</option>
+                {/if}
+                {if !empty($parameter['optionF'])}
+                <option value="{$parameter['priceF']}">{$parameter['optionF']}</option>
+                {/if}
+            </select>
+            {/loop}
+            {/if}
+            <input id="phonePrice"  type="hidden" value="{$version['price']}"/>
+        </div>
+    </div>
+    <br>
+
+    <div class="inquiry_result" style="">您的手机回收价格为：
+        <span class="amount text_price">{$version['price']}</span>
+    </div>
+
+    <center>
+        <a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b" data-wrapperels="span" data-iconshadow="true"
+           data-shadow="true" data-corners="true" id="get_new_price" data-role="button" data-theme="b" href="#"
+           onclick="pgj();"><span class="ui-btn-inner"><span class="ui-btn-text"> 在线估价 </span></span></a>
+    </center>
+    <input id="totalprice" name="totalprice" value="{$version['price']}" type="hidden">
+</div>
+</div>
+
+<div id="footer">
+    <p class="tel">{if !empty($setting['copyright'])}{$setting['copyright']} {else} {$_W['account']['name']}{/if}
+        <span class="c_2489CE"></span>
+    </p>
+</div>
+</div>
+
+</div>
+<div class="ui-loader ui-corner-all ui-body-a ui-loader-default">
+    <span class="ui-icon ui-icon-loading"></span>
+    <h1>loading</h1></div>
+</body>
+<script>
+    function getSelectedItems() {
+        var items = "";
+        var sels = $(".item_group");
+        for (var i = 0; i < sels.length; i++) {
+            if ($(sels[i]).val() == "-1") {
+                alert($(sels[i]).attr("tips"));
+                items = "";
+                break;
+            }
+            if ($(sels[i]).val() != "" && $(sels[i]).val() != null) {
+                items += $(sels[i]).val() + ",";
+            }
+        }
+        return items;
+    }
+    function pgj() {
+        var idi = getSelectedItems();
+        if (idi == "") {
+            return;
+        }
+        var price = Number($("#phonePrice").val());
+        $(".item_group").each(function () {
+            price += Number($(this).val());
+        })
+        $(".amount").html(price);
+        $("#totalprice").val(price);
+        $(".inquiry_result").slideDown();
+    }
+</script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script language='javascript'>
+   var phonePrice=$("#totalprice").val();
+    <?php
+      $jssdk = new JSSDK();
+      $signPackage = $jssdk->GetSignPackage();
+    ?>
+    wx.config({
+        debug:false,
+        appId: "{$_W['account']['appid_share']}",
+        timestamp: {$signPackage["timestamp"]},
+        nonceStr: '{$signPackage["nonceStr"]}',
+        signature: '{$signPackage["signature"]}',
+        jsApiList: [
+            'onMenuShareTimeline','onMenuShareAppMessage','onMenuShareWeibo'
+        ]
+    });
+    var shareMeta = {
+        imgUrl:"{php echo $_W['siteroot'];}addons/amouse_valuation/icon.jpg",
+        link :  "{$url}",
+        desc : "我的二手手机在线估价为"+phonePrice+"，您也来试试看看您的手机值多少钱吧。",
+        title : "我的二手手机在线估价为"+phonePrice+"，您也来试试看看您的手机值多少钱吧。"
+    };
+    wx.ready(function(){
+        wx.onMenuShareTimeline(shareMeta);
+        wx.onMenuShareAppMessage(shareMeta);
+        wx.onMenuShareWeibo(shareMeta);
+    });
+</script>
+</html>

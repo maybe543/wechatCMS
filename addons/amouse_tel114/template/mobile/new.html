@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>发布电话号码</title>
+<link rel="stylesheet" href="../addons/amouse_tel114/template/mobile/css/house.css?v=20150401"/>
+<link rel="stylesheet" href="../addons/amouse_tel114/template/mobile/css/sweet-alert.css?v=20150401"/>
+<script src="../addons/amouse_tel114/template/mobile/js/jquery.js?v=20140519"></script>
+<script src="../addons/amouse_tel114/template/mobile/js/sweet-alert.min.js?V=20150514"></script>
+<link rel="stylesheet" href="../addons/amouse_house/ui/css/sweet-alert.css?v=20150401"/>
+
+<script type="text/javascript">
+function immediately(){
+	var element = document.getElementById("place"); 
+	if("\v"=="v") { 
+		element.onpropertychange = webChange; 
+	}else{ 
+		element.addEventListener("input",webChange,false);
+	} 
+}
+var ii = 1;
+function webChange(){ 
+ BodyOnLoad();
+}
+function BodyOnLoad() {
+	var textarea= document.getElementById("place");
+	textarea.style.posHeight=textarea.scrollHeight;
+} 
+</script>
+<style>
+.m-form .row input[type='tel'], .m-form .row .time {
+	width: 100%;
+	height: 34px;
+	padding: 0 12px;
+	border: 1px solid #e1e1e1;
+	background-color: #fff;
+	outline: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+</style>
+</head>
+<body>
+<div class="app-view">
+    <div class="app-page">
+        <header class="app-head">
+            <div class="inner">
+                <a class="link app-back" href="javascript:history.back();">
+                    <i class="icon-back"></i>
+                </a>
+				<p style=" float:right;"><a href="{php echo $this->createMobileUrl('index')}" class="">
+                    <input type="button" value="首页" name="" style="color:#666; width:60px; height:28px;"/></a></p>
+                <h1 class="title sliding">发布电话号码</h1>
+            </div>
+        </header>
+        <section class="app-wrap">
+            <div class="inner">	
+                <form class="m-form" id="fr1" name="fr1" action="" method="post">
+                    <div class="row">
+                        <span class="tag">标题：</span>
+                        <input type="text" id="title" name="title" placeholder="请填写标题"/>
+                    </div>
+
+					<div class="row">
+						<span class="tag">联系电话：</span>
+						<input type="tel" id="mobile" name="mobile" placeholder="请填写联系电话"/>
+					</div>
+
+					<div class="row">
+						<span class="tag">分类：</span>
+						<select name="cid" id="cid" style="height:34px; width:100%;">
+							{loop $fls $fl}
+                            <option value="{$fl['id']}">{$fl['title']}</option>
+                            {/loop}
+						</select>
+					</div>
+
+					<div class="row">
+                     <span class="tag">选择区域：</span>
+                      <select name="location_p" id="location_p" style="height:34px; width:100%;"></select>
+						<select name="location_c" id="location_c" style="height:34px; width:100%;" ></select>
+						<select name="location_a" id="location_a" style="height:34px; width:100%;" ></select>
+						<script type="text/javascript" src="../addons/amouse_tel114/template/mobile/js/region_select.js"></script>
+						<script type="text/javascript">
+							var location_p = "{if !empty($item['location_p'])}{$item['location_p']}{else}上海市{/if}";
+							var location_c = "{if !empty($item['location_c'])}{$item['location_c']}{else}市辖区{/if}";
+							var location_a = "{if !empty($item['location_a'])}{$item['location_a']}{else}徐汇区{/if}";
+							new PCAS("location_p", "location_c", "location_a", location_p, location_c, location_a);
+						</script>
+                    </div>
+
+					<div class="row">
+                        <span class="tag">地址：</span>
+                        <textarea id="place" placeholder="输入地址快速搜索定位" name="place" data-rule-required="true" style="height:45px;width:70%;"/>{$item['place']}</textarea>
+						<button style="position:relative;height:45px;background-color:RGB(62,175,14);top:-21px;" id="positioning" type="button" onclick="bmap.searchMapByAddress($('#place').val())"><font color="white" size="4px">搜索</font></button>
+                    </div>
+					<style>
+					.m-form .row1 {
+						position: relative;
+						min-height: 34px;
+						margin-bottom: 6px;
+						padding-left: 0px;
+					}
+					</style>
+					<div class="row1">
+						<div id="l-map" style="overflow: hidden; position: relative; z-index: 0; background-image: url(http://api.map.baidu.com/images/bg.png);width: 100%; height: 200px;margin-top: 10px; color: rgb(0, 0, 0); text-align: left;"></div>
+						<span id="r-result">
+							<input style="width:49%;" type="text" id="lat" name="lat">
+							<input style="width:49%;" type="text" id="lng" name="lng">
+						</span>
+					<div>
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                     <input type="hidden" id="isopen" name="isopen" value="{$set['isopen']}" />
+
+                    <input class="submit" id="subAjaxId" type="button" value="提交">
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+<script>
+    $(function(){
+        $("#subAjaxId").click(function() {
+            var title=$('#title').val();
+            var mobile=$('#mobile').val();
+            var place=$('#place').val();
+            var location_p = $('#location_p').val();
+            var location_c=$('#location_c').val();
+            var location_a=$('#location_a').val();
+            var cid = $('select[name="cid"]').val();
+            var isopen=$('#isopen').val();
+
+            var emp = /^\s*$/;
+            if(emp.test(title)){
+                sweetAlert("错误", "亲，请填写标题！", "error");
+                return false;
+            }
+            if(emp.test(mobile)){
+                sweetAlert("错误",'亲，请填写电话！', "error");
+                return false;
+            }
+            if($.trim(cid) == ''|| $.trim(cid) == 0) {
+                sweetAlert("错误",'亲，请选择一个分类吧！', "error");
+                return false;
+            }
+
+            var ajaxurl = "{php echo murl('entry//subAjax',array('m'=>'amouse_tel114'),true)}";
+            var c = {
+                'title':title,
+                'mobile':mobile,
+                'cid':cid,
+                'place':place,
+                'location_p':location_p,
+                'location_c':location_c,
+                'location_a':location_a,
+                'isopen':isopen
+            };
+
+            $.ajax({
+                type: "post",
+                url: ajaxurl,
+                data: c,
+                dataType: "json",
+                success: function (data) {
+                    if (data.resultCode == 1) {
+                        var forwardurl = "{php echo murl('entry//index',array('m'=>'amouse_tel114'),true)}";
+                        swal({
+                            title: data.resultMsg,
+                            text: data.resultMsg,
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确认",
+                            closeOnConfirm: true
+                        },
+                        function(){
+                            setTimeout("window.location.href='"+forwardurl+"'",2000);
+                        });
+                    }else if (data.resultCode == -1 || data.resultCode == 0) {
+                        swal(data.resultMsg || "亲，提交出错了！",'',"error");
+                    }
+                },
+                error: function(data) {
+                    alert("error:" + data.responseText);
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=1.4&ak=&services=&t=20140102035142"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".location").change(function(){
+            bmap.searchMapByPCD();
+        });
+    });
+    
+    var bmap = {
+        'option' : {
+            'lock' : false,
+            'container' : 'l-map',
+            'infoWindow' : {'width' : 250, 'height' : 100, 'title' : ''},
+            'point' : {'lng' : "{if $item['lng']!='0.0000000000' && !empty($item['lng'])}{$item['lng']}{else}121.446235{/if}", 'lat' : "{if $item['lat']!='0.0000000000' && !empty($item['lat'])}{$item['lat']}{else}31.169152{/if}"}
+        },
+        'init' : function(option) {
+            var $this = this;
+            $this.option = $.extend({},$this.option,option);
+
+            $this.option.defaultPoint = new BMap.Point($this.option.point.lng, $this.option.point.lat);
+            $this.bgeo = new BMap.Geocoder();
+            $this.bmap = new BMap.Map($this.option.container);
+            $this.bmap.centerAndZoom($this.option.defaultPoint, 15);
+            $this.bmap.enableScrollWheelZoom();
+            $this.bmap.enableDragging();
+            $this.bmap.enableContinuousZoom();
+            $this.bmap.addControl(new BMap.NavigationControl());
+            $this.bmap.addControl(new BMap.OverviewMapControl());
+            //添加标注
+            $this.marker = new BMap.Marker($this.option.defaultPoint);
+            $this.marker.setLabel(new BMap.Label('请您移动此标记，选择您的坐标！', {'offset':new BMap.Size(10,-20)}));
+            $this.marker.enableDragging();
+            $this.bmap.addOverlay($this.marker);
+            
+            $this.showPointValue($this.marker.getPosition());
+            //拖动地图事件
+            $this.bmap.addEventListener("dragging", function() {
+                $this.setMarkerCenter();
+                $this.option.lock = false;
+            });
+            //缩入地图事件
+            $this.bmap.addEventListener("zoomend", function() {
+                $this.setMarkerCenter();
+                $this.option.lock = false;
+            });
+            //拖动标记事件
+            $this.marker.addEventListener("dragend", function (e) {
+                $this.showPointValue();
+                $this.showAddress();
+                $this.bmap.panTo(new BMap.Point(e.point.lng, e.point.lat));
+                $this.option.lock = false;
+                $this.marker.setAnimation(null);
+            });
+        },
+        'searchMapByAddress' : function(address) {
+            var $this = this;
+            $this.bgeo.getPoint(address, function (point) {
+                if (point) {
+                    $this.showPointValue();
+                    $this.showAddress();
+                    $this.bmap.panTo(point);
+                    $this.setMarkerCenter();
+                }
+            });
+        },
+        'searchMapByPCD' : function(address) { 
+            var $this = this;
+            $this.option.lock = true;
+            $this.searchMapByAddress($('#location_p').val()+$('#location_c').val()+$('#location_a').val());
+        },
+        'setMarkerCenter' : function() {
+            var $this = this;
+            var center = $this.bmap.getCenter();
+            $this.marker.setPosition(new BMap.Point(center.lng, center.lat));
+            $this.showPointValue();
+            $this.showAddress();
+        },
+        'showPointValue' : function() {
+            var $this = this;
+            var point = $this.marker.getPosition();
+            $('#lng').val(point.lng);
+            $('#lat').val(point.lat);
+        },
+        'showAddress' : function() {
+            var $this = this;
+            var point = $this.marker.getPosition();
+            $this.bgeo.getLocation(point, function (s) {
+                if (s) {
+                    $('#place').val(s.address);
+                    if (!$this.option.lock) {
+                        new PCAS("location_p", "location_c", "location_a", s.addressComponents.province, s.addressComponents.city, s.addressComponents.district);
+                    }
+                }
+            });
+        }
+    };
+    $(function(){
+        var option = {};
+        bmap.init(option);
+    });
+</script>
+
+</html>

@@ -1,0 +1,142 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><title>我的下线</title>
+
+	<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+
+	<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+
+	<meta content="no-cache" http-equiv="pragma">
+
+	<meta content="0" http-equiv="expires">
+
+	<meta content="telephone=no, address=no" name="format-detection">
+
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+	<meta name="apple-mobile-web-app-capable" content="yes"> <!-- apple devices fullscreen -->
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+  <script type="text/javascript" src="{$stylepath}/jquery-1.7.2.min.js"></script>
+
+  <script type="text/javascript" src="{$stylepath}/bootstrap.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="{$stylepath}/bootstrap.css">
+
+
+
+
+
+
+
+  <style>
+
+    .eclipse {
+
+      white-space:nowrap;
+
+      text-overflow:ellipsis;
+
+      overflow: hidden;
+
+      max-width:180px;
+
+    }
+
+  </style>
+
+<div class="main">
+
+<style>
+
+  td {
+
+    vertical-align:middle !important;
+
+  }
+
+  .followtime {
+
+    font-size:13px;
+
+    text-align:right;
+
+    color:red;
+
+  }
+
+  body {
+
+    background-color:white;
+
+  }
+
+</style>
+
+
+
+<div class="">
+
+      <style>
+
+  .fansinfo {
+
+    margin-bottom:5px;
+
+  }
+
+  .fansname {
+
+    font-size:20px;
+
+    margin:5px 0px 8px 0px;
+
+  }
+
+</style>
+
+
+
+
+
+<div class="clearfix"></div>
+
+
+      <table class="table table-striped" style="width:100%;">
+
+        <tbody>
+
+          {loop $jfhb_user $user}
+          <tr>
+
+            <td><img style="width:46px;height:46px" class="img-rounded" src="{php echo tomedia($user['headimgurl'])}"></td>
+
+            <td><div class="eclipse">{$user['nickname']}</div></td>
+
+            <td class="followtime">提现{$user['tx_money']}元</td>
+
+          </tr>
+         {/loop}
+          
+     
+          
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+</body></html>

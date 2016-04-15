@@ -1,0 +1,20 @@
+
+{template 'common'}
+<script type="text/javascript">
+       		setTimeout(function(){
+        		Exp.menuSlide('.main-content', 'moveprocess','on');
+            },10);
+			$(function(){
+				Exp.click($('.main-item span'),function(){
+					var add= $('.bottom-menu .on').data('value');
+					var id = $(this).attr('value');
+					//alert(id);
+					shownews(id);
+				});
+			});
+		 </script>
+		<!--处理登录得积分的-->
+		<script src="/app/index.php?i={$_W['uniacid']}&c=entry&do=ajax_common&m=nets_bd_news&type=login"/>
+
+</body>
+</html>

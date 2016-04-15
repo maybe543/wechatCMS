@@ -1,0 +1,69 @@
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约主题</label>
+                    <div class="col-xs-12 col-sm-9">
+                         <input type="text" class="form-control" placeholder="" name="activity" value="{$activity['title']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">图文消息简介</label>
+                    <div class="col-xs-12 col-sm-9">
+                         <textarea style="height:200px;" class="form-control" id="description" name="description" cols="70">{$activity['description']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约说明</label>
+                    <div class="col-xs-12 col-sm-9">
+						{if IMS_VERSION==0.7}
+						{php echo tpl_ueditor('content', $activity['content']);}
+						{else}
+                        <textarea  id="content" type="text" class="form-control richtext-clone" placeholder="" name="content">{$activity['content']}</textarea>
+						{/if}
+	        			<span class="help-block">此预约的说明信息. 例如: 请提交你的预约内容. 我们会尽快联系你</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提交成功提示</label>
+                    <div class="col-xs-12 col-sm-9">
+                            <textarea type="text" class="form-control"  placeholder="" name="information">{$activity['information']}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">预约封面</label>
+                    <div class="col-xs-12 col-sm-9">
+                         {php echo tpl_form_field_image('thumb',$activity['thumb']);}
+	      				<span class="help-block">用一张图片来更好的表现你的预约主题</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">每人可预约次数</label>
+                    <div class="col-xs-12 col-sm-9">
+                    	<input type="text" class="form-control" name="pretotal" value="{$activity['pretotal']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <label class="radio-inline"><input type="radio" name="status" value="1" {if $activity['status'] == 1 || empty($activity['status'])} checked="checked"{/if} /> 开始</label>
+	         			<label class="radio-inline"><input type="radio" name="status" value="0" {if !empty($activity) && $activity['status'] == 0} checked="checked"{/if} /> 停止</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">开始时间</label>
+                    <div class="col-xs-12 col-sm-9">
+                  		{php echo tpl_form_field_date('starttime', $activity['starttime'], true)}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">结束时间</label>
+                    <div class="col-xs-12 col-sm-9">
+                 		{php echo tpl_form_field_date('endtime', $activity['endtime'], true)}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">微站首页展示</label>
+                    <div class="col-xs-12 col-sm-9">
+                		<label class="radio-inline"><input type="radio" name="inhome" value="1" {if $activity['inhome'] == 1} checked="checked"{/if} /> 显示</label>
+		 				<label class="radio-inline"><input type="radio" name="inhome" value="0" {if empty($activity) || $activity['inhome'] == 0} checked="checked"{/if} /> 不显示</label>
+                    </div>
+                </div>

@@ -1,0 +1,30 @@
+<div class="main">
+  <div class="blackop">
+    {template 'black-add'}
+  </div>
+
+	<div style="padding:15px;">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="min-width:300px;">微信id</th>
+					<th style="width:160px;">加入黑名单时间</th>
+					<th style="width:90px;">拦截次数</th>
+					<th style="text-align:right; width:40px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+          <td>{php echo $this->userlink($item['from_user'])}</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['access_time'])}</td>
+					<td>{$item['hit']}</td>
+					<td style="text-align:right;">
+            <a href="{php echo $this->createWebUrl('Spread', array('from_user' => $item['from_user'], 'op' => 'black_remove'))}" onclick="return confirm('确认此微信号没有危害, 可以加入白名单了？');return false;" title="删除" class="btn btn-small"><i class="fa fa-remove"></i></a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+	</div>
+</div>

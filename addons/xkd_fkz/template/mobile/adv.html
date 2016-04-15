@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>互粉朋友圈</title>
+    <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css"
+          media="screen, projection">
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/alert.js"></script>
+</head>
+<body style="background: #fff">
+{php $adv_headimg=tomedia($setting['adv_headimg']);}
+<div class="adv-head" {if !empty($adv_headimg)}style="background-image:url('{$adv_headimg}')"{/if}>
+    <div class="head-bar">
+        <a class="edit-adv-btn" href="{php echo $this->createMobileUrl('editAdv')}"></a>
+    </div>
+    <div class="adv-user">
+        <div class="username">{$wechat_user['nickname']}</div>
+        <div class="userheadimg">
+            <img src="{$wechat_user['avatar']}">
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="adv-list" style="margin-bottom: 70px">
+        {loop $adv_list $index $adv}
+        <div class="adv-item">
+            <div class="adv-headimg">
+                <img src="{$adv['headimgurl']}"><span class="level">{$adv['level']}</span>
+            </div>
+            <div class="adv-content">
+                <div class="adv-nickname">{$adv['nickname']}</div>
+                <div onclick="{if $adv['link']!=''} location.href='{$adv['link']}'{/if}">
+                    <p>{$adv['content']}</p>
+                    <div class="adv-img">
+                        <img src="{$adv['uploadimg']}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/loop}
+    </div>
+    {template 'navbar'}
+</div>
+</body>
+</html>

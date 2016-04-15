@@ -1,0 +1,335 @@
+{template 'common/header'}
+{php $_item=4;}
+{php $_itemp=0;}
+{template 'menu'}
+<script type="text/javascript" src="{JS_PATH}express.js"></script>
+<div class="main w98auto">
+
+
+<div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <a class="button" id="win" style="float:right;" href="javascript:;" d="add">添加记录</a>
+
+                <h2 class="title">订单详情 - {$cart['title']} {if $cart['card']['success']}(使用卡券){/if} {if $cart['ismerge']}(合并订单){/if}</h2>
+                <div class="clearfix"></div>
+                <hr/>
+                {php $delivery= value($setting,'delivery',true)}
+                {php $payrow= value($setting,'payrow',true)}
+                <div>
+                    会员信息：(UID:{$cart['userid']})
+                    <a href="{php echo urido('member')}&keyval={$cart['userid']}&keytype=userid">{$cart['wxname']}</a>
+                </div>
+                <div class="mod mod-rounded mod-bordered">
+                    <table class="table-form cartinfo">
+                        <tbody class="goods">
+                        {if $cart['ismerge']}
+                            {php $mergearr = string2array($cart['mergearr']);}
+                            {loop $mergearr $item}
+                                <tr>
+                                    <th width="100">购买商品:</th>
+                                    <td>
+                                        <a href="{php echo urido('goodslist')}&keyval={$item['goodsid']}&keytype=id">{$item['title']}</a>
+                                    </td>
+                                    <th width="100">商品属性:</th>
+                                    <td>{if $item['attr']}{php echo str_replace("<br/>","；",$item['attr'])}{else}无{/if}</td>
+                                </tr>
+                                <tr>
+                                    <th>购买单价:</th>
+                                    <td colspan="3">
+                                        ￥{php echo $item['price']} x {$item['number']}
+                                        = ￥{php echo $item['price']*$item['number']+$item['deliveryfare']}
+                                        {if $item['deliveryfare'] > 0}（含运费：￥{$item['deliveryfare']}）{/if}
+                                    </td>
+                                </tr>
+                                {php $Totalprice+=$item['price']*$item['number']+$item['deliveryfare'];$Totalnum+=$item['number'];}
+                            {/loop}
+                        {else}
+                            <tr>
+                                <th width="100">购买商品:</th>
+                                <td>
+                                    <a href="{php echo urido('goodslist')}&keyval={$cart['goodsid']}&keytype=id">{$cart['title']}</a>
+                                </td>
+                                <th width="100">商品属性:</th>
+                                <td>{if $cart['attr']}{php echo str_replace("<br/>","；",$cart['attr'])}{else}无{/if}</td>
+                            </tr>
+                            <tr>
+                                <th>购买单价:</th>
+                                <td colspan="3">
+                                    ￥{php echo $cart['price']} x {$cart['number']}
+                                    = ￥{php echo $cart['price']*$cart['number']+$cart['deliveryfare']}
+                                    {if $cart['deliveryfare'] > 0}（含运费：￥{$cart['deliveryfare']}）{/if}
+                                </td>
+                            </tr>
+                            {php $Totalprice+=$cart['price']*$cart['number']+$cart['deliveryfare'];$Totalnum+=$cart['number'];}
+                        {/if}
+                        <tr>
+                            <th colspan="4" style="border-right:1px solid #E1E8F3;text-align:center;">
+                                订单总计：￥{$Totalprice} ，
+                                数量：{$Totalnum}
+                                {if $cart['card']['success']}
+                                ， 使用卡券:：{$cart['card']['text']}
+                                {/if}
+                            </th>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <th>订单号:</th>
+                            <td>{$cart['ordernum']}<span style="display:none">({$cart['batch']})</span>&nbsp;</td>
+                            <th>订单状态:</th>
+                            <td>
+                                {php echo mallstatus($cart['status'])}
+                                {if $cart['status'] == "交易关闭" && $cart['canceltext']}
+                                （原因：{$cart['canceltext']}）
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>收货人:</th>
+                            <td>
+                                {if $address}
+                                    {if value($address, 'infobr')}
+                                        {if value($address, 'infotitle')}
+                                            （配送类型：{php echo value($address, 'infotitle')}）
+                                        {/if}
+                                        {php echo trim(str_replace('<br/>',' ， ',value($address, 'infobr')),' ， ')}
+                                    {else}
+                                        {php echo value($address, 'info')}
+                                        {if value($address, 'addr')}
+                                        ,   {php echo value($address, 'addr')}
+                                        {/if}
+                                    {/if}
+                                {/if}
+                                &nbsp;</td>
+                            <th>发货时间:</th>
+                            <td>
+                                {if $cart['status'] == "商家已发货" || $cart['status'] == "交易成功"}
+                                {php echo date('Y-m-d H:i:s', $cart['shipdate'])}
+                                {else}
+                                未发货
+                                {/if}
+                            </td>
+                        </tr>
+						{php $express= value($setting,'express',true)}
+						{if $express}
+						<tr>
+                            <th>物流公司:</th>
+                            <td>{if value($express, 'name')}{php echo value($express, 'name')}{else}无{/if}</td>
+                            <th>运单号码:</th>
+                            <td>{if value($express, 'number')}{php echo value($express, 'number')}{else}无{/if}</td>
+                        </tr>
+						{/if}
+                        {if $cart['message']}
+                        <tr>
+                            <th>购买留言:</th>
+                            <td colspan="3"><u>{$cart['message']}</u></td>
+                        </tr>
+                        {/if}
+                        <tr>
+                            <th>下单时间:</th>
+                            <td>{php echo date('Y-m-d H:i:s', $cart['indate'])}&nbsp;</td>
+                            <th>付款时间:</th>
+                            <td>
+                                {if $cart['paystatus'] == "已付款"}
+                                {php echo date('Y-m-d H:i:s', $cart['paydate'])}
+                                {else}
+                                未付款
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>配送方式:</th>
+                            <td>{php echo value($delivery, 'title')}</td>
+                            <th>支付方式:</th>
+                            <td>{php echo value($payrow, 'title')}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="orderbut">
+                        {if $cart['paystatus'] != "已付款" && $cart['status'] != "交易关闭"}
+                        <a href="javascript:;" id="win" d="pay" class="button">已付款</a>
+                        {/if}
+                        {if $cart['status'] == "待付款"}
+                        <a href="javascript:;" id="win" d="cancel" class="button">取消订单</a>
+                        {elseif $cart['status'] == "商家已确认"}
+                        <a href="javascript:;" id="win" d="ship" class="button">去发货</a>
+                        {elseif $cart['status'] == "等待商家确认"}
+                        <a href="javascript:;" id="win" d="confirm" class="button">确认订单</a>
+                        <a href="javascript:;" id="win" d="cancel" class="button">取消订单</a>
+                        {elseif $cart['status'] == "已付款"}
+                        <a href="javascript:;" id="win" d="ship" class="button">去发货</a>
+                        {elseif $cart['status'] == "商家已发货"}
+                        <a href="javascript:;" id="win" d="confirmrec" class="button">确认收货(买家)</a>
+                        {/if}
+
+                        {if value($goods, 'feiyinsetting')}
+                            <a href="javascript:;" id="win" d="print" class="button easy">无线打印</a>
+                        {/if}
+                        {php $printsetting = string2array($cart['printsetting'])}
+                        {php $lastdate_cn = value($printsetting, 'lastdate_cn')}
+                        {if $lastdate_cn}<p>(最后打印：{$lastdate_cn}，状态：{php echo value($printsetting, 'status')})</p>{/if}
+
+                    </div>
+
+                    <h2 class="title">操作记录</h2>
+                    <hr/>
+                    <div id="orderlist">
+                        <table class="table table-hover goodslist">
+                            <tbody class="goods">
+                            <tr>
+                                <td>操作备注</td>
+                                <td align="center" width="100">操作类型</td>
+                                <td align="center" width="100">用户可见</td>
+                                <td align="center" width="180">时间</td>
+                            </tr>
+                            </tbody>
+                            <tbody>
+                            {loop $lists $list}
+                            <tr>
+                                <td>
+                                    <a href="{php echo urido('delcartinfo')}&id={$list['id']}"
+                                       onClick="JavaScript:return confirm('确定删除并且不可恢复？')">[删]</a>
+                                    {php echo emotion($list['content'])}
+                                </td>
+                                <td align="center">{$list['type']}&nbsp;</td>
+                                <td align="center" class="visi">{if $list['visible']}可见{else}不可见{/if}</td>
+                                <td align="center">{php echo date('Y-m-d H:i:s', $list['indate'])}</td>
+                            </tr>
+                            {/loop}
+                            {if !$lists}
+                            <tr>
+                                <td colspan="4" align="center" class="align-center">
+                                    <div>无</div>
+                                </td>
+                            </tr>
+                            {/if}
+                            </tbody>
+                        </table>
+                        <div id="jspage">{$pager}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function _jspage(){
+        var eve = $('#jspage').find('a');
+        eve.each(function(index){
+            $(this).attr("data-url", $(this).attr("href"));
+            $(this).attr("href", "javascript:void(0);");
+            $(this).click(function(){
+                $.alert('正在加载...', 0);
+                $("#orderlist").load($(this).attr("data-url") + ' #orderlist > ', function() {
+                    $.alert(0);
+                    _jspage();
+                });
+            });
+        });
+    }
+    //
+    $(document).ready(function() {
+        _jspage();
+        //
+        $("a#win").click(function(){
+            var d = $(this).attr("d");
+            var _win = art.dialog({
+                lock: true,
+                opacity: '.3',
+                content: '<div id="wincontent">' +
+                        '操作记录：<br/><div class="col-sm-10" style="padding:0;width:100%">' +
+                        '<textarea name="content" id="wintextinput" class="form-control" cols="42" rows="3" placeholder="添加要回复的内容"></textarea>' +
+                        '<div class="help-block">' +
+                        '您还可以使用表情。' +
+                        '<a href="javascript:;" id="wintext"><i class="fa fa-github-alt"></i> 表情</a>' +
+                        '</div>' +
+                        '<div id="_isuser" style="display:none;"><label>' +
+                        '<input type="checkbox" class="check" id="visible" value="1" checked>是否会员可见' +
+                        '<label></div>' +
+                        '<div id="_ispay" style="display:none;"><label>' +
+                        '<input type="checkbox" class="check" id="paying" value="1">已经付款' +
+                        '<label></div>' +
+                        '<div id="_wxmsg" style="margin-top:5px;"><label>' +
+                        '<input type="checkbox" class="check" id="wxmsg" value="1" checked>微信通知会员' +
+                        '<label></div>' +
+                        '<div id="_express" style="display:none;"><input type="hidden" id="expresscode" autocomplete="off">' +
+                        '物流公司：<br/><input type="text" class="form-control" id="expressname" style="width:337px;margin-bottom:5px"><br/>' +
+                        '运单号码：<br/><input type="text" class="form-control" id="expressnumber" style="width:337px;"><br/>' +
+                        '*虚拟商品无物流信息请留空。' +
+                        '</div>' +
+                        '</div>',
+                button: [{
+                    name: '确定',
+                    callback: function () {
+                        var s = "dosubmit=1&type="+d+"&text="+$("#wintextinput").val()+"&visible="+$("#visible").is(":checked")+"&id={$cart['id']}";
+                        s+= "&paying="+$("#paying").is(":checked");
+                        s+= "&wxmsg="+$("#wxmsg").is(":checked");
+                        s+= "&expresscode="+$("#expresscode").val();
+                        s+= "&expressname="+$("#expressname").val();
+                        s+= "&expressnumber="+$("#expressnumber").val();
+                        $.ajax({
+                            type: "POST",
+                            url: "{php echo urido('putorder')}",
+                            data: s,
+                            dataType: "json",
+                            success: function (msg) {
+                                $.alert(msg.message);
+                                if (msg.success == "1"){
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    }, 2000);
+                                }
+                            },
+                            error: function (msg) {
+                                $.alert("提交错误！");
+                            }
+                        });
+                        return false;
+                    }
+                },{
+                    name: '取消',
+                    callback: function () {
+                        return true;
+                    }
+                }]
+            });
+            require(['jquery', 'util'], function($, u){
+                u.emotion($("#wintext"), $("#wintextinput")[0]);
+            });
+            //
+            if (d == "add") {
+                _win.title("添加操作记录");
+                $("#wincontent").find("#_isuser").show();
+            }else if (d == "pay") {
+                _win.title("确认买家已经付款");
+            }else if (d == "cancel") {
+                _win.title("取消订单");
+            }else if (d == "confirm") {
+                _win.title("确认订单");
+                $("#wincontent").find("#_ispay").show();
+            }else if (d == "ship") {
+                _win.title("订单发货-填写物流信息");
+                $("#wincontent").find("#_express").show();
+                $.expressUllist($("#expressname"), $("#expresscode"));
+            }else if (d == "print") {
+                _win.title("无线打印");
+                $("#wincontent").find("#_wxmsg").hide();
+            }else if (d == "confirmrec") {
+                _win.title("确认收货（此步骤是替买家的操作）");
+                $("#wincontent").find("#_isuser").show();
+            }else{
+                _win.close();
+            }
+        });
+        $("td.visi").each(function(){
+            if ($(this).text() == '不可见') {
+                $(this).css("color","#B7B1E4");
+            }
+        });
+    });
+</script>
+
+{template 'common/footer'}

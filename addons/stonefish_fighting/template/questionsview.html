@@ -1,0 +1,54 @@
+    <div class="table-responsive" style="height:300px;overflow-Y: auto; overflow-X:hidden;">
+		<table class="table" style="min-width:568px;">
+			<tbody>
+				<tr>
+					<td style="width:100px;">类型</td>
+					<td>{if $question['public']}公库{else}私库{/if}</td>
+				</tr>
+				<tr>
+					<td>分类</td>
+					<td>{$question['questiontype']}</td>
+				</tr>
+				<tr>
+					<td>问题</td>
+					<td>{$question['question']}</td>
+				</tr>
+				<tr>
+					<td>分值</td>
+					<td>{$question['figure']}</td>
+				</tr>
+				<tr>
+					<td>选项</td>
+					<td>{$question['option_num']}</td>
+				</tr>
+				<tr>
+					<td>选项A</td>
+					<td>{$question['optionA']}</td>
+				</tr>
+				<tr>
+					<td>选项B</td>
+					<td>{$question['optionB']}</td>
+				</tr>
+				<tr>
+					<td>选项C</td>
+					<td>{$question['optionC']}</td>
+				</tr>
+				<tr>
+					<td>选项D</td>
+					<td>{$question['optionD']}</td>
+				</tr>
+				<tr>
+					<td>选项E</td>
+					<td>{$question['optionE']}</td>
+				</tr>
+				<tr>
+					<td>选项F</td>
+					<td>{$question['optionF']}</td>
+				</tr>
+				<tr>
+					<td>正确答案</td>
+					<td>{if $question['optionAtrue']}A{/if}{if $question['optionBtrue']}B{/if}{if $question['optionCtrue']}C{/if}{if $question['optionDtrue']}D{/if}{if $question['optionEtrue']}E{/if}{if $question['optionFtrue']}F{/if}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>

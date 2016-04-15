@@ -1,0 +1,38 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li ><a href="{php echo $this->createWebUrl('money');}">文章管理</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('money', array('foo'=>'records', 'id'=>$article['id']));}">查看访问记录</a></li>
+</ul>
+<div class="clearfix">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            访问记录
+        </div>
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th style="width:90px;"></th>
+                    <th style="width:120px;">昵称</th>
+                    <th style="width:200px;">OPENID</th>
+                    <th style="width:160px;">访问时间</th>
+                </tr>
+                {loop $ds $row}
+                <tr>
+                    <td><img src="{if empty($row['avatar'])} resource/images/noavatar_middle.gif {else}{$row['avatar']}{/if}" alt="" width="64" class="img-rounded" /></td>
+                    <td>{$row['nickname']}</td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info">{$row['openid']}</span>
+                    </td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info" title="创建时间">{php echo date('Y-m-d H:i:s', $row['createtime']);}</span> <br>
+                    </td>
+                </tr>
+                {/loop}
+            </table>
+        </div>
+        <div class="panel-body text-right">
+            {$pager}
+        </div>
+    </div>
+</div>
+{template 'common/footer'}

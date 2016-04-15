@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>订单支付 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .otherask {background:#ffffff;margin:1em .6em;padding:5px;border-radius:2px;}
+        #A_orders { display: none;}
+        #A_payment { background:#ffffff; margin:1em .6em; padding:8px;}
+        #A_payment .item-title{margin-bottom:0.5em;}
+        #A_payment .item-content{ margin:0;}
+        #A_card { background: #55BD47; color: #ffffff; margin:1em .6em; padding:8px; display:none;}
+        #A_card .item-title{}
+        #A_card .item-content{ margin:0;}
+        #A_card.cardload {background:#B8B8B8;}
+        .mall_address{background:#ffffff;margin:1em .6em;padding:2px 0}
+        .mall_address>div{margin:0.5em 0.5em;position:relative}
+        .mall_address select{width:100%;height:32px;}
+        .mall_address .malladdress{padding:0 5px}
+        .mall_address .malladdress span{line-height:30px;}
+        .mall_address .malladdress select{width:auto;height:26px;min-width:80px;}
+        .mall_address .malladdress input{width:auto;height:22px;line-height:22px;padding:0 3px;border-radius:2px;border:1px solid #B4B4B4;}
+        #A_checkbar .buy-result {margin-top: 1.2em;}
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.form.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body data-view="{$mall_view}">
+<header class="top">
+    <h1>订单支付</h1>
+    <a class="back" href="javascript:history.go(-1);">返回</a>
+    <div class="right-s">
+        <a class="right-user" href="{php echo urwdo('user')}"></a>
+        <a class="right-home" href="{php echo urwdo('index')}"></a>
+    </div>
+</header>
+
+<div id="J_slider">
+    <form action="{php echo urwdo('buyok')}" id="saveform" method="post">
+        {if !$mall_address}
+        <div id="A_tddress" class="tm-block tddress bor0">
+            <div class="tddress-usr">
+                <span class="tm-title">收货信息:</span>
+                <span class="tm-content">
+                    <span id="tmadd-name">{php echo value($buyaddres,'name')}</span>
+                    <span id="tmadd-phone">{php echo value($buyaddres,'phone')}</span>
+                </span>
+            </div>
+            <a href="{php echo urwdo('address')}&buyid={$id}">
+                <div class="tddress-detail">
+                    <span class="tm-title">收货地址:</span>
+                    <span class="tm-content">{php echo value($buyaddres,'area_t')} {php echo value($buyaddres,'address')}</span>
+                    <span class="tm-nav tm-nav-right"></span>
+                </div>
+            </a>
+        </div>
+        {/if}
+        <input id="recinfo" name="recinfo" type="hidden" autocomplete="off"/>
+        <input id="recname" name="recname" type="hidden" autocomplete="off"/>
+        <input id="recphone" name="recphone" type="hidden" autocomplete="off"/>
+        <input id="recaddr" name="recaddr" type="hidden" autocomplete="off"/>
+
+        {if $mall_address}
+        <div class="mall_address">
+            <div class="item-title">{$mall_address_name}：</div>
+            <div class="item-content">
+                <span class="ui-select-container">
+                    <select class="ui-select promo-item" name="mall_address" onchange="_mall_address(this);">
+                        {loop $mall_address $list}
+                        <option value="{$list['id']}">{$list['title']}</option>
+                        {/loop}
+                    </select>
+                </span>
+            </div>
+            {php $fooi = 0}
+            {loop $mall_address $item}
+            {php $lsetting = string2array($item['setting'],true)}
+            <div class="malladdress" id="malladdress_{$item['id']}"{if $fooi>0} style="display:none;"{/if}>
+                {loop value($lsetting,'field',true) $list}
+                <div class="row">
+                    <span>{php echo malladdrfield($list, $addressz, $item['id'], "form_input")}</span>
+                    <div class="clear"></div>
+                </div>
+                {/loop}
+            </div>
+            {php $fooi++}
+            {/loop}
+            {/if}
+        </div>
+
+        <div id="A_delivery" class="other">
+            <div class="item-content">
+                <span class="ui-select-container">
+                    <select class="ui-select promo-item" id="delivery" name="delivery" onchange="_delivery(this);">
+                        <option value="">=请选择配送方式=</option>
+                        {loop $delivery $list}
+                        <option value="{$list['id']}" data-fare="{$list['fare']}">{$list['title']}{if $list['fare']>0} (￥{$list['fare']}){/if}</option>
+                        {/loop}
+                    </select>
+                </span>
+            </div>
+        </div>
+
+        <div id="A_payment" class="other" style="display: none;">
+            <div class="item-title">支付方式：</div>
+            <div class="item-content">
+                <span class="ui-select-container">
+                </span>
+            </div>
+        </div>
+
+        <div class="otherask">其他要求</div>
+        {loop $lists $list}
+        <div id="A_orders" class="tm-block orders bor0">
+            <header class="orders-title">订单详情</header>
+            <div class="item-content">
+                <a title="{$list['g']['title']}" class="item-img" href="{php echo urwdo('goods')}&id={$list['g']['id']}">
+                    <img data-mm="openitem_pic" height="50" src="{php echo toimage($list['c']['goodsimg'])}">
+                </a>
+                <div class="item-detail">
+                    <a data-mm="openitem_txt" class="item-title"
+                       title="{$list['g']['title']}" href="{php echo urwdo('goods')}&id={$list['g']['id']}">{$list['g']['title']}</a>
+                    <div class="item-price">
+                        <label>单价：</label>
+                        <span><span class="ui-price">¥</span><span id="unitprice">{$list['c']['price']}</span></span>
+                        <div class="price-amount">{$list['c']['number']} {php echo $this->cate_unit($list['unit'])}</div>
+                    </div>
+                    <div class="item-amount" data-id="{$list['c']['id']}">
+                        <label>数量：</label>
+                        <span class="tc-amount">
+                            <input type="number" id="amount" pattern="[0-9]*" autocomplete="off" class="tc-text amount"
+                                   data-num="{$list['c']['number']}" value="{$list['c']['number']}" onBlur="_plusnum(this);">
+                        </span>
+                    </div>
+                    {if $list['c']['attr']}
+                    <div class="item-sku">
+                        {$list['c']['attr']}
+                    </div>
+                    {/if}
+                    <div class="memo tm-high-block">
+                        <textarea class="ui-input" name="message_{$list['c']['id']}" placeholder="其他要求" maxlength="200"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/loop}
+
+        <div id="A_checkbar" class="tm-block checkbar ">
+            <div id="J_CheckbarMain" class="main" style="display:none;">
+                <div class="anony"><span class="tm-title">匿名购买</span><span class="tm-content"></span>
+                    <aside class="tm-nav">
+                        <div class="ui-bf-mask"></div>
+                        <input class="ui-checkbox use-anonymous-btn" name="anonymous" value="1" type="checkbox" checked>
+                    </aside>
+                </div>
+            </div>
+            <div class="border-bottom"></div>
+            <div id="A_card" class="other cardload">
+                <div class="item-title" id="chooseCard">卡包券：<span id="cardhtml">点击使用卡包券</span></div>
+                <input name="cardid" id="cardid" data-type="" data-least="" data-reduce="" value="" type="hidden">
+                <input name="encrypt_code" id="encrypt_code" value="" type="hidden">
+            </div>
+            <div class="buy-result">
+                <div class="tm-content">
+                    <div class="realPay" id="realPay_1">
+                        <p class="money">
+                            <span class="hd">总金额：</span>
+                            <span class="bd">
+                                <span class="tc-rmb">¥</span>
+                                <strong id="J_RealPay">00.00</strong>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="obtainedPoint">请确认总金额后提交订单</div>
+                </div>
+                <div class="tm-ext action">
+                    <div>
+                        <span id="submitOrder" data-mm="submit2" class="j_goBtn ui-btn-xl ui-btn btn-submit" title="提交订单">提交订单</span>
+                        <input type="hidden" name="dosubmit" value="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    function _mall_address(obj) {
+        var eve = $(obj);
+        if (eve.val() > 0) {
+            $(".malladdress").hide();
+            $(".malladdress").find("input,textarea,select").each(function(){
+                $(this).attr("name", "taboo_" + $(this).attr("name").replace(/taboo_/g, ""));
+            });
+            $("#malladdress_"+eve.val()).show();
+            $("#malladdress_"+eve.val()).find("input,textarea,select").each(function(){
+                $(this).attr("name", $(this).attr("name").replace(/taboo_/g, ""))
+            });
+        }
+    }
+    //选择配送方式
+    function _delivery(obj, async) {
+        if (async !== false) async = true;
+        $("#A_payment").hide();
+        var _val = $(obj).val();
+        if (!_val) return;
+        $.alert("请稍等...", 0, 1);
+        $.ajax({
+            type: "POST",
+            url: "{php echo urwdo('paymentsel')}&name=payment",
+            data: "id="+_val+"&num="+$("#J_RealPay").text(),
+            dataType: "html",
+            async: async,
+            success: function (data) {
+                if (data != ""){
+                    $("#A_payment").show().find("span").html(data);
+                    if ($("#A_payment").find("option").length > 1) {
+                        $("#A_payment").find("option:eq(0)").remove();
+                    }
+                }
+                $.alert(0);
+            },
+            error: function (msg) {
+                $.alert(0);
+            }
+        });
+        _realpay();
+    }
+    //计算总金额
+    function _realpay() {
+        var num = 0;
+        $("div#A_orders").each(function(){
+            num+= _Num($(this).find("#unitprice").text()) * _Num($(this).find("#amount").attr("data-num"));
+        });
+        num+= _Num($("#delivery").find("option:selected").attr("data-fare"));
+        $("#J_RealPay").text(num.toFixed(2));
+    }
+    //增加数量
+    function _plusnum(obj) {
+        var eve = $(obj);
+        var _id = _Num(eve.parent().parent().attr("data-id"));
+        var _idnum = _Num(eve.val());
+        if (_idnum == _Num(eve.attr("data-num"))) return;
+        if (_idnum == 0) {
+            eve.val(eve.attr("data-num"));
+            return;
+        }
+        $.alert("请稍等...", 0, 1);
+        $.ajax({
+            type: "POST",
+            url: "{php echo urwdo('plusnum')}",
+            data: "dosubmit=put&id="+_id+"&num="+_idnum,
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data.success != null && data.success) {
+                    eve.val(data.num).attr("data-num",data.num);
+                    _realpay();
+                    $.alert(0);
+                }else{
+                    $.alert(data.message);
+                    eve.val(eve.attr("data-num"));
+                }
+            },
+            error: function (msg) {
+                eve.val(eve.attr("data-num"));
+            }
+        });
+    }
+    //
+    function _Num(str) {
+        var _s = Number(str);
+        if (_s+"" == "NaN") {
+            _s = 0;
+        }
+        return _s;
+    }
+    $(document).ready(function() {
+        var __cate_status = '{php echo $this->cate_status()}';
+        if (__cate_status != '') { alert(__cate_status); }
+        //
+        _realpay();
+        _mall_address();
+        //
+        var _deli = $("select#delivery");
+        if (_deli.find("option").length == 2) {
+            _deli.find("option:eq(1)").attr("selected",true);
+            _delivery(_deli);
+            _deli.parents("#A_delivery").hide();
+        }else{
+            _deli.find("option:eq(0)").attr("selected",true);
+        }
+        //
+        $(".otherask").click(function(){
+            if ($(this).attr("data-show") == "1") {
+                $("div#A_orders").hide();
+                $(this).attr("data-show", "0");
+            }else{
+                $("div#A_orders").show();
+                $(this).attr("data-show", "1");
+            }
+        });
+        //
+        $("#submitOrder").click(function(){
+            $.alert("正在提交...", 0, 1);
+            {if !$mall_address}
+                $("#recinfo").val($(".tddress-usr .tm-content").text());
+                $("#recname").val($(".tddress-usr .tm-content #tmadd-name").text());
+                $("#recphone").val($(".tddress-usr .tm-content #tmadd-phone").text());
+                $("#recaddr").val($(".tddress-detail .tm-content").text());
+                if ($("#recinfo").val() == "" || $("#recaddr").val() == "" || $("#recname").val() == "" || $("#recphone").val() == "") {
+                    $.alertk("请选择收货信息！");
+                    return ;
+                }
+            {/if}
+            var dobj = $("select#delivery");
+            if (dobj.length > 0 && !_Num(dobj.val())){
+                $.alertk("请选择配送方式！");
+                return ;
+            }
+            if ($("select#payment").length <= 0) {
+                _delivery(dobj, false);
+            }
+            var pobj = $("select#payment");
+            if (pobj.length > 0 && !_Num(pobj.val())){
+                $.alertk("请选择支付方式！");
+                return ;
+            }
+            //卡包券
+            var cardidobj = $("#cardid");
+            if (cardidobj.val()) {
+                if (pobj.find("option:selected").attr("data-en") == "cash") {
+                    $.alertk("支付方式“" + pobj.find("option:selected").text() + "”不支持卡包券！");
+                    return ;
+                }
+                if (cardidobj.attr("data-type") == "CASH") {
+                    var least_cost = _Num(cardidobj.attr("data-least"));
+                    var reduce_cost = _Num(cardidobj.attr("data-reduce"));
+                    var paynum = _Num($("#J_RealPay").text());
+                    if (least_cost > 0 && (least_cost / 100) > paynum) {
+                        $.alertk("订单满"+(least_cost / 100)+"元才可以使用此代金券，请重新选择。");
+                        return ;
+                    }
+                    var _paynum = paynum - (reduce_cost / 100);
+                    if (_paynum <= 0) {
+                        $.alertk("订单总金额太低不可使用此代金券。");
+                        return ;
+                    }
+                }
+            }
+            setTimeout(function(){
+                $("#saveform").submit();
+            }, 200);
+
+        });
+    });
+</script>
+{if $this->reply['tmplmsg']['cardisopen']}
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    var jssdkconfig = {JSONJSSDKCONFIG} || {};
+    $(function(){
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {$("#A_card").show(); }
+        $("#chooseCard").click(function(){ $.alert("功能加载中..."); });
+        // 是否启用调试
+        jssdkconfig.debug = false;
+        //
+        jssdkconfig.jsApiList = [
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ];
+        wx.config(jssdkconfig);
+        wx.ready(function () {
+            $("#A_card").removeClass("cardload");
+			var cardidobj = $("#cardid");
+			cardidobj.val("");
+            //选择卡券
+            $('#chooseCard').unbind("click");
+            $("#chooseCard").click(function(){
+                //
+                if (cardidobj.val()) {
+                    $("#cardhtml").html("点击使用卡包券");
+                    cardidobj.val("");
+                }else{
+                    wx.chooseCard({
+                        cardSign: '{$cardSign}',
+                        timestamp: {php echo SYS_TIME},
+                        nonceStr: '{$nonceStr}',
+                        success: function (res) {
+                            //alert('此功能维护中...');
+                            var cinfo = JSON.parse(res.cardList);
+                            var cardid = cinfo[0]['card_id'];
+                            var encrypt_code = cinfo[0]['encrypt_code'];
+                            $("#encrypt_code").val(encrypt_code);
+                            $.alert("请稍等...",0,1);
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urwdo('card')}&op=info",
+                                dataType: "json",
+                                data: "cardid="+cardid+"&num="+$("#J_RealPay").text(),
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alert(0);
+                                        $("#cardhtml").html(msg.text);
+                                        cardidobj.attr("data-type", msg.type);
+                                        cardidobj.attr("data-least", msg.least);
+                                        cardidobj.attr("data-reduce", msg.reduce);
+                                        cardidobj.val(cardid);
+                                    }else{
+                                        $.alert(msg.message);
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alert("卡包券功能维护中...");
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+{/if}
+</body>
+</html>

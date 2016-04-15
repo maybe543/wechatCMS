@@ -1,0 +1,197 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-store,no-cache">
+    <meta name="Handheldfriendly" content="true">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>商家列表</title>
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/style/style1/static/css/css_1.css">
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/style/style1/static/css/reset.css">
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/style/style1/static/css/s.css">
+    <link rel="stylesheet" href="{MODULE_URL}template/mobile/style/style1/static/css/layer.css">
+    <script src="{MODULE_URL}template/mobile/style/style1/static/js/jquery-1.7.1.min.js"></script>
+    <script src="{MODULE_URL}template/mobile/style/style1/static/js/dp.js"></script>
+    <script src="{MODULE_URL}template/mobile/style/style1/static/js/layer.js"></script>
+    <script>
+    function bd_encrypt(gg_lat, gg_lon) // 百度地图测距偏差 问题修复
+    {
+        var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+        var x = gg_lon;
+        var y = gg_lat;
+        var z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+        var theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+        var bd_lon = z * Math.cos(theta) + 0.0065;
+        var bd_lat = z * Math.sin(theta) + 0.006;
+        dingwei("{php echo $this->createMobileUrl('business',array('op' => 'list'))}", bd_lat, bd_lon);
+    }
+    navigator.geolocation.getCurrentPosition(function(position) {
+        bd_encrypt(position.coords.latitude, position.coords.longitude);
+    });
+    </script>
+</head>
+
+<body>
+    <header>
+        <a href="{php echo $this->createMobileUrl('home')}"><i class="icon-goback"></i></a>
+        <div class="title">
+            <div class="box_search overflow_clear">
+                <a href="{php echo $this->createMobileUrl('business',array('op' => 'search'))}">
+                    <i></i> 输入商户名/关键词
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- 筛选TAB -->
+    <script>
+    $(function() {
+        $("#search-bar li").each(function(e) {
+            $(this).click(function() {
+                if ($(this).hasClass("on")) {
+                    $(this).parent().find("li").removeClass("on");
+                    $(this).removeClass("on");
+                    $(".serch-bar-mask").hide();
+                } else {
+                    $(this).parent().find("li").removeClass("on");
+                    $(this).addClass("on");
+                    $(".serch-bar-mask").show();
+                }
+                $(".serch-bar-mask .serch-bar-mask-list").each(function(i) {
+
+                    if (e == i) {
+                        $(this).parent().find(".serch-bar-mask-list").hide();
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                    $(this).find("li").click(function() {
+                        $(this).parent().find("li").removeClass("on");
+                        $(this).addClass("on");
+                    });
+                });
+            });
+        });
+    });
+    </script>
+    <div id="search-bar">
+        <ul>
+            <li style="width: 25%;"><span>分类</span><i></i></li>
+            <!-- <li style="width: 25%;"><span>地区</span><i></i></li> -->
+            <!-- <li style="width: 25%;"><span>排序</span><i></i></li> -->
+        </ul>
+    </div>
+    <div class="serch-bar-mask" style="display:none;">
+        <div class="serch-bar-mask-list">
+            <ul>
+                <li class="on">
+                    <a class=" "></a><a href="">全部分类</a></li>
+                <li><a style="color:red;" href="{php echo $this->createMobileUrl('business',array('op' => 'list'),true)}&parent='美食'">美食</a></li>
+                <li><a title="休闲娱乐" href="{php echo $this->createMobileUrl('business',array('op' => 'list'),true)}&parent='休闲娱乐'">休闲娱乐</a></li>
+                <li><a title="购物" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='丽人'">丽人</a></li>
+                <li><a title="结婚" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='结婚'">结婚</a></li>
+                <li><a title="亲子" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='亲子'">亲子</a></li>
+                <li><a title="运动健身" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='运动健身'">运动健身</a></li>
+                <li><a title="酒店" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='酒店'">酒店</a></li>
+                <li><a title="爱车" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='爱车'">爱车</a></li>
+                <li><a title="生活服务" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='生活服务'">生活服务</a></li>
+                <li><a title="其他" href="{php echo $this->createMobileUrl('business',array('op' => 'list'))}&parent='其他'">其他</a></li>
+            </ul>
+        </div>
+        <!-- <div class="serch-bar-mask-list">
+            <ul>
+                <li><a href="/mobile/shop/index/cat/1.html" class="on">全部地区</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/1.html">瑶海</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/2.html">新站</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/3.html">包河</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/4.html">政务</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/5.html">庐阳</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/6.html">蜀山</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/7.html">滨湖</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/8.html">高新</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/9.html">肥东</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/10.html">肥西</a></li>
+                <li class="down_menuList_li"><a href="/mobile/shop/index/cat/1/area/12.html">长丰</a></li>
+            </ul>
+        </div> -->
+        <!-- <div class="serch-bar-mask-list">
+            <ul>
+                <li><a href="/mobile/shop/index/cat/1.html" class="on">全部商圈</a></li>
+            </ul>
+        </div> -->
+        <!-- <div class="serch-bar-mask-list">
+            <ul>
+                <li><a href="">距离优先</a></li>
+                <li><a href="">推荐排序</a></li>
+            </ul>
+        </div> -->
+        <div class="serch-bar-mask-bg"></div>
+    </div>
+    <div id="app_nav" class="page-center-box" style="top: 0.9rem;">
+        <div id="scroll">
+            <!-- 列表 -->
+            <div class="list-have-pic">
+                <!-- <div class="list-box">
+                    <div class="list-img">
+                        <a class="pic" href="/mobile/shop/detail/shop_id/94.html"><img src="/attachs/2015/04/25/thumb_553b4a7c07b1f.jpg"></a>
+                    </div>
+                    <div class="list-content">
+                        <p>
+                            <a class="fl" title="太太满庭芳" href="/mobile/shop/detail/shop_id/94.html">太太满庭芳</a>
+                            <span class="range fr">135.12km</span>
+                        </p>
+                        <div class="clear"></div>
+                        <p class="c_h overflow_clear">瑶海区凤阳路8号（11中对面）</p>
+                        <div class="listBox_tag_box"></div>
+                        <a href="tel:13547444474">
+                            <div class="seller_tel_btn"></div>
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+            <script>
+            $(document).ready(function() {
+                loaddata("{php echo $this->createMobileUrl('business',array('op' => 'list'))}", $(".list-have-pic"), true);
+            });
+            </script>
+        </div>
+    </div>
+    <div id="loading" style="display: none;">
+        <div class="bao_loading" style="display: none;">正在加载中....</div>
+    </div>
+    <div class="blank">&nbsp;</div>
+    <div style="display: none;" class="topUp"></div>
+    <script>
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 100) {
+                $(".topUp").show();
+            } else {
+                $(".topUp").hide();
+            }
+        });
+        $(".topUp").click(function() {
+            $("html,body").animate({
+                scrollTop: 0
+            }, 200);
+        });
+    });
+    </script>
+    <iframe id="baocms_frm" name="baocms_frm" style="display:none;"></iframe>
+    <!--定义编辑器里的table属性开始-请勿删除！！！！-->
+    <style>
+    .li_table table {
+        width: 100%;
+        text-align: center;
+    }
+    
+    footer #jq_total {
+        width: auto;
+    }
+    </style>
+    <!--定义编辑器里的table属性结束-请勿删除！！！！-->
+    {template 'style/style1/footer'}
+</body>
+
+</html>

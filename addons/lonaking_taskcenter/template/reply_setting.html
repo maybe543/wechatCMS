@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		更多设置
+	</div>
+	<input type="hidden" name="id" value="{$config['id']}" />
+	<div class="panel-body">
+		<!-- 退出指令
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">退出指令</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" name="setting[out_cmd]"
+					value="{$settings['out_cmd']}" />
+				<span class="help-block">用户退出会话的指令，如果未设置则默认为“退出”</span>
+			</div>
+		</div> -->
+		<!-- 退出提示语 
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">退出提示</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" name="setting[out_msg]"
+					value="{$settings['out_msg']}" />
+				<span class="help-block">用户退出会话后的提示，默认为“您已经成功退出”</span>
+			</div>
+		</div>
+		-->
+		<!-- 超时时间设置
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">超时时间</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input type="number" name="setting[timeout]" class="form-control"  value="{$settings['timeout']}" />
+					<span class="input-group-addon">秒</span>
+				</div>
+				<span class="help-block">当用户在话题中未发表内容，并达到此选项设置的时间时，用户自动被踢出话题。</span>
+			</div>
+		</div>
+		 -->
+		<!-- 回复时间设置
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">回复时间</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input type="number" class="form-control" name="setting[re_time]"
+						value="{$settings['re_time']}" />
+					<span class="input-group-addon">秒</span>	
+				</div>
+				<span class="help-block">用户可以在指定时间内回复姓名，系统会自动生成对应的祝福语，默认60s</span>
+			</div>
+		</div> -->
+
+		<!-- 欢迎语 -->
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">欢迎内容设置</label>
+			<div class="col-sm-9">
+				<textarea name="setting[welcome_message]" class="form-control richtext" cols="100" value="{$settings['welcome_message']}">{$settings['welcome_message']}</textarea>
+				<span class="help-block">当用户触发命令的时候，给用户的提示。链接请这样设置<span class="alert-warning">'<@ href="$url">欢迎进入猪八戒任务中心</a>'(@请替换成'a')</span>,系统会自动识别并设置关键词url</span>
+			</div>
+		</div>
+
+		<!-- 回复用户主题图像 
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">回复主题图像</label>
+			<div class="col-sm-9">
+				{php echo tpl_form_field_image('data[news_image]', $settings['news_image']);}
+				<span class="help-block">此图像为回复用户图文消息的图像，建议大小600*350</span>
+			</div>
+		</div>-->
+		
+	</div>
+</div>
+<script type="text/javascript">
+
+</script>
+

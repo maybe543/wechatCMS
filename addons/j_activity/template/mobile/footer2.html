@@ -1,0 +1,48 @@
+		{if empty($footer_off)}
+			<div class="text-center footer" style="margin:10px 0; padding-bottom:60px; width:100%; text-align:center; word-break:break-all;">
+				{if !empty($_W['page']['footer'])}
+					{$_W['page']['footer']}
+				{else}
+					{if IMS_FAMILY != 'x'}<a href="#">&copy;云浮捷讯设计</a>{/if}
+				{/if}
+				&nbsp;&nbsp;{$_W['setting']['copyright']['statcode']}
+			</div>
+		{/if}
+		{if !empty($_W['quickmenu']['menus']) && empty($_W['quickmenu']['disabled'])}
+			<?php include_once template($_W['quickmenu']['template'], TEMPLATE_INCLUDEPATH);?>
+		{/if}
+		<script>require(['bootstrap']);</script>
+	</div>
+	<style>
+		h5{color:#555;}
+	</style>
+<script>
+
+_showMenu=parseInt("{php echo $_showMenu}");
+wx.ready(function () {
+	sharedata = {
+		title: "{$item['title']}",
+		desc: "{$item['description']}",
+		link: "{$_W['siteurl']}",
+		imgUrl:"{$_W['attachurl']}{$item['clientpic']}",
+		success: function(){
+			//alert('success');
+		},
+		cancel: function(){
+			//alert('cancel');
+		}
+	};
+	wx.onMenuShareAppMessage(sharedata);
+	wx.onMenuShareTimeline(sharedata);
+	wx.onMenuShareQQ(sharedata);
+	wx.onMenuShareWeibo(sharedata);
+	//是否显示按钮
+	if(!_showMenu){
+		wx.showOptionMenu();
+	}else{
+		wx.hideOptionMenu();
+	}
+});
+</script>
+</body>
+</html>

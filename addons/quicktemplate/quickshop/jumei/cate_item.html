@@ -1,0 +1,16 @@
+<li>
+
+<a href="{php echo $this->createMobileUrl('List2', array('pcate' => $item['id']))}">
+  <div class="product-info clear">
+    <div class="product-img fl" style="height:auto;">
+      <img class="lazy-load deal-img" data-url="{$_W['attachurl']}{$item['thumb']}" />
+    </div>
+    <div class="fl product-desc">
+      <div class="product-name">
+        <span class="discount">{$item['name']} / </span>
+        {$item['description']}
+      </div>
+    </div>
+  </div>
+</a>
+</li>

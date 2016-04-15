@@ -1,0 +1,94 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="" ><a href="{php echo $this->createWebUrl('list')}">直播列表</a></li>
+	<li class="active" ><a href="{php echo $this->createWebUrl('zhibolist',array('zhiboid' =>$zhiboid))}">图文直播详细列表</a></li>
+</ul>
+<div class="main">
+<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="" method="get" class="form-horizontal" role="form" id="form1">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="bobo_zhibo">
+				<input type="hidden" name="do" value="zhibolist">
+				<input type="hidden" name="zhiboid" value="{$zhiboid}" />
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">文字</label>
+					<div class="col-sm-8 col-lg-9 col-xs-12">
+						<input class="form-control" name="keyword" id="" type="text" value="" placeholder="可查询文字">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">创建时间</label>
+					<div class="col-sm-4 col-xs-12">
+<script type="text/javascript">
+	require(["daterangepicker"], function($){
+		$(function(){
+			$(".daterange.daterange-date").each(function(){
+				var elm = this;
+				$(this).daterangepicker({
+					startDate: $(elm).prev().prev().val(),
+					endDate: $(elm).prev().val(),
+					format: "YYYY-MM-DD"
+				}, function(start, end){
+					$(elm).find(".date-title").html(start.toDateStr() + " 至 " + end.toDateStr());
+					$(elm).prev().prev().val(start.toDateStr());
+					$(elm).prev().val(end.toDateStr());
+				});
+			});
+		});
+	});
+</script>
+	<input name="time[start]" type="hidden" value="{$start}">
+	<input name="time[end]" type="hidden" value="{$end}">
+	<button class="btn btn-default daterange daterange-date" type="button" data-original-title="" title=""><span class="date-title">{$start} 至 {$end}</span> <i class="fa fa-calendar"></i></button>
+						</div>
+					<div class="col-sm-4 col-xs-12">
+						<button class="btn btn-default" data-original-title="" title=""><i class="fa fa-search"></i> 搜索</button>
+						<button type="button" class="btn btn-default" data-original-title="" title="">总记录数：{$total}</button>
+					</div>
+				</div>
+				<div class="form-group">
+				</div>
+			</form>
+		</div>
+	</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				图文直播列表
+			</div>
+			<div class="panel-body">
+			<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th align="center" style="width:20px;text-align:center;">ID</th>						
+                    <th align="center" style="width:150px;text-align:center;">图片</th>
+                    <th align="center" style="width:150px;text-align:center;">视频</th>
+                    <th align="center" style="width:150px;text-align:center;">音频</th>
+					<th align="center" style="width:150px;text-align:center;">文字</th>
+					<th align="center" style="width:60px;text-align:center;">创建时间</th>
+					<th align="center" style="width:100px;text-align:center;">评论列表</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $row}
+					<tr>		
+						<td align="center" style="text-align:center;">{$row['id']}</td>
+                        <td align="center" style="text-align:center;">{if $row['zhibo_picurl']}<img src="{$row['zhibo_picurl']}" width="100" />{else}无图片{/if}</td>
+                        <td align="center" style="text-align:center;">{if $row['zhibo_shipin']}{$row['zhibo_shipin']}{else}无视频{/if}</td>
+                        <td align="center" style="text-align:center;">{if $row['zhibo_yinpin']}{$row['zhibo_yinpin']}{else}无音频{/if}</td>
+                        <td align="center" style="text-align:center;">{$row['wenzi']}</td>
+						<td align="center" style=" text-align:center;">{php echo date('Y-m-d H:i',$row['create_at'])}</td>
+						<td align="center" style="text-align:center;">
+						<a href="{php echo $this->createWebUrl('chakan',array('tuwenid' =>$row['id']))}"><button class="btn btn-default" >查看</button></a>
+						</td>
+					</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+			</div>
+		</div>
+</div>
+{template 'common/footer'}

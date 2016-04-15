@@ -1,0 +1,244 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+
+<ul class="nav nav-tabs">
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news">营销设置</a></li>
+    <li class="active"><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadset&m=nets_bd_news">站点设置</a></li>
+	<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadprice&m=nets_bd_news">广告价格</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadlist&m=nets_bd_news">广告管理</a></li>
+</ul>
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">分享设置</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">缩略图</label>
+					<div class="col-sm-8 col-xs-12">
+						
+					
+					<div class="form-group">
+						{php load()->func('tpl')}
+						{php echo tpl_form_field_image('share_img',$record['share_img'])}
+						
+					</div>
+									
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea name="share_title" class="form-control">{$record['share_title']}</textarea>
+						<div class="help-block">分享到朋友圈的标题 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-3 col-sm-3 col-md-2 control-label">分享描述</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea name="share_desc" class="form-control">{$record['share_desc']}</textarea>
+						<div class="help-block">分享到朋友圈的描述 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">引导关注设置</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">图标</label>
+					<div class="col-sm-8 col-xs-12">
+					{php echo tpl_form_field_image('follow_ico',$record['follow_ico'])}				
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">引导标题</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea name="follow_title" class="form-control">{$record['follow_title']}</textarea>
+						<div class="help-block">引导访客关注的标题 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">引导URL</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea name="follow_url" class="form-control">{$record['follow_url']}</textarea>
+						<div class="help-block">引导关注公众号的url地址 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">微信支付设置</div>
+			<div class="panel-body">	
+				<div id="certs" style="">
+					<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">商户ID</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="mchid" style="max-width:350px;" maxlength="10" class="form-control" value="{$record['mchid']}">
+						<div class="help-block">微信支付的商户mchid ，用来给会员提现打款用  </div>
+					</div>
+					</div>
+                     <div class="form-group" style="display:none;">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">CERT证书文件</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="file" name="weixin_cert_file" class="form-control"/>
+                            <span class="help-block">
+							<span class="label label-danger">{if $iscert==1}已上传{else}未上传{/if}</span>
+                            下载证书 cert.zip 中的 apiclient_cert.pem 文件
+							</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">KEY密钥文件</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="file" name="weixin_key_file" class="form-control">
+                            <span class="help-block">
+                                <span class="label label-danger">{if $iskey==1}已上传{else}未上传{/if}</span>
+                                下载证书 cert.zip 中的 apiclient_key.pem 文件
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label class="col-xs-12 col-sm-3 col-md-2 control-label">ROOT文件</label>
+                        <div class="col-sm-9 col-xs-12">
+                            <input type="file" name="weixin_root_file" class="form-control">
+                            <span class="help-block">
+                                <span class="label label-danger">{if $isca==1}已上传{else}未上传{/if}</span>
+                                下载证书 cert.zip 中的 rootca.pem 文件 
+                            </span>
+                        </div>
+                    </div>
+					<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商户支付证书</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="cert" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_cert.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付证书私钥</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="key" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_key.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付根证书</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="ca" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>rootca.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+                </div>
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">广告设置</div>
+			<div class="panel-body">	
+				<script>
+					function showdiv(id){
+						if(id=="head1" || id=="head2"){
+							$(".adhead1").hide();
+							$(".adhead2").hide();
+						}else{
+							$(".adfoot1").hide();
+							$(".adfoot2").hide();
+						}
+						$(".ad"+id).show();
+					}
+				</script>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">详细页头部广告</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="radio" name="adhead_1" value="1" {if !empty($record['list_ad_top'])} checked="checked" {/if} onclick="showdiv('head1');" />图文广告
+						<input type="radio" name="adhead_1" value="2" {if empty($record['list_ad_top'])} checked="checked" {/if} onclick="showdiv('head2');" />第三方广告
+					</div>
+				</div>
+				<div class="form-group adhead1" id="ad_1">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="list_ad_top" class="form-control" value="{$record['list_ad_top']}"></input>
+						<div class="help-block">广告标题 </div>
+					</div>
+				</div>
+				
+				<div class="form-group adhead1" id="ad_2">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">广告图片</label>
+					<div class="col-sm-8 col-xs-12">
+						{php echo tpl_form_field_image('list_ad_middle',$record['list_ad_middle'])}		
+					</div>
+				</div>
+				<div class="form-group adhead1" id="ad_3">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="list_ad_bottom" class="form-control" value="{$record['list_ad_bottom']}"></input>
+						<div class="help-block">广告链接 </div>
+					</div>
+				</div>
+				<div class="form-group adhead2" id="ad_3" style="display:none;">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="list_ad_bottom111" style="display:none;" class="form-control">{$record['list_ad_bottom']}</textarea>
+						{php echo tpl_ueditor('list_ad_bottom1', $record['list_ad_bottom']);}
+						<div class="help-block">新闻详细页头部广告,第三方脚本广告 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">详细页底部广告</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="radio" name="adfoot_1" {if !empty($record['detail_ad_top'])} checked="checked" {/if} value="1"  onclick="showdiv('foot1');" />图文广告
+						<input type="radio" name="adfoot_1" value="2"{if empty($record['detail_ad_top'])} checked="checked" {/if}  onclick="showdiv('foot2');" />第三方广告
+					</div>
+				</div>
+				<div class="form-group adfoot1" id="ad_1">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="detail_ad_top" class="form-control" value="{$record['detail_ad_top']}"></input>
+						<div class="help-block">广告标题 </div>
+					</div>
+				</div>
+				<div class="form-group adfoot1" id="ad_2">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">广告图片</label>
+					<div class="col-sm-8 col-xs-12">
+						{php echo tpl_form_field_image('detail_ad_middle',$record['detail_ad_middle'])}
+										
+					</div>
+				</div>
+				<div class="form-group adfoot1" id="ad_3">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="detail_ad_bottom" class="form-control" value="{$record['detail_ad_bottom']}"></input>
+						<div class="help-block">广告链接 </div>
+					</div>
+				</div>
+				<div class="form-group adfoot2" id="ad_3" style="display:none;">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="detail_ad_bottom333" style="display:none;" class="form-control">{$record['detail_ad_bottom']}</textarea>
+						{php echo tpl_ueditor('detail_ad_bottom1', $record['detail_ad_bottom']);}
+						<div class="help-block">新闻详细页底部广告,第三方脚本广告 </div>
+					</div>
+				</div>
+			</div>
+			<?php 
+			if(!empty($record['list_ad_top'])){?>
+					<script>showdiv('head1');</script>
+			<?php }else{ ?>
+			<script>showdiv('head2');</script>
+			<?php}?>
+			
+			<?php 
+			if(!empty($record['detail_ad_top'])){?>
+					<script>showdiv('foot1');</script>
+			<?php }else{ ?>
+			<script>showdiv('foot2');</script>
+			<?php}?>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

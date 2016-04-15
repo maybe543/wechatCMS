@@ -1,0 +1,161 @@
+{template 'common'}
+<input type="hidden" name="reply_id" value="{$reply['id']}" />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        直播入口封面参数设置
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 封面标题</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="title" class="form-control" placeholder="" name="title" value="{$reply['title']}">
+            </div>
+        </div>
+ 		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 封面图片</label>
+            <div class="col-sm-9 col-xs-12">
+               	{php echo tpl_form_field_image('start_picurl',$reply['start_picurl']);}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 描述</label>
+            <div class="col-sm-9 col-xs-12">
+               	<textarea style="height:60px;" id='description' name="description" class="form-control" cols="60">{$reply['description']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        直播设置
+    </div>
+    <div class="panel-body">
+    	<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>标题</label>
+            <div class="col-sm-9 col-xs-12">
+               		<input type="text" id="zhibo_title" class="form-control" placeholder="" name="zhibo_title" value="{$reply['zhibo_title']}">
+                                       <div class="help-block">直播页面标题</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>直播简介</label>
+            <div class="col-sm-9 col-xs-12">
+               		<input type="text" id="zhibo_jianjie" class="form-control" placeholder="" name="zhibo_jianjie" value="{$reply['zhibo_jianjie']}">
+                                       <div class="help-block">直播简单介绍</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>直播顶部图片设置</label>
+            <div class="col-sm-9 col-xs-12">
+               		{php echo tpl_form_field_image('zhibo_picurl',$reply['zhibo_picurl']);}
+                                       <div class="help-block">直播简介顶部图片设置</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>直播logo设置</label>
+            <div class="col-sm-9 col-xs-12">
+               		{php echo tpl_form_field_image('zhibo_logo',$reply['zhibo_logo']);}
+                                       <div class="help-block">直播logo设置</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 直播类型选择</label>
+            <div class="col-sm-9 col-xs-12">
+                <label class="radio-inline">
+				  <input type="radio" name="zhibo_type"  value="1"> 图文直播
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="zhibo_type" value="2"> 视频直播
+				</label>
+				<div class="help-block">直播类型选择，可以选择图文直播或者视频直播！</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>直播人数设置</label>
+            <div class="col-sm-9 col-xs-12">
+               		<input type="text" id="renshu" class="form-control" placeholder="" name="renshu" value="{$reply['renshu']}">
+                                       <div class="help-block">例如: 300，直播显示人数300</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 直播人数浮动设置</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="fudong" class="form-control" placeholder="" name="fudong" value="{$reply['fudong']}">
+				<div class="help-block">例如设置直播显示人数为300，浮动人数为20，则显示人数为280-320！</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        分享设置
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="share_title" class="form-control" placeholder="" name="share_title" value="{$reply['share_title']}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享地址</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="share_url" class="form-control" placeholder="" name="share_url" value="{$reply['share_url']}">
+                	<div class="help-block">分享的链接，推荐用微信平台的素材库，转成短地址。<a target="_blank" href="http://www.dwz.cn/">短网址转换</a></div>
+            </div>
+        </div>
+         <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"> 分享图片</label>
+            <div class="col-sm-9 col-xs-12">
+               	{php echo tpl_form_field_image('share_img',$reply['share_img']);}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享描述</label>
+            <div class="col-sm-9 col-xs-12">
+     	<textarea style="height:60px;" id='share_desc' name="share_desc" class="form-control" cols="60">{$reply['share_desc']}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script language='javascript'>
+   $('form').submit(function(){
+   if($("#title").isEmpty()){
+		Tip.focus("title","请输入封面标题!","right");
+		return false;
+   }
+   if($("#description").isEmpty()){
+	   Tip.focus("description","请输入封面描述!","right");
+		return false;
+   }
+	   if($("#zhibo_title").isEmpty()){
+			Tip.focus("zhibo_title","请输入直播标题!","right");
+			return false;
+	  }
+	  if($("#zhibo_jianjie").isEmpty()){
+		   Tip.focus("zhibo_jianjie","请输入直播简介!","right");
+			return false;
+	  }
+	  var zhibotype=$('input[name="zhibo_type"]:checked').val();
+	  if(zhibotype==undefined){
+		  alert("直播类型未选择");return false;
+	  }
+   var reg = /^\d+(?=\.{0,1}\d+$|$)/
+   var renshu=$('#renshu').val();
+   var fudong=$('#fudong').val();
+	if(!reg.test(renshu)){
+		Tip.focus("renshu","请输入正确正数!","right");
+		 return false;
+	}
+	if(fudong){
+		if(!reg.test(fudong)){
+			Tip.focus("fudong","非空时请输入正数!","right");
+			 return false;
+		}
+	}
+   return true;
+});
+</script>
+

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-share-callback="{$urls['share_callback']}" data-send-result-url="{$urls['send_result_url']}" data-activity-id="{$activity['id']}" data-check-limit-url="{$urls['check_limit_url']}" data-follow-url="{$urls['follow_url']}" data-follow="{$html['follow']}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+    <title>来自{$html['from_player']['nickname']}的求助</title>
+    <link href="resource/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../addons/lonaking_super_question/template/mobile/share-assets/share.css">
+    <link href="../addons/lonaking_super_question/template/mobile/css/help-index.css" rel="stylesheet">
+    <link href="../addons/lonaking_super_question/template/mobile/font/iconfont.css" rel="stylesheet">
+    <script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="resource/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/js/index.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/share-assets/share-guide.js"></script>
+    <link rel="stylesheet" href="../addons/lonaking_super_question/template/mobile/assets/confirm/jquery-confirm.min.css">
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/assets/confirm/jquery-confirm.min.js"></script>
+</head>
+<body>
+<div id="mcover" onclick="hideShare()" style="display:none;">
+    <img src="share-assets/guide.png" />
+</div>
+<div class="fakeloader"></div>
+    <div class="container">
+        <div class="rule-context option" style="display: none;">
+            <h2 class="rule-title text-center">规则说明</h2>
+            <article class="rule-content">
+
+            </article>
+            <div class="alert alert-warning opacity50 alert-dismissable text-center rule-back-tip">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                </button>
+                点击返回继续答题
+            </div>
+            <div class="col-lg-12">
+                <div class="copyright text-center">
+                    <div class="">&copy; {$activity['copyright']}</div>
+                </div>
+            </div>
+        </div>
+        <div class="index option" style="display: block;">
+            <div class="help-index">
+                <div class="source-user text-center">
+                    <img src="{$html['from_player']['headimgurl']}" class="img-circle">
+                    <p class="source-nickname">{$html['from_player']['nickname']}</p>
+                </div>
+                <div class="help-content">
+                    <article class="help-message">
+                        {$html['help_message']}
+                    </article>
+                </div>
+                <button type="button" class="btn btn-primary start-button"><i class="glyphicon glyphicon-heart"></i>&nbsp;&nbsp;&nbsp;开始帮他答题&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-heart"></i></button>
+            </div>
+        </div>
+        {loop $html['questions'] $q}
+        <div class="question option" style="display: none;" data-question-id="{$q['id']}" data-score="{$q['score']}" data-descore="{$q['de_score']}" data-bg-pic="{php echo tomedia($q['bg_pic'])}">
+            <div class="row {if $q['pic']}show{else}hide{/if}">
+                <div class="pic">
+                    <img src="{php echo tomedia($q['pic'])}" {if $html['config']['question_image_height']}height="250px"{/if}>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="question-title">{$q['title']}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'a'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option" >A.</span><span class="">{$q['option_a']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'b'}1{else}0{/if}">
+                    <div class="panel-body ">
+                        <span class="option">B.</span><span class="">{$q['option_b']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {if $q['option_c']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'c'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">C.</span><span class="">{$q['option_c']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+                {if $q['option_d']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'd'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">D.</span><span class="">{$q['option_d']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+                {if $q['option_e']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'e'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">E.</span><span class="">{$q['option_e']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="question-ad">
+                        {if $q['ad']}<a href="{$q['ad']['url']}"><img src="{php echo tomedia($q['ad']['image'])}" width="100%" height="80px"></a>{/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/loop}
+        <div class="last-page option" style="display: none;" data-question-id="">
+            <div class="result-score text-center">
+                <span class="score"></span>分
+            </div>
+            <div class="result-analyse">
+                <div class="help-result-context text-center">
+                    <article class="help-result-context-desc">
+                        <i class="glyphicon glyphicon-heart"></i><i class="glyphicon glyphicon-heart"></i><i class="glyphicon glyphicon-heart"></i>&nbsp;恭喜你帮助{$html['from_player']['nickname']}赢得<span class="score"></span>分!&nbsp;<i class="glyphicon glyphicon-heart"></i><i class="glyphicon glyphicon-heart"></i><i class="glyphicon glyphicon-heart"></i>
+                    </article>
+                </div>
+            </div>
+            <div class="restart-game text-center">
+                <p class="desc">挑战全部题目获得更多积分</p>
+                <a href="{$urls['start_game']}" type="button" class="btn btn-primary btn-sm btn-block start-new-game">
+                    开始挑战
+                </a>
+            </div>
+            <div class="gift-shop-ad text-center">
+                {if $html['config']['gift_shop_logo']}
+                <span class="tip-line">--本次答题获得<span class="score"></span>分，用时<span id="second"></span>秒点击下面兑换礼品--</span>
+                <a href="{$html['config']['gift_shop_url']}"> <img src="{php echo tomedia($html['config']['gift_shop_logo'])}"></a>{/if}
+            </div>
+            <div class="col-lg-12">
+                <div class="copyright text-center">
+                    <div class="">&copy; {$activity['copyright']}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="footer" style="display: none;">
+        <table width="100%" height="100%" border="0" style="border-collapse: collapse;">
+            <tr>
+                <td align="center"><span id="answered-count">0</span><br>
+                    已答题目</td>
+                <td align="center"><span id="question-count">{$html['question_count']}</span><br>
+                    题目总数</td>
+                <td align="center"><span id="time-count">0</span>秒<br>
+                    答题用时
+                </td>
+            </tr>
+        </table>
+    </nav>
+</body>
+</html>

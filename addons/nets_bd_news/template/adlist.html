@@ -1,0 +1,111 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news">营销设置</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadset&m=nets_bd_news">站点设置</a></li>
+	<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadprice&m=nets_bd_news">广告价格</a></li>
+    <li class="active"><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadlist&m=nets_bd_news">广告管理</a></li>
+</ul>
+{if $_GPC['op']=='add'}
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">广告投放管理</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">名称</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="name" class="form-control" value="{$record['name']}">
+						<div class="help-block">分类的名称 </div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">描述</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="remark" class="form-control">{$record['remark']}</textarea>
+						<div class="help-block">分类描述 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">导航菜单</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline"><input type="radio" name="ismenu" value="1" {if $record["ismenu"]==1}checked="checked"{/if}>是</label>
+						<label class="radio-inline"><input type="radio" name="ismenu" value="0" {if $record["ismenu"]==0}checked="checked"{/if}>否</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否隐藏</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline"><input type="radio" name="ishide" value="1"  {if $record["ishide"]==1}checked="checked"{/if}>是</label>
+						<label class="radio-inline"><input type="radio" name="ishide" value="0" {if $record["ishide"]==0}checked="checked"{/if}>否</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="hidden" name="id" value="{$record['id']}"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+{/if}
+{if $_GPC['op']=='display'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        广告投放管理
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+			<tbody>
+				{loop $record $ad}
+				<tr>
+                    <td style="white-space: inherit;">
+						<div class="media" style="margin:5px;">
+													<figure class="pull-left post__img">
+														<a href='{$ad["ad_url"]}' target="blank">
+														{if !empty($ad["picture"])}
+														<img src='/attachment/adpicture/{$ad["picture"]}' width="60"/>
+														{elseif !empty($ad["ad_script"])}
+														<span style="color:red;">第三方广告</span>
+														{else}
+														文字广告
+														{/if}
+														</a>
+													</figure>
+													<div class="media-body post_desc">
+															<a href='{$ad["ad_url"]}' target="blank">
+															{if !empty($ad["title"])}
+															{$ad["title"]}
+															{elseif !empty($ad["ad_script"])}
+															<span style="color:red;">第三方广告</span>
+															{else}
+															图片广告
+															{/if}
+															</a>
+														<p>点击：{$ad["click_num"]} 次</p>
+														<p>作者：{$ad["realname"]}</p>
+														<p>状态：{if $ad["state"]==0}无效{/if}{if $ad["state"]==1}正常{/if}</p>
+														<p>时间：{php echo date('Y-m-d', $ad['createtime'])}</p>
+														<p>
+															<a href="/web/index.php?c=site&a=entry&op=off&do=Hxsadlist&m=nets_bd_news&id={$ad['id']}" class="btn btn-primary " title="">
+															{if $ad["state"]==1}无效{else}有效{/if}
+															</a>
+															<a onclick="return confirm('确定要删除此广告吗？删除后将无法恢复！');" href="/web/index.php?c=site&a=entry&op=del&do=Hxsadlist&m=nets_bd_news&id={$ad['id']}" class="btn btn-primary" title="" data-original-title="点此删除广告">删除</a>
+														</p>
+													</div>
+													
+													</div></td>
+                    
+					
+                </tr>
+				{/loop}
+				</tbody>
+        </table>
+		{$pager}
+    </div>
+</div>
+{/if}
+</div>
+{template 'common/footer'}

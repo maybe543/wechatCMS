@@ -1,0 +1,83 @@
+<style>
+body{background:#f2f2f2;}
+.pay-detail{background:#0d95eb; padding:20px 10px; font-size:20px; color:#FFF;}
+.pay-detail > div{overflow:hidden; margin-bottom:10px;}
+.pay-detail .pull-left{color:#bad8f6;}
+.pay-detail .ordernum{color:#fff44a;}
+.pay-detail .fee{color:#fff44a;}
+
+.pay-way{padding:10px; margin-bottom:20px; overflow:hidden;}
+.pay-way > div{float:left; width:50%; padding:5px 0; border:1px #F2F2F2 solid; margin-bottom:10px; text-align:center; color:#999; cursor:pointer;}
+.pay-way > div i{display:block; font-size:30px;}
+.pay-way > div span{display:block; font-size:16px; margin-top:5px;}
+.pay-way > div.active{border-color:#0d95eb; color:#0079ff;}
+
+.pay-btn{padding:10px;}
+.pay-btn .btn{width:100%; margin-bottom:10px;}
+.pay-btn .btn-warning{background:#ffbf12; border-color:#eeab09;}
+.pay-btn .btn-default{background:#FFF; border-color:#e5e5e5;}
+</style>
+<div class="pay-detail">
+	<div>
+		<span class="pull-left">订单号</span>
+		<span class="pull-right ordernum">{$params['ordersn']}</span>
+	</div>
+	<div>
+		<span class="pull-left">商家名称</span>
+		<span class="pull-right">{$params['title']}</span>
+	</div>
+  <div>
+    <span class="pull-left">支付金额</span>
+		<span class="pull-right fee">{php echo sprintf('%.2f', $params['fee']);}<span class="muted"> 元</span></span>
+	</div>
+</div>
+<div class="pay-way">
+
+	{if !empty($_W['account']['payment']['wechat']['switch'])}
+	<div id="wechat">
+		<i class="icon-credit-card"></i>
+		<span>微信支付</span>
+	</div>
+	{/if}
+	{if !empty($_W['account']['payment']['delivery']['switch'])}
+	<div id="delivery">
+		<i class="icon-truck"></i>
+		<span>货到付款</span>
+	</div>
+	{/if}
+
+</div>
+<div id="panel">
+	{if !empty($_W['account']['payment']['wechat']['switch'])}
+	<div class="pay-btn" id="wechat-panel">
+		<form action="{php echo create_url('mobile/cash/wechat', array('weid' => $_W['weid']));}" method="post">
+			<input type="hidden" name="params" value="{php echo base64_encode(json_encode($params));}" />
+			<button class="btn btn-warning btn-lg" type="submit" id="wBtn" value="wechat">微信支付(必须使用微信内置浏览器)</button>
+		</form>
+	</div>
+	<script type="text/javascript">
+		document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+			$('#wBtn').removeAttr('disabled');
+			$('#wBtn').html('微信支付');
+		});
+	</script>
+  {/if}
+	{if !empty($_W['account']['payment']['delivery']['switch'])}
+	<div class="pay-btn" id="delivery-panel" style="display:none;">
+		<form action="" method="post">
+		<input type="hidden" name="token" value="{$_W['token']}" />
+		<button type="submit" name="deliverysubmit" value="yes" class="btn btn-warning btn-lg">货到付款</button>
+		</form>
+	</div>
+	{/if}
+</div>
+
+<script type="text/javascript">
+<!--
+	$('.pay-way div').click(function(){
+		$(this).attr('class', 'active').siblings().attr('class', '');
+		$('#panel div').hide();
+		$('#'+this.id+'-panel').show();
+	});
+//-->
+</script>

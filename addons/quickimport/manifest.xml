@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.012wz.com" versionCode="0.5,0.51">
+	<application setting="true">
+		<name><![CDATA[平台数据导入]]></name>
+		<identifie><![CDATA[quickimport]]></identifie>
+		<version><![CDATA[1.0.001]]></version>
+		<type><![CDATA[services]]></type>
+		<ability><![CDATA[人人赚数据导入]]></ability>
+		<description><![CDATA[其它分销平台数据导入！]]></description>
+		<author><![CDATA[人人分销]]></author>
+		<url><![CDATA[]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="false" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="百家数据导入" do="ImportBaijia" />
+		</menu>
+  </bindings>
+	<install><![CDATA[
+	]]></install>
+	<uninstall><![CDATA[
+	]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

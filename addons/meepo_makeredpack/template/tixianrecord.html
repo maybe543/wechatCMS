@@ -1,0 +1,95 @@
+{template 'common/header'}
+<script type="text/javascript" src="../addons/meepo_makeredpack/template/jquery-1.7.2.min.js"></script>
+<script>
+	function selectall(obj, name){
+		$('input[name="'+name+'[]"]:checkbox').each(function() {
+			$(this).attr("checked", $(obj).attr('checked') ? true : false);
+		});
+	}
+</script>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('tixianrecord', array('id' => $id))}">提现记录</a></li>
+	<li><a href="{php echo $this->createWebUrl('record', array('id' => $id))}">领取记录</a></li>
+	<li><a href="{php echo $this->createWebUrl('user', array('id' => $id))}">会员列表</a></li>
+	<li ><a href="{php echo $this->createWebUrl('adv',array('id'=>$id,'op' =>'display'))}">广告列表</a></li>
+	<li><a>已经发放总金额: <font color=red>{php echo $all/100}</font>元  | 已经提现总金额: <font color=red>{php echo $tixian/100}</font>元 | 待提现总金额: <font color=red>{php echo $daitixian/100}</font>元</a><li>
+</ul>
+<div class="panel panel-info">
+	<div class="panel-heading">
+	筛选
+	
+	</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="meepo_makeredpack" />
+			<input type="hidden" name="do" value="record" />
+			<input type="hidden" name="id" value="{$id}" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">粉丝昵称</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<input class="form-control" name="nickname" id="" type="text" value="{$_GPC['nickname']}" placeholder="请输入粉丝昵称">
+				</div>
+			</div>
+			<div class="form-group">
+			    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"></label>
+				<div class=" col-xs-12 col-sm-2 col-lg-3">
+					<input type="submit"  value="搜索" class="btn btn-success btn-block" />
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<div class="panel-body">
+		<div class="main" id="table-list">
+			<form action="" method="post" onsubmit="">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead class="navbar-inner">
+						<tr>
+						    <th>选？</th>
+							<th>用户<i></i></th>
+							<th class="row-hover" >提现金额<i></i></th>
+							<th class="row-hover" >提现状态<i></i></th>
+							<th >提现时间<i></i></th>
+						</tr>
+						</thead>
+						<tbody>
+						{loop $list $row}
+						<tr>
+						<td><input type="checkbox" name="messageid[]" value="{$row['id']}" class=""></td>
+							<td class="row-hover">
+								<img width="50" src="{$row['headimgurl']}" class="avatar" />
+								<div class="mainContent">
+									<div class="nickname">{$row['nickname']}</div>
+								</div>
+							</td>
+							<td style="color:red">
+								{php echo $row['fee']/100}元
+							</td>
+							<td style="color:red">
+								已提现
+							</td>
+							<td >
+							  {php echo date('Y-m-d H:i:s',$row['createtime'])}
+							</td>
+						</tr>
+						{/loop}
+						<tr>
+						<td><input type="checkbox" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});"></td>
+				        <td>
+						<input name="token" type="hidden" value="{$_W['token']}" />
+						<input type="submit" class="btn btn-success" name="deletefans" value="删除数据" />
+                       </td>
+				       </tr>
+						</tbody>
+					</table>
+					
+					{$pager}
+				</div>
+			</form>
+		</div>
+	</div>
+{template 'common/footer'}

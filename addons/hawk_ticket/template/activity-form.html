@@ -1,0 +1,153 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    {if empty($activity['id'])}
+    <li class="active"><a href="{php echo $this->createWebUrl('activity', array('foo'=>'create'));}">新增活动</a></li>
+    {else}
+    <li class="active"><a href="{php echo $this->createWebUrl('activity', array('foo'=>'modify', 'id'=>$activity['id']));}">编辑活动</a></li>
+    {/if}
+</ul>
+<div class="clearfix">
+    <form id="theform" class="form form-horizontal" action="" method="post" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 活动基本信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">活动标题</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="title" value="{$activity['title']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">活动描述</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="description" value="{$activity['description']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">票据封面</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('shareimg', $activity['shareimg'])}
+                        <span class="help-block">显示在列表页，图片大小建议70＊100，分享时同样用此图片</span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">单页图片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('singleimg', $activity['singleimg'])}
+                        <span class="help-block">当选择展示类型为单页图片时必填写</span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动内容</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea style="height:150px;" class="richtext-clone" name="content">{$activity['content']}</textarea>
+                        <span class="help-block">当选择展示类型为普通网页时必填，对活动详细描述</span>
+                    </div>
+                    <script type="text/javascript">
+                        require(['jquery', 'util'],function($, util){
+                            window.editor = util.editor($('.richtext-clone')[0]);
+                        })
+                    </script>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">展示类型</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label for="isshow6" class="radio-inline"><input type="radio" name="extype" value="0" id="isshow6"  {if $activity['extype'] == 0}checked="true"{/if} /> 普通网页</label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="isshow7" class="radio-inline"><input type="radio" name="extype" value="1" id="isshow7" {if $activity['extype'] == 1}checked="true"{/if} />单页图片 </label>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动状态</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label for="isshow1" class="radio-inline"><input type="radio" name="status" value="0" id="isshow1"  {if $activity['status'] == 0}checked="true"{/if} /> 正常</label>
+                        &nbsp;&nbsp;&nbsp;
+                        <label for="isshow2" class="radio-inline"><input type="radio" name="status" value="1" id="isshow2" {if $activity['status'] == 1}checked="true"{/if} />冻结 </label>
+                        <span class="help-block">冻结后的活动用户无法访问的</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">主办单位</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="author" value="{$activity['author']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">初始浏览量</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="viewnums" value="{$activity['viewnums']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">产品名称</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="proname" value="{$activity['proname']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">总票数</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="tlimit" value="{$activity['tlimit']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">可刷票次数</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="scantimes" value="{$activity['scantimes']}"/>
+                        <span class="help-block">用于分多次验票的情况，比如3天展会每次进入都要验票</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">门票价格</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="fee" value="{$activity['fee']}"/>
+                        <span class="help-block">价格可以为小数如8.88(元)</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动时间</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_daterange('time', $time, true)}
+                        <span class="help-block">活动的时间范围, 其他时间将不能访问</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">活动地点</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="text" name="place" value="{$activity['place']}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span class="text-danger">*</span> 核销会员组</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <select class="form-control" multiple="multiple" name="group[]">
+                            {if $group}
+                            {loop $group $li}
+                            <option value="{$li['groupid']}" {if $li['groupid_select'] == '1'}selected{/if}>{$li['title']}</option>
+                            {/loop}
+                            {/if}
+                        </select>
+                        <span class="help-block">每个活动对应一个核销会员组，请先在微擎粉丝管理中建立好相应会员组，将有审核权限的会员拉进会员组即可</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input type="submit" value="保存" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+{template 'common/footer'}

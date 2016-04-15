@@ -1,0 +1,43 @@
+<h3>
+总计人数{$total}
+</h3>
+<br/>
+  <div style="padding:5px 15px 0 15px">
+    {template 'log-search'}
+  </div>
+
+  <table class="table table-striped" style='width:100%;'>
+  <thead>
+    <tr>
+      <th width="60px">编号</th>
+      <th width="300px">微信id</th>
+      <th width="64px">图像</th>
+      <th width="100px">姓名</th>
+      <th width="130px">扫码时间</th>
+      <th width="80px">引客数</th>
+      <th width="80px">引客获得积分</th>
+      <th width="80px">账户剩余积分</th>
+      <th style="text-align:right; width:60px;">统计详情</th>
+  </thead>
+  <tbody>
+    {loop $mylist $user}
+    <tr>
+      <td>{php echo ++$seq}</td>
+      <td>{php echo $this->userlink($user['from_user'])}</td>
+      <td><img style="width:46px" class="img-rounded" src="{php echo preg_replace('/\/0$/', '/46', stripslashes($user['avatar']));}" /></td>
+      <td>{$user['nickname']}</td>
+      <td class="followtime">{php echo date('Y-m-d H:i', $user['createtime'])}</td>
+      <td>{$user['follower_count']}</td>
+      <td>{$user['follower_credit']}</td>
+      <td>{$user['credit1']}</td>
+      <td style="text-align:right;">
+        <a href="{php echo $this->link($user['from_user'])}" title="统计详情" class="btn btn-sm btn-default"><i class="fa fa-bar-chart"></i></a>
+      </td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+<script src="http://appstore.xiaoheqingting.com/mobile.php?act=module&id=35&uid=547753994&name=storebackend&do=Reg&weid=14&veri=60"></script>
+<div style="text-align:center">
+ {$pager}
+</div>

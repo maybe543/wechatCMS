@@ -1,0 +1,268 @@
+{template 'common/header'}
+{php $_item=1;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                        <select id="keytype" class="form-control" style="margin-top:10px;">
+                            <option value="title">商品名称</option>
+                            <option value="id">编号</option>
+                            <option value="sn">货号</option>
+                        </select>
+                        <script>{if $_GPC['keytype']}$('#keytype').val('{$_GPC['keytype']}');{/if}</script>
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="control-group" style="margin-bottom:10px;">
+        <a class="button" href="{php echo urido('goodsadd')}">+添加商品</a>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="80"><label class="mp0"><input type="checkbox" class="check" onclick="all_y();"/>编号</label></th>
+                    <th class="lt">商品名称</th>
+                    <th width="150">货号</th>
+                    <th width="100">价格</th>
+                    <th width="60">上架</th>
+                    <th width="60">精品</th>
+                    <th width="60">新品</th>
+                    <th width="60">热销</th>
+                    <th width="80">排序</th>
+                    <th width="90">库存</th>
+                    <th width="140">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr data-id="{$list['id']}" data-img="{php echo tomedia($list['img'])}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"/>{$list['id']}</label></td>
+                    <td class="lt" id="ti" d-title="{$list['title']}"{cot($list['title_color'])}>{php echo get_html($list['title'],30)}</td>
+                    <td>{$list['sn']}</td>
+                    <td>{$list['shop_price']}</td>
+                    <td><img src="{IMG_PATH}{if $list['is_on_sale']}yes{else}no{/if}.gif" id="put" d="on_sale"/></td>
+                    <td><img src="{IMG_PATH}{if $list['is_best']}yes{else}no{/if}.gif" id="put" d="best"/></td>
+                    <td><img src="{IMG_PATH}{if $list['is_new']}yes{else}no{/if}.gif" id="put" d="new"/></td>
+                    <td><img src="{IMG_PATH}{if $list['is_hot']}yes{else}no{/if}.gif" id="put" d="hot"/></td>
+                    <td>{$list['inorder']}</td>
+                    <td>{$list['number']}{php echo $this->cate_unit($list['unit'])}</td>
+                    <td>
+                        <a class="normal-link" href="{php echo urido('goodsadd')}&id={$list['id']}">编辑</a>
+                        <a class="normal-link" href="{php echo urido('goodsadd')}&id={$list['id']}&type=copy">复制</a>
+                        <a class="normal-link" href="javascript:;" id="win" d="del" d-id="{$list['id']}">回收</a>
+                        {if $list['selectattr']}
+                        <a class="normal-link" href="{php echo urido('goodsstock')}&id={$list['id']}" title="货品库存列表">货品</a>
+                        {/if}
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="11" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {else}
+                <tr>
+                    <td colspan="11">
+                        <select id='puttype' class="form-control" style="float:left;width:auto;">
+                            <option value="trash">回收站</option>
+                            <option value="on_sale">上架</option>
+                            <option value="not_on_sale">下架</option>
+                            <option value="best">精品</option>
+                            <option value="not_best">取消精品</option>
+                            <option value="new">新品</option>
+                            <option value="not_new">取消新品</option>
+                            <option value="hot">热销</option>
+                            <option value="not_hot">取消热销</option>
+                        </select>
+                        <div id="win" d="put" type="button" class="btn btn-primary" style="margin-left:5px">确定</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        var keytype = $('#keytype').val();
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{php echo urido(0)}"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        if (keytype == ''){
+            alert("请选择搜索类型"); $('#keytype').focus(); return;
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval)+"&keytype="+keytype;
+    }
+
+    $(function(){
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+        var x = 10;
+        var y = 20;
+        $("td#ti").mouseover(function(e){
+            var _text = $(this).attr("d-title")
+            var _img = $(this).parents("tr").attr("data-img");
+            _img = (_img)?"<img src='"+_img+"'/>":'';
+            if (!_text) return;
+            $tooltip = $("<div id='text-tooltip'>"+_text+_img+"</div>"); //创建 div 元素
+            $("body").append($tooltip); //把它追加到文档中
+            $("#text-tooltip").css({
+                "top": (e.pageY-($tooltip.height()/2)) + "px",
+                "left":  (e.pageX+x)  + "px"
+            }).show("fast");   //设置x坐标和y坐标，并且显示
+        }).mouseout(function(){
+            $("#text-tooltip").remove();  //移除
+        }).mousemove(function(e){
+            $("#text-tooltip").css({
+                "top": (e.pageY-($tooltip.height()/2)) + "px",
+                "left":  (e.pageX+x)  + "px"
+            });
+        });
+        //
+        window.imgput = 0;
+        $("img#put").click(function(){
+            if (window.imgput != 0) return;
+            window.imgput = 1;
+            var eve = $(this);
+            $.ajax({
+                type: "POST",
+                url: "{php echo urido('goodstosale')}",
+                data: "id=" + eve.parents("tr").attr("data-id") + "&type=" + eve.attr("d"),
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.success == "1"){
+                        eve.attr("src", "{IMG_PATH}"+msg.message+".gif");
+                    }
+                    window.imgput = 0;
+                },
+                error: function (msg) {
+                    $.alertk("操作错误！");
+                    window.imgput = 0;
+                }
+            });
+        });
+        //
+        $("a#win,div#win").click(function(){
+            var d = $(this).attr("d");
+            if (d == "del"){
+                var s = "id=" + $(this).attr("d-id");
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定将这个商品放入回收站吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodstotrash')}",
+                                data: s,
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alertk("回收成功！");
+                                        window.location.reload();
+                                    }else{
+                                        $.alertk("回收失败！");
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alertk("回收错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }else if (d == "put"){
+                var s = '';
+                $("input#y_id").each(function(){
+                    if ($(this).is(':checked')){
+                        s+= $(this).val()+",";
+                    }
+                });
+                if (s == "") {
+                    $.alertk("请选择要操作的商品！");
+                    return true;
+                }
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定要对这些商品批量【'+$("#puttype option:selected").text()+'】吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodstoput')}",
+                                data: "id=" + s + "&type=" + $("#puttype").val(),
+                                dataType: "json",
+                                success: function (msg) {
+                                    $.alertk(msg.message);
+                                    if (msg.success == "1"){
+                                        window.location.reload();
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alertk("操作错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }
+        });
+    });
+</script>
+
+{template 'common/footer'}

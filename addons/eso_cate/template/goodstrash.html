@@ -1,0 +1,275 @@
+{template 'common/header'}
+{php $_item=1;}
+{php $_itemp=2;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                        <select id="keytype" class="form-control" style="margin-top:10px;">
+                            <option value="title">商品名称</option>
+                            <option value="id">编号</option>
+                            <option value="sn">货号</option>
+                        </select>
+                        <script>{if $_GPC['keytype']}$('#keytype').val('{$_GPC['keytype']}');{/if}</script>
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="80"><label class="mp0"><input type="checkbox" class="check" onclick="all_y();"/>编号</label></th>
+                    <th class="lt">商品名称</th>
+                    <th width="150">货号</th>
+                    <th width="100">价格</th>
+                    <th width="140">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr data-id="{$list['id']}" data-img="{php echo tomedia($list['img'])}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"/>{$list['id']}</label></td>
+                    <td class="lt" id="ti" d-title="{$list['title']}"{cot($list['title_color'])}>{php echo get_html($list['title'],20)}</td>
+                    <td>{$list['sn']}</td>
+                    <td>{$list['shop_price']}</td>
+                    <td>
+                        <a class="normal-link" href="javascript:;" id="win" d="rest" d-id="{$list['id']}">还原</a>
+                        <a class="normal-link" href="javascript:;" id="win" d="del" d-id="{$list['id']}">删除</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="5" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {else}
+                <tr>
+                    <td colspan="5">
+                        <div id="win" d="restall" class="btn btn-primary" >还原选中</div>
+                        <div id="win" d="delall" class="btn btn-primary" style="margin-left:8px;">彻底删除</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        var keytype = $('#keytype').val();
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{php echo urido(0)}"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        if (keytype == ''){
+            alert("请选择搜索类型"); $('#keytype').focus(); return;
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval)+"&keytype="+keytype;
+    }
+
+    $(function(){
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+        $("a#win,div#win").click(function(){
+            var d = $(this).attr("d");
+            if (d == "del"){
+                var s = "id=" + $(this).attr("d-id");
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定将这个商品删除并且不可恢复吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodsdel')}",
+                                data: s,
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alert("删除成功！");
+                                        window.location.reload();
+                                    }else{
+                                        $.alert("删除失败！");
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alert("删除错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }else if (d == "delall"){
+                var s = '';
+                $("input#y_id").each(function(){
+                    if ($(this).is(':checked')){
+                        s+= $(this).val()+",";
+                    }
+                });
+                if (s == "") {
+                    $.alert("请选择要删除的商品！");
+                    return true;
+                }
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定将这些商品删除并且不可恢复吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodsdel')}",
+                                data: "id=" + s,
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alert("删除成功！");
+                                        window.location.reload();
+                                    }else{
+                                        $.alert("删除失败！");
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alert("删除错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }else if (d == "rest"){
+                var s = "id=" + $(this).attr("d-id");
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定将这个还原到商品列表吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodsrest')}",
+                                data: s,
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alert("还原成功！");
+                                        window.location.reload();
+                                    }else{
+                                        $.alert("还原失败！");
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alert("还原错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }else if (d == "restall"){
+                var s = '';
+                $("input#y_id").each(function(){
+                    if ($(this).is(':checked')){
+                        s+= $(this).val()+",";
+                    }
+                });
+                if (s == "") {
+                    $.alert("请选择要还原的商品！");
+                    return true;
+                }
+                art.dialog({
+                    lock: true,
+                    opacity: '.3',
+                    content: '确定将这些还原到商品列表吗？',
+                    button: [{
+                        name: '确定',
+                        callback: function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "{php echo urido('goodsrest')}",
+                                data: "id=" + s,
+                                dataType: "json",
+                                success: function (msg) {
+                                    if (msg.success == "1"){
+                                        $.alert("还原成功！");
+                                        window.location.reload();
+                                    }else{
+                                        $.alert("还原失败！");
+                                    }
+                                },
+                                error: function (msg) {
+                                    $.alert("还原错误！");
+                                }
+                            });
+                            return false;
+                        }
+                    },{
+                        name: '取消',
+                        callback: function () {
+                            return true;
+                        }
+                    }]
+                });
+            }
+        });
+    });
+</script>
+
+{template 'common/footer'}

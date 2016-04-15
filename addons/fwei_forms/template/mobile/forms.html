@@ -1,0 +1,121 @@
+{template 'common/header'}
+<link href="{MODULE_URL}images/style.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    .intors img{ max-width: 100%;}
+</style>
+<div class="container">
+    <div class="lead_box" id="success_box" {if $forms_status == ''} style="display:none;"{/if}>
+        <img width="100%" src="{MODULE_URL}images/success.jpg">
+        <div class="success_info">{$forms_status}</div>
+        <center><a href="javascript:void(0);" onclick="WeixinJSBridge.call('closeWindow');" class="btn btn-primary">返回微信</a></center>
+    </div>
+    {if $forms_status == ''}
+    <form action="" class="form-horizontal form" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$forms['rid']}">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <input type="hidden" name="submit" value="submit" />
+        <div class="lead_box" id="step_1">
+            <h6>{$forms['title']}</h6>
+            <div class="lead_content intors">
+                {$forms['content']}
+            </div>
+            <center><a href="###" class="btn btn-primary" id="go2">马上开始</a></center>
+        </div>
+        <div class="lead_box" id="step_2" style="display:none;">
+            <h6>{$forms['title']}</h6>
+            <div class="lead_content">
+                {loop $attrs $row}       
+                <div class="form-group">
+                    <label class="col-xs-12 item-label">{$row['title']}:</label>
+                    <div class="col-xs-12">
+                    {if $row['type'] == 'text'}
+                    <input type="text" name="submit_data[{$row['attr_id']}]" value="{$row['defvalue']}" class="form-control {if $row['is_must']}required{/if}" />
+                    {elseif $row['type'] == 'textarea'}
+                    <textarea name="submit_data[{$row['attr_id']}]" class="form-control {if $row['is_must']}required{/if}" cols="70" rows="5">{$row['defvalue']}</textarea>
+                    {elseif $row['type'] == 'radio'}
+                        {loop $row['extra'] $erow}
+                            <label class="inpbox">
+                                <input type="radio" value="{$erow}" name="submit_data[{$row['attr_id']}]" {if $row['defvalue']==$erow}checked{/if}> {$erow}
+                            </label>
+                        {/loop}
+                    {elseif $row['type'] == 'checkbox'}
+                        {loop $row['extra'] $erow}
+                            <label class="inpbox">
+                                <input type="checkbox" value="{$erow}" name="submit_data[{$row['attr_id']}][]" {if $row['defvalue']==$erow}checked{/if}> {$erow}
+                            </label>
+                        {/loop}
+                    {elseif $row['type'] == 'select'}
+                        <select name="submit_data[{$row['attr_id']}]" class="form-control {if $row['is_must']}required{/if}">
+                        {loop $row['extra'] $erow}
+                            <option value="{$erow}"  {if $row['defvalue']==$erow}selected{/if}>{$erow}</option>
+                        {/loop}
+                        </select>
+                    {elseif $row['type'] == 'date'}
+                        {php echo tpl_form_field_date('submit_data['.$row['attr_id'].']', $row['defvalue'], false);}
+                    {elseif $row['type'] == 'datetime'}
+                        {php echo tpl_form_field_date('submit_data['.$row['attr_id'].']', $row['defvalue'], true);}
+                    {elseif $row['type'] == 'images'}
+                    	<input type="file" name="submit_data[{$row['attr_id']}]" value="" class="{if $row['is_must']}required{/if}" />
+					{else}
+                    {/if}
+                    {if $forms['show_desc'] && $row['description']!=''}
+                        <span class="help-block">{$row['description']}</span>
+                    {/if}
+                    </div>
+                </div>
+                {/loop}
+                
+            </div>
+            <center><a href="###" class="btn btn-primary" id="dosave">提交</a></center>
+        </div>
+    </form>
+    {/if}
+</div>
+<div id="bgDiv" style="background:#000; width:100%; height:100%; position:absolute; top:0; left:0; opacity:0.5; -moz-opacity:0.5; padding-top:50%; text-align:center; display:none;z-index:9999;"">
+<p style=" position:absolute; bottom:20%; left:48%; padding:0px; margin:0px ">
+正在提交...
+</p>
+</div>
+{template 'common/footer'}
+<script language="javascript" src="{MODULE_URL}images/jquery.form.js"></script>
+<script type="text/javascript">
+require(['jquery'], function($){
+        $("#go2").on('click', function(){
+            $("#step_1").hide();
+            $("#step_2").show();
+        });
+        $(".form").ajaxForm({
+            type: "POST",
+            url: $(".form").attr('action'),
+            dataType: 'json',
+            error: function(request) {
+            	console.log(request);
+                alert("出现问题了。麻烦告诉我们一声！\n" + request.responseText);
+                $("#bgDiv").hide();
+            },
+            success: function(data) {
+                if( data.s == '200' ){
+                    $(".form").remove();
+                    var msg = data.msg;
+                    if(data.redirect){
+                    	setTimeout(function(){
+                    		location.href = data.redirect;
+                    	},3000);
+                    	var msg = '<a href="'+data.redirect+'">'+data.msg+'</a>';
+                    }
+                    $("#success_box").show();
+                    $("#success_box .success_info").html( msg );
+                } else {
+                    alert( data.msg );
+                }
+                $("#bgDiv").hide();
+            }
+        })
+        
+        $("#dosave").on('click', function(){
+        	$(".form").submit();
+        	$("#bgDiv").height($('body').height()).show();
+        });
+    })
+</script>

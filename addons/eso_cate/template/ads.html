@@ -1,0 +1,161 @@
+{template 'common/header'}
+{php $_item=7;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="control-group" style="margin-bottom:10px;">
+        <a class="button" href="{php echo urido('adsadd')}">+添加广告</a>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="60">ID</th>
+                    <th class="lt">广告名称</th>
+                    <th class="lt">广告位置</th>
+                    <th width="120">开始时间</th>
+                    <th width="120">结束时间</th>
+                    <th width="50">点击</th>
+                    <th width="80">状态</th>
+                    <th width="90">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr data-id="{$list['id']}" data-img="{php echo tomedia($list['img'])}">
+                    <td>{$list['id']}</td>
+                    <td class="lt" id="show-img">{$list['title']}</td>
+                    <td class="lt">{$list['positiontitle']}</td>
+                    <td>{if $list['starttime']}{php echo date('Y-m-d',$list['starttime'])}{else}不限制{/if}</td>
+                    <td>{if $list['endtime']}{php echo date('Y-m-d',$list['endtime'])}{else}不限制{/if}</td>
+                    <td>{$list['click']}</td>
+                    <td id="status">{$list['status']}</td>
+                    <td>
+                        <a href="{php echo urido('adsadd')}&id={$list['id']}" class="normal-link">修改</a>
+                        <a href="javascript:void(0);" onclick="_del({$list['id']});" class="normal-link">删除</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="8" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    function _del(id){
+        var _del = art.dialog({
+            title: '删除提醒',
+            fixed: true,
+            lock: true,
+            icon: 'warning',
+            opacity: '.3',
+            content: '确定要删除此广告并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.alert('正在删除',0);
+                    $.ajax({
+                        url: '{php echo urido('adsdel')}&id='+id,
+                        dataType: 'json',
+                        success: function (data) {
+                            $.alert(0);
+                            if (data != null && data.success != null && data.success) {
+                                $.showModal(data.message, '{php get_url()}');
+                            } else {
+                                $.showModal(data.message);
+                            }
+                            _del.close();
+                        },error : function () {
+                            $.alert("删除失败！");
+                        },
+                        cache: false
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{php echo urido(0)}"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval);
+    }
+    $(document).ready(function() {
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+        $("td#status").each(function(){
+            if ($(this).text()!="启用") {
+                $(this).css({color:'#ff0000'});
+            }
+        });
+        //
+        var x = 10;
+        var y = 20;
+        $("td#show-img").mouseover(function(e){
+            var _img = $(this).parent().attr("data-img");
+            if (!_img) return;
+            var tooltip = "<div id='img-tooltip' style='position:absolute;border:1px solid #ccc;'><img src='"+ _img +"' style='max-width:200px;max-height:200px;display:block;'/></div>"; //创建 div 元素
+            $("body").append(tooltip); //把它追加到文档中
+            $("#img-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            }).show("fast");   //设置x坐标和y坐标，并且显示
+        }).mouseout(function(){
+            $("#img-tooltip").remove();  //移除
+        }).mousemove(function(e){
+            $("#img-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            });
+        });
+
+    })
+
+</script>
+
+{template 'common/footer'}

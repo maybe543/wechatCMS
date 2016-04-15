@@ -1,0 +1,245 @@
+{template 'common/header'}
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+
+<ul class="nav nav-tabs">
+	<li  class="active"><a href="{php echo $this->createWebUrl('Usermanage',array('op'=>'display'));}">用户管理</a></li>
+	<li style="display:none"><a href="{php echo $this->createWebUrl('Gzrk',array('op'=>'display'));}">用户红包记录</a></li>
+	<li><a href="{php echo $this->createWebUrl('qrcode',array('op'=>'display'));}">海报用户信息</a></li>
+</ul>
+{if $op== 'display'}
+<div class="main">
+
+
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="water_jfhb" />
+			<input type="hidden" name="do" value="usermanage" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">用户名称</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<input class="form-control" placeholder="输入名称" name="keyword" id="" type="text" value="{$_GPC['keyword']}">
+				</div>
+			</div>
+			
+						
+			<div class="form-group">
+				<div class=" col-xs-12 col-sm-2 col-lg-2">
+					<button class="btn btn-default"><i class="fa fa-search"></i>搜索</button>
+				</div>
+			</div>
+			
+			
+		</form>
+	</div>
+</div>
+
+
+	<div class="panel panel-info">
+	<button  type="button" class="btn btn-default" onclick="delete_all()"> 删除所有记录</button>
+<button  type="button" class="btn btn-default" onclick="query_all()">全部用户</button>
+<button  type="button" class="btn btn-default" onclick="query_tx()">已提现用户</button>
+<button  type="button" class="btn btn-default" onclick="query_ktx()">可提现用户</button>
+<button  type="button" class="btn btn-default" onclick="query_hmd()">黑名单</button>
+{if (!empty($settings['max_tx_time']))}
+<button  type="button" class="btn btn-default" onclick="clear_txtime()">清空提现次数</button>
+{/if}
+<label>提现的总金额:{$total_money}</label>
+<label>全部用户:{$total}</label>
+
+</div>
+{if $_GPC['type']==1}
+<div class="panel panel-info">
+<button  type="button" class="btn btn-default" onclick="batch_send()">批量提现</button>
+</div>
+{/if}
+<div>
+
+</div>
+
+<style>
+.label{cursor:pointer;}
+</style>
+<div class="panel panel-default">
+
+	<div class="panel-body table-responsive">
+	
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+
+                 	<th style="width:20%;">用户id</th>
+                    <th style="width:10%;">用户名称</th>
+                     {if (!empty($settings['system_money'])) ||  (!empty($settings['credit_enable']))}
+                     <th style="width:10%;">系统总金额(积分)</th>
+                     {/if}
+                 	<th style="width:10%;">获得的总金额</th>
+					<th style="width:10%">提现金额</th>
+					<th style="width:10%">未提现金额</th>
+			       <th style="width:20%;">上线用户id</th>
+			        {if (!empty($settings['jymode']))}
+			       	 <th style="width:5%;">借用的id</th>
+			       	{/if}
+			       	 {if (!empty($settings['max_tx_time']))}
+			       	 <th style="width:5%;">提现次数</th>
+			       	{/if}
+			         <th style="width:8%;">状态</th>
+					<th style="width:15%;">时间</th>
+                    <th style="width:35%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>	
+					<td>{$item['openid']}</td>	
+					 <td>{$item['nickname']}&nbsp;&nbsp;</td>		
+				     {if (!empty($settings['system_money'])) ||  (!empty($settings['credit_enable']))}		
+					 <td>{$credits[$fans[$item['openid']]['uid']]['credit2']}({$credits[$fans[$item['openid']]['uid']]['credit1']})</td>	
+					   {/if}
+					<td>{$item['money']}</td>	
+					<td>{$item['tx_money']}</td>
+					<td>{$item['wtx_money']}</td>
+				    <td>{$item['parent_openid']}</td>
+				    {if (!empty($settings['jymode']))}
+				     <td>{$item['jyopenid']}</td>
+				     {/if}
+				    {if (!empty($settings['max_tx_time']))}
+			       	  <td>{$item['tx_time']}</td>
+			       	{/if}
+				     <td>{if empty($item['user_status'])}黑名单{else}正常{/if}</td>
+					<td title="{php echo date('Y-m-d H:i:s', $item['createtime'])}">
+					{php echo date('Y-m-d H:i:s', $item['createtime'])}</td>
+					
+				<td>  
+				
+				 <a class="btn btn-default" href="{php echo $this->createWebUrl('qrcode', array('openid' => $item['openid']))}"
+				   >用户海报</a>
+				 <a class="btn btn-default" href="{php echo $this->createWebUrl('send_money', array('op' => 'post', 'id' => $item['id']))}"
+				   >提现</a>
+				   {if $_GPC['type']!=3}
+				   		 <a class="btn btn-default" href="{php echo $this->createWebUrl('Usermanage', array('op' => 'lh','user_status'=>'0', 'id' => $item['id']))}"
+				   >拉黑</a>
+				   {else}
+				    <a class="btn btn-default" href="{php echo $this->createWebUrl('Usermanage', array('op' => 'lh','user_status'=>'1', 'id' => $item['id']))}"
+				   >洗白</a>
+				   {/if}
+		
+		
+					<a  class="btn btn-default" href="{php echo $this->createWebUrl('Usermanage', array('op' => 'post', 'id' => $item['id']))}">修改</a>
+				
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('Usermanage', array('op' => 'delete', 'id' => $item['id']))}"
+				 onclick="return confirm('确认删除信息吗？');return false;">删除</a>
+				</td>				
+				</tr>
+				{/loop}
+			</tbody>
+		
+		</table>
+		{$pager}
+	</div>
+	</div>
+</div>
+
+{elseif $op == 'post'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        用户修改
+    </div>
+    <div class="panel-body">
+	<form action="" method="post" class="form-horizontal" role="form" id="form1">
+
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">获得的总金额：</label>
+
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="title" class="form-control span7"
+                       placeholder="" name="money" value="{$item['money']}">
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现金额：</label>
+
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="title" class="form-control span7"
+                       placeholder="" name="tx_money" value="{$item['tx_money']}">
+            </div>
+        </div>
+		
+		
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">未提现金额：</label>
+
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="title" class="form-control span7"
+                       placeholder="" name="wtx_money" value="{$item['wtx_money']}">
+            </div>
+        </div>
+        
+       <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现次数：</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="title" class="form-control span7"
+                placeholder="" name="tx_time" value="{$item['tx_time']}">
+                <span class="help-block">参数设置里面，设置提现次数的话，这里才起作用</span>
+            </div>
+               
+        </div>
+               		
+		<div class="form-group">
+				<div class="col-sm-8">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary">
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</div>		
+		</div>
+		
+		</form>
+    </div>
+</div>
+{/if}
+<script type="text/javascript">
+
+function clear_txtime(){
+	  if (confirm('确认清空提现次数吗，这样达到提现次数的粉丝又可以重新领取福利？')){
+		  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'clear_txtime'))}";	
+	  }
+	 
+}
+
+function delete_all(){
+  if (confirm('确认删除所有信息吗？')){
+	  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'delete_all'))}";	
+  }
+ 
+}
+
+function query_all(){
+	  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'display'))}";
+}
+
+function add(){
+  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'post'))}";
+}
+
+function query_ktx(){
+  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'display',type=>1))}";
+}
+
+function query_tx(){
+  location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'display',type=>2))}";
+}
+
+function query_hmd(){
+	location.href ="{php echo $this->createWebUrl('Usermanage', array('op' => 'display',type=>3))}";
+}
+
+function batch_send(){
+	location.href ="{php echo $this->createWebUrl('send_moneyall')}";
+}
+
+</script>
+{template 'common/footer'}

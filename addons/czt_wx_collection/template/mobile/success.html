@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>支付成功！</title>
+    <meta charset="utf-8">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="Expires" CONTENT="0">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+    p {
+        font-size: 1em;
+    }
+
+    p span {
+        display: inline-block;
+        width: 49%;
+        text-align: left;
+    }
+
+    .btn.btn-green {
+        color: #fff;
+        background-color: #06bf04;
+        border-color: #03b401
+    }
+
+    .btn {
+        display: block;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+        padding: 5px 4px;
+        text-align: center;
+        margin: 0;
+        color: #999;
+        font-size: 12px;
+        cursor: pointer;
+        line-height: 18px;
+        -webkit-appearance: none
+    }
+    </style>
+    {php echo register_jssdk(false);}
+</head>
+
+<body>
+    <div style="text-align: center;margin-top:50px;">
+        <img style="width:90px;height:90px;" src="{MODULE_URL}/template/mobile/icon.png">
+    </div>
+    <p style="margin-top:50px;"><span style="text-align: right;">付款金额：</span><span>￥{$params['fee']}</span></p>
+    <p style="margin-top:0;"><span style="text-align: right;">订单编号：</span><span stley="color:#000;">{$params['tid']}</span></p>
+    <p style="margin-top:0;"><span style="text-align: right;">完成时间：</span><span>{php echo date('Y-m-d H:i:s', time())}</span></p>
+    <button style="margin:0 auto;;width: 50%;line-height:34px;font-size: 16px;" type="button" id="btn" class="btn btn-green">完成</button>
+    <script>
+    var close=false
+    wx.ready(function() {
+        wx.hideOptionMenu();
+        if (close) wx.closeWindow();
+    });
+    document.getElementById('btn').onclick=function() {
+      close=true;
+      wx.closeWindow();
+    }
+    </script>
+</body>
+
+</html>

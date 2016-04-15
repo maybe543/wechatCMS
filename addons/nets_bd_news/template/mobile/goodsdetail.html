@@ -1,0 +1,63 @@
+<?php$pagetitle=$good["title"]."_商品详情";?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">商品详情</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line"> <span class="name">{$good["title"]}</span> <span class="type">数量{$good['total']}个</span> </div>
+    <ul class="info  info2">
+      <li> <a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p class="positive">价格</p>
+        <p>{$good["credit"]} 元</p>
+		<p></p>
+        </a> </li>
+      <li> <a href="javascript:void(0);" id="fundNavVal">
+        <p class="positive" id="fundNav">开始时间</p>
+        <p><?php echo date("Y-m-d",$good['starttime']);?></p>
+        <p></p>
+        </a> </li>
+      <li> <a href="javascript:void(0);" class="toFundHistoryList" id="raiseDropParent">
+        <p class="positive">结束时间</p>
+        <p><?php echo date("Y-m-d",$good['endtime']);?></p>
+		<p></p>
+        </a> </li>
+    </ul>
+  </div>
+</section>
+<section class="box trend-box">
+  <div style=" text-align: center;">
+	<img src="/attachment/{$good['thumb']}"  alt="">
+  </div>
+</section>
+
+<section class="box unpad-box"> 
+  <div style="text-align: left;padding:20px;">
+      <?php echo htmlspecialchars_decode($good["description"])?>
+	  <br/><br/><br/><br/><br/>
+  </div>
+</section>
+{if empty($_GPC["buy"])}
+<section class="bottom-btn"> 
+<span id="fdBuy" onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=goodsdetail&buy={$good['id']}&m=nets_bd_news&id={$good['id']}'">立即购买</span> 
+</section>
+{/if}
+
+{template 'common'}
+<?php
+$share_img=$_W['siteroot']."attachment/".$good['thumb'];
+$share_title=$good["title"]."_分享赚积分";
+?>
+{template 'common_share'}
+</body>
+</html>

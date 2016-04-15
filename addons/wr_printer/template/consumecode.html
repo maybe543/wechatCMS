@@ -1,0 +1,149 @@
+{template 'common/header'}
+	<div class="main">
+		<div class="stat">
+			<div class="stat-div">
+				<div class="sub-item" id="table-list">
+					<h4 class="sub-title">消费码详情----消费码总数：{$num1}个　 　已消费：{$num2}个　　未消费：{$num3}个</h4>
+		<div class="searcha">
+		<form action="site.php" method="get">
+		<input type="hidden" name="act" value="module" />
+		<input type="hidden" name="name" value="qyweipaiweb" />
+		<input type="hidden" name="do" value="xfmlist" />
+		<input type="hidden" name="id" value="{$_GPC['id']}" />
+		<table class="table table-bordered tb">
+			<tbody>
+				<tr>
+					<th>消费码</th>
+					<td style="float:left">
+						<input class="span6" name="keywords"  type="text" value="{$_GPC['keywords']}">
+					</td>
+					<td>
+						<select name="status" class="input-small" style="float:left">
+                                        <option value="">全部</option>
+                                        <option value="1">未消费</option>
+                                        <option value="2">已消费</option>
+                                        <option value="3">系统分配</option>
+                                        <option value="4">线下分配</option>
+                                    </select>
+                                    <button class="btn btn-primary pull-left span2" style='margin-left:95px;'><i class="icon-search icon-large"></i> 搜索</button>
+					</td>
+				</tr>
+			 
+			</tbody>
+		</table>
+		</form>
+	</div>
+
+		<div style="padding: 0 15px 0  15px;">
+		  <div class="row-fluid">
+                                <div>
+
+                                    生成消费码：
+                                    <a class="btn" href="{php echo $this->createWebUrl('consumecode_add', array('id' => $id,'stype'=>0))}">生成系统分配码</a>
+                                    <a class="btn" href="{php echo $this->createWebUrl('consumecode_add', array('id' => $id,'stype'=>1))}">生成线下分配码</a>  注：一次生成30个；系统分配码可以用在其他模块分配，线下分配码则可搞活动批量送出。
+                                    <a class="btn" href="{php echo create_url('site/module', array('do' => 'download', 'name' => 'qyweipaiweb','id'=>$id))}"><i class="icon-download-alt"></i>导出消费码</a>
+                                </div>
+                            </div>
+
+                            <div class="alert">
+                                消费码：{$total}个　 　已消费：{$total1}个　　未消费：{$total0}个 ；
+                            </div>
+		</div>
+					<form action="" method="post" onsubmit="">
+					<div class="sub-content">
+						<table class="table table-hover">
+							<thead class="navbar-inner">
+								<tr>
+									<th style="width:40px;" class="row-first">选择</th>
+									<th style="width:100px;" class="row-first">消费码<i></i></th>
+									<th style="width:100px;" class="row-first">分配类型<i></i></th>
+									<th style="width:100px;" class="row-first">使用状态<i></i></th>
+									<th style="width:200px;" class="row-first">使用时间<i></i></th>
+									<th style="width:200px;" class="row-first">添加时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								{loop $list $row}
+								<tr>
+									<td class="row-first"><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+									<td>
+										<div class="row-first">
+											<div class="nickname">{$row['consumecode']}</div>
+										</div>
+									</td>
+									<td>
+
+											<div class="row-first">{if $row['stype']==1} 线下分配{elseif $row['stype']==3}自助购买{else} 系统分配{/if}</div>
+
+									</td>
+									<td>
+										<div class="row-first">
+											<div class="nickname">{if $row['status']==1} 已消费{else} 未消费{/if}	</div>
+										</div>
+									</td>
+									<td style="font-size:14px; color:#666;"  class="row-first">{if (!empty($row['use_time']))}
+										<div style="margin-bottom:10px;">{php echo date('Y-m-d', $row[use_time]);} {php echo date('H:i:s', $row[use_time]);}</div>{/if}
+									</td>
+									<td style="font-size:14px; color:#666;" class="row-first">
+										<div style="margin-bottom:10px;">{php echo date('Y-m-d', $row[create_time]);} {php echo date('H:i:s', $row[create_time]);}</div>
+									</td>
+								</tr>
+								{/loop}
+							</tbody>
+						</table>
+						<table class="table">
+							<tr>
+								<td style="width:40px;" class="row-first"><input type="checkbox" onclick="selectall(this, 'select');" /></td>
+								<td colspan="4">
+									<input type="submit" name="delete" value="删除" class="btn btn-primary" />
+									<input type="hidden" name="token" value="{$_W['token']}" />
+								</td>
+							</tr>
+						</table>
+					</div>
+					</form>
+					{$pager}
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+$(function() {
+	//详细数据相关操作
+	var tdIndex;
+	$("#table-list thead").delegate("th", "mouseover", function(){
+		if($(this).find("i").hasClass("")) {
+			$("#table-list thead th").each(function() {
+				if($(this).find("i").hasClass("icon-sort")) $(this).find("i").attr("class", "");
+			});
+			$("#table-list thead th").eq($(this).index()).find("i").addClass("icon-sort");
+		}
+	});
+	$("#table-list thead th").click(function() {
+		if($(this).find("i").length>0) {
+			var a = $(this).find("i");
+			if(a.hasClass("icon-sort") || a.hasClass("icon-caret-up")) { //递减排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-down");
+			} else if(a.hasClass("icon-caret-down")) { //递增排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-up");
+			}
+			$("#table-list thead th,#table-list tbody:eq(0) td").removeClass("row-hover");
+			$(this).addClass("row-hover");
+			tdIndex = $(this).index();
+			$("#table-list tbody:eq(0) tr").each(function() {
+				$(this).find("td").eq(tdIndex).addClass("row-hover");
+			});
+		}
+	});
+});
+</script>
+{template 'common/footer'}

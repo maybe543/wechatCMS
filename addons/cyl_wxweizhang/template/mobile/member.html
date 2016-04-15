@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>会员中心</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+
+  </head>
+  <body>
+
+<style>
+  .list-block{margin:0.8rem 0px;}
+  a{color:#000;}
+</style>
+  <header class="bar bar-nav">
+  <h1 class="title">会员中心</h1>
+</header>
+<div class="content">
+
+    
+    <div class="card-content">
+      <div class="list-block media-list">
+        <ul>
+          <li class="item-content ">
+            <div class="item-media">
+              <img src="{$_W['fans']['tag']['avatar']}" width="44" style="border-radius:50%">
+            </div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">{if $_W['fans']['nickname']}{$_W['fans']['nickname']}{else}{$userinfo['nickname']}{/if} <br>会员编号：{$_W['fans']['uid']}</div>
+              </div>
+              
+              <div class="item-subtitle">余额：{$credit['credit2']}元 积分：{$credit['credit1']}分</div>
+              <div class="item-subtitle"><a class="mnav-box-list" href="{php echo url('entry', array('m' => 'recharge', 'do' => 'pay'));}">
+          <i class="fa fa-money"></i>
+          <span>推广充值</span>
+          <span class="pull-right"><i class="fa fa-angle-right"></i></span>
+        </a></div>
+            </div>
+
+          </li>
+
+        </ul>     
+      </div>
+
+    </div>
+    {if $_W['fans']['uid']}   
+   {else}
+   <p><a href="{$settings['sharelink']}" class="button button-fill button-danger">点击关注我们，开始赚钱</a></p>
+  {/if}
+    <div class="list-block">
+    <ul>
+    {if $settings['articletougao']}
+      
+      <a href="{php echo $this->createMobileUrl('memberfabu')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-edit"></i></div>
+        <div class="item-inner">
+          <div class="item-title">我要投稿</div>          
+        </div>
+      </a>
+
+    {/if}
+      <a href="{php echo $this->createMobileUrl('memberfabumanage')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-edit"></i></div>
+        <div class="item-inner">
+          <div class="item-title">投稿管理</div>         
+        </div>
+     </a>
+    </ul>
+  </div>
+
+  <div class="list-block">
+    <ul>
+      <a href="#" class="item-content item-link create-actions">
+        <div class="item-media"><i class="icon icon-app"></i></div>
+        <div class="item-inner">
+          <div class="item-title">发布广告</div>          
+        </div>
+      </a>
+     <a href="{php echo $this->createMobileUrl('gg')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-browser"></i></div>
+        <div class="item-inner">
+          <div class="item-title">广告管理</div>                 
+        </div>
+      </a>
+    </ul>
+  </div>
+
+  <div class="list-block">
+    <ul>
+      <a href="{php echo $this->createMobileUrl('renwu')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-search"></i></div>
+        <div class="item-inner">
+          <div class="item-title">任务中心</div>          
+        </div>
+      </a>
+      <a href="{php echo $this->createMobileUrl('tixian')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-home"></i></div>
+        <div class="item-inner">
+          <div class="item-title">提现管理</div>          
+        </div>
+      </a>
+      <a href="{php echo url('mc/profile')}" class="item-content item-link">
+        <div class="item-media"><i class="icon icon-settings"></i></div>
+        <div class="item-inner">
+          <div class="item-title">个人资料</div>         
+        </div>
+      </a>
+    </ul>
+  </div>
+     
+</div>
+{template 'footer'}
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script>
+  $(document).on('click','.create-actions', function () {
+      var buttons1 = [
+        {
+          text: '请选择',
+          label: true
+        },
+        {
+          text: '微信图文广告',
+          bold: true,
+          color: 'danger',
+          onClick: function() {
+            window.location.href="{php echo $this->createMobileUrl('membergg',array('op'=>'tw'))}"; 
+          }
+        },
+        {
+          text: '文章图片广告',
+          onClick: function() {
+            window.location.href="{php echo $this->createMobileUrl('membergg',array('op'=>'tp'))}";  
+          }
+        }
+      ];
+      var buttons2 = [
+        {
+          text: '取消',
+          bg: 'danger'
+        }
+      ];
+      var groups = [buttons1, buttons2];
+      $.actions(groups);
+  });
+</script>

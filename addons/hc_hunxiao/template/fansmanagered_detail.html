@@ -1,0 +1,105 @@
+{template 'common/header'}
+<style>
+.col-md-1 {
+	width: 10%;
+}
+</style>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+		<input type="hidden" name="id" value="{$user['id']}" />
+		<input type="hidden" name="op" value="status" />
+		<input type="hidden" name="opp" value="nocheck" />
+		<input type="hidden" name="c" value="site" />
+		<input type="hidden" name="a" value="entry" />
+		<input type="hidden" name="m" value="hc_hunxiao" />
+		<input type="hidden" name="do" value="fansmanager" />
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				粉丝详细信息
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">设置粉丝权限</label>
+				<div class="col-sm-9 col-xs-12">
+					<label class="radio-inline">
+						<input type="radio" name="status" value="1" {if $user['status']==1}checked="true"{/if} /> 可用
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="status" value="0" {if $user['status']==0}checked="true"{/if} /> 禁用
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">是否为推广员</label>
+				<div class="col-sm-9 col-xs-12">
+					<label class="radio-inline">
+						<input type="radio" name="flag" value="1" {if $user['flag']==1}checked="true"{/if} /> 是
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="flag" value="0" {if $user['flag']==0}checked="true"{/if} /> 否
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">真实姓名</label>
+				<div class="col-sm-9 col-xs-12">
+					{if $user['realname']!=""} {$user['realname']}{else}--{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">手机号码</label>
+				<div class="col-sm-9 col-xs-12">
+					{if $user['mobile']!=""} {$user['mobile']}{else}--{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">注册时间</label>
+				<div class="col-sm-9 col-xs-12">
+					{php echo date('Y-m-d H:i:s', $user['createtime']);}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">银行卡号</label>
+				<div class="col-sm-9 col-xs-12">
+					{if $user['banktype']!=""} {$user['banktype']}－<span id="bankcard">{$user['bankcard']}</span> {else}--{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">支付宝号</label>
+				<div class="col-sm-9 col-xs-12">
+					{if $user['alipay']!=""} {$user['alipay']}{else}--{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">微信号码</label>
+				<div class="col-sm-9 col-xs-12">
+					{if $user['wxhao']!=""} {$user['wxhao']}{else}--{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label">备注</label>
+				<div class="col-sm-3 col-xs-12">
+					<textarea name="content" class="form-control">{$user['content']}</textarea>
+				</div>
+			</div>
+			<div class="form-group col-sm-12">
+				<input type="hidden" name="token" value="{$_W['token']}" />
+				<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+window.onload = function(){
+	var bankcard = "{$user['bankcard']}";
+	//var bankcard = bankcard.toString();
+	if(bankcard != ''){
+		var card = '';
+		for(var i=0; i<5; i++){
+			card = card + bankcard.substr(4*i,4) + ' ';
+		}
+		window.document.getElementById('bankcard').innerHTML = card;
+	}
+}
+
+</script>
+{template 'common/footer'}

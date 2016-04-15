@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<?php
+$_tpl_dir_path = $_W['siteroot'] . "/addons/quicktemplate/quickshop/pink/";
+$CUR_VERSION = 31; //TIMESTAMP; //21;
+?>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
+    <link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/color.css?v={$CUR_VERSION}" />
+    <link type="text/css" rel="stylesheet" href="./resource/css/font-awesome.min.css" />
+	  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="{$_tpl_dir_path}js/jquery.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/color.css?v={$CUR_VERSION}" />
+    <link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/styles.css?v={$CUR_VERSION}" />
+    <link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/font-awesome.min.css" />
+    <script type="text/javascript" src="{$_tpl_dir_path}js/jquery.gcjs.js"></script>
+    <script type="text/javascript" src="{$_tpl_dir_path}js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{$_tpl_dir_path}js/scriptswipe.js?v={$CUR_VERSION}"></script>
+</head>
+<body>
+  <style type='text/css'>
+    #poptip { position: fixed; top:40%;left:50%;width:160px;margin-left:-80px;height: 100px;background:#000; opacity: 0.7;filter:alpha(opacity=0.7); color:#fff;z-index: 999;  border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;}
+    #poptip_content { position: fixed; top:40%;left:50%;width:160px;margin-left:-80px; line-height:100px; height: 100px; color:#fff;text-align:center;font-size:14px;z-index: 9909}
+  </style>
+  <script language='javascript'>
+    function tip(msg,autoClose){
+      var div = $("#poptip");
+      var content =$("#poptip_content");
+      if(div.length<=0){
+        div = $("<div id='poptip'></div>").appendTo(document.body);
+        content =$("<div id='poptip_content'>" + msg + "</div>").appendTo(document.body);
+      }
+      else{
+        content.html(msg);
+        content.show(); div.show();
+      }
+      if(autoClose) {
+        setTimeout(function(){
+          content.fadeOut(500);
+          div.fadeOut(500);
+        },1000);
+      }
+    }
+
+    function tip_close(){
+      $("#poptip").fadeOut(500);
+      $("#poptip_content").fadeOut(500);
+    }
+  </script>
+
+{php include $_template->template('wechat-header')}

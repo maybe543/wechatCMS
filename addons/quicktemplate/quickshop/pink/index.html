@@ -1,0 +1,56 @@
+{php include $_template->template('header')}
+    <!--content-->
+    <div class="content">
+        <!--商品详情-->
+        <div class="goods-detail">
+          {if empty($item['cover_content'])}
+          您还没有设置单品首页，设置方法：分销商城-商品管理-编辑当前单品-分销设置-单品分销封面, 填写对应的内容
+          {else}
+          {$item['cover_content']}
+          {/if}
+        </div>
+        <!--商品详情 end-->
+    </div>
+    <!--content end--> 
+   <!--footer-->
+
+   <?php
+   $sellerName = empty($this->module['config']['sellername']) ?
+   '东家' : $this->module['config']['sellername'];
+   ?>
+
+  {if !empty($fans) and ($fans['follow']==1)}
+    <footer id="cover-footer">
+    <img src="{if !empty($fans['avatar'])}{$fans['avatar']}{else}{php echo $_W['siteroot'] . 'addons/quickshop/icon.jpg' }{/if}" class="be-seller-avatar">
+    {if empty($fans['vip'])}
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-text">{$fans['nickname']}<br>你还不是{$sellerName}，下单成为{$sellerName}</a>
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-btn">立即购买</a>
+    {else}
+    <a href="{php echo murl('entry/module/center', array('m'=>'quickcenter', 'weid'=>$_W['weid']))}" class="be-seller-text">{$fans['nickname']}<br>你已经是{$sellerName}，<span style="text-decoration:underline !important;">点此查看账本</span></a>
+    <!--a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-text">{$fans['nickname']}<br>你已经是{$sellerName}，请直接购买</a-->
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-btn">再次购买</a>
+    {/if}
+    </footer>
+  {elseif !empty($share_fans)}
+    <footer id="cover-footer">
+    <img src="{if !empty($share_fans['avatar'])}{$share_fans['avatar']}{else}{php echo $_W['siteroot'] . 'addons/quickshop/icon.jpg' }{/if}" class="be-seller-avatar">
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-text">来自好友<b color="green">{$share_fans['nickname']}</b>的推荐<br>立即关注就有机会成为{$sellerName}</a>
+      {if empty($this->module['config']['followurl'])}
+      <a href="#" onclick="alert('请先在后台设置关注引导链接')" class="be-seller-btn">立即关注</a>
+      {else}
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-btn">立即关注</a>
+      {/if}
+    </footer>
+  {else}
+    <footer id="cover-footer">
+    <img src="{php echo $_W['siteroot'] . 'addons/quickshop/icon.jpg' }"  class="be-seller-avatar">
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-text">请先关注我们<br>立即关注就有机会成为{$sellerName}</a>
+      {if empty($this->module['config']['followurl'])}
+      <a href="#" onclick="alert('请先在后台设置关注引导链接')" class="be-seller-btn">立即关注</a>
+      {else}
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-btn">立即关注</a>
+      {/if}
+    </footer>
+  {/if}
+    <!--footer end-->
+{php include $_template->template('footer')}

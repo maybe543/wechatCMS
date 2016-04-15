@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>{php echo $this->module['config']['option1']}</title>
+    <script src="./resource/js/lib/jquery-1.11.1.min.js"></script>   
+    <link href="./resource/css/bootstrap.min.css" rel="stylesheet">
+
+    <style type="text/css">
+    body{
+    	font-family: "Helvetica Neue",Helvetica, "Microsoft YaHei",Arial,sans-serif;
+    	background-color: transparent;
+		padding-bottom: 20px;
+    }
+    .page-header h3{
+    	font-size: 20px;
+    }
+    .page-header{
+        margin: 20px 0 20px;
+    }
+	.post_imglist { padding-left:0;}
+	.upload_btn { clear:both;}
+	.upload_area .post_imglist li {position: relative;float: left;padding: 0 10px 5px 0;line-height: 38px; list-style:none;}
+	.upload_area .post_imglist li .del {position: absolute;right: 5px;top: -10px;background: url(../addons/ali_baoliao/template/images/icon_del.png) no-repeat 15px 0;background-size: 23px auto;width: 40px;height: 40px;display: inline-block; }
+	.upload_area .post_imglist li .p_img img {padding: 2px;border: 1px solid #DDD;height: 54px;width: 54px; }
+	.upload_area .post_imglist li .pic_time {display: inline-block;width: 60px;height: 60px;position: relative; }
+	.upload_area .post_imglist li .pic_time em {display: inline-block;width: 100%;height: 25%;line-height: 15px;font-size: 12px;color: #fff;background-color: #F1484A;position: absolute;top: 22px;left: 0; }
+	.upload_area .upload_btn {background: url(../addons/ali_baoliao/template/images/upload_btn.png) center no-repeat;background-size: 60px auto;float: left;overflow: hidden;position: relative;width: 60px;height: 60px; }
+	.upload_area .upload_btn input {opacity: 0;position: absolute;left: 0;top: 0;z-index: 10;overflow: hidden;height: 60px;width: 60px; }
+	
+	#imglist li img.wh60 {
+		margin: 0 auto;
+		display: block;
+		width: 60px;
+		height: 60px;
+	}
+   </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3>{php echo $this->module['config']['option1']}</strong></h3>
+            <p>{php echo $this->module['config']['option2']}</p>
+			<?php if($blnum[0]['count(*)'] > 0){ echo "<p class='mybaoliao'>[<a href='".$this->createMobileurl('mybaoliao')."'>我的报料(".$blnum[0]['count(*)'].")</a>]</p>";}?>
+        </div>
+        <form role="form" id="myform" name="myform" action="{$url}" method="post">
+                        <div class="form-group">
+                <label> <font color="red">*</font> 报料类别</label>
+				<?php 
+				$lb = $this->module['config']['option3'];
+				$blist = explode(',',$lb); 
+				foreach($blist as $k=>$v){ 
+				echo "<label class='ib' style='width:80'><input type='radio' name='info[type]' value = '".$k."'  required='required'>".$v."</label>";} ?>
+                </div>
+                        <div class="form-group">
+                <label> <font color="red">*</font> 称呼</label>
+                <input type="text" name="info[name]" id="xingming" size="50" value=""   required="required"  class="form-control"  >                            </div>
+                        <div class="form-group">
+                <label> <font color="red"></font> 联系电话</label>
+                <input type="text" name="info[tel]" id="lianxiText" size="50" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" value=""   required="required"  class="form-control" >                <span class="help-block">您的联系方式仅我们可见并保密</span>            </div>
+                        <div class="form-group">
+                <label> <font color="red">*</font> 标题</label>
+                <input type="text" name="info[title]" id="title" size="50" value=""   required="required"  class="form-control"  >                            </div>
+                        <div class="form-group">
+                <label> <font color="red">*</font> 报料详细内容</label>
+                <textarea name='info[content]' id='content' class='form-control' rows='3'  required="required"  ></textarea>                            </div>
+                        <div class="form-group">
+                <label> 图片上传</label>
+                <div class="upload_area clearfix">
+                    <ul id="imglist" class="post_imglist"></ul>
+                    <div class="upload_btn">
+                        <input type="file" id="upload_image" value="图片上传" accept="image/jpeg,image/gif,image/png" capture="camera">
+                    </div>
+                </div>
+
+		<div class="bk10"></div>
+
+		<span class="help-block">建议您在WIFI网络中上传，支持：jpg、png、gif格式</span>            
+		</div>
+			<input type="hidden" name="ask" value="{$_SESSION['ask']}" />
+            <input type="submit" name="submit" class="btn btn-primary btn-lg btn-block" value="提交信息"/>
+        </form>
+    </div>
+	<script src="../addons/ali_baoliao/template/images/localResizeIMG2.js"></script>
+	<script src="../addons/ali_baoliao/template/images/mobileBUGFix.mini.js"></script>
+	<script type="text/javascript">
+    (function () {
+        var viewImg = $("#imglist");
+        var imgurl = '';
+        var imgcount = 0;
+        $('#upload_image').localResizeIMG({
+            width: 480,
+            quality: 0.8,
+            success: function (result) {
+                var status = true;
+                if (result.height > 1600) {
+                    status = false;
+                    alert("照片最大高度不超过1600像素");
+                }
+                if (viewImg.find("li").length > 4) {
+                    status = false;
+                    alert("最多上传5张照片");
+                }
+                if (status) {
+                    viewImg.append('<li><span class="pic_time"><span class="p_img"></span><em>50%</em></span></li>');
+                    viewImg.find("li:last-child").html('<span class="del"></span><img class="wh60" src="' + result.base64 + '"/><input type="hidden" id="file'+ imgcount + '" name="pics[]" value="' + result.clearBase64 + ' size="'+result.size+'">');
+
+                    $(".del").on("click",function(){
+                        $(this).parent('li').remove();
+                        $("#upload_image").show();
+                    });
+                    imgcount++;
+                }
+            }
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<html>
+	<head>
+		<title>{$puzzle['topic']}</title>
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,width=device-width" >
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+
+		<meta name="author" content="微聚动力，微信号：gl5512968" />
+		<meta name="Copyright" content="微聚动力" />
+		<meta name="keywords" content="微解密" />
+		<meta name="description" content="微解密，寻找线索，根据提示解开谜底" />
+
+		<!--调试时关闭缓存，实际时需开启-->
+		<META http-equiv=Pragma content=no-cache>
+		<META http-equiv=Cache-Control content=no-cache>
+		<META http-equiv=Expires content=0>
+
+		<link rel="stylesheet" href="{MODULE_URL}/static/css/reset.css" type="text/css"/>
+		<link rel="stylesheet" href="{MODULE_URL}/static/js/appjs/app.min.css" type="text/css"/>
+		<link rel="stylesheet" href="{MODULE_URL}/static/js/dialog/css/zepto.alert.css" type="text/css"/>
+		<link rel="stylesheet" href="{MODULE_URL}/static/mobile/css/puzzle.css" type="text/css"/>
+		
+
+		<script type="text/javascript">
+			// 全局定义
+			var _MODULE_URL_='{MODULE_URL}';
+		</script>
+
+
+		{php echo register_jssdk(false);} <!-- 注册调用微信js_api 放到其他引入的 js 之前 -->
+		<script type="text/javascript">
+			wx.ready(function () {
+				//sharedata = ;
+				wx.onMenuShareAppMessage({
+					title:'{if empty($puzzle["share_title"])}我正在挑战{$puzzle["topic"]}{else}{$puzzle["share_title"]}{/if}',
+					desc:'{if empty($puzzle["share_desc"])}快来帮我提供线索！{else}{$puzzle["share_desc"]}{/if}',
+					//link:'http://demo.open.weixin.qq.com/jssdk/',
+					imgUrl:'{$_W["attachurl"]}{if empty($puzzle["share_img"])}{$puzzle["cover"]}{else}{$puzzle["share_img"]}{/if}'
+				});
+				wx.onMenuShareTimeline({
+					title:'{if empty($puzzle["share_title"])}我正在挑战{$puzzle["topic"]}，快来帮我提供线索！{else}{$puzzle["share_title"]}{/if}',
+					//link:'http://demo.open.weixin.qq.com/jssdk/',
+					imgUrl:'{$_W["attachurl"]}{if empty($puzzle["share_img"])}{$puzzle["cover"]}{else}{$puzzle["share_img"]}{/if}'
+				});
+			});
+		</script>
+
+		<!-- <div style="display:none;" ><img src="__PUBLIC__/Client/images/icon_share.png"/></div>微信默认分享图 -->
+	</head>
+	<body>
+
+	<!-- 公共变量 -->
+	<input type="hidden" id="is_user_infoed" value="{$is_user_infoed}"/>
+	<input type="hidden" id="is_puzzle_end" value="{$is_puzzle_end}"/>
+	<!-- 公共变量 -->
+
+	<!-- 活动页 -->
+    <div class="app-page" data-page="index_page" >
+		  <div class="app-topbar" style="display:none;height:0px;"></div>
+
+		  <div class="app-content">
+			<div class="app-body">
+				<div id="puzzle_info">
+					<div id="puzzle_banner">
+						<img id="puzzle_cover" src="{$_W['attachurl']}{$puzzle['cover']}"/>
+						<div id="puzzle_btns"><a id="puzzle_to_detail" href="javascript:void(0);">活动说明</a></div>
+					</div>
+					{if $is_puzzle_end=='1'}<!-- 解密活动已结束 -->
+						<div id="puzzle_truth">
+							正确答案：<span id="puzzle_truth_disp">{$puzzle['truth']}</span>
+							<span id="puzzle_truth_why" href="javascript:void(0);">解释</span>
+						</div>
+					{else}
+						<div id="puzzle_timer" data-end_time="{$puzzle['end_time']}" ><span id="puzzle_timer_disp"></span></div>
+					{/if}
+				</div>
+				
+				{if $is_puzzle_end=='1'}<!-- 解密活动已结束 -->
+					{if !empty($mine)}<!--如果参加了，显示我的成绩-->
+						<div id="puzzle_aginst">
+							{if $mine['answer_result']=='0'}
+								<div id="puzzle_wrong">
+									<span></span>
+								</div>
+							{else}
+								<div id="puzzle_right">
+									<span></span>
+								</div>
+							{/if}
+
+							<div id="puzzle_player">
+								<div id="puzzle_my_avatar"><span>{if empty($user['avatar'])}我{else}<img src="{php echo VP_AVATAR($user['avatar'],'m'); }"/>{/if}</span></div> 
+								<div id="puzzle_my_name"><div id="puzzle_my_name_in"><p>{$user['nickname']}{php echo $mine['answer_result']=='0'?'答错了':'答对了！'}</p><p>共收集了{php echo count($mine_clues);}条线索</p></div></div>
+								<div id="puzzle_my_clue"><div id="puzzle_my_clue_in"><div id="to_exchange_btn" class="my">我的线索</div></div></div>
+							</div>
+							
+							<!-- 我的解答，解答时间 排名 -->
+							{if $mine['answer_result']=='0'}
+								<div id="puzzle_answer_block" >
+									<div id="puzzle_answer_wrong">我的解答：{php echo empty($mine['answer'])?'<em>没有解答</em>':('<em>'.$mine['answer'].'</em>'); } </div>
+								</div>
+							{else}
+								<div id="puzzle_answer_block" >
+									<div id="puzzle_answer_right">
+										<div id="puzzle_answer_rank">
+											<em>第{$mine['rank']}名！</em><span>用时{php echo time_to_text($mine['answer_time']-$puzzle['start_time'])}</span>
+										</div>
+										<div id="puzzle_answer_award">
+											{if $mine['rank']>$puzzle['award']}
+												<span id="puzzle_no_award">真可惜，慢了点儿，宝藏被抢完了</span>
+											{else}
+												<a id="puzzle_to_award" href="javascript:void(0);">获取宝藏</a>
+											{/if}
+										</div>
+									</div>
+								</div>
+							{/if}
+						</div>
+					{/if}
+					
+					<div id="rank_block">
+						<!----
+						<div id="rank_to_bang"><a class="btn" href="javascript:void(0);">查看挑战者排名榜</a></div>
+						--->
+						<div id="rank_bang">
+							<div class="ribbon">
+								<div class="ribbon_l"></div>
+								<div class="ribbon_r"></div>
+								<div class="ribbon_c">
+									<div id="pinfo">
+										<h2>排行榜</h2>
+										<!--
+										<dt>
+											<h2>挑战榜</em></h2>
+											<h3>已加入<em>10</em>人</h3>
+										
+										</dt>
+										<dd>
+											共<em>999</em>分
+										</dd>-->
+									</div>
+								</div>
+							</div>
+
+							<div id="rank_list_wrap" style="padding-bottom:20px;">
+								<div id="rank_list" data-url="{php echo $_W['siteroot'] . 'app/' . substr($this->createMobileUrl('play',array('cmd'=>'ranklist','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}" data-start="0" data-more="1">
+								</div>
+								<div id="rank_list_load" class="list_load loading"><span class="icon"></span> <span class="text">正在加载...</span></div>
+								<script id="rank_list_tpl" type="text/template" >
+									<%
+										var rank_list_load=$('#rank_list_load');
+										if(more==1){
+											rank_list_load.removeClass();
+											rank_list_load.addClass('more');
+											rank_list_load.find('.text').html('查看更多排名');
+											rank_list_load.show();
+										}else{
+											rank_list_load.removeClass();
+											rank_list_load.find('.text').html('<p>没有更多答对的挑战者了</p>');
+											rank_list_load.show();
+										}
+										if(!list){
+											return;
+										}
+										for(var i=0;i<list.length;i++){
+											var item = list[i];
+									%>
+										<div class="rank_item">
+											<dl class="rank_user">
+												<dt><img src="<%=item.User.avatar%>"/></dt>
+												<dd>
+													<h3><%=item.User.nickname%></h3>
+													<h4>用时<%=item.answer_time%></h3>
+												</dd>
+											</dl>
+											<div class="rank_val">第<em><%=index+i+1%></em>名</div>
+										</div>
+									<%  } %>
+								</script>
+							</div>
+						</div>
+
+					</div>
+
+				{else}<!-- 解密活动进行中 -->
+					{if $is_user_infoed=='0'}
+						{if empty($friendth)} <!-- 非朋友交换请求 --->
+							<a id="puzzle_to_aginst" href="{php echo $this->createMobileUrl('login')}">我要挑战解密</a>
+							<p id="puzzle_to_aginst_hint">每个挑战者都会获得一条随机线索</p>
+						{else}<!-- 朋友交换请求 --->
+							<div id="clue_hoster">
+								<div id="clue_my_avatar"><span>{if empty($friendth['user']['avatar'])}友{else}<img src="{php echo VP_AVATAR($friendth['user']['avatar'],'m'); }"/>{/if}</span></div>
+								<dl id="clue_mine">
+									<dt>{$friendth['user']['nickname']}正在挑战{$puzzle['topic']}</dt>
+								</dl>
+								<div id="clue_exchange">
+									<span id="clue_exchange_help">需要您帮忙提供线索</span>
+								</div>
+							</div> 
+							
+							<div id="clue_friend">
+								<div id="clue_join">
+									<a class="bigbtn post" href="{php echo $this->createMobileUrl('login')}">获取我的线索</a>
+								</div>
+							</div>
+						{/if}
+					{else}
+						{if !empty($friendth) && $friendth['exchanged']!=1 } <!-- 朋友的页面且我与该朋友还没交换 -->
+							<div id="clue_hoster">
+								<div id="clue_my_avatar"><span>{if empty($friendth['user']['avatar'])}友{else}<img src="{php echo VP_AVATAR($friendth['user']['avatar'],'m'); }"/>{/if}</span></div>
+								<dl id="clue_mine">
+									<dt>{$friendth['user']['nickname']}<!--正在挑战{$puzzle['topic']}-->希望和你互换1条线索</dt>
+								</dl>
+								<div id="clue_exchange">
+									<a id="clue_exchange_btn" class="bigbtn post" href="javascript:void(0);" data-url="{php echo $_W['siteroot'] . 'app/' . substr($this->createMobileUrl('play',array('cmd'=>'clue_exchange','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|'.$friendth['user_id']))), 2)}">和Ta互换线索</a>
+								</div>
+							</div> 
+							
+							<div id="clue_friend">
+								<div id="clue_friend_avatar"><span>{if empty($user['avatar'])}我{else}<img src="{php echo VP_AVATAR($user['avatar'],'m'); }"/>{/if}</span></div>
+								<dl id="clue_friend">
+									<dt>我的线索</dt>
+									<dd class="puzzle_key k{$mine['clue_idx']}">{$mine['clue_con']}</dd>
+								</dl>
+							</div>
+
+							<div style="margin:0 20px 20px 20px;"><a class="bigbtn" href="{php echo $this->createMobileUrl('play',array('pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))) }">返回我的解密</a><div>
+						{else}
+							<div id="puzzle_aginst">
+								<div id="puzzle_fight">
+									<span></span>
+								</div>
+								<div id="puzzle_player">
+									<div id="puzzle_my_avatar"><span>{if empty($user['avatar'])}我{else}<img src="{php echo VP_AVATAR($user['avatar'],'m');}"/>{/if}</span></div>
+									<div id="puzzle_my_name"><div id="puzzle_my_name_in"><p>{$user['nickname']}在挑战</p><p>已获得<em>{php echo count($mine_clues); }条</em>线索</p></div></div>
+									<div id="puzzle_my_clue"><div id="puzzle_my_clue_in"><div id="to_exchange_btn">收集线索</div></div></div>
+								</div>
+								
+								<div id="puzzle_keys">
+									<ul>
+										{loop $mine_clues $key $clue}
+											<li class="puzzle_key k{$key}">{$clue}</li>
+										{/loop}
+									</ul>
+								</div>
+
+								<div id="puzzle_answer_block">
+									{if count($mine_clues) < $puzzle['keys_least']}
+										{if $puzzle['truth_type']==1}
+											<div id="puzzle_answer" class="truth_type1 disabled"> <input class="text" placeholder="至少获得{$puzzle['keys_least']}个线索后才可解答" disabled="true"/> <a id="puzzle_answer_btn" data-keys_least="{$puzzle['keys_least']}" class="btn disabled">解答</a> </div>
+										{/if}
+										{if $puzzle['truth_type']==2}
+											<div id="puzzle_answer"><a id="puzzle_answer_select" class="disabled" data-keys_least="{$puzzle['keys_least']}">至少获得{$puzzle['keys_least']}个线索后才可解答</a></div>
+										{/if}
+									{else}
+										{if empty($mine['answer'])}
+											{if $puzzle['truth_type']==1}
+												<div id="puzzle_answer" class="truth_type1"> <input id="puzzle_answer_text" class="text" placeholder="在此输入您的答案" /> <a id="puzzle_answer_btn" class="btn" data-url="{php echo $_W['siteroot'] . 'app/' . substr($this->createMobileUrl('play',array('cmd'=>'answer','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}">解答</a> </div>
+											{/if}
+											{if $puzzle['truth_type']==2}
+												<div id="puzzle_answer">
+													<a id="puzzle_answer_select" class="enabled"  data-url="{php echo $_W['siteroot'] . 'app/' .substr($this->createMobileUrl('play',array('cmd'=>'answer','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}">请选择您的答案</a>
+													<div id="puzzle_answer_options" style="display:none;">
+														<ul class="selector">
+															{loop $puzzle['truth_options'] $option}
+																<li data-value="{$option}">{$option}</li>
+															{/loop}
+														</ul>
+													</div>
+												</div>
+											{/if}
+										{else}
+											<div id="puzzle_answered">
+												我的解答：<em>{$mine['answer']}</em>，请耐心等待揭晓
+											</div>
+											{if $puzzle['truth_type']==1}
+												<div id="puzzle_answer" class="truth_type1" style="display:none;"> <input id="puzzle_answer_text" class="text" placeholder="在此输入您的答案" value="{$mine['answer']}"/> <a id="puzzle_answer_btn" class="btn" data-url="{php echo $_W['siteroot'] . 'app/' . substr($this->createMobileUrl('play',array('cmd'=>'answer','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}">重答</a> </div>
+											{/if}
+											{if $puzzle['truth_type']==2}
+												<div id="puzzle_answer" style="display:none;">
+													<a id="puzzle_answer_select" class="enabled droped"   data-url="{php echo $_W['siteroot'] . 'app/' .substr($this->createMobileUrl('play',array('cmd'=>'answer','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}">请重新选择您的答案</a>
+													<div id="puzzle_answer_options" >
+														<ul class="selector">
+															{loop $puzzle['truth_options'] $option}
+																<li data-value="{$option}">{$option}</li>
+															{/loop}
+														</ul>
+													</div>
+												</div>
+											{/if}
+										{/if}
+									{/if}
+									
+								</div>
+							</div>
+					
+						{/if}
+					{/if}
+				{/if}
+			</div><!-- app-body -->
+			
+			<div style="width:100%;overflow:hidden;">
+				{$puzzle['ad']}
+			</div>
+		</div><!-- app-content -->
+    </div> <!-- END 首页 -->
+
+
+	<!-- 解密详细介绍 -->
+    <div class="app-page" data-page="detail_page">
+		<div class="app-topbar light">
+			<div class="app-title">解密说明</div>
+			<div class="app-button right cross" data-back></div>
+		</div>
+		<div class="app-content">
+			<div class="app-body" style="padding-bottom:62px">
+				<div id="puzzle_detail">
+					<div id="puzzle_detail_content">{$puzzle['detail']}</div>
+				</div>
+			</div>
+		</div>
+
+		<!--底部悬浮按钮牛 -->
+		<div class="app-botbar">
+			<div class="buttons">
+				<div class="app-button cancel" data-back>关闭</div>
+			</div>
+		</div>
+
+    </div> <!-- END 解密详细介绍 -->
+
+	<!-- 收集线索 -->
+    <div class="app-page" data-page="clue_find_page" >
+		<div class="app-topbar light">
+			<div class="app-title">{if $is_puzzle_end=='1'}我收集到的线索{else}收集线索{/if}</div>
+			<div class="app-button right cross" data-back></div>
+		</div>
+
+		<div class="app-content">
+			<div class="app-body" style="padding-bottom:62px">
+				{if $is_puzzle_end!='1'}
+				<div id="clue_find_guide">
+					<p>如何收集线索？</p>
+					<p>1.每个参与者会获得1个初始随机线索。</p>
+					<p>2.与朋友互换，可获得对方的线索。将页面发送给朋友即可发起互换请求。</p>
+				</div>
+				{/if}
+				<div id="clue_froms">
+						<ul id="cf_list" data-url="{php echo $_W['siteroot'] . 'app/' . substr($this->createMobileUrl('play',array('cmd'=>'clue_froms','pid'=>pencode($puzzle['id']),'key'=>pencode($puzzle['id'].'|'.$user['uid'].'|0'))), 2)}" data-start="0" data-more="1"  >
+						</ul>
+						<div id="cf_list_load" class="list_load loading"><span class="icon"></span> <span class="text"><!--正在加载...--></span></div>
+						<script id="cf_list_tpl" type="text/template" >
+							<%
+								var cf_list_load=$('#cf_list_load');
+								if(more==1){
+									cf_list_load.removeClass('loading more');
+									cf_list_load.addClass('more');
+									cf_list_load.find('.text').html('点击加载更多');
+									cf_list_load.show();
+								}else{
+									cf_list_load.removeClass('loading more');
+									cf_list_load.find('.text').html('<p>收集到'+start+'条线索'+ (repeat==0?'':('('+repeat+'条重复)')) +'</p>');
+									cf_list_load.show();
+								}
+								if(start<=1 && $('#is_puzzle_end').val()!='1'){
+									cf_list_load.find('.text').html('<dl><dt><p>去邀请朋友一起玩吧！</p><p>他们或许会得到其他线索！</p></dt></dl>');
+								}
+								if(!list || list.length==0){
+									return;
+								}
+								for(var i=0;i<list.length;i++){
+									var item = list[i];
+							%>
+								<li>
+									<%  if(item.type==1){ %>
+										<p class="clue_fromer">
+											<img class="avatar" src="<%=_MODULE_URL_%>/static/mobile/images/fromer_rand.png" />
+											我的初始随机线索
+										</p>
+									<%  }else if(item.type==2){ %>
+										<p class="clue_fromer">
+											<img class="avatar" src="<%=item.fromer.avatar%>" />
+											<%=item.fromer.nickname%>提供的线索
+										</p>
+									<%  } %>
+									<p class="puzzle_key k<%=item.clue_idx%>"><%=item.clue_con%></p>
+								</li>
+							<%  } %>
+						</script>
+				</div>
+			</div>
+		</div><!-- app-content -->
+
+		<!--底部悬浮按钮牛 -->
+		<div class="app-botbar">
+			<div class="buttons">
+				<div class="app-button cancel" data-back>关闭</div>
+			</div>
+		</div>
+
+    </div> <!-- END 收集 -->
+
+	
+	{if $is_puzzle_end=='1'}<!-- 解密活动已结束 -->
+		<!-- 解密答案解释 -->
+		<div class="app-page" data-page="truth_page">
+			<div class="app-topbar light">
+				<div class="app-title">答案解释</div>
+				<div class="app-button right cross" data-back></div>
+			</div>
+
+			<div class="app-content">
+				<div class="app-body" style="padding-bottom:62px">
+					<div id="puzzle_truth_detail">
+						{$puzzle['truth_remark']}
+					</div>
+				</div>
+			</div>
+
+			<!--底部悬浮按钮牛 -->
+			<div class="app-botbar">
+				<div class="buttons">
+					<div class="app-button cancel" data-back>关闭</div>
+				</div>
+			</div>
+		</div> <!-- END 解密答案解释 -->
+
+		
+		<!-- 领奖引导页 -->
+		<div class="app-page" data-page="award_page">
+			<div class="app-topbar light">
+				<div class="app-title">获取宝藏</div>
+				<div class="app-button right cross" data-back></div>
+			</div>
+			<div class="app-content">
+				<div class="app-body" style="padding-bottom:62px">
+					<div id="puzzle_award">
+						{if $mine['rank'] > $puzzle['award']}
+							<div>真可惜，慢了点儿，宝藏被抢完了</div>
+						{else}
+							<div id="puzzle_award_mine">
+								<div class="title">恭喜您得到一个宝藏兑换码！</div>
+								<div class="code">{$mine['award_code']}</div>
+								<div class="hint">该密码用于兑换宝藏，请勿泄露</div>
+							</div>
+
+							<dl id="puzzle_award_remark">
+								<!---<dt>兑换方式</dt>-->
+								<dd>
+									{$puzzle['award_remark']}
+								</dd>
+							</dl>
+						{/if}
+					</div>
+				</div>
+			</div>
+
+			<!--底部悬浮按钮牛 -->
+			<div class="app-botbar">
+				<div class="buttons">
+					<div class="app-button cancel" data-back>关闭</div>
+				</div>
+			</div>
+		</div> <!-- END 领奖引导页 -->
+	{/if}
+		<!--
+		<script src="{MODULE_URL}/static/js/jquery/jquery-2.1.3.min.js"></script>
+		<script src="{MODULE_URL}/static/js/fastclick.js"></script>
+		<script src="{MODULE_URL}/static/js/touch/toe.min.js"></script>
+		<script src="{MODULE_URL}/static/js/appjs/app.min.js"></script>
+		<script src="{MODULE_URL}/static/js/dialog/js/zepto.alert.js"></script>
+		<script src="{MODULE_URL}/static/js/template/baiduTemplate.js"></script>
+		<script src="{MODULE_URL}/static/mobile/js/puzzle.js"></script>
+		-->
+		<script src="{MODULE_URL}/static/mobile/js/mobile.min.js"></script>
+	</body>
+</html>

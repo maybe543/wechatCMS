@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>金额明细</title>
+<link href="{$stylepath}/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="jfen_nav">
+<div class="jfen_nav_num">
+	<span><font>总金额</font><b>{$money}</b></span>
+</div>
+<div class="jfen_btn"><a {if empty($jfsc_url)}style="display:none"{/if} class="fs-8"><i class="ico">&#xe601;</i>积分商城</a><a style="display:none" class="fs-8"><i class="ico">&#xe600;</i>兑换记录</a></div>
+<div class="fgx_line"></div>
+<div class="jfen_title"><span class="grey fs-8">金额明细</span></div>
+<div class="jfen_item">
+<ul>
+    {loop $jfen $jf}
+	<li>
+        <span><font>{$type[$jf['type']]}</font><font class="grey fs-8">{php echo date('Y-m-d H:i:s', $jf['createtime'])}</font></span>
+        <span class="green">{if $jf['type']=='2'||$jf['type']=='3'}-{/if}{$jf['money']}</span>
+    </li>
+    {/loop}
+</ul>
+</div>
+</div>
+</body>
+</html>

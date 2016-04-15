@@ -1,0 +1,83 @@
+<div class="form-group">
+  {php echo FormTpl::label2('商品类型', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="isshow3" class="radio-inline">
+      <input type="radio" name="goodstype" value="1" id="isshow3" {if empty($item['goodstype']) || $item['goodstype'] == 1}checked="true"{/if}  /> 实体商品</label>
+    <label for="isshow4" class="radio-inline"><input type="radio" name="goodstype" value="2" id="isshow4"  {if $item['goodstype'] == 2}checked="true"{/if} /> 虚拟商品</label>
+    <span class="help-block">虚拟商品，例如：优惠券，打折卡等，需要用户去店里消费使用的，订单编号是虚拟商品的唯一标示。实体商品，需要邮递的商品。</span>
+    <span class="help-block">勾选虚拟商品后，订单确认页中无需填写收货地址</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('快递类型', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="issend1" class="radio-inline">
+      <input type="radio" name="sendtype" value="1" id="issend1" {if empty($item['sendtype']) || $item['sendtype'] == 1}checked="true"{/if}  /> 快递</label>
+    <label for="issend2" class="radio-inline"><input type="radio" name="sendtype" value="2" id="issend2"  {if $item['sendtype'] == 2}checked="true"{/if} /> 自提</label>
+    <span class="help-block">如果商品不需要使用快递，则选择自提。如果购买的商品同时包含自提和快递，则订单当做需要快递处理。</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('货到付款', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="isdelivery1" class="radio-inline"><input type="radio" name="support_delivery" value="1" id="isdelivery1" {if $item['support_delivery'] == 1}checked="true"{/if} /> 支持</label>
+    <label for="isdelivery2" class="radio-inline"><input type="radio" name="support_delivery" value="0" id="isdelivery2"  {if $item['support_delivery'] == 0}checked="true"{/if} /> 不支持</label>
+    <span class="help-block">选择支持货到付款，则本品可货到付款。注意，如果用户一次购买多件商品，这些商品必须全部支持货到付款，才会在收银台提供货到付款选项。否则只能微信支付。</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('展示等级', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      <span for="min_visible_level" class="input-group-addon">VIP等级必须达到</span>
+      {php echo FormTpl::getWebControl2('option', 'min_visible_level', $item['min_visible_level'], array('0'=>'不限等级', '1'=>'VIP1', '2'=>'VIP2', '3'=>'VIP3', '4'=>'VIP4', '5'=>'VIP5', '6'=>'VIP6', '7'=>'VIP7', '8'=>'VIP8', '9'=>'VIP9'))}
+      <span class="input-group-addon">后可见本商品。</span>
+    </div>
+    <span class="help-block">用户VIP等级低于该等级的时候，不会在商品列表中看到该商品。是否能购买该商品，取决于下面的“购买等级“设置。</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('购买等级', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      <label  class="input-group-addon">VIP等级必须达到</label>
+      {php echo FormTpl::getWebControl2('option', 'min_buy_level', $item['min_buy_level'], array('0'=>'不限等级', '1'=>'VIP1', '2'=>'VIP2', '3'=>'VIP3', '4'=>'VIP4', '5'=>'VIP5', '6'=>'VIP6', '7'=>'VIP7', '8'=>'VIP8', '9'=>'VIP9'))}
+      <label  class="input-group-addon">后可购买本商品。</label>
+    </div>
+    <span class="help-block">商品对用户可见，不意味着用户可以购买。可以购买，也不意味着可以从列表中可见。两个维度来控制，可以更加灵活。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('是否上架', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="isshow1" class="radio-inline"><input type="radio" name="status" value="1" id="isshow1" {if $item['status'] == 1}checked="true"{/if} /> 是</label>
+    <label for="isshow2" class="radio-inline"><input type="radio" name="status" value="0" id="isshow2"  {if $item['status'] == 0}checked="true"{/if} /> 否</label>
+    <span class="help-block"></span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('排序', 'col-xs-12 col-sm-3 col-md-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'displayorder', $item['displayorder']); }
+    <span class="help-block">数字越大排序越靠前</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('提醒店主发货', 'col-xs-12 col-sm-3 col-md-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'dealeropenid', $item['dealeropenid']); }
+    <span class="help-block">请填写本品店主OpenID</span>
+  </div>
+</div>
+

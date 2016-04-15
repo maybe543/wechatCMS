@@ -1,0 +1,288 @@
+{template 'common/header'}
+<script type="text/javascript">
+  require(['bootstrap'], function($) {
+    $('.btn').hover(function() {
+      $(this).tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
+    });
+  });
+</script>
+<ul class="nav nav-tabs">
+  <li {if $op=='index' }class="active"{/if}>
+    <a href="{php echo $this->createWebUrl('shop', array('op'=>'index'));}">商家管理</a>
+  </li>
+  <li {if $op=='save'}class="active"{/if}>
+    <a href="{php echo $this->createWebUrl('shop', array('op'=>'save'));}">添加商家</a>
+  </li>
+  {if $op=='update'}
+  <li class="active">
+    <a href="{php echo $this->createWebUrl('shop', array('op'=>'update', 'id'=>$_GPC['id']));}">编辑商家</a>
+  </li>
+  {/if}
+</ul>
+{template 'basic'}
+{if $op == 'index'}
+<div class="main">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-hover" style="table-layout: auto;">
+          <thead>
+            <tr>
+              <th class="text-center">序号</th>
+              <th>登录帐号</th>
+              <th class="text-center">注册时间</th>
+              <th class="text-center">上次登录</th>
+              <th class="text-center">登录ip</th>
+              <th class="text-center">状态</th>
+              <th class="text-right">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loop $userlist $key $item}
+            <tr>
+              <td class="text-center">{php echo ++$key;}</td>
+              <td>{$item["username"]}</td>
+              <td class="text-center">{php echo date("Y-m-d H:i:s", $item["joindate"]);}</td>
+              <td class="text-center">{php echo date("Y-m-d H:i:s", $item["lastvisit"]);}</td>
+              <td class="text-center">{$item["lastip"]}</td>
+              <td class="text-center">
+                {if $item["status"] == 2}<label class="label label-info">正常</label>{/if}
+                {if $item["status"] == 1}<label class="label label-danger">禁用</label>{/if}
+              </td>
+              <td class="text-right">
+                <a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('shop', array('op'=>'update','uid'=>$item['uid']))}" data-toggle="tooltip" data-placement="top" data-original-title="编辑"><i class="fa fa-edit"></i></a>
+                <!-- <a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('shop', array('op'=>'del','id'=>$item['id']))}" data-toggle="tooltip" data-placement="top" data-original-title="删除" onclick="if(!confirm('删除后将不可恢复,确定删除吗?')) return false;"><i class="fa fa-remove"></i></a> -->
+              </td>
+            </tr>
+            {/loop}
+            {if empty($userlist)}
+            <tr>
+              <td colspan="7">没有相关的内容</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+        {$pager}
+      </div>
+    </div>
+  </div>
+</div>
+{elseif $op == 'save'}
+<div class="main">
+  <div class="panel panel-default">
+    <div class="panel-heading">添加新商家</div>
+    <div class="panel-body">
+      <div class="alert alert-danger">温馨提示：查询是最基础的权限，建议查询功能开启，在修改和删除的时候为了安全都需要进行一次查询。</div>
+      <form id="J_Form" class="form-horizontal" action="" method="post">
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            登录帐号
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input type="text" name="username" class="form-control" value="">
+            <div class="help-block">只能使用[0-9]、[a-z]、"_"等字符串</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            登录密码
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input type="password" name="password" class="form-control" value="{$kanjia['title']}">
+            <div class="help-block">建议初始密码简单些，后期商家可自由更改。</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            确认登录密码
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input type="password" name="password_confirm" class="form-control" value="{$kanjia['title']}">
+            <div class="help-block">请填写与登录密码一致的内容</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            备注
+          </label>
+          <div class="col-sm-10 col-md-10">
+            <textarea class="form-control" name="remark"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            商家权限
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-10 col-md-10">
+            <table class="table table-bordered" style="table-layout: auto;">
+              <tbody>
+                {loop $RULES $key $rule}
+                <tr>
+                  <td width="40">
+                    <label class="checkbox-inline"><input class="J_Checkbox_All" type="checkbox" checked> <strong>{$i18n[$key]}</strong></label>
+                  </td>
+                  <td>
+                    {loop $rule $item}
+                    <label class="checkbox-inline"><input class="J_Checkbox" name="{$key}[{$item}]" type="checkbox" value="1" checked> {$i18n[$item]}</label>
+                    {/loop}
+                  </td>
+                </tr>
+                {/loop}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-offset col-sm-10 col-md-10">
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+            <button type="submit" name="submit" value="1" class="btn btn-primary">提交</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+require(["jquery"], function($){
+  $(function(){
+    $(".J_Checkbox_All").on("change", function(){
+      var _ = $(this);
+      if(_.prop("checked")){
+        _.parents("tr").find(".J_Checkbox").prop("checked", true);
+      }else{
+        _.parents("tr").find(".J_Checkbox").prop("checked", false);
+      }
+    });
+    $(".J_Checkbox").on("click", function(){
+      var _ = $(this).parents("tr").find(".J_Checkbox").length;
+      var __ = $(this).parents("tr").find(".J_Checkbox:checked").length;
+      if(_ != __){
+        $(this).parents("tr").find(".J_Checkbox_All").prop("checked", false);
+      }else{
+        $(this).parents("tr").find(".J_Checkbox_All").prop("checked", true);
+      }
+    });
+  });
+});
+</script>
+{elseif $op == 'update'}
+<div class="main">
+  <div class="panel panel-default">
+    <div class="panel-heading">编辑商家</div>
+    <div class="panel-body">
+      <form id="J_Form" class="form-horizontal" action="" method="post">
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            登录帐号
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <div class="form-control-static">{$user["username"]}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            重置密码
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input type="password" name="password" class="form-control" value="">
+            <div class="help-block">建议密码简单些，后期商家可自由更改。注：如不需要重置不填写即可</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            备注
+          </label>
+          <div class="col-sm-10 col-md-10">
+            <textarea class="form-control" name="remark">{$user['remark']}</textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            状态
+          </label>
+          <div class="col-sm-10 col-md-10">
+            <label class="radio-inline">
+              <input name="status" type="radio" value="0" {if $user['status'] == 2}checked{/if}> 正常
+            </label>
+            <label class="radio-inline">
+              <input name="status" type="radio" value="1" {if $user['status'] == 1}checked{/if}> 禁用
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            商家权限
+            <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-10 col-md-10">
+            <table class="table table-bordered" style="table-layout: auto;">
+              <tbody>
+                {loop $RULES $key $rule}
+                <tr>
+                  <td width="40">
+                    <label class="checkbox-inline"><input class="J_Checkbox_All" type="checkbox"> <strong>{$i18n[$key]}</strong></label>
+                  </td>
+                  <td>
+                    {loop $rule $item}
+                    <label class="checkbox-inline"><input class="J_Checkbox" name="{$key}[{$item}]" type="checkbox" value="1" {if $shop['rule'][$key][$item] == 1}checked{/if}> {$i18n[$item]}</label>
+                    {/loop}
+                  </td>
+                </tr>
+                {/loop}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-offset col-sm-10 col-md-10">
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+            <input type="hidden" name="uid" value="{$uid}"/>
+            <button type="submit" name="submit" value="1" class="btn btn-primary">提交</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+require(["jquery"], function($){
+  $(function(){
+    $(".J_Checkbox_All").each(function(key, ele){
+      var _ = $(this).parents("tr").find(".J_Checkbox").length;
+      var __ = $(this).parents("tr").find(".J_Checkbox:checked").length;
+      if(_ != __){
+        $(this).prop("checked", false);
+      }else{
+        $(this).prop("checked", true);
+      }
+    });
+    $(".J_Checkbox_All").on("change", function(){
+      var _ = $(this);
+      if(_.prop("checked")){
+        _.parents("tr").find(".J_Checkbox").prop("checked", true);
+      }else{
+        _.parents("tr").find(".J_Checkbox").prop("checked", false);
+      }
+    });
+    $(".J_Checkbox").on("click", function(){
+      var _ = $(this).parents("tr").find(".J_Checkbox").length;
+      var __ = $(this).parents("tr").find(".J_Checkbox:checked").length;
+      if(_ != __){
+        $(this).parents("tr").find(".J_Checkbox_All").prop("checked", false);
+      }else{
+        $(this).parents("tr").find(".J_Checkbox_All").prop("checked", true);
+      }
+    });
+  });
+});
+</script>
+{/if}
+
+{template 'common/footer'}

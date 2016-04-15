@@ -1,0 +1,382 @@
+{template 'common/header'}
+<div class="main">
+	<form class="form-horizontal form" id="setting-form" action=""
+		method="post">
+		<div class="panel panel-default">
+			<div class="panel-heading">配置中心</div>
+			<div class="panel-body">
+				<!-- id-->
+				<div class="form-group hide">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"></label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[id]"
+							value="{$settings['id']}"/>
+							<span class="help-block"></span>
+					</div>
+				</div>
+				<!-- title-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">推广中心标题</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[title]"
+							value="{$settings['title']}" required/>
+							<span class="help-block">此项为网页标题</span>
+					</div>
+				</div>
+
+				<!-- 引导关注url -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">引导关注</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[follow_url]"
+							   value="{$settings['follow_url']}" required/>
+						<span class="help-block">当用户没有关注的时候打开推广中心首页会提示用户进入引导关注页面</span>
+					</div>
+				</div>
+				<!-- 分享内容 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享内容</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[share_content]"
+							   value="{$settings['share_content']}" required/>
+						<span class="help-block">分享猪八戒推广中心时的描述内容</span>
+					</div>
+				</div>
+				<!-- 选择模板 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">模板选择</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[template]" value="old" {if $settings['template'] == 'old'}checked="true"{/if}> 旧版
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[template]" value="new" {if $settings['template'] == 'new'}checked="true"{/if}>新版
+						</label>
+						<span class="help-block">旧版则使用单页模板 新版则使用新模板</span>
+					</div>
+				</div>
+				<!-- 是否显示 新版title-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">新版是否显示header</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[show_header]" value="1" {if $settings['show_header'] == 1}checked="true"{/if}> 显示
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[show_header]" value="0" {if $settings['show_header'] == 0}checked="true"{/if}> 不显示
+						</label>
+						<span class="help-block">旧版则使用单页模板 新版则使用新模板</span>
+					</div>
+				</div>
+				<!-- 是否使用独立的积分商城-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">新版是否显示header</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[gift_shop]" value="1" {if $settings['gift_shop'] == 1}checked="true"{/if}> 超级积分商城
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[gift_shop]" value="0" {if $settings['gift_shop'] == 0}checked="true"{/if}> 默认积分商城
+						</label>
+						<span class="help-block">若您同时使用了《超级积分商城》模块，这里可以使用独立积分商城模块，而自带的积分商城将不会显示</span>
+					</div>
+				</div>
+				<!-- 积分商城url -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">积分商城链接</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[gift_shop_url]"
+							   value="{$settings['gift_shop_url']}" required/>
+						<span class="help-block">如果使用独立积分商城模块，这里必须填写</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">积分设置</div>
+			<div class="panel-body">
+
+				<!-- 积分设置 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">关注奖励</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[follow_score]"
+							   value="{$settings['follow_score']}" required/>
+						<span class="help-block">有人通过推广人的二维码扫描关注微信平台即可奖励此数量积分默认为2 </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享奖励</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[share_score]"
+							   value="{$settings['share_score']}" required/>
+						<span class="help-block">用户分享后可获得积分 </span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">取消关注扣除</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[unfollow_score]"
+							   value="{$settings['unfollow_score']}" required/>
+						<span class="help-block">用户取消关注，则减掉推广人此数量积分，建议小于关注奖励积分，默认为1,如果考虑到刷积分，可以将其与关注奖励设置一致</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">发展推广人</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[second_shareman_score]"
+							   value="{$settings['second_shareman_score']}" required/>
+						<span class="help-block">用户推广的粉丝称为推广人，则奖励此数量积分，默认为3</span>
+					</div>
+				</div>
+
+				<!-- 是否同步微擎积分 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否同步微擎积分</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[score_we7]" value="1" {if $settings['score_we7'] == '1'}checked="true"{/if}> 同步
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="data[score_we7]" value="0" {if $settings['score_we7'] == '0'}checked="true"{/if}>不同步
+						</label>
+						<span class="help-block">选择同步:则用户产生的积分会在微擎积分中积累,选择不同步，用户积分只在推广系统中积累</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">商家支付配置参数</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">基础红包金额(单位:分)</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[money]" class="form-control" value="{$settings['money']}" placeholder="红包最小发放金额"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">加成红包金额(单位:分)</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[money_extra]" class="form-control" value="{$settings['money_extra']}" placeholder="无加成红包则设为0，设置后红包总金额=基础红包金额+(0,加成红包金额]"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">APPID</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[appid]" class="form-control" value="{$settings['appid']}" placeholder="微信公众平台appid"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">MCHID</label>
+					<div class="col-sm-8">
+						<input type="password" name="data[mchid]" class="form-control" value="{$settings['mchid']}" placeholder="商户号"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">PARTNERKEY</label>
+					<div class="col-sm-8">
+						<input type="password" name="data[partner]" class="form-control" value="{$settings['partner']}" placeholder="支付key" />
+					</div>
+				</div>
+
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">apiclient_cert</label>
+					<div class="col-sm-8">
+						<textarea name="data[apiclient_cert]" class="form-control"  placeholder="导出证书部分的内容，全选apiclient_cert.pem文件内容复制到此处" >{$settings['apiclient_cert']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">apiclient_key</label>
+					<div class="col-sm-8">
+						<textarea name="data[apiclient_key]" class="form-control"  placeholder="导出证书秘钥的内容，全选apiclient_key.pem文件内容复制到此处" >{$settings['apiclient_key']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">rootca</label>
+					<div class="col-sm-8">
+						<textarea name="data[rootca]" class="form-control" placeholder="证明微信支付身份的服务器证书，全选rootca.pem文件内容复制到此处" >{$settings['rootca']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">活动名称</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[act_name]" class="form-control" value="{$settings['act_name']}" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包标题</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[wishing]" class="form-control" value="{$settings['wishing']}" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">备注信息</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[remark]" class="form-control" value="{$settings['remark']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">提供方名称</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[nick_name]" class="form-control" value="{$settings['nick_name']}" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包发送方名称</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[send_name]" class="form-control" value="{$settings['send_name']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">随机数下界</label>
+					<div class="col-sm-8">
+						<input type="number" name="data[randmin]" class="form-control" value="{$settings['randmin']}" placeholder="随机数最小值"/>
+						<span class="help-block">请填写0</span>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">随机数上界</label>
+					<div class="col-sm-8">
+						<input type="number" name="data[randmax]" class="form-control" value="{$settings['randmax']}" placeholder="随机数最大值"/>
+						<span class="help-block">请填写1</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包发放数字(上下界之间,英文逗号分隔)</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[sendnum]" class="form-control" value="{$settings['sendnum']}" placeholder="位于随机数最小值和最大值之间，当产生的随机数与此处填的一个值相符即发放红包"/>
+						<span class="help-block">请填写0,1即可</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="form-group col-sm-12">
+			<input name="token" type="hidden" value="{$_W['token']}" /> <input
+				type="submit" class="btn btn-primary col-lg-1" name="submit"
+				value="提交" />
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	require([ 'jquery', 'util' ], function($, util) {
+		$(function() {
+			$("#setting-form").submit(function() {
+				if ($("input[name='data[title]']").val().trim() == "") {
+					util.message("未填写标题！");
+					return false;
+				}
+
+//				//商家支付
+//				var result = true;
+//				if($('input[name="data[money]"]').val() == ''){
+//					result = false;
+//					util.message('未填写基础红包金额.');
+//				}
+//
+//				if($('input[name="data[money_extra]"]').val() == ''){
+//					result = false;
+//					util.message('未填写加成红包金额.');
+//				}
+//
+//				if($('input[name="data[appid]"]').val() == ''){
+//					result = false;
+//					util.message('未填写APPID.');
+//				}
+//
+//				if($('input[name="data[appsecrect]"]').val() == ''){
+//					result = false;
+//					util.message('未填写APPSECRECT.');
+//				}
+//
+//				if($('input[name="data[mchid]"]').val() == ''){
+//					result = false;
+//					util.message('未填写MCHID.');
+//				}
+//
+//				if($('input[name="data[partner]"]').val() == ''){
+//					result = false;
+//					util.message('未填写PARTNERKEY.');
+//				}
+//
+//				if($('input[name="data[remark]"]').val() == ''){
+//					result = false;
+//					util.message('未填写备注信息.');
+//				}
+//
+//				if($('input[name="data[nick_name]"]').val() == ''){
+//					result = false;
+//					util.message('未填写提供方名称.');
+//				}
+//
+//				if($('input[name="data[send_name]"]').val() == ''){
+//					result = false;
+//					util.message('未填写红包发送方名称.');
+//				}
+//				if($('input[name="data[randmin]"]').val() == ''){
+//					result = false;
+//					util.message('未填写随机数下界.');
+//				}
+//				if($('input[name="data[randmax]"]').val() == ''){
+//					result = false;
+//					util.message('未填写随机数上界.');
+//				}
+//
+//				if($('input[name="data[sendnum]"]').val() == ''){
+//					result = false;
+//					util.message('未填写红包发放数字.');
+//				}
+//				if(isNaN($('input[name="data[money]"]').val())){
+//					result=false;
+//					util.message("基础红包金额必须为数字！");
+//				}
+//
+//				if(isNaN($('input[name="data[money_extra]"]').val())){
+//					result=false;
+//					util.message("加成红包金额必须为数字！");
+//				}
+//
+//				var min=parseInt($('input[name="data[randmin]"]').val());
+//				var max=parseInt($('input[name="data[randmax]"]').val());
+//
+//				var sendnum=$('input[name="data[sendnum]"]').val();
+//				var sendArr=sendnum.split(",");
+//				for(var i=0;i<sendArr.length;i++){
+//					var temp=parseInt(sendArr[i]);
+//					if(isNaN(temp)){
+//						result=false;
+//						util.message("输入必须为数字，且以英文逗号分隔！");
+//						break;
+//					}
+//					if(temp<min||temp>max){
+//						result=false;
+//						util.message("红包发放数字必须在上下界之间，且随机数下界必须小于上界！");
+//						break;
+//					}
+//				}
+//				return result;
+			});
+		});
+	});
+
+
+
+</script>
+{template 'common/footer'}

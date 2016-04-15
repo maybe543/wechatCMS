@@ -1,0 +1,37 @@
+<li>
+<a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">
+  <div class="product-info clear">
+    <div class="product-img fl">
+      <?php
+      if ($item['isrecommend']) $label_type='isrecommend';
+      if ($item['isnew']) $label_type='isnew';
+      if ($item['ishot']) $label_type='ishot';
+      if ($item['isdiscount']) $label_type='isdiscount';
+      if ($item['istime']) $label_type='istime';
+      ?>
+      {if !empty($label_type)}
+      <img class="product-label haitaoy-label lazy-load"  data-url="{$_tpl_dir_path}images/{$label_type}.jpg?v=1">
+      {/if}
+      <img class="lazy-load deal-img" data-url="{$_W['attachurl']}{$item['thumb']}" />
+    </div>
+    <div class="fl product-desc">
+      <div class="product-name">
+        {if $item['isdiscount']} 
+        <span class="discount">{php echo round(($item['marketprice'] / $item['productprice']) * 10, 1)}折/</span>
+        {/if}
+        {$item['title']}
+      </div>
+      <div class="price-info">
+        <span class="exceed-hidden activity-jumei-price">
+          <span class="price">￥<span>{$item['marketprice']}</span></span>
+          <span class="global-price"></span>
+        </span>
+        <span class="exceed-hidden jumei-zhuangui-price">
+          <span>市场参考价 </span>
+          <span class="old">￥{$item['productprice']}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</a>
+</li>

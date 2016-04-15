@@ -1,0 +1,104 @@
+{template 'common/header'}
+<form action="" method="post" class="form-horizontal form">
+    <input type="hidden" value="{$settings['id']}" name="id" />
+    <div class="main">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                小区设置
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否注册码验证</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="code_status" value="1" {if $settings['code_status']==1 } checked{/if} />验证</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="code_status" value="0" {if empty($settings[ 'code_status']) || $settings[ 'code_status']==0 } checked{/if} /> 不验证</label>
+                        <span class="help-block">房号注册码，联系物业获取,作为该房唯一的验证要求</span>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否房号和手机匹配</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="room_status" value="1" {if $settings['room_status']==1 } checked{/if} />配对</label>
+                        <label class="radio-inline">
+                            <input type="radio" name="room_status" value="0" {if empty($settings['room_status']) || $settings['room_status']==0 } checked{/if} /> 不配对</label>
+                        <span class="help-block">房号和手机号码匹配验证。</span>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否开启导入房号显示</label>
+                    <div class="col-sm-10">
+                        <label for="radio_1" class="radio-inline">
+                            <input type="radio" name="room_enable" value="1" {if $settings['room_enable']==1 } checked{/if} />显示</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="room_enable" value="0" {if empty($settings['room_enable']) || $settings['room_enable']==0 } checked{/if} /> 不显示</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否开启房屋租赁托管</label>
+                    <div class="col-sm-10">
+                        <label for="radio_1" class="radio-inline">
+                            <input type="radio" name="h_status" value="1" {if $settings['h_status']==1 } checked{/if} />开启</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="h_status" value="0" {if empty($settings['h_status']) || $settings['h_status']==0 } checked{/if} /> 关闭</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否开启商家提成</label>
+                    <div class="col-sm-10">
+                        <label for="radio_1" class="radio-inline">
+                            <input type="radio" name="s_status" value="1" {if $settings['s_status']==1 } checked{/if} />开启</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="s_status" value="0" {if empty($settings['s_status']) || $settings['s_status']==0 } checked{/if} /> 关闭</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否开启超市提成</label>
+                    <div class="col-sm-10">
+                        <label for="radio_1" class="radio-inline">
+                            <input type="radio" name="c_status" value="1" {if $settings['c_status']==1 } checked{/if} />开启</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="c_status" value="0" {if empty($settings['c_status']) || $settings['c_status']==0 } checked{/if} /> 关闭</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="verify" class="col-sm-2 control-label">是否开启物业费提成</label>
+                    <div class="col-sm-10">
+                        <label for="radio_1" class="radio-inline">
+                            <input type="radio" name="c_status" value="1" {if $settings['c_status']==1 } checked{/if} />开启</label>
+                        <label for="radio_0" class="radio-inline">
+                            <input type="radio" name="c_status" value="0" {if empty($settings['c_status']) || $settings['c_status']==0 } checked{/if} /> 关闭</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">LBS查询范围</label>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="input-group">
+                            <input type="text" name="range" class="form-control" value="{$settings['range']}" />
+                            <span class="input-group-addon">千米（KM）</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12 help-block">设置用户在发送位置信息时，回复此设置项方圆范围内的商家。默认为<span style="color:red">&nbsp;5&nbsp;</span>公里以内的商家。</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12 help-block">
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary span3">
+                    </div>
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{template 'common/footer'}

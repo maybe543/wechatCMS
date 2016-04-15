@@ -1,0 +1,66 @@
+<style type="text/css">
+    .topmenu { position: relative; width:100%;float:left;background:#efefef;margin-bottom:20px;}
+    .topmenu ul li a { color:#000}
+    .topmenu .dropdown-menu li a { color:#666}
+    .topmenu ul li { content:'|'}
+</style>
+<div class="topmenu">
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="./index.php?c=home&amp;a=welcome&amp;do=ext&amp;m=nets_bd_news"><i class="fa fa-home"></i> 并读新闻</a> 
+        </li> 
+		<li class="dropdown">
+            <a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news"><i class="fa fa-cog"></i> 基础设置</a>
+            <ul class="dropdown-menu" style="display:none;">
+                 <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news">积分设置</a></li>
+				 <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadset&m=nets_bd_news">站点设置</a></li>
+				 <li><a href="/web/index.php?c=site&a=entry&op=add&do=Hxscategory&m=nets_bd_news">添加分类</a></li>
+				 <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxscategory&m=nets_bd_news">分类列表</a></li>
+				 
+			</ul>
+        </li> 
+        <li class="dropdown">
+            <a href="/web/index.php?c=site&a=entry&op=display&do=Hxsnews&m=nets_bd_news" class="dropdown-toggle">
+			<i class="fa fa-file-text-o"></i> 新闻管理 
+			</a>
+            <ul class="dropdown-menu" style="display:none;">
+				<li><a href="/web/index.php?c=site&a=entry&op=add&do=Hxsnews&m=nets_bd_news">添加新闻</a></li>
+				<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsnews&m=nets_bd_news">新闻管理</a></li>
+			</ul>
+        </li>
+        <li class="dropdown">
+            <a href="/web/index.php?c=site&a=entry&op=display&do=Hxshelp&m=nets_bd_news" class="dropdown-toggle">
+			<i class="fa fa-file-text-o"></i> 帮助管理
+			</a>
+            <ul class="dropdown-menu" style="display:none;">
+				<li><a href="/web/index.php?c=site&a=entry&op=add&do=Hxshelp&m=nets_bd_news">添加帮助</a></li> 
+				 <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxshelp&m=nets_bd_news">帮助列表</a></li> 
+			</ul>
+        </li>
+        <li>
+		<a href="/web/index.php?c=site&a=entry&op=display&do=Hxsgame&m=nets_bd_news" class="dropdown-toggle">
+		<i class="fa fa-shopping-cart"></i> 活动管理
+		</a>
+        <ul class="dropdown-menu" style="display:none;">
+			<li><a href="/web/index.php?c=site&a=entry&op=add&do=Hxsgame&m=nets_bd_news">添加活动</a></li>
+			<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsgame&m=nets_bd_news">活动列表</a></li>
+			<li><a href="/web/index.php?c=site&a=entry&op=add&do=Hxsincome&m=nets_bd_news">添加今日分成</a></li> 
+			<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsincome&m=nets_bd_news">历史分成</a></li>
+		</ul>
+        </li>
+		<li>
+		<a href="/web/index.php?c=activity&a=goods&" target="_blank" class="dropdown-toggle">
+		<i class="fa fa-gift"></i> 礼品商城
+		</a>
+        </li>
+		<li>
+		<a href="/web/index.php?c=mc&a=member&" target="_blank" class="dropdown-toggle">
+		<i class="fa fa-group"></i> 会员管理
+		</a>
+        </li>
+        <li class="dropdown">
+        <a href="/web/index.php?c=site&a=entry&op=display&do=Hxscash&m=nets_bd_news" class="dropdown-toggle"><i class="fa fa-money">
+		</i> 提现管理 </a>
+        </li> 
+	</ul>
+</div>

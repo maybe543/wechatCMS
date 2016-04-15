@@ -1,0 +1,15 @@
+<!--地址item-->
+<div class="orderList">
+  <div class="orderItem">
+    <!--地址信息-->
+    <div class="my_order_amount">
+      <p><span>收件人：<em class="orderval">{$item['address']['realname']}</em></span></p>
+      <p><span>联系电话：<em class="orderval">{$item['address']['mobile']}</em></span></p>
+      {if !empty($item['address'])}
+      <p><span>收件地址：<em class="orderval" style="padding-left:8px">{$item['address']['province']} {$item['address']['city']} {$item['address']['area']} {$item['address']['address']}</em></span></p>
+      {/if}
+    </div>
+  </div>
+</div>
+<!--地址item end-->
+

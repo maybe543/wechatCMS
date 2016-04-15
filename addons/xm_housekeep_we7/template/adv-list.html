@@ -1,0 +1,66 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo  $this->createWebUrl('adv', array('name'=>'xm_housekeep_we7'));}">幻灯片管理</a></li>
+	{if in_array('13', $power)}
+    <li><a href="{php echo  $this->createWebUrl('advadd', array('name'=>'xm_housekeep_we7'));}">添加幻灯片</a></li>
+	{/if}
+</ul>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            幻灯片列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr class="active">
+                    	<td>名称</td>
+                        <td>链接地址</td>
+                        <td>排序参数</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	{loop $list $val}
+                	<tr>
+                    	<td>
+                        	<p class="form-control-static">{$val[name]}</p>
+                        </td>
+                        <td>
+							<p class="form-control-static">{$val[link]}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{$val[top]}</p>
+                        </td>
+					    <td style="overflow:visible;">
+                        	<div class="btn-group btn-group-sm">
+                                {if in_array('13', $power)}
+								<a class="btn btn-default" href="{php echo $this->createWebUrl('advadd',array('id'=>$val['id'],'name'=>'xm_housekeep'));}"><i class="fa fa-edit"></i> 编辑</a>
+                                <a class="btn btn-default" href="{php echo $this->createWebUrl('advdelete', array('id'=>$val['id'],'name'=>'xm_housekeep'))}" onClick="confirm('确认删除该幻灯片?');"><i class="fa fa-remove"></i> 删除</a>
+								{/if}
+                              
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+        
+        <div class="panel-footer">
+			{if in_array('13', $power)}
+            <a class="btn btn-default" href="{php echo $this->createWebUrl('advadd',array('name'=>'xm_housekeep_we7'));}">新增幻灯片</a>
+			{/if}
+        </div>
+        
+    </div>
+</div>
+
+
+{template 'common/footer'}

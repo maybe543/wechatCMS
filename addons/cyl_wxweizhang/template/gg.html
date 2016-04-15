@@ -1,0 +1,146 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('gg', array('op'=>'post'));}">添加广告</a></li>
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('gg', array('op'=>'display'));}">广告列表</a></li>
+	
+</ul>
+{if $op == 'display'}
+<div class="panel panel-default">
+	<div class="table-responsive panel-body">
+		<table class="table">
+			<thead>
+				<tr>
+					<th style="width:15%">昵称</th>    
+					<th style="width:15%">广告图</th>    
+					    				
+                    <th style="width:5%">点击单价</th>                 
+					<th style="width:5%">剩余金额</th>					
+					<th style="width:5%">审核状态</th> 					
+					<th style="width:5%">状态</th> 					
+					<th style="width:5%">链接</th> 					
+					<th style="width:25%">编辑操作</th> 					
+					
+				</tr>
+			</thead>
+			<tbody>
+{loop $shang $list}
+<tr>
+					<td>
+						{$list['nickname']}
+					</td>
+					<td>
+						<img src="{php echo tomedia($list['thumb'])}" alt="" width="50">
+					</td>
+								
+					<td>						
+						{$list['jiage']}
+					</td>		
+					<td>						
+						{$list['zongjia']}
+					</td>	
+					<td>						
+						{if $list['status']==1}
+                        <span class="label label-default" style="background:#56af45;">已审核</span>
+                        {else}
+                        <span class="label label-default">未审核</span>
+                        {/if}
+					</td>
+                    <td>
+						{if $list['status']==1}
+                        <span class="label label-default" style="background:#56af45;">已上架</span>
+                        {else}
+                        <span class="label label-default">已下架</span>
+                        {/if}
+					</td>			
+					<td>
+						<a href="{$list['link']}" class="btn btn-primary" role="button" target="black">查看链接</a>
+					</td>
+					<td>
+						
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('gg', array('op'=>'post','id'=>$list['id']));}" title="编辑">编辑</a>&nbsp;-&nbsp;
+						
+						<a class="btn btn-default" onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('gg', array('op'=>'delete','id'=>$list['id']));}" title="删除">删除</a>
+					</td>
+					
+				</tr>
+{/loop}
+</tbody>
+		</table>		
+	</div>
+</div>
+{$pager}
+{elseif $op == 'post'}
+<div class="main">
+    <div style="padding-top: 15px;"></div>
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$item['id']}" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                广告编辑
+            </div>
+            <div class="panel-body">           	
+               
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝编号</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="openid" class="form-control" value="{$item['openid']}" />
+                        <span class="input-group-addon"><a href="/web/index.php?c=mc&a=fans&" target="_blank">openid：获取粉丝管理中的粉丝编号</a></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告标题</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="title" class="form-control" value="{$item['title']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告图片</label>
+                    <div class="col-sm-9">
+                       {php echo tpl_form_field_image('thumb', $item['thumb'])}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告链接</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="link" class="form-control" value="{$item['link']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">总价</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="zongjia" class="form-control" value="{$item['zongjia']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">单价</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="jiage" class="form-control" value="{$item['jiage']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">时间</label>
+                    <div class="col-sm-9">
+                        <input class="datepicker form-control" id="datepicker_dateline" name="time" type="text" value="{php echo date('Y-m-d H:i', $item['time'])}" readonly/>
+                    </div>
+                </div>     
+                 
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">状态</label>
+                    <div class="col-sm-9">
+                        <label for="status1" class="radio-inline"><input type="radio" name="status" value="1" id="status1" {if empty($item) || $item['status'] == 1}checked="true"{/if} /> 已审核</label>
+                        <label for="status2" class="radio-inline"><input type="radio" name="status" value="2" id="status2"  {if !empty($item) && $item['status'] ==2}checked="true"{/if} /> 未审核</label>
+                        <span class="help-block"></span>
+                    </div>
+                </div>                   
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+            <input type="hidden" name="token" value="{$_W['token']}" />
+        </div>
+	</form>
+</div>
+{/if}
+    
+     
+    {template 'common/footer'}

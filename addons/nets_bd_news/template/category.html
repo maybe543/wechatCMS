@@ -1,0 +1,104 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+	<li {if $_GPC['op']=='display'} class="active"{/if}><a  href="/web/index.php?c=site&a=entry&op=display&do=Hxscategory&m=nets_bd_news">分类管理</a></li>
+	<li {if $_GPC['op']=='add'} class="active"{/if}><a  href="/web/index.php?c=site&a=entry&op=add&do=Hxscategory&m=nets_bd_news">添加分类</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsnews&m=nets_bd_news">新闻管理</a></li>
+	
+</ul>
+{if $_GPC['op']=='add'}
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">添加分类</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">名称</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="name" class="form-control" value="{$record['name']}">
+						<div class="help-block">分类的名称 </div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">描述</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="remark" class="form-control">{$record['remark']}</textarea>
+						<div class="help-block">分类描述 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">排序</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="sort" class="form-control" value="{$record['sort']}">
+						<div class="help-block">数字越小越靠前显示 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">导航菜单</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline"><input type="radio" name="ismenu" value="1" {if $record["ismenu"]==1}checked="checked"{/if}>是</label>
+						<label class="radio-inline"><input type="radio" name="ismenu" value="0" {if $record["ismenu"]==0}checked="checked"{/if}>否</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否隐藏</label>
+					<div class="col-sm-9 col-xs-12">
+						<label class="radio-inline"><input type="radio" name="ishide" value="1"  {if $record["ishide"]==1}checked="checked"{/if}>是</label>
+						<label class="radio-inline"><input type="radio" name="ishide" value="0" {if $record["ishide"]==0}checked="checked"{/if}>否</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="hidden" name="id" value="{$record['id']}"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+{/if}
+{if $_GPC['op']=='display'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        分类管理
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+					<th style="width:80px;">排序</th>
+                    <th style="width:150px;">名称</th>
+                    <th style="width:180px;">描述</th>
+					<th style="width:80px;">导航菜单</th>
+					<th style="width:80px;">是否隐藏</th>
+                    <th style="width:100px;">创建时间</th>
+					<th style="width:80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $record $r}
+				<tr>
+					<td style="white-space: inherit;"><p>{$r["sort"]}</p></td>
+                    <td style="white-space: inherit;"><p>{$r["name"]}</p></td>
+                    <td style="white-space: inherit;">{$r["remark"]}</td>
+					<td>{if $r["ismenu"]==1}是{else}否{/if}</td>
+                    <td>{if $r["ishide"]==1}是{else}否{/if}</td>
+                    
+                    <td><?php echo date("Y-m-d",$r["createtime"])?></td>
+					<td>
+					<a href="/web/index.php?c=site&a=entry&op=add&do=Hxscategory&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">修改</a>
+					<a href="/web/index.php?c=site&a=entry&op=del&do=Hxscategory&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">删除</a>
+					</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+		{$pager}
+    </div>
+</div>
+{/if}
+</div>
+{template 'common/footer'}

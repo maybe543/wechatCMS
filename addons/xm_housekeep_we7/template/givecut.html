@@ -1,0 +1,58 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('Cut', array('name'=>'xm_housekeep_we7'));}">提成列表</a></li>
+    <li class="active"><a href="">发放提成</a></li>
+</ul>
+
+<div class="clearfix">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                提成信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="alert alert-info">
+                            <span>提成员工：</span><span class="label label-info">{$item[name]}</span><br/><br/>
+							<span>剩余金额：</span><span class="label label-info">{php echo $item[cutmoney]-$item[getmoney]}</span><br/><br/>
+                        </div>
+                    </div>
+                </div>
+			</div>	
+			
+			<form id="theform" class="form form-horizontal" action="{php echo $this->createWebUrl('givecutok',array('name'=>'xm_housekeep_we7'));}" method="post">
+			<input type="hidden" name="staff_id" value="{$item[id]}" />
+			<input type="hidden" name="staff_openid" value="{$item[openid]}" />
+			<input type="hidden" name="staff_name" value="{$item[name]}" />
+			<input type="hidden" name="yu" value="{php echo $item[cutmoney]-$item[getmoney]}"  />
+			<div class="panel-heading">
+                发放表单
+            </div>
+			<div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">发放金额</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <label class="i-checks radio-inline">
+							<input type="text" name="cut" class="form-control">
+						</label>
+						
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+            </div>
+			</form>			
+			
+        </div>
+
+</div>
+
+{template 'common/footer'}

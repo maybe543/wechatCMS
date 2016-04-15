@@ -1,0 +1,150 @@
+<style type="text/css">
+.alert{width:80%;float:right;margin-right: 10%;}
+.row{margin-top: 5px;}
+</style>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h5 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">基本参数</a>
+      </h5>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <input type="hidden" name="reply_id" value="{$reply['id']}" />
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码海报背景图</label>
+          <div class="col-sm-9">
+            {php load()->func('tpl');}
+            {php echo tpl_form_field_image('bg',$reply['bg'],'', $options);}
+            <div class="help-block">图片格式为jpg，建议大小:600px*910px，图片大小建议控制在200KB以内</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码</label>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">左边距(px)</span>
+              <input type="text" class="form-control" name="qrleft" value="{$reply['qrleft']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">上边距(px)</span>
+              <input type="text" class="form-control" name="qrtop" value="{$reply['qrtop']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">宽度(px)</span>
+              <input type="text" class="form-control" name="qrwidth" value="{$reply['qrwidth']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">高度(px)</span>
+              <input type="text" class="form-control" name="qrheight" value="{$reply['qrheight']}">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">左边距(px)</span>
+              <input type="text" class="form-control" name="avatarleft" value="{$reply['avatarleft']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">上边距(px)</span>
+              <input type="text" class="form-control" name="avatartop" value="{$reply['avatartop']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">宽度(px)</span>
+              <input type="text" class="form-control" name="avatarwidth" value="{$reply['avatarwidth']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">高度(px)</span>
+              <input type="text" class="form-control" name="avatarheight" value="{$reply['avatarheight']}">
+            </div>
+          </div>  
+        </div>
+        <div class="help-block" style="margin-left:18%;">如无需显示头像请将高度或宽度设置为0</div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称</label>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">左边距(px)</span>
+              <input type="text" class="form-control" name="nameleft" value="{$reply['nameleft']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">上边距(px)</span>
+              <input type="text" class="form-control" name="nametop" value="{$reply['nametop']}">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">字体大小(pt)</span>
+              <input type="text" class="form-control" name="namesize" value="{$reply['namesize']}">
+            </div>
+          </div>
+          <div class="col-sm-4" style="margin-top:-5px;">
+            {php load()->func('tpl');}{php $reply['color'] = empty($reply['color']) ? '#ffffff' : $reply['color']}
+            {php echo tpl_form_field_color('color',$reply['color']);}
+          </div>  
+        </div>
+        <div class="help-block" style="margin-left:18%;">如无需显示昵称请将字体大小设置为0</div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">余额奖励</label>
+          <div class="col-sm-3">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">首次关注</span>
+              <input type="text" class="form-control" name="newbie_credit" value="{$reply['newbie_credit']}">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">推广奖励</span>
+              <input type="text" class="form-control" name="click_credit" value="{$reply['click_credit']}">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">奖励上线</span>
+              <input type="text" class="form-control" name="sub_click_credit" value="{$reply['sub_click_credit']}">
+            </div>
+          </div>  
+        </div>
+        <div class="help-block" style="margin-left:18%;">首次关注奖励指通过扫描推广二维码的奖励</div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">新用户扫码关注后回复关键字</label>
+          <div class="col-sm-9">
+            <input class="form-control" type="text" value="{$reply['keyword']}" name="keyword">
+            <div class="help-block">新用户扫码关注后回复关键字</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片生成提示</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" name="reply1">{$reply['reply1']}</textarea>
+            <div class="help-block">图片生成时提示</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片生成后提示</label>
+          <div class="col-sm-9">
+            <textarea class="form-control" name="reply2">{$reply['reply2']}</textarea>
+            <div class="help-block">图片生成后提示</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+﻿{template 'wheader'}
+<style>
+html{height:100%;}
+body{height:100%; overflow:hidden;background:url(../addons/j_activity/image/bg/1.jpg) no-repeat; background-size:100% 100%;}
+.jtable{display:table; width:100%;}
+.jrow{display:table-row;}
+.jcell{display:table-cell; vertical-align:middle;}
+.jcell-1{ width:10%;display:table-cell; vertical-align:middle;}
+.jcell-2{ width:20%;display:table-cell; vertical-align:middle;}
+.jcell-3{ width:30%;display:table-cell; vertical-align:middle;}
+.jcell-4{ width:40%;display:table-cell; vertical-align:middle;}
+.jcell-5{ width:50%;display:table-cell; vertical-align:middle;}
+.jcell-6{ width:60%;display:table-cell; vertical-align:middle;}
+.jcell-7{ width:70%;display:table-cell; vertical-align:middle;}
+.jcell-8{ width:80%;display:table-cell; vertical-align:middle;}
+.jcell-9{ width:90%;display:table-cell; vertical-align:middle;}
+.jcell-25{ width:25%;display:table-cell; vertical-align:middle;}
+.jcell-75{ width:75%;display:table-cell; vertical-align:middle;}
+.vtop{ vertical-align:top;}
+.s_header{ margin:10px auto; width:80%; min-height:100px;; background:url(../addons/j_activity/image/screen2/top_bg.png) top center no-repeat; background-size:100% 100%; border-bottom:rgba(255,255,255,0.7) 1px solid;border-top:rgba(255,255,255,0.7) 1px solid}
+.s_body{ margin:0 auto; width:80%;}
+.s_footer{ margin:10px auto; width:80%; min-height:100px;;}
+
+.attend_big_box{ border:1px solid #FFF; background:rgba(255,255,255,0.4); height:300px; margin-right:20px; overflow:hidden;}
+.attend_big_box h2{ margin:10px; font-size:18px; text-align:left; color:#FFF; padding:5px 0 15px 0; border-bottom:#FFF 1px solid;}
+.sign_list ul,.sign_list ul li{ list-style:none; margin:0; padding:0;}
+.sign_list ul{ padding:10px; }
+.sign_list ul li{ display:inline-block; width:22.5%; margin:1% 0.5%; height:22.5%; border:1px solid #FFF; background:#FFF; padding:0.5%;}
+.sign_list ul li img{ width:100%;}
+.sign_new ul,.sign_new ul li{ list-style:none; margin:0; padding:0;}
+.sign_new ul{ padding:10px; position:relative}
+.sign_new ul li{ margin:0 0 10px 0; background:rgba(255,255,255,0.6); padding:10px;font-size:26px; border:1px solid rgba(255,255,255,0.8);}
+.sign_new ul li img{border-radius:999px;}
+.inline{ float:left; margin-right:10px;}
+.new_word{ font-size:30px;}
+.logo{ position:absolute; z-index:2; border-radius:4px; border:#CCC 2px solid;}
+</style>
+</head>
+<body>
+<div class="s_header jtable">
+	<div class="jrow">
+    	<div class="jcell-25">&nbsp;</div>
+        <div class="jcell-5 text-center" style="font-size:30px; color:#FFF; font-family:宋体">
+        	<div><strong>{$item['title']}</strong></div>
+            <small>签到现场</small>
+        </div>
+        <div class="jcell-25">&nbsp;</div>
+    </div>
+</div>
+<div class="s_body jtable">
+	<div class="jrow">
+    	<div class="jcell-2 vtop">
+        	<div class="attend_big_box">
+            	<h2><i class="fa fa-anchor" style="font-size:20px"></i> 已签到</h2>
+                <div class="sign_list">
+                	<ul>
+                    	<li><img src="../addons/j_activity/image/bank.gif"/></li>
+                        <li><img src="../addons/j_activity/image/bank.gif"/></li>
+                        <li><img src="../addons/j_activity/image/bank.gif"/></li>
+                        <li><img src="../addons/j_activity/image/bank.gif"/></li>
+                        <li><img src="../addons/j_activity/image/bank.gif"/></li>
+                        <li><img src="../addons/j_activity/image/bank.gif"/></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    	<div class="jcell-5 vtop" id="screen_middle">
+        	<div class="attend_big_box">
+            	<div class="sign_new">
+                	<ul id="new_attender">
+                    	
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="jcell-3 vtop" id="screen_right">
+        	<div class="panel panel-info">
+            	<div class="panel-body" style="padding:0; margin-bottom:0;">
+                	<div style="position:relative" id="qrcodebox"><img src='{php echo $codename}' style="width:100%"/><img src="{$_W['attachurl']}{$item['clientpic']}" class="logo" onerror="this.style.display='none'" style="width:15%; height:15%"/></div>
+                    <div class="text-center" style="font-size:16px; font-weight:bold;">请扫描上方二维码进行签到</div>
+                </div>
+                <div class="panel-body" style="margin-top:0;">请在后台设置签到说明或者是活动说明</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="s_footer text-center">
+	<a href="javascript:newaddender_1()" class="btn btn-info">测试效果</a>
+</div>
+<script language="javascript">
+var _new_img_width=0;
+$(document).ready(function(e) {
+	//****二维码LOGO图片大小****//
+	$(".logo").css({
+		"left":$("#qrcodebox").width()*0.85/2,
+		"top":$("#qrcodebox").width()*0.85/2,
+	});
+	//******右侧对齐代码******//
+    var _wheight=$(window).height();
+	$(".attend_big_box").height(_wheight-240);
+	
+	_new_img_width=$(window).width()*0.8*0.5*0.2-30;
+	newaddender_1();
+});
+var count=0;
+function newaddender_1(){
+	$new=$("<li id='t"+count+"' style='width:20%;margin:-"+(_new_img_width+20)+"px auto 10px auto;' data-content='签到大屏幕目前正在开发中，由于缺乏体验，目前还在思索中……完成后，将支持扫描设备扫描，无需人手操作'><div class='jtable'><div class='jrow'><div class='jcell-2'><img src='../addons/j_activity/image/bg/test.jpg' width='"+_new_img_width+"' height='"+_new_img_width+"'/></div></div></div></div></li>").hide();
+	$("#new_attender").prepend($new);
+	$new.animate({
+   		"margin-top": '0', opacity: 'toggle'
+ 	}, "slow",function(){
+		setTimeout(function(){newaddender_2('#t'+count)},300);
+	});
+}
+function newaddender_2(obj){
+	$(obj).animate({"width":'100%'},'slow',function(){
+		$(obj+" img").parent().after("<div class='jcell-8 '>"+$(obj).attr("data-content")+"</div>");
+	});
+	count++;
+}
+</script>
+</body>
+</html>

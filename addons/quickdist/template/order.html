@@ -1,0 +1,105 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $operation == 'display' && $status == Order::$ORDER_RECEIVED }class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('operation' => 'display', 'status' => Order::$ORDER_RECEIVED))}">待结算佣金订单</a></li>
+	<li {if $operation == 'display' && $status == Order::$ORDER_CONFIRMED}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('operation' => 'display', 'status' => Order::$ORDER_CONFIRMED))}">已结算佣金订单</a></li>
+</ul>
+
+
+<form method="post" class="form-horizontal" id="form1">
+
+<style>
+table tbody tr:nth-child(odd){border-bottom:0px solid #333; background:#F4F4F4;}
+</style>
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table-hover">
+			<thead class="navbar-inner">
+				<tr>
+          <th style="width:30px">{if $status == Order::$ORDER_RECEIVED}批{else}ID{/if}</dt>
+					<th style="width:130px">订单号</dt>
+					<th style="width:80px;">下单者</dt>
+					<th style="width:110px;">电话</dt>
+					<th style="width:90px;">支付</dt>
+					<th style="width:50px;">配送</dt>
+		      <th style="width:70px;">运费</dt>
+          <th style="width:100px;">总价</dt>
+          <th style="width:90px;">状态</dt>
+					<th style="width:115px;">更新时间</dt>
+					<th style="width:50px; text-align:right;">操作</dt>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+          <td>{if $status == Order::$ORDER_RECEIVED}<input type="checkbox" name="orderid[]" value="{$item['id']}" class="">{else}{$item['id']}{/if}</td>
+          <td>{$item['ordersn']}</td>
+					<td>{$address[$item['addressid']]['realname']}</td>
+					<td>{$address[$item['addressid']]['mobile']}</td>
+          <td><span class="label label-{php echo Order::getPayTypeLabel($item['paytype']);}">{php echo Order::getPayTypeName($item['paytype']);}</span></td>
+          <td>{if $item['sendtype']==2}自提{elseif $item['sendtype']==1}快递{$item['dispatch']['dispatchname']}{else}未知{/if}</td>
+          <td>{$item['dispatchprice']}</td>
+					<td>{$item['price']} 元</td>
+					<td>
+            <span class="label label-info">{php echo $_order->getOrderStatusName($item['status'])}</span>
+					</td>
+          <td><span class="full"  data-original-title="{php echo date('Y-m-d H:i:s', $item['updatetime'])}">{php echo WechatUtil::format_date($item['updatetime'])}</span></td>
+          <td style="text-align:right;">
+            {if $status == Order::$ORDER_RECEIVED}
+            <a href="{php echo $this->createWebUrl('Order', array('operation' => 'settle', 'id' => $item['id']))}" class="btn btn-sm btn-default" data-original-title="发放佣金成功后，会佣金立即以积分或余额的形式存入上线的账户">发放佣金<i class="fa fa-check text-success"></i></a>
+            {elseif $status == Order::$ORDER_CONFIRMED}
+            <i class="fa fa-check text-success" style="color:#9ed900"></i>
+            {/if}
+          </td>
+				</tr>
+
+				<tr>
+					<td></td>
+          <td colspan="10" style="color:gray;text-align:right;">{$item['commission_info']}</td>
+          <td style="text-align:right;">
+          </td>
+				</tr>
+				{/loop}
+			</tbody>
+
+{if $status == Order::$ORDER_RECEIVED}
+      <tfoot class="navbar-inner">
+        <tr>
+          <td><input type="checkbox" name="" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});"></td>
+          <td colspan="10">
+            <input type="submit" name="submit" class="btn btn-primary" value="批量发放佣金">
+            <input name="token" type="hidden" value="{$_W['token']}" />
+          </td>
+        </tr>
+      </tfoot>
+{/if}
+
+		</table>
+		{$pager}
+	</div>
+</div>
+</form>
+
+<script>
+require(['jquery', 'util'], function($, u){
+  $('#form1').submit(function(){
+    if($(":checkbox[name='orderid[]']:checked").size() > 0){
+      return confirm('确认金额无误，批量发放？');
+    }
+    u.message('没有选择订单', '', 'error');
+    return false;
+  });
+  $('.btn').hover(function(){
+    $(this).tooltip('show');
+  },function(){
+    $(this).tooltip('hide');
+  });
+  $('.full').hover(function(){
+    $(this).tooltip('show');
+  },function(){
+    $(this).tooltip('hide');
+  });
+
+});
+</script>
+
+{template 'common/footer'}

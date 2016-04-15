@@ -1,0 +1,170 @@
+{template 'common/header'}
+{template 'common'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'display'} class="active" {/if}><a href="{php echo $this->createWebUrl('red',array('op' =>'display'))}">红包</a></li>
+	<li{if empty($rule['id']) && $op == 'post'} class="active" {/if}><a href="{php echo $this->createWebUrl('red',array('op' =>'post'))}">添加红包</a></li>
+	{if !empty($rule['id']) && $op== 'post'} <li class="active"><a href="{php echo $this->createWebUrl('red',array('op' =>'post','id'=>$rule['id']))}">编辑红包</a></li> {/if}
+</ul>
+<script type="text/javascript" src="resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+<style>
+.form_short{
+  width: 5%;
+  height: 34px;
+  padding: 6px 12px;
+  margin: 0px 5px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/recruit/template/mobile/css/uploadify_t.css" />
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+		<input type="hidden" name="id" value="{$item['id']}" />
+		{if $op == 'display'}
+			<div class="panel panel-default">
+			<div class="panel-heading">红包详情</div>
+			<div class="panel-body">
+
+			                <div class="form-group">
+                    <label class="col-sm-2 control-label">红包列表</label>
+                    <div class="col-sm-10">
+                        <div class="table-responsive">
+                            <table class="table table-striped" style="width:auto;">
+                                <tr>
+                                    <th style="width:120px;">红包金额</th>
+                                    <th class="text-center" style="width:120px;">本次发放数量</th>
+                                    <th class="text-center" style="width:120px;">领取几率</th>
+                                    <th class="text-center" style="width:120px;">共计(按最大金额计算)</th>
+                                    <th style="width:150px;"></th>
+                                </tr>
+                                {loop $list $item}
+                                <tr ng-repeat="row in gifts">
+                                    <td><p class="form-control-static">{$item[rmin]}-{$item[rmax]}分</p></td>
+                                    <td class="text-center">
+                                    <div class="input-group">
+                                        <input name="rcount" class="form-control text-right" type="text" value="{$item[rcount]}" disabled/>
+                                        <span class="input-group-addon">份</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="input-group">
+                                            <input name="rchance" class="form-control text-right" type="text" value="{$item[rchance]}" disabled/>
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                    <p class="form-control-static">{php echo $money=$item[rmax]*$item[rcount]*$item[rchance]*0.01}分</p>
+                                    </td>
+                                    <td class="text-center">
+                                      	<a href="{php echo $this->createWebUrl('red', array('op' => 'post', 'id' => $item['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="修改"><i class="fa fa-pencil"></i></a>
+										<a  onclick="return confirm('确认删除吗？');return false;" href="{php echo $this->createWebUrl('red', array('op' => 'delete', 'id' => $item['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i></a>
+                                    </td>
+                                </tr>
+                                {php $sumcount+=$item[rcount];$sumchance+=$item[rchance];$summoney+=$money}
+                                {/loop}
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong>总计数量:{$sumcount}份</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>总翻中率:{$sumchance}%</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>总金额数: {$summoney}分</strong>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="alert alert-info">
+					                            这里设置这次活动的所有红包, 最终活动界面将显示所有红包的数量总和 <br>
+					                            翻中率为每个粉丝红包翻中的概率, 总概率不能超过100%
+                        </div>
+                    </div>
+                </div>
+			
+			
+			</div>
+			<div class="panel-footer">
+            <a class="btn btn-default" href="{php echo $this->createWebUrl('red',array('op' =>'post'))}">+新增红包</a>
+        </div>
+			</div>		
+			{elseif $op == 'post'}
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+		<input type="hidden" name="id" value="{$rule['id']}" />
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				红包设置
+			</div>
+			<div class="panel-body">
+			<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">红包金额</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="row row-fix">
+                            <div class="col-sm-4 col-xs-2">
+                                <div class="input-group">
+                                    <input type="text" name="rmin" id="rmin" class="form-control ng-pristine ng-untouched ng-valid" value="{$rule['rmin']}">
+                                    <span class="input-group-addon" style="border-left:none;border-right:none;">至</span>
+                                    <input type="text" name="rmax" id="rmax" class="form-control ng-pristine ng-untouched ng-valid" value="{$rule['rmax']}">
+                                    <span class="input-group-addon">分</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="help-block">红包金额范围, 最终金额将在金额范围内随机生成. 如果金额固定, 请输入相同的金额</span>
+                        <span class="help-block"><strong>根据接口限制, 单个红包最低1分</strong></span>
+                     </div>                    
+                </div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">中奖概率</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group input-medium">
+							<input type="text" name="rchance" id='rchance' class="form-control input-medium" value="{$rule['rchance']}" />
+							<span class="input-group-addon">%</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">奖品数量</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group input-medium">
+		<input type="text" name="rcount" id='rcount' class="form-control input-medium" value="{$rule['rcount']}" />
+							<span class="input-group-addon">份</span>
+						</div>
+					</div>
+				</div>
+
+		</div>
+	</div>
+	<div class="form-group col-sm-12">
+		<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" onclick="return formcheck()" />
+		<input type="hidden" name="token" value="{$_W['token']}" />
+	</div>
+	</form>
+</div>
+
+<script language='javascript'>
+	function formcheck() {
+		if ($("#rmin").isEmpty()) {
+			Tip.focus("rmin", "请填写红包金额", "top");
+			return false;
+		}
+		return true;
+	}
+
+</script>
+
+{/if}
+{template 'common/footer'}

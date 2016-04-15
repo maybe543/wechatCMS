@@ -1,0 +1,20 @@
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">选择关键词对应的海报</h3>
+  </div>
+  <div class="panel-body">
+    {if !empty($allChannel)}
+    <select id="channel_id" name="channel_id" class="form-control">
+      {loop $allChannel $item}
+      <option value="{$item['channel']}" {if $item['channel'] == $channel['channel']}selected{/if}>{$item['title']}</option>
+      {/loop}
+    </select>
+    <span class="help-block"><strong class="text-danger">请选择输入关键字后自动回复的二维码海报</strong></span>
+    {else}
+    <p style="color: inherit;">
+    <strong class="text-danger">请先建立海报。</strong>
+    </p>
+    {/if}
+  </div>
+</div>
+

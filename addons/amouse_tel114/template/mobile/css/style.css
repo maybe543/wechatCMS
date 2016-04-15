@@ -1,0 +1,365 @@
+html {
+    overflow-y: scroll;
+}
+div, ul, li, span, p {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+form, input {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 0;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: microsoft yahei, Verdana, Geneva, sans-serif;
+    background: #e9e9e9;
+    color: #666;
+    height: 100%;
+    overflow: auto;
+}
+/*css*/
+#owl-demo .item img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+}
+.modal, .locabox, .sortbox {
+    display: none;
+    background: #fff;
+    overflow: auto;
+    z-index: 1001;
+    position: absolute;
+    width: 95%;
+    height: 75%;
+    overflow-y: auto;
+}
+.closeBtn {
+    float: right;
+    cursor: pointer;
+    display: block;
+}
+.toptit {
+    float: left;
+}
+.modal1tit {
+    background: #eaeaea;
+    padding: 9px 15px;
+    overflow: hidden;
+}
+.clear {
+    clear: both;
+}
+.sr_album {
+    padding: 0 9px;
+    margin: 30px auto 0;
+}
+.sr_album ul li {
+    float: left;
+    padding: 0;
+    margin: 0;
+    display: block;
+    width: 25%;
+    text-align: center;
+}
+.sr_album ul li img {
+    width: 95%;
+}
+.sr_viewmore {
+    padding: 0 9px;
+    margin-top: 15px;
+}
+.viewbox {
+    position: relative;
+    border-bottom: 3px solid #e9e9e9;
+}
+.merchant_infor {
+    height: auto;
+    background: #fff;
+    overflow: hidden;
+}
+.share {
+    width: 20%;
+    background: #f0f0f0;
+    float: right;
+    text-align: center;
+}
+.share a {
+    padding: 35px 0;
+    display: block;
+}
+.share img {
+    border: none;
+    max-width: 25%;
+}
+.geryrightop {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.whiterightop {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.geryrightop img {
+}
+.mer_icon {
+    margin-top: 9px;
+}
+.mer_icon span {
+    width: auto;
+}
+.mer_icon span img {
+    max-width: 9%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.mer_icon span.v_cate {
+    background: #999;
+    color: #fff;
+    padding: 1px 5px 3px;
+    border-radius: 3px;
+    float: left;
+    margin-right: 5px;
+}
+.viewscore {
+    padding: 9px;
+    background: #f9f9f9;
+    overflow: hidden;
+}
+.score {
+    border-bottom: 2px solid #f0f0f0;
+    overflow: hidden;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+}
+.user_score {
+    float: left;
+}
+.score_num {
+    float: right;
+}
+.v_time {
+    float: left;
+}
+.v_view {
+    float: right;
+}
+.viewscore img {
+    max-width: 15%;
+    position: relative;
+    top: 3px;
+    margin-right: 5px;
+}
+.star img {
+    max-width: 50%;
+}
+.user img {
+    max-width: 75%;
+    margin-right: -15px;
+}
+.user_score span {
+    float: left;
+}
+.zq {
+    width: 100%;
+    height: 16px;
+    background: url(images/zq_m.png) repeat-x;
+    position: relative;
+    z-index: 1;
+}
+.tabthree {
+    margin-top: 15px;
+}
+.tabthree ul.nav li {
+    float: left;
+    margin-right: 9px;
+}
+.tabthree ul.nav li img {
+    width: 20%;
+    position: relative;
+    top: 3px;
+    margin-right: 5px;
+}
+.tabthree ul.nav li a {
+    color: #333;
+    text-decoration: none;
+    background: #d0d0d0;
+    padding: 5px 0 5px 15px;
+    display: block;
+}
+.tabthree ul.nav li a.current {
+    color: #333;
+    text-decoration: none;
+    background: #fff;
+    padding: 5px 0 5px 15px;
+    display: block;
+}
+.list-wrap {
+    padding: 9px;
+    background: #fff;
+    border-bottom: 3px solid #e0e0e0;
+    overflow: hidden;
+    position: relative;
+}
+.topleft {
+    width: 50%;
+    float: left;
+}
+.topright {
+    width: 50%;
+    float: right;
+}
+#mer_infor ul li {
+    border-bottom: 1px dashed #e0e0e0;
+    overflow: hidden;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+}
+#mer_infor ul li.lastli {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+.leftname {
+    float: left;
+}
+#mer_infor ul li .rightcon {
+    float: left;
+    width: 75%;
+}
+#mer_infor ul li .rightcon ul li {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    color: #666;
+    margin-right: 9px;
+}
+#mer_infor ul li span {
+    float: left;
+}
+#mer_infor ul li img {
+    width: 100%;
+    position: relative;
+    top: 2px;
+}
+.comment ul li {
+    padding: 15px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+.avatar {
+    width: 9%;
+    float: left;
+    padding: 2px;
+    border: 2px solid #f0f0f0;
+    margin-right: 15px;
+}
+.comm_topcon {
+    overflow: hidden;
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 9px;
+    padding-bottom: 9px;
+}
+.avatar img {
+    width: 100%;
+}
+.nametime {
+    width: 75%;
+    float: left;
+    margin-top: 5px;
+}
+.lc {
+    width: 5%;
+    float: left;
+}
+.mapbox img {
+    width: 100%;
+}
+.mer_list {
+    padding: 9px;
+    background: #fff;
+    border-bottom: 2px solid #e0e0e0;
+    overflow: hidden;
+    position: relative;
+    margin-top: 15px;
+}
+.mer_title {
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+    color: #333;
+}
+.mer_title img {
+    float: left;
+    margin-top: 3px;
+    margin-right: 9px;
+}
+.mer_con a {
+    color: #1fadbe;
+    text-decoration: none;
+}
+.mer_title_back {
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+    text-align: center;
+}
+.mer_title_back a {
+    color: #1fadbe;
+    text-decoration: none;
+}
+.mer_con ul li {
+    border-bottom: 1px dashed #e0e0e0;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.mer_con ul li a {
+    color: #666;
+}
+.mer_con ul li.lastli {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.sr_header a img {
+    border: none;
+}
+.hd {
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 9px;
+    margin-bottom: 9px;
+    text-align: center;
+    color: #333;
+}
+.nbox {
+    text-align: center;
+}
+.ncode2 img {
+    width: 50%;
+    border: none;
+    margin: 9px 0;
+}
+.tab_box ul li a img {
+    width: 20%;
+}

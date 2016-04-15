@@ -1,0 +1,51 @@
+{template 'header'}
+
+<link type="text/css" rel="stylesheet" href="{RES_CSS}base.css" />
+<link type="text/css" rel="stylesheet" href="{RES_CSS}style.css?v=203" />
+<script type="text/javascript" src="{RES_JS}script.js"></script>
+
+<title>我的提现记录</title>
+	<section class="order">
+        <section class="order_content">
+            <section class="order_item">
+			<aside>我的余额：{$fans['credit2']}元</aside>
+	            <section class="button">
+				<a href="{php echo $this->createMobileUrl('goods')}">继续提现</a>
+		        </section>
+            </section>
+		</section>
+
+    	<!--content-->
+        <section class="order_content">
+			{loop $goods_list $item}
+        	<!--item-->
+            <section class="order_item">
+				<aside>{$item['title']}</aside>
+        <article>
+        <section class="order_item_l"><img src="{php echo strpos($item['logo'], 'http://') === FALSE ? $_W['attachurl'] . $item['logo'] : $item['logo']}" /></section>
+        <section class="order_item_r">
+					<p>价值：<span class="red20">{$item['cost']}元</span></p>
+					<p>消耗积分：{$item['cost']}</p>
+					<p>兑换日期： {php echo date('m-d H:i', $item['createtime'])}</p>
+					<p>姓名： {$item['realname']}</p>
+					<p>联系电话： {$item['mobile']}</p>
+          {if $item['exchangetype'] == 1}
+					<p>支付宝： {$item['alipay']}</p>
+          {elseif $item['exchangetype'] == 2}
+					<p>卡号： {$item['bankcard']}</p>
+					<p>开户行： {$item['bankname']}</p>
+          {else}
+					<p>发放到微信钱包</p>
+          {/if}
+          {if "" != $item['note']}<p>备注： {$item['note']}</p>{/if}
+          <p>状态：<span class="red20">{if $item['status'] == 'done'}已成功{else}处理中{/if}</span></p>
+        </section>
+				</article>
+			</section>
+      <!--item end-->
+			{/loop}
+        </section>
+        <!--content end-->
+		</section>
+
+{template 'footer'}

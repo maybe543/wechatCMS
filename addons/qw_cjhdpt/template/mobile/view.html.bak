@@ -1,0 +1,166 @@
+{template 'header'}
+<style>
+a:visited{color:#FFF;}
+.jgrade{color:#999;}
+.jred{color:#F09}
+.panel-body img{ max-width:100%;}
+.panel-body h1,h2,h3{ font-size:18px; font-weight:bolder}
+.j_user_list ul ,.j_user_list ul li{ margin:0; padding:0; list-style:none;}
+.j_user_list ul li{ padding:5px 0;}
+.pr10{ padding-right:10px;}
+</style>
+<img src="$_W['attachurl'].$item['picture']" class="hidden" />
+<Div class="header">
+  <div class="box">
+    <div class="boxsize-2"><A href="javascript:history.back()"><i class="fa fa-angle-left"></i></A></div>
+    <div class="boxsize-8">{$item['title']}</div>
+    <div class="boxsize-2"><A href="{php echo $this->createMobileUrl('append',array('id'=>$item['id']))}">&nbsp;</A></div>
+  </div>
+</Div>
+<div class="fixed_first">&nbsp;</div>
+{if $item['status']==2 && $item['content']!=''}
+<div class="jp_10_5">
+  <div class="panel panel-default">
+    <div class="panel-heading">活动成果</div>
+    <div class="panel-body">{$item['content']}</div>
+  </div>
+</div>
+{/if}
+<div class="jp_10_5"> {if $isjoin && $_W['openid']}
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" >
+    <div class="panel panel-info">
+      <div class="panel-heading">我的报名</div>
+      <div class="panel-body"> {php $member=pdo_fetch("SELECT * FROM ".tablename('qw_cjhdpt_winner')." WHERE aid = '".$item['id']."' and from_user='".$_W['openid']."'");}
+        {php $p=json_decode($member['parama'],true);}
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">真实姓名</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {$member['realname']} </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">昵称</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {$member['nickname']} </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">手机</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {$member['mobile']} </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">性别</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {if $member['gender']==2}<i class="fa fa-female"></i>{elseif $member['gender']==1}<i class="fa fa-male"></i>{else}未知{/if} </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">报名状态</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {if $isjoin<0} <span class="label label-default">未入选</span> {elseif $isjoin==1} <span class="label label-info">审核中</span> {elseif $isjoin==2} <span class="label label-warning">恭喜您，成功入选</span> {/if} </div>
+        </div>
+        {if $member['attend']}
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">签到</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> <span class="label label-warning">已签到 {php echo date("m-d H:i",$member['endtime'])}</span> </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">备注</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {$member['reloadmsg']} </div>
+        </div>
+        {/if}
+        {php foreach($parama as $index=>$val){ }
+        <div class="form-group">
+          <label class="col-xs-4 col-sm-4 col-md-4 control-label jgrade">{php echo $index}</label>
+          <div class="col-xs-8 col-sm-8 col-md-8"> {if $val==1}
+            {php echo $p[$index]}
+            {else} <img src="{php echo $p[$index]}" width="80" onerror="this.src='./resource/images/nopic-small.jpg'"/> {/if} </div>
+        </div>
+        {php }} </div>
+    </div>
+  </form>
+  {/if}
+  <div class="panel panel-default">
+    <div class="panel-heading">活动介绍</div>
+    <div class="panel-body">{$item['info']}</div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">规则</div>
+    <div class="panel-body">{$item['rule']}</div>
+  </div>
+  {if $newjoinerList}
+  <div class="panel panel-info">
+    <div class="panel-heading">最新参与名单(已有<strong>{php echo count($newjoinerList)}</strong>人报名成功)</div>
+    <div class="panel-body j_user_list"> {if $item['applicants']}
+      <div style="text-align:center; padding:10px">剩余名额: <b style="color:#F03; font-family:Arial; font-size:large">{php echo $item['applicants']-$joincount}</b> 人</div>
+      {/if}
+      <ul>
+        {php $i=0}
+        {loop $newjoinerList $row}
+        {if $i<10}
+        <li><span class="pull-right">{php echo date("m-d G:i:s",$row['createtime'])}</span><span>{php echo mb_substr($row['nickname'],0,1,'utf-8')."**"}&nbsp;&nbsp;&nbsp;&nbsp;{php echo substr($row['mobile'],0,3)."****".substr($row['mobile'],-4,4)}</span></li>
+        {/if}
+        {php $i++}
+        {/loop}
+      </ul>
+    </div>
+  </div>
+  {/if} </div>
+<div class="text-center footer" style="margin:10px 0; padding-bottom:60px; width:100%; text-align:center; word-break:break-all;"> {if !empty($_W['page']['footer'])}
+  {$_W['page']['footer']}
+  {else}
+  {if IMS_FAMILY != 'x'}<a href="#">&copy;路之达科技</a>{/if}
+  {/if}
+  &nbsp;&nbsp;{$_W['setting']['copyright']['statcode']} 
+</div>
+<div class="footermenu text-center" style="padding-bottom:5px; height:auto;">
+  <div style="padding:5px 10px 0 10px;"> {if $item['status']==2} <a href="#" class="btn btn-info btn-block" disabled>活动已结束</a> {/if}
+    {if $item['status']==-1} <a href="#" class="btn btn-info btn-block" disabled>已停止报名</a> {/if}
+    {if $item['status']==0} <a href="#" class="btn btn-info btn-block" disabled>报名时间：{php echo date('Y.m.d',$item['joinstarttime'])} 至 {php echo date('m.d',$item['joinendtime'])}</a> {/if}
+    
+    {if $item['status']==1}
+    {if $member}
+    {if $member['status']<0} <a href="#" class="btn btn-info btn-block" disabled>不通过</a> {elseif $member['status']==1} <a href="#" class="btn btn-info btn-block" disabled>审核中</a> {elseif $member['status']>1} <a href="#" class="btn btn-info btn-block" disabled>成功入选</a> {/if}
+    {else} <a href="javascript:show_joinbox(1)" class="btn btn-info btn-block">马上报名</a> {/if}
+    {/if} </div>
+</div>
+<script language="javascript">
+
+/*function showLocation(){
+	_url="http://apis.map.qq.com/uri/v1/geocoder?coord={$item['latitude']},{$item['longitude']}"
+	wx.openLocation({
+		latitude: {$item['latitude']}, // 纬度，浮点数，范围为90 ~ -90
+		longitude: {$item['longitude']}, // 经度，浮点数，范围为180 ~ -180。
+		name: '', // 位置名
+		address: '', // 地址详情说明
+		scale: 26, // 地图缩放级别,整形值,范围从1~28。默认为最大
+		infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+	});
+}*/
+wx.ready(function () {
+	sharedata = {
+		title: "{if $isjoin && $_W['openid']} 我参加了《{$item['title']}》，一起来吧{else}{$item['title']}{/if}",
+		desc: "{$item['description']}",
+		link: "{$_W['siteurl']}",
+		imgUrl:"{$_W['attachurl']}{$item['clientpic']}",
+		success: function(){
+			//location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+	};
+	wx.onMenuShareAppMessage(sharedata);
+	var menulistoption=['menuItem:share:qq','menuItem:openWithQQBrowser','menuItem:copyUrl','menuItem:openWithSafari','menuItem:originPage','menuItem:share:QZone','menuItem:share:weiboApp'];
+	wx.hideMenuItems({
+		menuList: menulistoption
+    });
+	
+	wx.onMenuShareTimeline({
+		title: sharedata.title,
+		link: sharedata.link,
+		imgUrl: sharedata.imgUrl,
+		success: function (res) {
+		  //location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+    });
+	wx.onMenuShareAppMessage({
+		title: sharedata.title, // 分享标题
+		desc: sharedata.desc, // 分享描述
+		link: sharedata.link, // 分享链接
+		imgUrl: sharedata.imgUrl, // 分享图标
+	});
+	
+});
+</script>
+</body></html>

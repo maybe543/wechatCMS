@@ -1,0 +1,10 @@
+<ul class="nav nav-tabs">
+  <li><a href="javascript:window.history.go(-1)" onclick="window.history.go(-1)"> &lt;&lt; 返回 &nbsp;&nbsp;<span color="white">|</span> </a></li>
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('Center', array('op' => 'display'));}">所有用户</a></li>
+  {if $op == 'post'} <li class="active"><a href="{php echo $this->createWebUrl('Center', array('op' => 'post', 'from_user'=>$_GPC['from_user']));}">编辑用户</a></li>{/if}
+</ul>
+<script>
+  if (navigator.userAgent.toLowerCase().indexOf("chrome") == -1) {
+    document.write("<div class='alert alert-error' style='margin:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;'><i class='icon-warning-sign'></i><a href='https://www.baidu.com/s?wd=Chrome'>为了获取最好的页面展示效果，请使用【Chrome浏览器】</a></div>");
+  }
+</script>

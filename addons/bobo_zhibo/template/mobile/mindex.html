@@ -1,0 +1,271 @@
+<html id="-am-page" class="am-touch js cssanimations"><head>
+    <meta charset="utf-8">
+<title>{$reply['zhibo_title']}</title>
+    <meta name="author" content="Allmobilize.DevTeam">
+    <meta name="copyright" content="AllMobilize.Inc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    {if $bobo_zhibo_ctoken!='00'}
+    <meta http-equiv="refresh" content="{$bobo_zhibo_ctoken}">
+    {/if}
+    <link rel="stylesheet" href="{RES}css/mindex.css">
+    <link href="{RES}css/font-awesome.min.css" rel="stylesheet"/>
+	<link href="{RES}bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <style type="text/css">
+.listhr{
+	width: 90%;
+	margin:auto;
+	height:2px;
+	margin-top: 8px;
+	margin-bottom: 10px;
+}
+._ih{
+    display: none;
+}
+</style>
+</head>
+<body class="single">    
+    <!-- hbs -->
+<div class="kn-header">
+    <a href="" class="kn-logo">
+        <img src="{$reply['zhibo_logo']}" alt="">
+    </a>
+    <nav class="kn-header-nav">
+        <ul>
+
+            <li style="float: right;"><a href="" class="fa fa-refresh" >刷新</a></li>
+            <li style="float: right; width:120px; margin-top:13px;" >
+                <select id="shuaxinid" class="form-control" style=" font-size:11px;" onchange="shuaxin()">
+                  <option value="00">选择刷新时间</option>
+                  <option value="00"{if $bobo_zhibo_ctoken=='00'} selected{/if}>手动刷新</option>
+                  <option value="5"{if $bobo_zhibo_ctoken==5} selected{/if}>5S刷新</option>
+                  <option value="10" {if $bobo_zhibo_ctoken==10} selected{/if}>10S刷新</option>
+                  <option value="30" {if $bobo_zhibo_ctoken==30} selected{/if}>30S刷新</option>
+                  <option value="60" {if $bobo_zhibo_ctoken==60} selected{/if}>60S刷新</option>
+                </select>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- hbs -->
+<script type="text/javascript" src="{RES}js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="{RES}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+<!--
+//从新到旧
+$(document).ready(function(){ 
+     $("#loadMore").click(function(){
+        loadmore();
+    });
+}); 
+
+
+    function loadmore(){
+        var daid=$('#daid').val();
+        var replyid=$('#replyid').val();
+        var hidguanggao=$('#hidguanggao').val();
+        $.ajax({
+            type: "POST",
+            url: '{php echo $this->createMobileUrl('getmore', array())}',
+            dataType: 'json',
+            data: {hidguanggao:hidguanggao,replyid:replyid,daid:daid,randomshu:Math.random()},
+            success:function(result){
+                if(result.status==1){
+                    $('#daid').val(result.daid);
+                    $("#timeBox").append(result.html);
+                }else{
+                    $('#loadMore').html('无更多内容');
+                }
+                
+            }
+        });
+    }
+function shuaxin(){
+    var shuaxinid=$('#shuaxinid').val();
+    $.ajax({
+        url: '{php echo $this->createMobileUrl('setshuaxintime', array())}',
+        type: 'POST',
+        dataType: 'html',
+        data: {stime: shuaxinid,randomshu:Math.random()},
+        success: function (result) {
+                alert('设置刷新成功');
+                window.location.reload();
+        }
+    });
+}
+function pinglun(zhiboziid){
+	$('#zhiboziid').val(zhiboziid);
+	$('#myModal').modal('show');
+}
+function zan(zhiboziid){
+
+    $.ajax({
+        url: '{php echo $this->createMobileUrl('zan', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {zhiboziid: zhiboziid,randomshu:Math.random()},
+        success: function (result) {
+            if(result.status==1){
+                alert(result.msg);
+                window.location.reload();
+            }else{
+                alert(result.msg);
+                window.location.reload();
+            }
+        }
+    });
+}
+function tijiao(){
+	var zhiboziid=$('#zhiboziid').val();
+	var content=$('#content').val();
+	if(zhiboziid==''){
+		alert('参数错误！');
+		return false;
+	}
+	if(content==''){
+		alert('评论内容不能为空！');
+		return false;
+	}
+	$.ajax({
+        url: '{php echo $this->createMobileUrl('tijiao', array())}',
+        type: 'POST',
+        dataType: 'json',
+        data: {zhiboziid: zhiboziid,content:content,randomshu:Math.random()},
+        success: function (result) {
+        	if(result.status==1){
+        		alert(result.msg);
+        		window.location.reload();
+        	}else{
+        		alert(result.msg);
+        		window.location.reload();
+        	}
+        }
+    });
+}
+</script>
+  <article data-am-widget="paragraph" class="am-paragraph am-paragraph-one WIDGET-543b88744013db493b5b6a38 single-main am-no-layout" >
+      <div class="t-header bwhite mb10">
+        <h1>{$reply['zhibo_title']}<span style="font-size:14px;">—目前观看人数({$renshu})</span></h1>
+        <img src="{$reply['zhibo_picurl']}" width="956" height="242">
+    </div>
+    <input type="hidden" id="daid" value="{$daid}" />
+    <input type="hidden" id="replyid" value="{$replyid}" />
+    <div class="introtxt">
+                <p>{$reply['zhibo_jianjie']}</p>
+            </div>
+            <span class="fl airing">{if $reply['isjieshu']==1}正在直播{else}已结束{/if}</span><div class="tbox">
+            <dl class="toverbox clearfix">
+                <dt></dt>
+                <dd>
+                    <i class="point"></i>
+                    <div class="subbox bwhite">
+                        <p class="txt"><i class="over"></i><span class="overtit">{if $reply['isjieshu']==1}正在直播{else}已结束{/if}</span>{if $reply['isjieshu']==1}{php echo date('Y-m-d H:i',$reply['create_at'])}{else}{php echo date('Y-m-d H:i',$reply['update_at'])}{/if}</p>
+                    </div>
+                </dd>
+            </dl>
+            <!--end item-->
+            <div class="timebox clearfix" id="timeBox">
+        {loop $zhibolist $key $zhibo}    
+  <dl>
+    <dt>
+        <p class="time">{php echo date('H:i',$zhibo['create_at'])}</p>
+        <p class="date">{php echo date('Y-m-d',$zhibo['create_at'])}</p>
+    </dt>
+    <dd>
+        <i class="point"></i>
+        <div class="subbox bwhite">
+                        <p>{$zhibo['wenzi']}</p>
+                        {if $zhibo['zhibo_picurl']}
+                        <img src="{$zhibo['zhibo_picurl']}"  width="500">
+                        {/if}
+                        {if $zhibo['zhibo_shipin']}
+                        <video id="video1" style="margin-top: 10px;">
+					    	<source src="{$zhibo['zhibo_shipin']}" type="video/mp4" />
+					  </video>
+                        {/if}
+                        {if $zhibo['zhibo_yinpin']}
+                        <audio src="{$zhibo['zhibo_yinpin']}" controls="controls" style="margin-top: 10px;width: 100%;"></audio>
+                        {/if}
+           	<p style="text-align: right;margin-top: 5px;"><i class="fa fa-thumbs-o-up" onclick="zan({$zhibo['id']})"></i>({php echo $this->getzan($zhibo['id'])})&nbsp;&nbsp;<i class="fa fa-comment-o " onclick="pinglun({$zhibo['id']})"></i>({php echo $this->getpinglunsum($zhibo['id'])})</p>
+			<hr class="listhr" />
+		{php $pinglunlist=$this->getpinglunlist($zhibo['id'])}
+                        {loop $pinglunlist $pinglun}
+                            <p><img src="{$pinglun['img']}"  style='width: 28px; display:inline-block;' class="img-circle"/>&nbsp;&nbsp;{$pinglun['nickname']}：
+                            <span style="font-size: 10px; display: block;float: right;line-height:28px;">{php echo date('Y-m-d',$pinglun['cteate_at'])}</span>
+                            <br/>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$pinglun['content']}</span>
+                            </p>
+              
+
+                        {/loop}	         
+          </div>
+          <div>
+            {if $key==4 }
+            <input type="hidden" id="hidguanggao" value="{$guanggao['id']}" />
+            {if $guanggao['url']}
+            <a href="{$guanggao['url']}">
+                <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            </a>
+            {else}
+            <img src="{$guanggao['imgurl']}" />
+                <p style="color:red;">{$guanggao['wenzi']}</p>
+            {/if}
+            {/if}
+              </div>    
+    </dd>
+</dl>
+{/loop}
+</div>
+        </div>
+        {if $count>=10}
+        <p class="loadmore"  id="loadMore">加载更多</p>
+        {/if}    
+  </article>
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="margin-top: 30%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加评论</h4>
+      </div>
+      <input type="hidden" id="zhiboziid" />
+      <div class="modal-body" style="text-align: center;">
+        <textarea id="content" rows="" cols="" style="width: 90%;border: 1px solid gray;height: 100px; resize:none;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" onclick="tijiao()">提交评论</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+wx.config({
+    debug: false,
+    appId: '{$signPackage["appId"]}',
+    timestamp: '{$signPackage["timestamp"]}',
+    nonceStr: '{$signPackage["nonceStr"]}',
+    signature: '{$signPackage["signature"]}',
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage'
+    ]
+});
+wx.ready(function () {
+    wx.onMenuShareTimeline({
+        title: "{$reply['share_title']}",
+        link: "",
+        imgUrl: "{$reply['share_img']}",
+      });
+    wx.onMenuShareAppMessage({
+        title: "{$reply['share_title']}",
+        desc: "{$reply['share_desc']}",
+        link: "",
+        imgUrl: "{$reply['share_img']}",
+      });
+});
+    </script>
+</body>
+</html>

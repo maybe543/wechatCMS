@@ -1,0 +1,122 @@
+{template 'common/header'}
+{php $_item=2;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}分类</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100"><span>分类名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>分类描述</span></td>
+                                <td>
+                                    <textarea name="descriptions" id="descriptions" class="form-control">{php echo value($content,'descriptions')}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>显示顺序</span></td>
+                                <td>
+                                    <input name="inorder" type="text" class="form-control" id="inorder" value="{php echo value($content,'inorder')}" placeholder="请填写整数，越大越靠前">
+                                </td>
+                            </tr>
+                            <tr style="display:none;">
+                                <td><span>分类图标</span></td>
+                                <td>
+                                    <div class="divicon" onclick="$.icon($('#icon-font'),$('#setting_icon'),this);">
+                                        <input name="setting_icon" type="hidden" id="setting_icon" value="{php echo value($content,'setting|icon',false,'&#xe617;')}">
+                                        <i class="iconfont" id="icon-font">{php echo value($content,'setting|icon',false,'&#xe617;')}</i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>分类图片</span></td>
+                                <td>
+                                    <div class="form-input-upbox">
+                                        {php echo tpl_form_field_image("img", value($content,'img'))}
+                                        <span class="help-inline" style="color:#ff0000;">建议大小 (宽640，高425)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>所属分类</span></td>
+                                <td class="form-reg">
+                                    <select name="parentid" id="parentid" class="form-control wi">
+                                        <option value="0">=作为一级功能=</option>
+                                        {loop $sortlists $list}
+                                        <option value="{$list['id']}">{php echo value($list,'_tree|spacer')} {$list['title']}</option>
+                                        {/loop}
+                                    </select>
+                                    {if value($content,'parentid')}
+                                    <script>$("#parentid").val('{php echo value($content,'parentid')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>是否显示</span></td>
+                                <td>
+                                    <label><input name="status" type="radio"{php echo che(value($content,'status'),'显示')}>显示</label>
+                                    <label><input name="status" type="radio"{php echo che(value($content,'status'),'隐藏')}>隐藏</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('goodssort')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('goodssort')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+{template 'common/footer'}

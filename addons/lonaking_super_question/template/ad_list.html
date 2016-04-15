@@ -1,0 +1,70 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li><a href="{php echo $this->createWebUrl('ActivityManage');}">活动管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('QuestionManage');}">问题管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('ClassManage');}">问题类型</a></li>
+		<li><a href="{php echo $this->createWebUrl('TeamManage');}">战队管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('AdManage');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+		<a href="{php echo $this->createWebUrl('AdEdit');}" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> 添加广告</a>
+	</ul>
+	<div class="panel panel-default">
+		<div class="panel-body">
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead class="navbar-inner">
+						<tr>
+							<th width="5%">编号</th>						
+		                    <th width="8%">标题</th>
+							<th width="10%">创建时间</th>
+							<th width="15%">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{loop $page['data'] $d}
+							<tr>
+								<td data-id="{$d['id']}">{$d['id']}</td>
+								<td>{$d['title']}</td>
+								<td>{php echo date("Y-m-d h:i:s",$d['create_time'])}</td>
+								<td>
+									<a href="{php echo $this->createWebUrl('adEdit',array('id'=>$d['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+									<a href="javascript:void(0);" class="btn btn-danger btn-sm del-ad" data-id="{$ad['id']}" url="{php echo $this->createWebUrl('HardRemove',array('id'=>$d['id'],'opt'=>'ad'));}"><i class="glyphicon glyphicon-remove"> 删除 </i></a>
+								</td>
+							</tr>
+						{/loop}
+					</tbody>
+				</table>
+			</div>
+		</form>
+		{$pager}
+	</div>
+	</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".del-ad").on("click",function(){
+			var btn = $(this);
+			var url = btn.attr('url')
+			var tr = btn.parent().parent();
+			$.post(url,function(result){
+				$id = $(this).attr('data-id');
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					//移除dom
+					tr.remove();
+				}
+			});
+
+		});
+	});
+</script>
+{template 'common/footer'}

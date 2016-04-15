@@ -1,0 +1,298 @@
+{template 'common/header'}
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a>海报管理</a></li>
+  	<li><a href="{php echo $this->createWebUrl('qrcode',array('op'=>'display'));}">海报用户记录</a></li>
+  <li><a href="{php echo $this->createWebUrl('Usermanage',array('op'=>'display'));}">用户管理</a></li>
+</ul>
+
+{if $op== 'display'}
+<div class="main">
+  <div class="panel panel-info">
+</div>
+  <a href="{php echo $this->createWebUrl('jfhb_haibao',array('op' => 'post'))}" class="btn btn-default">添加海报</a>
+ <font  color="red">回复规则那边必须设置  jfhb 关键字，本模块才可以起作用</font>
+<div class="panel panel-default">
+  <div class="panel-body table-responsive">
+    <table class="table table-hover">
+      <thead class="navbar-inner">
+        <tr>
+           <th style="width:10%;">海报名称</th>
+          <th style="width:10%;">海报背景</th>
+          <th style="width:10%">二维码左边距,上边距</th>
+          <th style="width:10%">二维码宽度,高度</th>
+          <th style="width:10%">海报状态</th>
+          <th style="width:20%;">时间</th>
+          <th style="width:50%;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {loop $list $item}
+        <tr>  
+          <td>{$item['title']}({$item['id']})</td> 
+          <td><a href='{php echo tomedia($item['hb_img'])}' target=_blank>
+          <img src='{php echo tomedia($item['hb_img'])}' width='30px'/></a></td> 
+          <td>{$item['qrleft']},{$item['qrtop']}</td> 
+          <td>{$item['qrwidth']},{$item['qrheight']}</td> 
+
+          <td>{if $item['status']==1}
+            默认海报
+           {else}非默认海报
+            {/if}</td>
+          <td title="{php echo date('Y-m-d H:i:s', $item['createtime'])}">{php echo date('Y-m-d H:i:s', $item['createtime'])}  </td>
+        <td> 
+<a class="btn btn-default" href="{php echo $this->createWebUrl('jfhb_haibao', array('op' => 'status', 'id' =>$item['id']))}" onclick="return confirm('确认设为默认海报吗？');return false;">设为默认海报</a>
+<a class="btn btn-default" href="{php echo $this->createWebUrl('qrcode', array('op' => 'display', 'haibao_id' =>$item['id']))}">用户记录</a>
+     <a  class="btn btn-default" href="{php echo $this->createWebUrl('jfhb_haibao', array('op' => 'post', 'id' => $item['id']))}">修改</a>
+         <a  class="btn btn-default" href="{php echo $this->createWebUrl('jfhb_haibao', array('op' => 'delete', 'id' => $item['id']))}" onclick="return confirm('确认删除信息吗？');return false;">删除</a>
+     
+        </td>       
+        </tr>
+        {/loop}
+      </tbody>
+    
+    </table>
+    {$pager}
+  </div>
+  </div>
+</div>
+
+{elseif $op == 'post'}
+
+<div class="clearfix">
+   <div class="panel-heading">
+       海报设置(<font  color="red">回复规则那边必须设置  jfhb 关键字，本模块才可以起作用</font>)：
+   </div>
+   <form class="form-horizontal" id="theform" action="" method="post">
+            <div class="panel-body">
+            <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">海报名称</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input name="title" type="text"  class="form-control" value="{$item['title']}"/> 
+                    </div>
+            </div>
+
+                <div class="form-group model0">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span> 二维码海报背景图</label>
+                  <div class="col-sm-9 col-xs-12">            
+                      {php echo tpl_form_field_image('hb_img', $item['hb_img'],'../addons/water_jfhb/template/style/example.jpg');}
+     <div class="help-block">图片必须从本地上传，
+                         ；图片格式必须为jpg，大小建议为：530像素 * 800像素，图片大小建议控制在200KB以内                      
+                         </div>
+                </div>
+              
+          </div>
+                                
+              <div class="form-group model0" style="display:">
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码</label>
+
+                  <div class="col-sm-9 col-xs-12">
+
+                        <div class="input-group">
+
+                            <div class="input-group-addon">左边距</div>
+
+                            <input type="text" class="form-control" placeholder="150" name="qrleft" value="{$item['qrleft']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">上边距</div>
+
+                            <input type="text" class="form-control" placeholder="420" name="qrtop" value="{$item['qrtop']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">宽度</div>
+
+                            <input type="text" class="form-control" placeholder="200" name="qrwidth" value="{$item['qrwidth']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">高度</div>
+
+                            <input type="text" class="form-control" placeholder="200" name="qrheight" value="{$item['qrheight']}">
+
+                            <div class="input-group-addon">px</div>
+                        </div>
+
+                      
+                    
+                    </div>
+                </div>
+                
+                 <div class="form-group" style="display:">
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">头像</label>
+
+                   <div class="col-sm-9 col-xs-12">
+                        <div class="input-group">
+
+                            <div class="input-group-addon"><label class="checkbox-inline" style="margin-top:-10px;">
+                            <input type="checkbox" name="avatarenable" value="1"> 显示头像</label></div>
+
+                            <div class="input-group-addon">左边距</div>
+
+                            <input type="text" class="form-control" placeholder="100" name="avatarleft" value="{$item['avatarleft']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">上边距</div>
+
+                            <input type="text" class="form-control" placeholder="30" name="avatartop" value="{$item['avatartop']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">宽度</div>
+
+                            <input type="text" class="form-control" placeholder="100" name="avatarwidth" value="{$item['avatarwidth']}">
+
+                             <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">高度</div>
+
+                            <input type="text" class="form-control" placeholder="100" name="avatarheight" value="{$item['avatarheight']}">
+
+                            <div class="input-group-addon">px</div>
+
+                        </div>
+                        
+                       <div class="help-block">勾选这个选项的话，生成海报会比较慢，访问量大的时候，建议不启用</div>
+
+                    </div>
+
+                </div>
+                
+                
+            <div class="form-group"style="display:">
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名</label>
+
+                      <div class="col-sm-9 col-xs-12">
+
+                       
+
+                        <div class="input-group">
+
+                            <div class="input-group-addon"><label class="checkbox-inline" style="margin-top:-10px;">
+                            <input type="checkbox" name="nameenable" value="1"> 显示姓名</label></div>
+
+                            <div class="input-group-addon">左边距</div>
+
+                            <input type="text" class="form-control" placeholder="200" name="nameleft" value="{$item['nameleft']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">上边距</div>
+
+                            <input type="text" class="form-control" placeholder="50" name="nametop" value="{$item['nametop']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">字体大小</div>
+
+                            <input type="text" class="form-control" placeholder="30" name="namesize" value="{$item['namesize']}">
+
+                             <div class="input-group-addon">px</div>
+              
+                        </div>
+                         <div class="help-block">
+                            此选项要起作用，需要下载一个字体文件，msyhbd.ttf放在模块根目录，或者联系管理员索取.这样生成海报会比较慢，访问量大的时候，建议不启用</div>
+      
+                    </div>
+
+                </div>   
+                
+                
+                               		<div class="form-group">
+						<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">头像颜色</label>
+						<div class="col-sm-8 col-xs-12">
+					
+							{php echo tpl_form_field_color("namecolor",$item['namecolor']);}
+							<span class="help-block">图标颜色，上传图标时此设置项无效</span>
+						</div>
+					</div> 
+
+                         
+
+            <div class="form-group col-sm-12">
+
+
+            <input type="hidden" name="op" value="post" />
+
+                <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+
+                <input type="hidden" name="token" value="{$_W['token']}" />
+
+            </div>
+
+
+      </form>  
+
+    </div> 
+    <script>
+    require(['jquery', 'util'], function($, u) {
+        $(function(){      
+        	 {if $item['nameenable']==1}
+        	   $("[name='nameenable']").attr("checked",'{$item['nameenable']}');//全选
+        	 {/if}
+             {if $item['avatarenable']==1}
+        	   $("[name='avatarenable']").attr("checked",'{$item['avatarenable']}');//全选
+        	{/if}
+            $('#theform').submit(function(){
+            	if  ($("[name='nameenable']").is(':checked')){
+            		if  ($("[name='namesize']").val()=="" || $("[name='namesize']").val()==0){
+            		    alert("名称宽度不得为空或者0");
+            			return false;
+            		}
+            		
+            	}
+            	
+                if  ($("[name='avatarenable']").is(':checked')){
+                	if  ($("[name='avatarwidth']").val()=="" || $("[name='avatarheight']").val()==0){
+            		    alert("头像高度或者宽度不得为0");
+            			return false;
+            		}
+            	}
+            	 
+            	 
+            	 
+                var message = '';
+                if($.trim($(':text[name=hb_img]').val()) == '') {
+                    message += '必须输入海报背景';
+                }
+                
+                if($.trim($(':text[name=qrleft]').val()) == '') {
+                    message += '必须输入二维码左边距';
+                }
+                
+                if($.trim($(':text[name=qrtop]').val()) == '') {
+                    message += '必须输入二维码上边距';
+                }
+      
+                
+                if($.trim($(':text[name=qrwidth]').val()) == '') {
+                    message += '必须输入二维码宽度';
+                }
+                     
+                if($.trim($(':text[name=qrheight]').val()) == '') {
+                    message += '必须输入二维码高度';
+                }
+               
+                if(message) {
+                    u.message(message);
+                    return false;
+                }
+                
+                return true;
+            });
+        });
+    });
+</script>
+{/if}
+
+{template 'common/footer'}
+

@@ -1,0 +1,64 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+<title>{if empty($_W['page']['title'])}{$_W['account']['name']}{else}{$_W['page']['title']}{/if}</title>
+<meta charset="utf-8">
+<meta name="keywords" content="{$_W['account']['name']}">
+<meta name="description" content="{$_W['account']['name']}">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=yes">
+<meta name="format-detection" content="email=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<link href="$_W['attachurl']/images/global/wechat.jpg" rel="icon">
+<link href="$_W['attachurl']/images/global/wechat.jpg" rel="apple-touch-icon-precomposed">
+<link href="$_W['attachurl']/images/global/wechat.jpg" rel="Shortcut Icon" type="image/x-icon">
+<link href="{MODULE_URL}css/app.css" rel="stylesheet"/>
+<link href="{MODULE_URL}css/sweetalert.css" rel="stylesheet"/>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+	var JSSDK_CONFIG = {php echo json_encode($_W['account']['jssdkconfig'])} || {};
+	JSSDK_CONFIG.jsApiList = [
+		'checkJsApi',
+		'onMenuShareTimeline',
+		'onMenuShareAppMessage',
+		'onMenuShareQQ',
+		'onMenuShareWeibo',
+		'hideMenuItems',
+		'showMenuItems',
+		'hideAllNonBaseMenuItem',
+		'showAllNonBaseMenuItem',
+		'translateVoice',
+		'startRecord',
+		'stopRecord',
+		'onRecordEnd',
+		'playVoice',
+		'pauseVoice',
+		'stopVoice',
+		'uploadVoice',
+		'downloadVoice',
+		'chooseImage',
+		'previewImage',
+		'uploadImage',
+		'downloadImage',
+		'getNetworkType',
+		'openLocation',
+		'getLocation',
+		'hideOptionMenu',
+		'showOptionMenu',
+		'closeWindow',
+		'scanQRCode',
+		'chooseWXPay',
+		'openProductSpecificView',
+		'addCard',
+		'chooseCard',
+		'openCard'
+	];
+	wx.config(JSSDK_CONFIG);
+	var SHARE_DATA = {php echo json_encode($share);};
+</script>
+</head>
+<body>
+<div class="page-loading" ng-controller="pageloadController" ng-hide="dohide">
+	<img class="img-responsive" src="{MODULE_URL}images/preloader.gif" alt="加载中……"></div>

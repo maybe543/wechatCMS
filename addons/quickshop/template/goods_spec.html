@@ -1,0 +1,46 @@
+
+  {if empty($item['pgoodsid'])}
+    {php echo FormTpl::label2('下属子商品', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+      <p style="padding:15px" class="bg-success">
+      子商品有什么用？子商品不会出现在商城首页，主要用于一种商品包含多种规格的场景。我们需要为每一种规格都建立一个独立的商品，然后在多规格显示中把这些子商品显示在主商品的规格列表中。这是仿照京东的模式，比较灵活。
+      </p>
+      {loop $subspecs $sub}
+      <p>[{$sub['id']}] {$sub['title']}
+        <a href="{php echo $this->createWebUrl('goods', array('op'=>'post', 'id'=>$sub['id']))}">编辑</a>
+      </p>
+      {/loop}
+      <p>
+      <a class="span2 btn btn-primary" href="{php echo $this->createWebUrl('goods', array('op'=>'fork', 'id'=>$item['id']))}"><i class="icon-plus"></i> 添加子商品</a>
+        {if !empty($subspecs)}
+        <a class="span2 btn btn-primary" href="{php echo $this->createWebUrl('goods', array('op'=>'display', 'pgoodsid'=>$item['id']))}">
+          <i class="icon-zoom-in"></i> 管理全部子规格商品</a>
+        {/if}
+      </p>
+    </div>
+  {/if}
+
+
+  <!--TODO: 插入图片说明 -->
+
+  <div class="form-group">
+    {php echo FormTpl::label2('多规格显示', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+      <p style="padding:15px" class="bg-success">
+      每种规格都是一个独立的商品。为了在同一个页面上显示多种规格，我们采用了类似京东的模式，在一个页面上生成多规格文字链接，连到不同规格的商品上去。
+      我们这种做法的好处是，处理多规格可以更加简便灵活，缺点是有多少个规格，就要建立多少个商品。
+      </p>
+      {php echo FormTpl::getWebControl2('textarea', 'spec', $item['spec'])}
+      <span class="help-block">每行一条规格，格式为： 规格名称 | 对应商品的ID。如果希望预选中一条，则规格格式为： 规格名称 | 对应商品的ID | select。例如：</span>
+      <span class="help-block bg-danger">
+        红色 | 32<br>
+        绿色 | 33 | select <br>
+        紫色 | 70<br>
+      </span>
+      <span class="help-block">其中32、33、70为同一个品类下不同规格商品ID。商品管理的商品列表第一列即为商品ID。更多高级玩法，请向管理员咨询。</span>
+    </div>
+  </div>
+
+
+
+

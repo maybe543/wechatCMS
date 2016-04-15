@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>{$systeminfo['shopname']}</title>
+<link rel="stylesheet" href="../addons/water_super/template/css/iconfont.css">
+<link rel="stylesheet" href="../addons/water_super/template/css/css.css">
+<link href="../addons/water_super/template/css/base2.css" rel="stylesheet" type="text/css">
+<script src="../addons/water_super/template/js/jquery-1.js"></script>
+<script src="../addons/water_super/template/js/hdxg.js"></script>
+<script src="../addons/water_super/template/js/calculation.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".main_visual").hover(function () {
+            $("#btn_prev,#btn_next").fadeIn()
+        }, function () {
+            $("#btn_prev,#btn_next").fadeOut()
+        });
+
+        $dragBln = false;
+
+        $(".main_image").touchSlider({
+            flexible: true,
+            speed: 200,
+            btn_prev: $("#btn_prev"),
+            btn_next: $("#btn_next"),
+            paging: $(".flicking_con a"),
+            counter: function (e) {
+                $(".flicking_con a").removeClass("on").eq(e.current - 1).addClass("on");
+            }
+        });
+
+        $(".main_image").bind("mousedown", function () {
+            $dragBln = false;
+        });
+
+        $(".main_image").bind("dragstart", function () {
+            $dragBln = true;
+        });
+
+        $(".main_image a").click(function () {
+            if ($dragBln) {
+                return false;
+            }
+        });
+
+        timer = setInterval(function () {
+            $("#btn_next").click();
+        }, 5000);
+
+        $(".main_visual").hover(function () {
+            clearInterval(timer);
+        }, function () {
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+        });
+
+        $(".main_image").bind("touchstart", function () {
+            clearInterval(timer);
+        }).bind("touchend", function () {
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+        });
+
+    });
+</script>
+</head>
+<body>
+<div class="main_nav">
+<!-- 
+<div class="main_nav_top">
+<a href="#"><i class="icon_a ico ml15 fs1-1">&#xe662;</i><span>返回</span></a>
+<a href="#"><b><i class="icon_a ico mr15 r fs1-1">&#xe638;</i></b></a>
+</div>
+
+<div class="main_nav_title tc">
+<i class="icon_a ico ml10 l fs1-4">&#xe655;</i><p class="mr30">每日优鲜</p>
+</div> -->
+
+<div class="title_nav fs0-9">
+<a href="#" class="cur">水果</a>
+<!-- <a href="#">牛奶</a>
+<a href="#">海鲜</a>
+<a href="#">肉禽</a> -->
+</div>
+
+<div class="main_visual">
+  <div class="flicking_con">
+  <a class="on" href="#@">1</a>
+  <a href="#@">2</a>
+  </div>
+  <div class="main_image">
+    <ul>
+      <li> <img src="{if empty($systeminfo['imglb1'])}../addons/water_super/template/images/hd_pic.jpg{else}{$_W['attachurl']}{$systeminfo['imglb1']}{/if}"></li>
+      <li> <img src="{if empty($systeminfo['imglb2'])}../addons/water_super/template/images/hd_pic2.jpg{else}{$_W['attachurl']}{$systeminfo['imglb2']}{/if}"></li>
+    </ul>
+  </div>
+</div>
+
+<div class="new_week">
+<div class="new_week_tt">本周新上</div>
+<ul>
+{loop $goodslist $item}
+	<li>
+		<img src="{$_W['attachurl']}{$item['goodsphoto']}" width="29%" />
+		<div class="friuits_info">
+		<input name="projectId"  value="{$item['id']}" type="hidden">
+		
+		<p><strong>{$item['goodsname']}</strong></p>
+		<p><span>{$item['biaoqian']}</span></p>
+		<div class="w50"><p><font class="fs1-2 orange">￥<span class="price">{$item['goodsprice']}</span></font>/{$item['danwei']}</p><p class="fs0-9 grey">市场价:￥{$item['scprice']}</p></div>
+		<div class="w50 tr pt20"><input type="hidden" name="numbers" class="ml10 mr10 number2" value="0"><img src="../addons/water_super/template/images/subtract.png" width="20%" class="fl_none me"/><textarea class="ml10 mr10 number">0</textarea><img src="../addons/water_super/template/images/plus.png"  width="20%" class="add"/><span class="ps"></span></div>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</li>
+{/loop}
+<!-- 	<li>
+		<img src="../addons/water_super/template/images/fruits_pic.jpg" width="29%" />
+		<div class="friuits_info">
+		<p><strong>海南青柠檬2个</strong></p>
+		<p><span>维C之王</span><span>皮薄</span><span>汁多</span><span>够酸</span></p>
+		<div class="w50"><p><font class="fs1-2 orange">￥<span class="price">4.9</span></font>/2个</p><p class="fs0-9 grey">市场价:￥6.80</p></div>
+		<div class="w50 tr pt20"><img src="../addons/water_super/template/images/subtract.png" width="20%" class="fl_none me"/><textarea class="ml10 mr10 number">0</textarea><img src="../addons/water_super/template/images/plus.png" class="add" width="20%" /><span class="ps"></span></div>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</li> -->
+
+</ul>
+</div>
+<input type="hidden" name="allcostfee" value = "0" id ="allcostfee" />
+<div class="tatol_money">
+<span class="l ml10">总计：<b class="allMoney">￥0.00</b></span>
+<!-- <button onclick="checkform()" id = "data_submit" style="background: #e10080;">我选好了</button> -->
+<span class="buy_car"><a href="javascript:void(0)" onclick="checkform()"><i class="icon_a ico fs1-1">&#xe625;</i><font class="product_num">6</font></a></span>
+</div>
+<script type="text/javascript" charset="utf-8">
+function checkform(){
+	var projectIds = $("input[name='projectId']");
+	var numbers = $("input[name='numbers']");
+	var urlParameter = "";
+	var flag = false;
+	for(var i = 0 ; i < projectIds.length ; i ++ ){
+		if(numbers[i].value != "0"){
+			if(i==0){
+				urlParameter += projectIds[i].value+"*"+numbers[i].value.substring(0,numbers[i].value);
+			}else{
+				urlParameter += "#"+projectIds[i].value+"*"+numbers[i].value.substring(0,numbers[i].value);
+			}
+		}
+		if(numbers[i].value != "0"){
+			flag = true;
+		}
+	}
+	var totalMoney=$("#total").find("i:eq(1)");
+	var fee = $("#allcostfee").val();
+	var sum = parseFloat(fee);
+	//alert(fee+'----'+urlParameter);
+ 	if(sum > 0){
+		 $.ajax({
+			 type:'POST',
+			 data:{'isajax':'true','allcostfee':fee,'detail':urlParameter},
+			 url:'{php echo $this->createMobileUrl("confirmfee")}',
+			 success:function(data){
+				var json = eval("("+data+")");
+				 if(json.result == 1){
+					 var url = '{php echo $this->createMobileUrl("xiadan")}';
+					 window.location.href= url;
+				 }else{
+					 alert(json.error);
+				 }
+				
+			 }
+		 });
+	}else{
+		$("#error_tip").show();
+		//return false;
+	}
+}
+function onclose1(){
+	$("#error_tip").hide();
+	return false;
+}
+</script>
+	<div id="error_tip" style="display:none" class="cod">
+        <div class="wx_mask"></div>
+        <div class="wx_confirm">
+            <div class="wx_confirm_inner">
+                <div class="wx_confirm_hd">
+                    <div class="wx_confirm_tit" id="tip_div">亲，先选一个呗</div>
+                </div>
+                <div class="wx_confirm_bd">
+                    <div class="wx_confirm_btn">
+                        <button type="button" onclick="javascript:onclose1();" class="okbtn" style="width:97%">我知道了</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

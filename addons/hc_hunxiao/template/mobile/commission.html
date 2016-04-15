@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+	<title>我的佣金</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../addons/hc_hunxiao/style/css/style.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+	<meta name="mobileOptimized" content="width" />
+	<meta name="handheldFriendly" content="true" />
+	<meta http-equiv="Cache-Control" content="max-age=0" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+<style>
+.pagination li{
+	margin-left:15px;
+	background-color: #fa614b;
+	display: inline-block;
+	padding: 0 4%;
+	border-radius: 5px;
+}
+.commission-detail p span.commission-time{ width: 32%; text-align: center;}
+.commission-detail p span.commission-event{ width: 34%; text-align: center;}
+.commission-detail p span.commission-money{ width: 15%; text-align: center;}
+.nav a {
+	float: left;
+	display: block;
+	width: 100%;
+	text-align: center;
+	background-color: RGB(0,180,181);
+	color: #fff;
+	padding: 5px 0 0;
+}
+
+{if $opp=='more'}
+.commission-detail {
+	margin-top: 0;
+	opacity: 0.7;
+}
+{/if}
+</style>
+<body>
+	<section class="main animated fadeInDown">
+		<div class="main-box">
+			{if $opp!='more'}
+			<div class="commission-header fn-clear">
+				<div class="commission-box border-box">
+					<p>可结佣</p>
+					<p class="commission-text">{$commissioning}<span>元</span></p>
+				</div>
+				<div class="commission-box border-box">
+					<p>已结佣</p>
+					<p class="commission-text">{$commissioned}<span>元</span></p>
+				</div>
+			</div>
+			<a href="{php echo $this->createMobileUrl('commission', array('op'=>'commapply'))}" class="rb-row bank-card fn-clear">
+				<i class="icon-credit-card"></i>
+				 <span>佣金申请</span><i class="icon-angle-right"></i>
+			</a>
+			<a href="{php echo $this->createMobileUrl('creditapply', array('op'=>'display'))}" class="rb-row bank-card fn-clear">
+				<i class="icon-credit-card"></i>
+				 <span>积分兑换</span><i class="icon-angle-right"></i>
+			</a>
+			{/if}
+			<div class="commission-detail">
+				<h6>账目明细</h6>
+				{if empty($list)}
+				暂无
+				{else}
+				<p>
+					<span class="commission-time">时间</span>
+					<span class="commission-event">商品</span>
+					<span class="commission-money">数量</span>
+					<span class="commission-money">佣金</span>
+				</p>
+				<p>
+					{loop $list $v}
+						<span class="commission-time">{php echo date('Y-m-d', $v['createtime'])}</span>
+						<span class="commission-event">{if empty($good[$v['goodsid']])}积分兑换{else}{php echo hehe($good[$v['goodsid']], 7)}{/if}</span>
+						<span class="commission-money">{if empty($v['total'])}--{else}{$v['total']}{/if}</span>
+						<span class="commission-money">{$v['commission']}</span>
+					{/loop}
+				</p>
+				{/if}
+			</div>
+			{if $opp != 'more'}
+				{if $total > 10}
+					<a href="{php echo $this->createMobileUrl('commission', array('opp'=>'more', 'op'=>'display'));}"><span style="position:absolute; right:10%;">查看更多...</span></a>
+				{/if}
+			{/if}
+			{if $opp == 'more'}
+				{$pager}
+				<br/>
+				<a href="{php echo $this->createMobileUrl('commission');}"><input type="submit" value="返回" class="btn btn-primary" style="width:97%;"/></a>
+			{/if}
+		</div>
+	</section>
+<footer class="foot"><a>&copy; {$_W['account']['name']}</a></footer>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}	
+<script>
+wx.config({
+	debug: false,   
+	appId: '<?php echo $signPackage["appId"];?>',
+	timestamp: '<?php echo $signPackage["timestamp"];?>',
+	nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	signature: '<?php echo $signPackage["signature"];?>',
+	jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+});
+
+wx.ready(function () {
+	var shareData = {
+		title: "{$profile['realname']}",
+		desc: "{$gzurl['description']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('fansindex',array('mid'=>$id))}",
+		imgUrl: "{$profile['headimg']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+	wx.onMenuShareTimeline(shareData);
+});
+</script>
+</body>
+</html>

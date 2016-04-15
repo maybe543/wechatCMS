@@ -1,0 +1,33 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('entry');}">使用说明</a></li>
+    <li><a href="{php echo $this->createWebUrl('money');}">内容管理</a></li>
+</ul>
+<div class="clearfix">
+    <div class="alert alert-danger">
+        <h4>模块使用前需要注意</h4>
+        <p><strong>注意: 红包提现接口说明:  红包将在服务号的聊天窗口发放(已关注服务号, 未关注的将在通知消息内发放).</strong> </p>
+        <p><strong>注意: 提现接口生效时间为每天 08:00 - 23:59, 不在这个时间段, 提现是无效的,请务必在这个时间内提现</strong></p>
+        <p><strong>注意: 直接分享文章内容链接或扫码招募族员方式都可以使新用户成为您的下级，他发展的会员你同样可以得到提成</strong></p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            模块使用流程说明
+        </div>
+        <div class="panel-body">
+            <div class="alert alert-info">
+                <p>1.使用前请先在参数设置中配置好与公众号相关的账号信息,注意下载支付证书（<a href="https://pay.weixin.qq.com">微信商户平台</a>）</p>
+                <p>2.将下载好的证书用记事本打开,然后将内容复制到相应的证书输入框中</p>
+                <p><strong>3.使用前请先在微信商户平台进行余额充值,保证有充足的资金余额进行提现发放,否则可能出现用户无法收到红包的情况</p>
+                <p>3.在内容管理中设置文章，以有创新有吸引力的文章内容为主，粉丝在文章页点击右上角分享即可</p>
+                <p>4.如果文章内容设置为跳转地址，则用户访问时会直接跳转到设置的地址</p>
+                <p>5.可以使用招募族员方式先招募族员，则族员及下级的访问都会收到提成</p>
+                <p>6.分享方式两种：a.开始赚＝》文章列表＝》点开一篇文章＝》点右上角分享给朋友或朋友圈</p>
+                <P>6.b.分享招募族员二维码或链拉地址给朋友或朋友圈或微信群</P>
+            </div>
+        </div>
+    </div>
+
+</div>
+{template 'common/footer'}

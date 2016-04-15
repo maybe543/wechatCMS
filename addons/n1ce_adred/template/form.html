@@ -1,0 +1,108 @@
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h5 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">基本参数</a>
+            </h5>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <input type="hidden" name="reply_id" value="{$reply['id']}" />
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">群聊名字</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="{$reply['title']}" class="span2" name="title">
+                        <div class="help-block">群聊名字也是图文的标题</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">图文缩略图</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('thumb',$reply['thumb'],'', $options);}
+                        <div class="help-block">图文消息的缩略图</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">图文简介</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" name="description">{$reply['description']}</textarea>
+                        <div class="help-block">图文消息的简介</div>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告商昵称</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="{$reply['name']}" class="span2" name="name">
+                        <div class="help-block">群聊中广告商昵称</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('head',$reply['head'],'', $options);}
+                        <div class="help-block">广告商头像，请严格按照例图的尺寸和格式进行设计</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">被领取红包图</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('nullhb',$reply['nullhb'],'', $options);}
+                        <div class="help-block">被领取红包图，请严格按照例图的尺寸和格式进行设计</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告商发红包图</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('hb',$reply['hb'],'', $options);}
+                        <div class="help-block">广告商发红包图，请严格按照例图的尺寸和格式进行设计</div>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">广告商红包详情</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('adhb',$reply['adhb'],'', $options);}
+                        <div class="help-block">广告商红包详情，请严格按照例图的尺寸和格式进行设计</div>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="{$reply['share_title']}" class="span2" name="share_title">
+                        <div class="help-block">分享出去显示的标题</div>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享描述</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="{$reply['share_des']}" class="span2" name="share_des">
+                        <div class="help-block">分享出去显示的描述</div>
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享缩略图</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('share_img',$reply['share_img'],'', $options);}
+                        <div class="help-block">分享缩略图，200*200px</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享跳转链接</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="{$reply['share_url']}" class="span2" name="share_url">
+                        <div class="help-block">分享后，跳转的链接<font color="red">http</font>开头</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  window.initReplyController = function($scope) {
+    
+  };
+  window.validateReplyForm = function(form, $, _, util, $scope) {
+    
+    return true;
+  };
+</script>

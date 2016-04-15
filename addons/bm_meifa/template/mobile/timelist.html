@@ -1,0 +1,56 @@
+{template 'header'}
+<style type="text/css">
+.head{height:40px; line-height:40px; background:#efefef; margin-bottom:5px; padding:0 5px; color:#FFF;}
+.head .bn{display:inline-block; height:30px; line-height:30px; padding:0 10px; margin-top:4px; font-size:20px; border:1px #efefef solid; background:#efefef; color:#999999; text-decoration:none;}
+.head .bn.pull-right{position:absolute; right:5px; top:0;}
+.head .title{font-size:14pt;display:block;padding-left:10px;font-weight:bolder;margin-right:49px;text-align:center;height:40px;line-height:40px;text-overflow:ellipsis;white-space:nowrap;overflow: hidden;color:#999999;}
+.head .order{background:#F9F9F9; position:absolute; z-index:9999; right:0;}
+.head .order li > a{display:block; padding:0 10px; min-width:100px; height:35px; line-height:35px; font-size:16px; color:#333; text-decoration:none; border-top:1px #EEE solid;}
+.head .order li.icon-caret-up{font-size:20px;color:#F9F9F9;position:absolute;top:-11px;right:16px;}
+
+.panel-heading{padding:0;}
+.panel-heading a{display:block;text-indent:2em;line-height:37px;}
+.timelist{line-height:34px;}
+.panel-body li.row{border-bottom:1px #eee solid;padding:5px 0;}
+.panel-body li.row:last{border:0;}
+</style>
+<div class="head">
+    <a href="javascript:history.go(-1);" class="bn pull-left"><i class="fa fa-mail-reply"></i></a>
+    <span class="title">预约时间</span>
+    <a href="javascript:$('.head .order').toggleClass('hide');" class="bn pull-right"><i class="icon-reorder"></i></a>
+</div>
+   
+    
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+  {php $i=0;}
+  {loop $dates $date}
+    <div class="panel-heading" role="tab" id="heading{$i}">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{$i}" aria-expanded="true" aria-controls="collapse{$i}">
+          {$date}
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{$i}" class="panel-collapse collapse{if $i==0} in{/if}" role="tabpanel" aria-labelledby="heading{$i}">
+      <div class="panel-body">
+	      <ul class="list-unstyled">
+	      {loop $timelist['times'] $time}
+        {php $datestr=$date.' '.$time['start'].'-'.$time['end']}
+			<li class="row">
+      <div class="col-md-10 col-sm-9 timelist">{$time['start']}-{$time['end']}(可预约数:{php echo ($time['number']-$havs[$datestr]['rescount']);}/{$time['number']})</div>
+      <div class="col-md-2 col-sm-3"><a href="{php echo $this->createMobileUrl('reservation',array('id' => $project['id'],'datetime'=>base64_encode($datestr)))}" class="btn btn-default" {if $time['number']<=$havs[$datestr]['rescount']} disabled{/if}>立即预约</a></div>
+      </li>
+	      {/loop}
+	      </ul>
+      </div>
+    </div>
+  {php $i++;}
+  {/loop}
+  </div>
+</div>
+
+<script type="text/javascript">
+	$('.collapse').collapse();
+</script>
+{template 'footer'}

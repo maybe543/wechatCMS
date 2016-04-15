@@ -1,0 +1,143 @@
+{php include $_template->template('header')}
+{php include $_template->template('localjs')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>结算</h1>
+    </header>
+    <!--header end-->
+    <form class="form-horizontal" method="post" role="form">
+    <!--content-->
+    <div class="content">
+        <!--收货人&电话-->
+        <div class="settlementItem">
+          <ul class="settlementItemUl">
+            <li><span class="label">联系人</span><p><input type="text" class="text form-control" name="realname" value="{$row['realname']}"/></p></li>
+            <li><span class="label">联系电话</span><p><input type="text" class="text form-control" name="mobile" value="{$row['mobile']}"/></p></li>
+          </ul>
+        </div>
+        <!--收货人&电话 end-->
+        <!--收货地址-->
+        <div class="settlementItem">
+        	<dl class="settlementItemUl_1">
+              {if $goodstype == Goods::$PHYSICAL_GOODS}
+            	<dt><span>详细地址</span></dt>
+                <dd>
+                <p>
+                <select class="form-control" id="sel-provance" onChange="selectCity();" name="province">
+                  <option value="{$row['province']}" selected="true">省/直辖市</option>
+                </select>
+                </p>
+
+                <p>
+                <select class="form-control"  id="sel-city" onChange="selectcounty()" name="city">
+                  <option value="{$row['city']}" selected="true">请选择</option>
+                </select>
+                </p>
+
+                <p>
+                <select class="form-control"  id="sel-area" name="area">
+                  <option value="{$row['area']}" selected="true">请选择</option>
+                </select>
+                </p>
+                </dd>
+                <dd>
+                <p><textarea class="form-control" name="address" placeholder="详细收件地址">{$row['address']}</textarea></p>
+                </dd>
+                {/if}
+                {if $this->module['config']['enable_order_remark']}
+                <dd>
+                <p><input class="form-control" name="remark" placeholder="订单备注">{$row['remark']}</input></p>
+                </dd>
+                {/if}
+            </dl>
+        </div>
+        <!--收货人地址 end-->
+        <!--订单明细-->
+        <div class="orderDetail">
+        	<dl>
+            	<dt><span>订单明细</span></dt>
+                <dd>
+                	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    	<tbody>
+                        {loop $allgoods $item}
+                        	<tr>
+                            <td align="left" width="65%">{$item['title']} X{$item['total']}{if !empty($item['unit'])}{$item['unit']}{/if}</td>
+                                <td align="right" width="35%"><em>                                    ￥{php echo sprintf('%.2f', $item['totalprice'])}元</em></td>
+                          </tr>
+                          {/loop}
+                        </tbody>
+                        <tfoot>
+                        	<tr>
+                            <td align="left">运费</td>
+                            <td align="right"><em>{if $dispatchprice}￥{php echo sprintf('%.2f', $dispatchprice)}元{else}包邮{/if}</em></td>
+                          </tr>
+                        </tfoot>
+                    </table>
+                </dd>
+                {if $totalcredit > 0}
+                <style>
+                  #use_coupon_credit{ width:50px; height:20px; line-height:20px;  border-radius:2px;-webkit-border-radius:2px;-moz-border-radius:2px;-ms-border-radius:2px;-o-border-radius:2px; display:block; float:right;  position:relative; z-index:10;} 
+                  #use_coupon_credit.on{background:#45c01a;border:1px solid #45c01a;}
+                  #use_coupon_credit.off{background:#888;border:1px solid #888;}
+                  #use_coupon_credit em{width:25px; height:18px; display:block; background:#fff;border-radius:2px;-webkit-border
+                    -radius:2px;-moz-border-radius:2px;-ms-border-radius:2px;-o-border-radius:2px; position:absolute; z-index:20;}
+                  #use_coupon_credit.on em{ top:0px; right:0px;}
+                  #use_coupon_credit.off em{ top:0px; left:0px;}
+                  .coupon .use_coupon_credit_tip {height:18px;line-height:18px;}
+                </style>
+
+                <script type="text/javascript">
+                  $(function(){
+                    var _new_price = new Number({php echo $totalprice - $totalcredit});
+                    var _org_price = new Number({$totalprice});
+                    var new_price = _new_price.toFixed(2);
+                    var org_price = _org_price.toFixed(2);
+                    $("#use_coupon_credit").click(function(){
+                      if($(this).hasClass("off")){
+                        $(this).stop().animate({top:"0px",right:"0px"},200,function(){
+                          $(this).removeClass("off");
+                          $(this).addClass("on");
+                          $('#totalprice').html('￥' + new_price + '元');
+                          $('#usecredit').val(1);
+                        });
+                      }else{
+                        $(this).stop().animate({top:"0px",left:"0px"},200,function(){
+                          $(this).removeClass("on");
+                          $(this).addClass("off");
+                          $('#totalprice').html('￥' + org_price + '元');
+                          $('#usecredit').val(0);
+                          //tip_close(); tip("不使用人人豆-测试!",true);
+                        });
+                      }
+                    });
+                  });
+                </script>
+                <dd>
+                <p class="coupon">
+                  <span class="use_coupon_credit_tip">积分：<em>可使用{php echo $totalcredit * 100}积分，抵扣{php echo sprintf('%.2f', $totalcredit) }元</em></span>
+                  <span id="use_coupon_credit" class="off" style="top: 0px; left: 0px; right: 0px;"><em></em></span>
+                  <input type="hidden" id="usecredit" name="usecredit" value="0" />
+                </p>
+                </dd>
+                {/if}
+                <dd>
+                <p><span>合计：<em id="totalprice">￥{php echo sprintf('%.2f',$totalprice)}元</em></span><button type="submit" name="submit" value="yes">提交订单</button></p>
+                </dd>
+            </dl>
+        </div>
+        <!--订单明细 end-->
+    </div>
+    <!--content end--> 
+    <input type="hidden" name="goodstype" value="{$goodstype}" />
+    <input type="hidden" name="sendtype" value="{$sendtype}" />
+    <input type="hidden" name="addressid" value="{$row['id']}" />
+    <input type="hidden" name="token" value="{$_W['token']}" />
+</form>
+<!-- begin address script -->
+<script type="text/javascript" src="../app/resource/components/area/cascade.js"></script>
+<script type="text/javascript">
+  cascdeInit('{$row['province']}','{$row['city']}','{$row['area']}');
+</script>
+<!-- end address script -->
+{php include $_template->template('footer')}

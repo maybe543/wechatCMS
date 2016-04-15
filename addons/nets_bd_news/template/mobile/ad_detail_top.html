@@ -1,0 +1,14 @@
+<?php 
+$condition = 
+$pars=array();
+$pars['uniacid']=$_W['uniacid'];
+$sql="select * from ".tablename('netsbd_set')." where uniacid=:uniacid";
+$set=pdo_fetch($sql,$pars);
+?>
+<div style="text-align:center;width:100%;">
+{if empty($set['list_ad_top'])}
+	<?php echo htmlspecialchars_decode($set['list_ad_bottom'])?>
+{else}
+	<a href="{$set['detail_ad_bottom']}"><img onload="javascript:if(this.height>220 || this.height>this.width){this.height=220;}else{this.width=375;}" src="/attachment/{$set['list_ad_middle']}"/></a>
+{/if}
+</div>

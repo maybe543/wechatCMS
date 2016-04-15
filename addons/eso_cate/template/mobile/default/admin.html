@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>订单操作 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        header.top .back{width:auto}
+        .form-control{display:block;width:96%;height:30px;padding:6px 2%;font-size:20px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);margin-bottom:10px}
+        .form-btn{display:block;text-align:center;width:96%;height:30px;padding:6px 2%;font-size:20px;line-height:1.42857143;color:#fff;background-image:none;border:1px solid #018bb9;border-radius:4px;background-color:#09c}
+        .mb-dti{margin:5px auto 20px}
+        .mb-dti .c-list li.nob{border-bottom: 1px #ccc dashed;}
+        .mb-dti .c-list li.nob a{color: #428bca;}
+        .mb-dti .c-list li span.cz{display:block;text-align:center;font-weight:bold;line-height:30px;}
+        .orderbut{margin-top:10px;text-align:center;height:auto;line-height:40px}
+        .orderbut .button{display:inline;white-space:nowrap;font-size:14px;-webkit-border-radius:4px;border-radius:4px;padding:9px 10px;margin:0 3px}
+        .orderbut .button.button.easy{background-color:#6171c5;border-color:#5864a5;background-image:none}
+        .orderbut .button.button.green{background-color:#04be02;border-color: #039f02;background-image:none}
+        .cancelorder .textarea textarea{border:0;height:60px;font-size:16px;resize:none}
+        .userorders{padding:0 10px 8px}
+        .userorders ul{max-width:720px;margin:0 auto 10px}
+        .ordersinfo{max-width:720px;margin:0 auto}
+        a.button:visited{text-decoration:none;color:#fff}
+        .lastprint{font-size:10px;color:#888}
+        #scanQRCode{display:none;}
+        .o-card{color: #55BD47}
+        .o-card u{color: #ff0000}
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+</head>
+<body>
+{php $is_num = $this->doMobileAjaxorder(1);}
+
+<!-- 弹出 -->
+<div class="selectattrval min" id="selectwin">
+    <div class="min-main">
+        <header>
+            <h1>取消订单</h1>
+        </header>
+        <section class="cancelorder" id="canceltype">
+            <div class="textarea"><textarea class="form-control" placeholder="输入操作记录" id="wintextinput"></textarea></div>
+            <label id="labelvisible" style="display:none;">是否会员可见<input type="checkbox" value="1" id="visible" checked></label>
+            <label id="labelwxmsg">微信通知客户<input type="checkbox" value="1" id="wxmsg" checked></label>
+            <div class="c-btn-oran-big" id="define">确定</div>
+        </section>
+        <footer>
+            <a class="back" href="javascript:history.go(-1);">关闭</a>
+        </footer>
+    </div>
+</div>
+
+<header class="top">
+    {if $order}
+    <h1>订单操作</h1>
+    <a class="back" id="is_back" href="{php echo urwdo(0)}">返回({$is_num['a_num']})</a>
+    {else}
+    <h1>订单列表</h1>
+    {/if}
+    <div class="right-s">
+        <a class="right-user" href="{php echo urwdo('user')}"></a>
+        <a class="right-home" href="{php echo urwdo('index')}"></a>
+    </div>
+</header>
+
+{if $order}
+<div class="ordersinfo">
+    <div class="o-a clearfix">
+        <div class="o-a-2">
+            <input class="form-control enter" id="ordernum" type="text" value="{$_GPC['ordernum']}" placeholder="请输入订单号" >
+            <div class="form-btn" onclick="submit($('#ordernum').val())">立即查看</div>
+        </div>
+    </div>
+
+    <div class="mb-dti">
+        <div class="orderbut">
+            {if $order['paystatus'] != "已付款" && $order['status'] != "交易关闭"}
+            <a href="javascript:;" id="win" d="pay" class="button">已付款</a>
+            {/if}
+            {if $order['status'] == "待付款"}
+            <a href="javascript:;" id="win" d="cancel" class="button">取消订单</a>
+            {elseif $order['status'] == "商家已确认"}
+            <a href="javascript:;" id="win" d="ship" class="button">去发货</a>
+            {elseif $order['status'] == "等待商家确认"}
+            <a href="javascript:;" id="win" d="confirm" class="button">确认订单</a>
+            <a href="javascript:;" id="win" d="cancel" class="button">取消订单</a>
+            {elseif $order['status'] == "已付款"}
+            <a href="javascript:;" id="win" d="ship" class="button">去发货</a>
+            {elseif $order['status'] == "商家已发货"}
+            <a href="javascript:;" id="win" d="confirmrec" class="button">确认收货(买家)</a>
+            {/if}
+            {if value($goods, 'feiyinsetting')}
+            <a href="javascript:;" id="win" d="print" class="button">执行打印</a>
+            {/if}
+            <a href="javascript:;" id="win" d="add" class="button">添加记录</a>
+            {php $printsetting = string2array($order['printsetting'])}
+            {php $lastdate_cn = value($printsetting, 'lastdate_cn')}
+            {if $lastdate_cn}<p class="lastprint">(最后打印：{$lastdate_cn}，状态：{php echo value($printsetting, 'status')})</p>{/if}
+        </div>
+        {php $express= value($order['setting'],'express',true)}
+        {php $delivery= value($order['setting'],'delivery',true)}
+        {php $payrow= value($order['setting'],'payrow',true)}
+
+        <div class="c-title">基本信息：</div>
+        <ul class="c-list">
+            <li>
+                <label>订单状态</label>
+                <span>
+                    {php echo mallstatus($order['status'])}
+                    {if $order['status'] == "交易关闭" && $order['canceltext']}
+                    （原因：{$order['canceltext']}）
+                    {/if}
+                </span>
+            </li>
+            {php $Totalprice=0;$Totalnum=0;}
+            {if $order['ismerge']}
+                {php $mergearr = string2array($order['mergearr']);}
+                {loop $mergearr $item}
+                    <li class="nob">
+                        <label>购买商品</label>
+                        <span><a href="{php echo urwdo('goods')}&id={$item['goodsid']}">{$item['title']}</a></span>
+                    </li>
+                    <li class="nob">
+                        <label>商品属性</label>
+                        <span>{if $item['attr']}{php echo str_replace("<br/>","；",$item['attr'])}{else}无{/if}</span>
+                    </li>
+                    <li>
+                        <label>单价数量</label>
+                        <span>￥{$item['price']} x {$item['number']}
+                            {if $item['deliveryfare'] > 0}
+                            (+运费¥{$item['deliveryfare']})
+                            {/if}
+                        </span>
+                    </li>
+                    {php $Totalprice+=$item['price']*$item['number']+$item['deliveryfare'];$Totalnum+=$item['number'];}
+                {/loop}
+            {else}
+                <li class="nob">
+                    <label>购买商品</label>
+                    <span><a href="{php echo urwdo('goods')}&id={$order['goodsid']}">{$order['title']}</a></span>
+                </li>
+                <li class="nob">
+                    <label>商品属性</label>
+                    <span>{if $order['attr']}{php echo str_replace("<br/>","；",$order['attr'])}{else}无{/if}</span>
+                </li>
+                <li>
+                    <label>单价数量</label>
+                    <span>￥{$order['price']} x {$order['number']}
+                         {if $order['deliveryfare'] > 0}
+                         (+运费¥{$order['deliveryfare']})
+                         {/if}
+                    </span>
+                </li>
+                {php $Totalprice+=$order['price']*$order['number']+$order['deliveryfare'];$Totalnum+=$order['number'];}
+            {/if}
+            <li>
+                <span class="cz">
+                    订单总计￥{$Totalprice}，数量{$Totalnum}
+                    {if $order['card']['success']}
+                        <div class="o-card">
+                            使用卡券：{$order['card']['text']}
+                            {if $order['card']['decrypterr']}
+                            <u>，{$order['card']['decrypterr']}</u>
+                            {/if}
+                        </div>
+                    {/if}
+                </span>
+            </li>
+        </ul>
+
+        <div class="c-title">会员信息：</div>
+        <ul class="c-list">
+            <li>
+                <label>UID</label>
+                <span>{$order['userid']}</span> </li>
+            <li>
+                <label>用户昵称</label>
+                <span>{$order['wxname']}</span> </li>
+        </ul>
+
+        {if $order['address']}
+        <div class="c-title">相关地址：</div>
+        <ul class="c-list">
+            {if value($order['address'], 'infobr')}
+            {if value($order['address'], 'infotitle')}
+            <li class="m-c-l-br">
+                <span>配送类型：{php echo value($order['address'], 'infotitle')}</span> </li>
+            {/if}
+            {php $infobrarr = explode('<br/>', value($order['address'], 'infobr'));}
+            {loop $infobrarr $_iv}
+            {if $_iv}
+            <li class="m-c-l-br">
+                <span>{$_iv}</span> </li>
+            {/if}
+            {/loop}
+            {else}
+            <li>
+                <label>收货地址</label>
+                <span>{php echo value($order['address'], 'addr')}</span> </li>
+            <li>
+                <label>收货人</label>
+                <span>{php echo value($order['address'], 'name')}</span> </li>
+            <li>
+                <label>手机号码</label>
+                <span class="blue">{php echo value($order['address'], 'phone')}</span> </li>
+            {/if}
+        </ul>
+        {/if}
+
+        {if $express}
+        <div class="c-title">物流信息：</div>
+        <ul class="c-list">
+            <li>
+                <label>物流公司</label>
+                <span>{if value($express, 'name')}{php echo value($express, 'name')}{else}无{/if}</span> </li>
+            <li>
+                <label>运单号码</label>
+                <span>{if value($express, 'number')}{php echo value($express, 'number')}{else}无{/if}</span> </li>
+        </ul>
+        {/if}
+
+        <div class="c-title">配送支付：</div>
+        <ul class="c-list">
+            {if $order['ordernum']}
+            <li>
+                <label>订单编号</label>
+                <span>{$order['ordernum']}<span style="display:none">({$order['batch']})</span></span></li>
+            {/if}
+            {if value($delivery, 'title')}
+            <li>
+                <label>配送方式</label>
+                <span>{php echo value($delivery, 'title')}</span> </li>
+            {/if}
+            {if value($payrow, 'title')}
+            <li>
+                <label>支付方式</label>
+                <span>{php echo value($payrow, 'title')}</span> </li>
+            {/if}
+            {if $order['message']}
+            <li>
+                <label>购买留言</label>
+                <span>{$order['message']}</span> </li>
+            {/if}
+            <li>
+                <label>下单时间</label>
+                <span>{php echo date('Y-m-d H:i:s',$order['indate'])}</span> </li>
+            {if $order['status'] == "已付款" || $order['status'] == "交易成功"}
+            <li>
+                <label>付款时间</label>
+                <span>{php echo date('Y-m-d H:i:s',$order['update'])}</span> </li>
+            {/if}
+            {if $order['shipdate']}
+            <li>
+                <label>发货时间</label>
+                <span>{php echo date('Y-m-d H:i:s',$order['shipdate'])}</span> </li>
+            {/if}
+        </ul>
+
+        {php $listdata = cate::db('数据表:cart_notes,显示数目:50,排序:indate desc>id desc', '`visible`=1 AND `cartid`='.$order['id'])}
+        {php $lists = $listdata['lists']}
+        {if $lists}
+        <div class="c-title">订单动态：</div>
+        <ul class="c-list d-list">
+            {loop $lists $list}
+            <li>
+                <span>{php echo emotion($list['content'])}</span>
+                <label>{php echo malldateaway($list['indate'])}</label>
+            </li>
+            {/loop}
+        </ul>
+        {/if}
+    </div>
+</div>
+{else}
+<div class="userorders" id="orderslist">
+    <div class="ordersinfo">
+        <div class="o-a">
+            <div class="o-a-2">
+                <input class="form-control enter" id="orderw" type="text" value="{$_GPC['orderw']}" placeholder="请输入订单号" >
+                <div class="form-btn" onclick="submitw($('#orderw').val())">查询</div>
+            </div>
+        </div>
+
+        <div class="orderbut" style="margin:5px 0 8px;">
+            <a href="javascript:void(0);" class="button green" id="scanQRCode">扫一扫</a>
+            <a id="is_payment" href="{php echo urwdo(0)}&type=payok" class="button{php echo isto($type,'payok',' easy')}">已付款({$is_num['p_num']})</a>
+            <a id="is_confirmed" href="{php echo urwdo(0)}&type=confirm" class="button{php echo isto($type,'confirm',' easy')}">待确认({$is_num['q_num']})</a>
+            <a href="{php echo urwdo(0)}" class="button{php echo isto($type,'all',' easy')}">不限</a>
+        </div>
+        <div id="is_time" style="margin:5px auto 8px;text-align:center">
+            {$is_num['time']}
+        </div>
+    </div>
+
+    <ul>
+        {php $listdata = cate::db('数据表:cart,显示数目:20,分页显示:1,排序:`indate` DESC', $wheresql)}
+        {php $lists = $listdata['lists']}
+        {loop $lists $list}
+        {php $card = string2array($list['card'])}
+        <li id="order_{$list['id']}">
+            <div class="tit">
+                {$list['_n']}、编号：{$list['ordernum']}<span style="display:none">({$list['batch']})</span>
+                ，{php echo get_html($list['wxname'],6)}(UID:{$list['userid']})
+                {if $card['success']}
+                <span class="o-card" title="{$card['text']}">(券)</span>
+                {/if}
+            </div>
+            {if $list['ismerge']}
+            {php $mergearr = string2array($list['mergearr']);}
+            {loop $mergearr $item}
+            <div class="con pb" date-goodsid="{$item['goodsid']}">
+                <div class="ol-l">
+                    <a href="{php echo urwdo(0)}&ordernum={$list['ordernum']}">
+                        <img class="lazy" data-original="{php echo toimage($item['goodsimg'])}" src="{IMG_PATH}loading.png" />
+                    </a>
+                </div>
+                <div class="ol-r">
+                    <a class="fragment" href="{php echo urwdo(0)}&ordernum={$list['ordernum']}">
+                        <h3><span>{$item['title']}</span></h3>
+                        <p class="r-total"> 共{$item['number']}{php echo $this->cate_unit($item['unit'])} </p>
+                        <p class="r-price">
+                            实付款：¥<strong>{php echo $item['price']*$item['number']+$item['deliveryfare']}</strong>
+                            {if $item['deliveryfare'] > 0}
+                            (含 运费¥{$item['deliveryfare']})
+                            {/if}
+                        </p>
+                    </a>
+                </div>
+            </div>
+            {/loop}
+            {else}
+            <div class="con pb" date-goodsid="{$list['goodsid']}">
+                <div class="ol-l">
+                    <a href="{php echo urwdo(0)}&ordernum={$list['ordernum']}">
+                        <img class="lazy" data-original="{php echo toimage($list['goodsimg'])}" src="{IMG_PATH}loading.png" />
+                    </a>
+                </div>
+                <div class="ol-r">
+                    <a class="fragment" href="{php echo urwdo(0)}&ordernum={$list['ordernum']}">
+                        <h3><span>{$list['title']}</span></h3>
+                        <p class="r-total"> 共{$list['number']}{php echo $this->cate_unit($list['unit'])} </p>
+                        <p class="r-price">
+                            实付款：¥<strong>{php echo $list['price']*$list['number']+$list['deliveryfare']}</strong>
+                            {if $list['deliveryfare'] > 0}
+                            (含 运费¥{$list['deliveryfare']})
+                            {/if}
+                        </p>
+                    </a>
+                </div>
+            </div>
+            {/if}
+            <div class="con-btn">
+                <p class="r-status"> {php echo mallstatus($list['status'])} </p>
+            </div>
+        </li>
+        {/loop}
+        {if !$lists}
+        <li>
+            <div class="nodeals">您目前还没有任何订单喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+{/if}
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    function submit(ordernum) {
+        if (ordernum < 1) {
+            if ($("div.mb-dti").length > 0) {
+                $("div.mb-dti").remove();
+            }else{
+                $.alertk("请输入订单号");
+            }
+            return;
+        }
+        window.location.href = "{php echo urwdo(0)}&ordernum=" + ordernum;
+    }
+    function submitw(orderw) {
+        if (orderw > 0) {
+            window.location.href = "{php echo urwdo(0)}&orderw=" + orderw;
+        }else{
+            window.location.href = "{php echo urwdo(0)}";
+        }
+    }
+    function _mordernotice() {
+        $.ajax({
+            type: "GET",
+            url: "{php echo urwdo('ajaxorder')}",
+            dataType: "json",
+            success: function (data) {
+                if (data.success == "1"){
+                    {if $listdata}
+                        $("#is_payment").text("已付款("+data.p_num+")");
+                        $("#is_confirmed").text("待确认("+data.q_num+")");
+                        $("#is_time").text(data.time);
+                    {else}
+                        $("#is_back").text("返回("+data.a_num+")");
+                    {/if}
+                }
+                setTimeout(function(){_mordernotice()}, 5000);
+            },
+            error: function (data) {
+                setTimeout(function(){_mordernotice()}, 5000);
+            }
+        });
+    }
+    var _sel_hashchange = function(){
+        var hash = window.location.hash;
+        if (!/^\#gwin\//.test(hash)) {
+            $("div.selectattrval").removeClass("show");
+        }
+    };
+    window.addEventListener("hashchange", _sel_hashchange, false);
+    //
+    $(document).ready(function() {
+        $("input.enter").keypress(function(e){
+            if (e.which == 13) {
+                $(this).next().click();
+            }
+        });
+        $("a#win").click(function(){
+            var d = $(this).attr("d");
+            var _win = $("#selectwin");
+            //
+            var hash = window.location.hash;
+            var href = window.location.href.replace(new RegExp(hash,"g"), "");
+            window.location.href = href + '#gwin/selectwin';
+            _win.addClass('show');
+            //
+            if (d=='print') {
+                $("#labelwxmsg").hide();
+            }else{
+                $("#labelwxmsg").show();
+            }
+            if (d=='add') {
+                $("#labelvisible").show();
+            }else{
+                $("#labelvisible").hide();
+            }
+            //
+            if (d == "add") {
+                _win.find("h1").text("添加操作记录");
+            }else if (d == "pay") {
+                _win.find("h1").text("确认买家已经付款");
+            }else if (d == "cancel") {
+                _win.find("h1").text("取消订单");
+            }else if (d == "confirm") {
+                _win.find("h1").text("确认订单");
+            }else if (d == "ship") {
+                _win.find("h1").text("订单发货");
+            }else if (d == "print") {
+                _win.find("h1").text("无线打印");
+            }else if (d == "confirmrec") {
+                _win.find("h1").text("确认收货（此步骤是替买家的操作）");
+            }else{
+                window.location.history.go(-1);
+            }
+            $("#define").attr("data-d", d);
+        });
+        $("#define").click(function(){
+            var d = $("#define").attr("data-d");
+            var s = "dosubmit=1&type="+d+"&text="+$("#wintextinput").val()+"&id={$order['id']}";
+            if (d=='print') {
+                s+= "&visible=false";
+                s+= "&wxmsg=false";
+            }else{
+                if (d=='add') {
+                    s+= "&visible="+$("#visible").is(":checked");
+                }else{
+                    s+= "&visible=true";
+                }
+                s+= "&wxmsg="+$("#wxmsg").is(":checked");
+            }
+            s+= "&paying=0";
+            s+= "&expresscode=";
+            s+= "&expressname=";
+            s+= "&expressnumber=";
+            $.alert('正在提交...', 0);
+            $.ajax({
+                type: "POST",
+                url: "{php echo urwdo('putorder')}",
+                data: s,
+                dataType: "json",
+                success: function (msg) {
+                    $.alertk(msg.message);
+                    if (msg.success == "1"){
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 2000);
+                    }
+                },
+                error: function (msg) {
+                    $.alertk("提交错误！");
+                }
+            });
+        });
+        //
+        setTimeout(function(){_mordernotice()}, 3000);
+        //
+        $('img.lazy').lazyload({effect: 'fadeIn'});
+    });
+    //
+    {if !$order}
+        $("header h1").each(function(){
+            if ($(this).text() == "订单列表") {
+                $(this).text("订单列表 (总计{php echo intval($listdata['pageinfo']['total_rows'])})");
+            }
+        });
+        window._loadlist = true;
+        window._loadpage = {php echo intval($listdata['pageinfo']['now_page'])};
+        $(window).scroll(function () {
+            if (window._loadlist){
+                if ($(window).scrollTop() + 200 >= $(document).height() - $(window).height()) {
+                    window._loadlist  = false;
+                    if (window._loadpage >= {php echo intval($listdata['pageinfo']['total_page'])}) return;
+                    $("#divLoading").show();
+                    var url = "{php echo urwdo(0)}&page=" + parseInt(window._loadpage + 1);
+                    $("<div>").load(url + ' #orderslist ul > *', function() {
+                        $intemp = $($(this).html());
+                        $intemp.find('img.lazy').lazyload({effect: 'fadeIn'});
+                        $('#orderslist ul').append($intemp);
+                        $("#divLoading").hide();
+                        window._loadpage++;
+                        if (window._loadpage <= {php echo intval($listdata['pageinfo']['total_page'])}){
+                            window._loadlist  = true;
+                        }
+                    });
+                }
+            }
+        });
+    {/if}
+</script>
+{if !$order}
+<script>
+    var jssdkconfig = {JSONJSSDKCONFIG} || {};
+    $.getScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function(){
+        // 是否启用调试
+        jssdkconfig.debug = false;
+        //
+        jssdkconfig.jsApiList = [
+            'checkJsApi',
+            'scanQRCode'
+        ];
+        wx.config(jssdkconfig);
+        wx.ready(function () {
+            $('#scanQRCode').click(function(){
+                wx.scanQRCode({
+                    needResult: 1,
+                    desc: 'scanQRCode desc',
+                    success: function (res) {
+                        var result = res.resultStr;
+                        if (result && result.substring(0,{php echo strlen($_GPC['rid'])+9}) == "EsoCate-{$_GPC['rid']}:") {
+                            if (confirm("订单编号：" + result.substring(11))){
+                                t_gourl("{php echo urwdo(0)}&ordernum=" + result.substring(11));
+                            }
+                        }else if (result && result.substring(0,8) == "EsoCate-") {
+                            alert("非本店订单号！");
+                        }else{
+                            alert("错误的订单号！");
+                        }
+                    }
+                });
+            });
+            wx.checkJsApi({
+                jsApiList: [
+                    'scanQRCode'
+                ],
+                success: function (res) {
+                    if (res.checkResult.scanQRCode === true) {
+						$('#scanQRCode').show();
+					}
+                }
+            });
+        });
+        wx.error(function (res) {
+            //alert(res.errMsg);
+        });
+    });
+    function t_gourl(url) {
+        $.alert("加载中...",0,1);
+        setTimeout(function(){
+            window.location.href =  url;
+        },1);
+    }
+</script>
+{/if}
+</body>
+</html>

@@ -1,0 +1,43 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('manage');}">活动管理</a></li>
+    <li><a href="{php echo url('platform/reply/post',array('m'=>'weisrc_money'));}">添加活动规则</a></li>
+    <li><a href="{php echo $this->createWebUrl('fanslist', array('op' => 'display', 'rid' => $rid))}">用户管理</a></li>
+    <li{if $operation == 'display'} class="active"{/if}><a href="">纪录管理</a></li>
+</ul>
+{if $operation == 'display'}
+<div class="main">
+    <div class="panel panel-default">
+        <div style="position:relative">
+            <div class="panel-body table-responsive">
+                <table class="table table-hover" style="position:relative">
+                    <thead class="navbar-inner">
+                    <tr>
+                        <th style="width: 15%;">编号</th>
+                        <th style="width: 35%;">成绩</th>
+                        <th style="width: 25%;">操作时间</th>
+                        <th style="width: 25%;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {loop $list $row}
+                    <tr>
+                        <td>{$row['id']}</td>
+                        <td style="white-space:normal;">
+                            {$row['score']}
+                        </td>
+                        <td>{php echo date('Y/m/d H:i',$row['playtime']);}</td>
+                        <td>
+                            <a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('record', array('id' => $row['id'], 'op' => 'delete', 'rid' => $rid))}" onclick="return confirm('此操作不可恢复，确认删除？');return false;" title="删除"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                    {/loop}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {$pager}
+</div>
+{/if}
+{template 'common/footer'}

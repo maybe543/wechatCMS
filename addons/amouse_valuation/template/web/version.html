@@ -1,0 +1,884 @@
+{template 'common/header'}
+<div class='container' style='padding:0 5px 10px;margin:0;width:100%'>
+<ul class="nav nav-tabs">
+  <li {if $op == 'post' && empty($id)}class="active"{/if}><a href="{php echo $this->createWebUrl('version', array('op' => 'post'));}">添加手机型号</a></li>
+  <li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('version',array('op'=>'display'));}">管理手机型号</a></li>
+  {if !empty($id) && $op == 'post'}<li class="active"><a href="{php echo $this->createWebUrl('version',array('op'=>'post','name' => 'amouse_valuation','id'=>$id));}">编辑手机型号</a></li> {/if}
+    {if !empty($vid) && $op == 'parameter'}<li class="active"><a href="{php echo $this->createWebUrl('version',array('op'=>'parameter','name' => 'amouse_valuation','vid'=>$vid));}">添加在线评估参数</a></li> {/if}
+
+</ul>
+
+{if $op =='display'}
+    <link rel="stylesheet" href="../addons/amouse_valuation/ui/css/jquery-ui-tooltip.min.css?v=20140603" />
+    <script type="text/javascript" src="../addons/amouse_valuation/ui/js/jquery-ui-tooltip.min.js?v=20140601" ></script>
+<div class="panel panel-success">
+  <div class="panel-heading">主要业务 >> 手机评估-分期付款 >> 管理手机型号</div>
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+    <form action="./index.php" method="get" class="form-horizontal" role="form">
+        <input type="hidden" name="c" value="site" />
+        <input type="hidden" name="a" value="entry" />
+        <input type="hidden" name="m" value="amouse_valuation" />
+        <input type="hidden" name="do" value="version" />
+        <input type="hidden" value="display" name="op">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+			<div class="col-sm-8">
+			  <input type="text" placeholder="搜索手机型号名称" value="{$_GPC['keyword']}" id="" name="keyword" class="form-control">
+			</div>				
+		</div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">机型</label>
+            <div class="col-sm-8">
+            <select id="modelid" name="modelid" class="form-control">
+                <option value="0">选择机型</option>
+                {loop $brands $row}
+                <option value="{$row['id']}">{$row['title']}</option>
+                {/loop}
+            </select>
+            </div>
+        </div>
+		<div class="form-group">
+			<div class="pull-right col-xs-12 col-sm-2 col-lg-1">
+				<button class="btn btn-block"><i class="fa fa-search"></i> 搜索</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+
+<div style="padding:15px;">
+	<form id="form2" class="form-horizontal" method="post">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:100px;">全选</th>
+					<th style="width:120px;">机型</th>
+					<th>型号名称</th>
+                    <th style="width:120px;">原价</th>
+                    <th>型号图片</th>
+					<th style="width:150px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $v}
+				<tr>
+					<td>
+						<input type="checkbox" value="{$v['id']}" name="delete[]">
+					</td>
+					<th>{$brandsArr[$v['moid']]}</th>
+					<td>
+						<a title="{$v['title']}" href="javascript:;" >{php echo cutstr($v['title'],30)}</a>
+					</td>
+                    <td>
+                       ￥ {$v['price']}
+                    </td>
+                    <td  class="qrcode">
+                        <img src="{$_W['attachurl']}{$v['logo']}"  height="60px" width="30px" />
+                    </td>
+					<td>
+
+                        <a href="{php echo $this->createWebUrl('version', array('op' => 'parameter', 'vid' => $v['id']))}" title="添加详细参数" class="btn btn-mini btn-primary"><i class="fa fa-plus-circle"></i>
+                        </a>
+					<a href="{php echo $this->createWebUrl('version', array('op' => 'post', 'id' => $v['id']))}" title="编辑" class="btn btn-mini btn-primary"><i class="fa fa-edit"></i></a>
+					<a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('version', array('id' => $v['id'],'op'=>'del'))}" title="删除" class="btn btn-mini btn-danger"><i class="fa fa-times"></i></a>
+					</td>				
+				</tr>
+				{/loop}
+				<tr >
+				<td><input type="checkbox"  onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});" name=''>    
+				<input class="btn btn-primary" type="submit" value="删除" name="submit" ></td><td></td><td></td><td></td>
+				</tr>
+			</tbody>
+		</table>
+		 
+		<input type="hidden" value="version" name="do">
+		<input type="hidden" value="del" name="op">
+		<input type="hidden" name="token" value="{$_W['token']}" />
+		</form>
+		{$pager}
+
+	<script>
+		 $('#form2').submit(function(){
+			if($(":checkbox[name='delete[]']:checked").size() > 0){
+				return confirm('删除后不可恢复，您确定删除吗？');
+			}
+			return false;
+		});
+
+        $("td.qrcode").tooltip({
+            items:'img',
+            content: function() {
+                return "<img width='130px' height='248px' src='"  + $(this).attr("src") + "'></img>";
+            },
+            position: {
+                my : "right bottom-300",
+                collision: "fit"
+            }
+        });
+		 
+	</script>	
+</div>
+{elseif $op == 'post'}
+<div class="panel panel-success">
+  <div class="panel-heading">主要业务 >> 手机评估-分期付款 >> {if !empty($id) && $op == 'post'}编辑{else}添加{/if}手机型号</div>
+</div>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit="return validate(this);">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		{if !empty($id)&&$op == 'post'}编辑{else}添加{/if}手机型号
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">机型</label>
+			    <div class="col-sm-9"> 
+						 <select id="bid" name="bid" class="form-control">   
+							<option value="0">选择机型</option>
+							{loop $brands $row}
+								<option value="{$row['id']}"  {if $row['id'] == $item['mid']} selected="selected"{/if}>{$row['title']}</option>
+							{/loop}
+						</select> 
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">
+					<span style='color:red'>*</span>型号名称</label>
+				<div class="col-sm-9">
+					<input type="text" name="title" id="title" class="form-control" value="{$item['title']}" />
+				</div>
+			</div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">价格</label>
+                <div class="col-sm-9 col-xs-12">
+                    <div class="input-group">
+                        <span class="input-group-addon">原价</span>
+                        <input type="text" name="price" id="price" class="form-control" value="{$item['price']}">
+                        <span class="input-group-addon">元</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-3 col-md-2 control-label">型号图片：</label>
+                <div class="col-sm-4">
+                    {php echo tpl_form_field_image('thumb', $item['logo'])}
+                    <span class="help-block">
+						建议图片大小为： 65px（宽度） * 124px(高度)
+						比如：<img src="../addons/amouse_valuation/ui/images/version.jpg" style="height:124px;width: 65px;" >
+					</span>
+                </div>
+            </div>
+
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+				<div class="col-sm-4">
+				<input type="hidden" name="id" value="{$item[id]}">
+				<input type="hidden" name="token" value="{$_W['token']}" />
+					<input name="submit" type="submit" value="提交" class="btn btn-primary span3" />
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<script text="text/javascript">
+function validate() {
+	if($.trim($('select[name="bid"]').val()) == ''
+		||$.trim($('select[name="bid"]').val()) == 0) {
+		message('必须选择所属机型.', '', 'error');
+		return false;
+	}
+	if($.trim($(':text[name="title"]').val()) == '') {
+		message('必须填写型号名称.', '', 'error');
+		return false;
+	}
+	return true;
+}
+</script>
+{elseif $op == 'parameter'}
+<div class="panel panel-success">
+    <div class="panel-heading">主要业务 >> 手机评估-分期付款 >> 添加在线评估参数</div>
+</div>
+<div class="main">
+    <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit="return validate(this);">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                    <span style='color:red'>*</span>机身颜色</label>
+                    <div class="col-sm-8">
+                 <input type="text" name="parameter1txt" id="parameter1txt" class="form-control" value="{$parameter1['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter1['optionA']}" name="parameter1optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceA"  value="{$parameter1['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter1['optionB']}" name="parameter1optionB" accept="" />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceB"  value="{$parameter1['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter1['optionC']}" name="parameter1optionC" accept="" />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceC"  value="{$parameter1['priceC']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项4</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入颜色" type="text" style="margin-right:15px;" value="{$parameter1['optionD']}" name="parameter1optionD" accept="" />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceD"  value="{$parameter1['priceD']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项5</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入颜色" type="text" style="margin-right:15px;" value="{$parameter1['optionE']}" name="parameter1optionE" accept="" />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceE"  value="{$parameter1['priceE']}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项6</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入颜色" type="text" style="margin-right:15px;" value="{$parameter1['optionF']}" name="parameter1optionE" accept="" />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter1priceF"  value="{$parameter1['priceF']}" />
+                    </div>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>能否正常开关机</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter2txt" id="parameter2txt" class="form-control" value="{$parameter2['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter2['optionA']}" name="parameter2optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter2priceA"  value="{$parameter2['priceA']}" />
+                    </div>
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>ID、密码是否解除</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter3txt" id="parameter3txt" class="form-control" data-name="" value="{$parameter3['txt']}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter3['optionA']}" name="parameter3optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter3priceA"  value="{$parameter3['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入参数" type="text" style="margin-right:15px;" value="{$parameter3['optionB']}" name="parameter3optionB"  />
+                    </div>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter3priceB"  value="{$parameter3['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入参数" type="text" style="margin-right:15px;" value="{$parameter3['optionC']}" name="parameter3optionC"  />
+                    </div>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter3priceC"  value="{$parameter3['priceC']}" />
+                    </div>
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>能否正常接打电话</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter4txt" id="parameter4txt" class="form-control" value="{$parameter4['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter4['optionA']}" name="parameter4optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter4priceA"  value="{$parameter4['priceA']}" />
+                    </div>
+                </div>
+                <hr>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>电池是否正常</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter5txt" id="parameter5txt" class="form-control" value="{$parameter5['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" type="text" style="margin-right:15px;" value="{$parameter5['optionA']}" name="parameter5optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter5priceA"  value="{$parameter5['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter5['optionB']}" name="parameter5optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter5priceB"  value="{$parameter5['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter5['optionC']}" name="parameter5optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter5priceC"  value="{$parameter5['priceC']}" />
+                    </div>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>屏幕功能</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter6txt" id="parameter6txt" class="form-control" value="{$parameter6['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter6['optionA']}" name="parameter6optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter6priceA"  value="{$parameter6['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter6['optionB']}" name="parameter6optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter6priceB"  value="{$parameter6['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter6['optionC']}" name="parameter6optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter6priceC"  value="{$parameter6['priceC']}" />
+                    </div>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>屏幕外观</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter7txt" id="parameter7txt" class="form-control" value="{$parameter7['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter7['optionA']}" name="parameter7optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter7priceA"  value="{$parameter7['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter7['optionB']}" name="parameter7optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter7priceB"  value="{$parameter7['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter7['optionC']}" name="parameter7optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter7priceC"  value="{$parameter7['priceC']}" />
+                    </div>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>后壳成色</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter8txt" id="parameter8txt" class="form-control" value="{$parameter8['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter8['optionA']}" name="parameter8optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter8priceA"  value="{$parameter8['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter8['optionB']}" name="parameter8optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter8priceB"  value="{$parameter8['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter8['optionC']}" name="parameter8optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter8priceC"  value="{$parameter8['priceC']}" />
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>无线连接类</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter9txt" id="parameter9txt" class="form-control" value="{$parameter9['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter9['optionA']}" name="parameter9optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter9priceA"  value="{$parameter9['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter9['optionB']}" name="parameter9optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter9priceB"  value="{$parameter9['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter9['optionC']}" name="parameter9optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter9priceC"  value="{$parameter9['priceC']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项4</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter9['optionD']}" name="parameter9optionD"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter9priceD"  value="{$parameter9['priceD']}" />
+                    </div>
+                </div> 
+                <hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>相机类</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter10txt" id="parameter10txt" class="form-control" value="{$parameter10['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter10['optionA']}" name="parameter10optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter10priceA"  value="{$parameter10['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter10['optionB']}" name="parameter10optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter10priceB"  value="{$parameter10['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter10['optionC']}" name="parameter10optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter10priceC"  value="{$parameter10['priceC']}" />
+                    </div>
+                </div>
+                 
+<hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>送话、受话类</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter11txt" id="parameter11txt" class="form-control" value="{$parameter11['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter11['optionA']}" name="parameter11optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter11priceA"  value="{$parameter11['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter11['optionB']}" name="parameter11optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter11priceB"  value="{$parameter11['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter11['optionC']}" name="parameter11optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter11priceC"  value="{$parameter11['priceC']}" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项4</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter11['optionD']}" name="parameter11optionD"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter11priceD"  value="{$parameter11['priceD']}" />
+                    </div>
+                </div>
+				
+				<hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>按键类</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter12txt" id="parameter12txt" class="form-control" value="{$parameter12['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter12['optionA']}" name="parameter12optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter12priceA"  value="{$parameter12['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter12['optionB']}" name="parameter12optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter12priceB"  value="{$parameter12['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter12['optionC']}" name="parameter12optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter12priceC"  value="{$parameter12['priceC']}" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项4</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter12['optionD']}" name="parameter12optionD"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter12priceD"  value="{$parameter12['priceD']}" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项5</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter12['optionE']}" name="parameter12optionE"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter12priceE"  value="{$parameter12['priceE']}" />
+                    </div>
+                </div>
+				
+				<hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>铃声、充电类</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter13txt" id="parameter13txt" class="form-control" value="{$parameter13['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter13['optionA']}" name="parameter13optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter13priceA"  value="{$parameter13['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter13['optionB']}" name="parameter13optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter13priceB"  value="{$parameter13['priceB']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项3</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter13['optionC']}" name="parameter13optionC"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter13priceC"  value="{$parameter13['priceC']}" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项4</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter13['optionD']}" name="parameter13optionD"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter13priceD"  value="{$parameter13['priceD']}" />
+                    </div>
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项5</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter13['optionE']}" name="parameter13optionE"  />
+                    </div> 
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter13priceE"  value="{$parameter13['priceE']}" />
+                    </div>
+                </div>
+				<hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span>是否进水</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter14txt" id="parameter14txt" class="form-control" value="{$parameter14['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter14['optionA']}" name="parameter14optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter14priceA"  value="{$parameter14['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter14['optionB']}" name="parameter14optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter14priceB"  value="{$parameter14['priceB']}" />
+                    </div>
+                </div>
+				
+				<hr>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style='color:red'>*</span> 是否维修和私拆过</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter15txt" id="parameter15txt" class="form-control" value="{$parameter15['txt']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项1</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter15['optionA']}" name="parameter15optionA"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter15priceA"  value="{$parameter15['priceA']}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">
+                        <span style="color:red">*</span>选项2</label>
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control"  type="text" style="margin-right:15px;" value="{$parameter15['optionB']}" name="parameter15optionB"  />
+                    </div>
+
+                    <div class="col-sm-4 col-xs-6">
+                        <input class="form-control" placeholder="请输入价格" name="parameter15priceB"  value="{$parameter15['priceB']}" />
+                    </div>
+                </div>
+                 
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-4">
+                        <input type="hidden" name="vid" value="{$vid}">
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary span3" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{/if}	
+</div>
+{template 'tmpl/footer'}

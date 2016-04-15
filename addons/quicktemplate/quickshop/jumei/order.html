@@ -1,0 +1,29 @@
+{php include $_template->template('header')}
+{php include $_template->template('localjs')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>我的订单</h1>
+    </header>
+    <!--header end-->
+	  <!--footer-->
+      {php include $_template->template('footerbar')}
+	  <!--footer end-->
+    <!--content-->
+    <div class="content">
+
+      {if count($list) <= 0}
+      <li><a href="{php echo $this->createMobileUrl('List')}">
+        <div class="cartItem_t"><span>还没有订单记录呢，快去选货吧！</span><em class="icon-circle-arrow-right icon-2x"></em></div></a>
+      </li>
+      {else}
+      {loop $list $item}
+        <!--订单item-->
+        {php include $_template->template('order-item')}
+        <!--订单item end-->
+        {/loop}
+        {/if}
+    </div>
+    <!--content end-->
+{php include $_template->template('order-qrcode')}
+{php include $_template->template('footer')}

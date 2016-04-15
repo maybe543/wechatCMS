@@ -1,0 +1,99 @@
+{php $bootstrap_type = 3;}
+{template 'header'}
+{template 'common'}
+
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style.css?{TIMESTAMP}">
+<div class="head">
+	<a href="javascript:history.back();" class="bn pull-left"><i class="fa fa-angle-left"></i></a>
+	<span class="title">关于我们</span>
+	
+</div>
+
+<div class="tabbable" style="padding-bottom:30px;">
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab1">
+			<div class="mobile-div img-rounded" style="text-align: center; padding:10px;font-weight:bold;overflow:hidden;word-break:break-all">
+			{if !empty($cfg['logo'])}
+			<!--	<img src="{$_W['attachurl']}{$cfg['logo']}" width="100%" />-->
+			{/if}
+			{if !empty($cfg['shopname'])}
+				<br/><br/>{$cfg['shopname']}
+			{else}
+				<!--<br/><br/>品牌介绍-->
+			{/if}
+			</div>
+		
+			{if !empty($cfg['description'])}
+			<div class="mobile-div img-rounded " style='overflow:hidden;word-break:break-all;padding:15px;'>
+				{$cfg['description']}
+			</div>
+			{/if}
+		</div>
+	</div>
+    	<div class="mobile-div img-rounded" style="padding:0 15px;">
+				{if !empty($cfg['phone'])}
+					<a href="tel:{$cfg['phone']}" class="mobile-li"><i class="fa fa-hand-up pull-right"></i>电话： {$cfg['phone']}</a><br>
+				{/if}
+				{if !empty($cfg['address'])}
+				<a href="http://api.map.baidu.com/geocoder?address={$cfg['address']}&output=html" class="mobile-li"><i class="fa fa-hand-up pull-right"></i>地址：{$cfg['address']}</a>
+				{/if}
+			</div>
+</div>
+{$_W['fans']['avatar']}
+
+
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+ <script>
+ 
+	wx.config({
+		debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: 'wxe89fbe468173b2cc', // 必填，公众号的唯一标识
+		timestamp:'{php echo $time}', // 必填，生成签名的时间戳
+		nonceStr: '{php echo $nonceStr}', // 必填，生成签名的随机串
+		signature: '{php echo $signature}',// 必填，签名，见附录1
+		jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		
+    });
+	
+	
+
+wx.ready(function () {
+    // 在这里调用 API
+	
+	wx.onMenuShareAppMessage({
+	  title: '公益联盟', // 分享标题
+	  desc: '公益联盟 与您一起传递爱', // 分享描述
+	  link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+	  imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+	  type: '', // 分享类型,music、video或link，不填默认为link
+	  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	  success: function () { 
+		  // 用户确认分享后执行的回调函数
+	  },
+	  cancel: function () { 
+		  // 用户取消分享后执行的回调函数
+	  }
+});
+
+ 
+ 
+ 	 wx.onMenuShareTimeline({
+		title: '公益联盟', // 分享标题
+		link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+		imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+		success: function () { 
+			// 用户确认分享后执行的回调函数
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+		  }
+    });  
+	
+ });	
+ 
+	</script>
+
+
+{template 'footer'}

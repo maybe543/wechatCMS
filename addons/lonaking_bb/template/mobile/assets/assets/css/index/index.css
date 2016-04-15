@@ -1,0 +1,23 @@
+#index div.toolbar.tabbar{
+    bottom: 0;
+}
+#index div.tabbar{
+    top: initial;
+}
+#index div.tabbar-labels:not(.messagebar)~.page-content{
+    padding-top: 48px;
+}
+
+#index .navbar, .subnavbar, .toolbar{
+    background-color: #d14;
+}
+
+#index div.toolbar a.pipei,#index div.toolbar a.pipei-success{
+    font-size: 30px;
+}
+
+
+/**/
+a.selected{
+    background-color: gray;
+}

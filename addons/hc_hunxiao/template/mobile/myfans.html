@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+	<title>{if $level >= 4}我的团队{else}我的代理商{/if}</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="../addons/hc_hunxiao/style/css/style.css?r=1"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+	<meta name="mobileOptimized" content="width" />
+	<meta name="handheldFriendly" content="true" />
+	<meta http-equiv="Cache-Control" content="max-age=0" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<style>
+.commission-detail p span.commission-event1{ width: 32%; text-align: center;}
+.commission-detail p span.commission-money1{ width: 34%; text-align: center;}
+</style>
+
+<body>
+	{if empty($fanslevel)}
+		<h6>暂无代理商</h6>
+	{else}
+		<section class="main animated fadeInDown">
+		<div class="main-box">
+			<div class="commission-detail">
+				<h6>{if $level >= 4}我的团队{else}{$level}级代理商{/if}</h6>
+				{if empty($fanslevel)}
+					暂无代理商
+				{else}
+				<p>
+					<span class="commission-event1">姓名</span>
+					<span class="commission-money1">电话</span>
+					<span class="commission-time1">注册时间</span>
+				</p>
+				<p>
+					{loop $fanslevel $v}
+						<span class="commission-event1">{php echo hehe($v['realname'], 7)}</span>
+						<span class="commission-money1">{if empty($v['mobile'])}--{else}{$v['mobile']}{/if}</span>
+						<span class="commission-time1">{php echo date('Y-m-d', $v['createtime'])}</span>
+					{/loop}
+				</p>
+			{/if}
+			</div>
+		</div>
+	</section>
+	{/if}
+<footer class="foot"><a>&copy; {$_W['account']['name']}</a></footer>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}	
+<script>
+wx.config({
+	debug: false,   
+	appId: '<?php echo $signPackage["appId"];?>',
+	timestamp: '<?php echo $signPackage["timestamp"];?>',
+	nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	signature: '<?php echo $signPackage["signature"];?>',
+	jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+});
+
+wx.ready(function () {
+	var shareData = {
+		title: "{$profile['realname']}",
+		desc: "{$gzurl['description']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('fansindex',array('mid'=>$id))}",
+		imgUrl: "{$profile['headimg']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+	wx.onMenuShareTimeline(shareData);
+});
+</script>
+</body>
+</html>

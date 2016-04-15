@@ -1,0 +1,143 @@
+{template 'common/header'}
+{php $_item=2;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd">
+
+                <div class="control-group">
+                    <a class="button" href="{php echo urido('goodssortadd')}">+添加分类</a>
+                </div>
+
+                <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                    <table style="margin-bottom: 20px;" class="table table-primary" id="menu-table">
+                        <thead>
+                        <tr class="fen_list">
+                            <th width="80">顺序</th>
+                            <th class="lt">名称</th>
+                            <th width="80">显隐</th>
+                            <th width="120">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="fen_list" class="fen_list">
+                        {loop $listtree $list}
+                        {php $setting = string2array($list['setting'])}
+                        <tr class="align-center" data-img="{php echo tomedia($list['img'])}">
+                            <td class="lt"><input type="text" class="form-order" name="inorder-{$list['id']}" value="{$list['inorder']}"></td>
+                            <td class="lt">{php echo value($list,'_tree|spacer')} {$list['title']}</td>
+                            <td class="lt">{$list['status']}</td>
+                            <td class="lt">
+                                <a href="{php echo urido('goodssortadd')}&id={$list['id']}" class="normal-link">修改</a>
+                                <a href="javascript:void(0);" onclick="_del({$list['id']});" class="normal-link">删除</a>
+                            </td>
+                        </tr>
+                        {/loop}
+                        {if !$listtree}
+                        <tr>
+                            <td colspan="6" align="center" class="align-center">
+                                <div>无</div>
+                            </td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                    {if $listtree}
+                    <div class="control-group">
+                        <input class="button" type="submit" value="更新排序">
+                        <input type="hidden" name="dosubmit" value="1">
+                    </div>
+                    {/if}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function _del(id){
+        var _del = art.dialog({
+            title: '删除提醒',
+            fixed: true,
+            lock: true,
+            icon: 'warning',
+            opacity: '.3',
+            content: '确定要删除并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.alert('正在删除',0);
+                    $.ajax({
+                        url: '{php echo urido('goodssortdel')}&id='+id,
+                        dataType: 'json',
+                        success: function (data) {
+                            $.alert(0);
+                            if (data != null && data.success != null && data.success) {
+                                $.showModal(data.message, '{php echo get_url()}');
+                            } else {
+                                $.showModal(data.message);
+                            }
+                            _del.close();
+                        },error : function () {
+                            $.alert("删除失败！");
+                        },
+                        cache: false
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    $(document).ready(function() {
+        //更新排序
+        $('#saveform').submit(function() {
+            $.alert('正在更新...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo get_url()}');
+                    } else {
+                        $.showModal("更新错误！");
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("更新失败！");
+                }
+            });
+            return false;
+        });
+        //
+        var x = 10;
+        var y = 20;
+        $("td#show-img").mouseover(function(e){
+            var _img = $(this).parent().attr("data-img");
+            if (!_img) return;
+            var tooltip = "<div id='img-tooltip' style='position:absolute;border:1px solid #ccc;'><img src='"+ _img +"' style='max-width:200px;max-height:200px;display:block;'/></div>"; //创建 div 元素
+            $("body").append(tooltip); //把它追加到文档中
+            $("#img-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            }).show("fast");   //设置x坐标和y坐标，并且显示
+        }).mouseout(function(){
+            $("#img-tooltip").remove();  //移除
+        }).mousemove(function(e){
+            $("#img-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            });
+        });
+    })
+
+</script>
+
+{template 'common/footer'}

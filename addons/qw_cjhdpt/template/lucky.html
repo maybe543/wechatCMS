@@ -1,0 +1,127 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+  <li {if $operation == 'display'}class="active"{/if}><a href="#">点指兵兵管理</a></li>
+</ul>
+<script>
+require(['bootstrap'],function($){
+	$('.btn,.tips').hover(function(){
+		$(this).tooltip('show');
+	},function(){
+		$(this).tooltip('hide');
+	});
+});
+</script>
+<style>
+.tl span{color:#999;}
+.category td a{ margin-bottom:5px;}
+.grade{color:#999;}
+.red{color:#F00}
+.green{color:#0F0}
+.jtable{display:table; width:100%;}
+.jrow{display:table-row;}
+.jcell{display:table-cell; vertical-align:middle;}
+.jcell-1{ width:10%}
+.jcell-2{ width:20%}
+.jcell-3{ width:30%}
+.jcell-4{ width:40%}
+.jcell-5{ width:50%}
+.jcell-6{ width:60%}
+.jcell-7{ width:70%}
+.jcell-8{ width:80%}
+.jcell-9{ width:90%}
+.infobody div{line-height:24px;}
+.border{ border-bottom:#CCC 1px solid; padding:5px}
+.viewimg{ cursor:pointer}
+.jtablestyle{overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal}
+#msgrecord .msglist{padding:10px; margin:10px 0; border:1px solid #CCC; background:#F7F7F7; border-radius:8px; text-align:left;}
+#msgrecord .msglist h2{ font-size:12px; line-height:24px; border-bottom:#CCC 1px dashed; margin:0; text-align:center; margin-bottom:5px;}
+</style>
+{if $operation=='display'}
+<div class="main">
+  
+  <div class="category">
+    <form action="" method="post" onsubmit="return formcheck(this)">
+      <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:60px">选择</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:60px">#</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">头像</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:150px">昵称</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">姓名</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:50px">性别</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:130px">电话</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">状态</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;text-align:right">操作</th>
+              </tr>
+            </thead>
+            {php $i=1;}
+            {loop $list $row}
+            {php $profile=pdo_fetch("SELECT * FROM ".tablename('qw_cjhdpt_winner')." WHERE from_user ='".$row['from_user']."' order by id desc ")}
+            <tbody>
+            <tr >
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal"><input type="checkbox" name="select[]" value="{$row['from_user']}" /></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{php echo $i}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal"><img src="{$profile['avatar']}" width="80" style="max-height:80px;"/></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{php echo $profile['nickname']? $profile['nickname'] : $profile['realname'];}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{$profile['realname']}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{if $profile['gender']==1}<span class="label label-danger">先生</span>{else}<span class="label label-success">女士</span>{/if}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{$profile['mobile']}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              {if $profile['status']==-1}<span class="label label-default">落选</span>{elseif $profile['status']==0}{elseif $profile['status']==1}<span class="label label-default">待审核</span>{else}<span class="label label-success">入选</span>{/if}<br />
+              {if $profile['attend']==1}<div><span class="label label-success">{php echo date("m-d H:i",$profile['endtime'])}</span></div><span class="label label-warning">已签到</span>{else}<span class="label label-default">未签到</span>{/if}
+              </td>
+              <td style="text-align:right"  style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              {if empty($row['status'])}<a href="{php echo $this->createWebUrl('lucky', array('id' => $id, 'wid' => $row['id'], 'status' => 2))}" class="btn btn-info">标记领奖</a>{else}<a href="{php echo $this->createWebUrl('lucky', array('id' => $id, 'wid' => $row['id'], 'status' => 0))}" class="btn btn-default">取消领奖</a>{/if}
+              <a href="{php echo $this->createWebUrl('lucky', array('op' => 'delete', 'uid' => $row['id'],'id' => $rid))}" onclick="return confirm('确认删除吗，删除后，不可恢复？');return false;" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i></a></td>
+            </tr>
+            {php $i++}
+            {/loop}
+            </tbody>
+            <tr>
+              <td style="width:60px;" class="row-first"><input type="checkbox" onclick="selectall(this)"/></td>
+              <td colspan="4">
+                <input type="submit" value="批量标记中奖" name="geprize" class="btn btn-primary" />
+                <input type="submit" value="批量取消中奖" name="dealprize" class="btn btn-info" />
+                <input type="submit" value="批量删除" name="delete" class="btn btn-danger" />
+                <input type="hidden" name="token" value="{$_W['token']}" /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal fade" id="myModal" style="z-index:10999" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><img src=""  style="width:100%" id="showImg"/></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!--发送消息-->
+
+
+<script language="javascript">
+function selectall(obj){
+	if(obj.checked==true){
+	   $("input[name^='select']").each(function(){
+		  $(this).attr("checked",true);
+	   });
+	}else{
+		$("input[name^='select']").each(function(){
+		  $(this).attr("checked",false);
+	    });
+	}
+}
+</script>
+{/if}
+{template 'common/footer'} 

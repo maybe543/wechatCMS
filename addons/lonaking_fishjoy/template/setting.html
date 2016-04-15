@@ -1,0 +1,152 @@
+{template 'common/header'}
+<div class="main">
+    <form class="form-horizontal form" id="setting-form" action=""
+          method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">游戏设置</div>
+            <div class="panel-body">
+                <!-- title-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">标题</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[title]"
+                               value="{$settings['title']}" />
+                        <span class="help-block">标题</span>
+                    </div>
+                </div>
+
+                <!-- name-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">游戏描述</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[description]"
+                               value="{$settings['description']}" required/>
+                        <span class="help-block">游戏描述</span>
+                    </div>
+                </div>
+                <!-- 主页背景 虚化-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">主页虚化背景</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_bg1Img]', $settings['param_bg1Img'])}
+                        <span class="help-block">这个是主页虚化的背景</span>
+                    </div>
+                </div>
+                <!-- 主题文字图片 虚化-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">主题文字图片</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_infoImg]', $settings['param_infoImg'])}
+                        <span class="help-block">主题文字图片</span>
+                    </div>
+                </div>
+                <!-- 湖面背景-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">湖面背景</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_gamebgImg]', $settings['param_gamebgImg'])}
+                        <span class="help-block">这个是湖面背景 可以自定义哦</span>
+                    </div>
+                </div>
+                <!-- 奖杯-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">奖杯素材</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_awardImg]', $settings['param_awardImg'])}
+                        <span class="help-block">奖杯素材设置</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">游戏结束背景</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_awardBg]', $settings['param_awardBg'])}
+                        <span class="help-block">游戏结束背景</span>
+                    </div>
+                </div>
+                <!-- logo-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">主题logo</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_logo]', $settings['param_logo'])}
+                        <span class="help-block">主题logo，游戏主页显示，建议png格式，透明背景</span>
+                    </div>
+                </div>
+                <!-- 积分商城url-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">积分商城url</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[gift_shop_url]"
+                               value="{$settings['gift_shop_url']}" />
+                        <span class="help-block">游戏结束，可以引导用户前往积分商城兑换礼品，这里填写积分商城的url</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">规则设置</div>
+            <div class="panel-body">
+                <!-- 游戏次数-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">没人每天次数</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="data[playTimePrivilege]"
+                               value="{$settings['playTimePrivilege']}" />
+                        <span class="help-block">限制美人每天几次游戏</span>
+                    </div>
+                </div>
+                <!-- 游戏时间-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">游戏时间</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="data[gameTime]"
+                               value="{$settings['gameTime']}" />
+                        <span class="help-block">每场游戏时间 单位秒</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading">微信分享设置</div>
+            <div class="panel-body">
+                <!-- title-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享页标题设置</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[param_share_title]"
+                               value="{$settings['param_share_title']}" />
+                        <span class="help-block">微信分享内容标题</span>
+                    </div>
+                </div>
+
+                <!-- name-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享描述</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[param_share_content]"
+                               value="{$settings['param_share_content']}" required/>
+                        <span class="help-block">微信分享描述</span>
+                    </div>
+                </div>
+                <!-- sharelogo-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享logo</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[param_share_img]', $settings['param_share_img'])}
+                        <span class="help-block">这个logo是用户分享到朋友圈显示的logo，请务必设置的好看一点</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group col-sm-12">
+            <input name="token" type="hidden" value="{$_W['token']}" /> <input
+                type="submit" class="btn btn-primary col-lg-1" name="submit"
+                value="提交" />
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+</script>
+{template 'common/footer'}

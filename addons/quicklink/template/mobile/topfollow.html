@@ -1,0 +1,36 @@
+{php $bootstrap_type = 3;}
+{template 'header'}
+<style>
+  td {
+    vertical-align:middle !important;
+  }
+  .followtime {
+    font-size:13px;
+    text-align:right;
+    color:red;
+  }
+  body {
+    background-color:white;
+  }
+  .number { line-height:25px; width:25px; height:25px; border-radius:25px; display:block; color:#FFF; text-align:center; }
+  .number {background-color:#F00;}
+</style>
+
+<div class="">
+      {template 'fansinfo'}
+      <table class="table table-striped" style='width:100%;'>
+        <tbody>
+          {php $seq = 1; }
+          {loop $mylist $f}
+          <tr>
+            <td><img style="width:46px;height:46px"  class="img-rounded" src="{php echo preg_replace('/\/0$/', '/46', stripslashes($f['avatar']));}" /></td>
+            <td><div class='eclipse'>{$f['nickname']}</div></td>
+            <td class="followtime">{$f['follower_credit']}分</td>
+            <td class="followtime">{$f['follower_count']}人</td>
+            <td class=""><p class="number">{php echo $seq++}</p></td>
+          </tr>
+          {/loop}
+        </tbody>
+      </table>
+    </div>
+    {template 'footer'}

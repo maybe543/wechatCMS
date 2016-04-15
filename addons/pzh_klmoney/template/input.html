@@ -1,0 +1,75 @@
+﻿{template 'common/header'}
+
+<div class="main">
+  <form id="redSet" class="form form-horizontal" action="{php echo $this->createWebUrl('saveinput')}" method="post">
+
+   <div class="panel panel-default">
+    <div class="panel-heading">
+      封面设计
+    </div>
+    <div class="panel-body">
+     <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">背景图片</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_image('input_img',$this->module['config']['kouling']['input_img'],'');}
+        <span class="help-block">图片规格差不多为640*1100，请自行压缩后上传</span>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">整体高度调整</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="input_top" value="<?php echo $this->module['config']['kouling']['input_top']; ?>" class="form-control">
+        <span class="help-block">请输入1-100的整数，将按输入的百分比来调整文字框的高度</span>
+       
+      </div>
+    </div>
+      
+       <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">输入框上方的文字</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="input_theme" value="<?php echo $this->module['config']['kouling']['input_theme']; ?>" class="form-control">
+        <span class="help-block">输入框上方的文字,若要换行，输入'\n' 如1234\n12345</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">输入框上方的文字的颜色</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_color('input_color',$this->module['config']['kouling']['input_color']);}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">超链接文字</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="link" value="<?php echo $this->module['config']['kouling']['link']; ?>" class="form-control">
+        <span class="help-block">右下超链接文字，若不需要，则空着</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">超链接文字的颜色</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_color('link_color',$this->module['config']['kouling']['link_color']);}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+
+        <input name="submit" type="submit" value="保存" class="btn btn-primary" />
+        <input type="hidden" name="token" value="{$_W['token']}" />
+      </div>
+    </div>
+  </div>
+   </div>
+</form>
+
+
+
+</div>
+
+
+
+{template 'common/footer'}

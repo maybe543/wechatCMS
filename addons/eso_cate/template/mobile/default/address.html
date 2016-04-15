@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>收货地址 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.form.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}linkage.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body>
+<header class="top">
+    <h1>我的地址</h1>
+    <a class="back" href="javascript:history.go(-1);">返回</a>
+</header>
+
+<div id="addrtemp" style="display: none;">
+    <div class="tm-block slider-address-item tddress">
+        <div class="tddress-usr" onclick="toaddrurl(this);">
+            <span class="tm-title"></span>
+            <span class="tm-content"></span>
+            <aside class="tm-nav tm-select-flag">&nbsp;</aside>
+        </div>
+        <div class="tddress-detail">
+            <span class="tm-addr"></span>
+            <a href="javascript:;" onclick="addedit(this, 'edit');">[修改]</a>
+            <a href="javascript:;" onclick="addedit(this, 'del');">[删除]</a>
+        </div>
+        <input type="hidden" id="name" name="name[]" value="">
+        <input type="hidden" id="phone" name="phone[]" value="">
+        <input type="hidden" id="area" name="area[]" value="">
+        <input type="hidden" id="area_t" name="area_t[]" value="">
+        <input type="hidden" id="address" name="address[]" value="">
+        <input type="hidden" id="zip" name="zip[]" value="">
+        <input type="hidden" id="default" name="default[]" value="">
+    </div>
+</div>
+
+<div class="selectattrval">
+    <header>
+        <h1>地址管理</h1>
+        <a class="back" href="javascript:void(0);">返回</a>
+    </header>
+    <section class="detailaddr">
+        <div><span>收货人</span><input id="name_sel" type="text"></div>
+        <div><span>手机号码</span><input id="phone_sel" type="tel"></div>
+        <div>
+            <span>地区</span>
+            <table>
+                <tr>
+                    <td><input class="form-control" type="text" id="area_sel" value="" style="display:none;">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+        <div><span>详细地址</span><textarea id="address_sel" maxlength="120"></textarea></div>
+        <div><span>邮编</span><input id="zip_sel" type="tel"></div>
+        <div><span>&nbsp;</span><label><input id="default_sel" type="checkbox" class="c-form-checkbox">设为默认地址</label></div>
+        <div class="c-btn-oran-big" id="define">确定</div>
+    </section>
+</div>
+
+<form action="{php echo get_url()}" id="saveform" method="post">
+    <div id="J_slider">
+
+        {loop $addressarr $aitem $list}
+        <div class="tm-block slider-address-item tddress{if $list['default']} addr-cur{/if}" data-aitem="{$aitem}" data-rand="{php echo rand(0,99999)}">
+            <div class="tddress-usr" onclick="toaddrurl(this);">
+                <span class="tm-title">{$list['name']}</span>
+                <span class="tm-content">{$list['phone']}</span>
+                <aside class="tm-nav tm-select-flag">&nbsp;</aside>
+            </div>
+            <div class="tddress-detail">
+                <span class="tm-addr">{$list['area_t']} {$list['address']}</span>
+                <a href="javascript:;" onclick="addedit(this, 'edit');">[修改]</a>
+                <a href="javascript:;" onclick="addedit(this, 'del');">[删除]</a>
+            </div>
+            <input type="hidden" id="name" name="name[]" value="{$list['name']}">
+            <input type="hidden" id="phone" name="phone[]" value="{$list['phone']}">
+            <input type="hidden" id="area" name="area[]" value="{$list['area']}">
+            <input type="hidden" id="area_t" name="area_t[]" value="{$list['area_t']}">
+            <input type="hidden" id="address" name="address[]" value="{$list['address']}">
+            <input type="hidden" id="zip" name="zip[]" value="{$list['zip']}">
+            <input type="hidden" id="default" name="default[]" value="{$list['default']}">
+        </div>
+        {/loop}
+
+        <a href="javascript:;" class="ui-btn-white" id="addbut">添加新地址</a>
+
+    </div>
+    <input type="hidden" name="dosubmit" value="1"/>
+</form>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    //点击 删除、弹出添加修改
+    function addedit(obj, type) {
+        var eve = $(".selectattrval");
+        var dve = $(obj).parent().parent();
+        eve.attr("data-rand", dve.attr("data-rand"));
+        eve.attr("data-type", type);
+        if (type == "edit"){
+            eve.find("#name_sel").val(dve.find("input#name").val());
+            eve.find("#phone_sel").val(dve.find("input#phone").val());
+            eve.find("#area_sel").val(dve.find("input#area").val());
+            eve.find("#address_sel").val(dve.find("input#address").val());
+            eve.find("#zip_sel").val(dve.find("input#zip").val());
+            if (dve.find("input#default").val() == "1") {
+                eve.find("#default_sel").attr("checked", true);
+            }else{
+                eve.find("#default_sel").attr("checked", false);
+            }
+        }else if (type == "del"){
+            dve.remove();
+            $('#saveform').submit();
+            return;
+        }else{
+            eve.find("input,textarea").val("");
+        }
+        eve.addClass("show");
+        setTimeout(function(){linkage("area_sel","{php echo urwdo('linkage')}&id=",0,0);},100);
+    }
+    //点击选择
+    function toaddrurl(obj) {
+        {if $buyid}
+        window.location.href = "{php echo urwdo('buy')}&id={$buyid}&aitem="+$(obj).parents(".tm-block").attr("data-aitem");
+        {/if}
+    }
+    //
+    $(document).ready(function() {
+        //点击添加
+        $("#addbut").click(function(){
+            var m = Math.round(Math.random() * 10000);
+            $intemp = $($("#addrtemp").html());
+            $intemp.attr("data-rand", m);
+            addedit($intemp.find("a"), "add");
+            $("#addbut").before($intemp);
+        });
+        //点击返回
+        $(".selectattrval").find(".back").click(function () {
+            var eve = $(".selectattrval");
+            eve.removeClass("show");
+            if (eve.attr("data-type") == "add"){
+                $("#J_slider").find("div[data-rand="+eve.attr("data-rand")+"]").remove();
+            }
+        });
+        //点击确认
+        $(".selectattrval").find("#define").click(function () {
+            var eve = $(".selectattrval");
+            var dve = $("#J_slider").find("div[data-rand="+eve.attr("data-rand")+"]");
+            var tm_name = eve.find("#name_sel").val();
+            var tm_phone = eve.find("#phone_sel").val();
+            var tm_area = eve.find("#area_sel").val();
+            var tm_area_t = tm_area.replace(/:[0-9]{1,9}/g, '').replace(/\|\|/g, ' ');
+            var tm_address = eve.find("#address_sel").val();
+            var tm_zip = eve.find("#zip_sel").val();
+            var tm_default = eve.find("#default_sel").attr("checked");
+            dve.find(".tm-title").text(tm_name);
+            dve.find(".tm-content").text(tm_phone);
+            dve.find(".tm-addr").text(tm_area_t + " " + tm_address);
+            dve.find("input#name").val(tm_name);
+            dve.find("input#phone").val(tm_phone);
+            dve.find("input#area").val(tm_area);
+            dve.find("input#area_t").val(tm_area_t);
+            dve.find("input#address").val(tm_address);
+            dve.find("input#zip").val(tm_zip);
+            if (tm_default === true){
+                $("#J_slider").find(".addr-cur").removeClass("addr-cur");
+                $("#J_slider").find("#default").val("0");
+                dve.find("input#default").val("1");
+                dve.addClass("addr-cur");
+            }else{
+                dve.find("input#default").val("0");
+                dve.removeClass("addr-cur");
+            }
+            eve.removeClass("show");
+            $('#saveform').submit();
+        });
+        //保存
+        $('#saveform').submit(function() {
+            $.alert("保存数据...", 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    if (data != null && data.success != null && data.success) {
+                        $.alert("保存成功", 300);
+                        $("#J_slider").find(".tm-block").each(function(index){
+                            $(this).attr("data-aitem", index);
+                        });
+                    } else {
+                        window.location.reload();
+                    }
+                },
+                error : function () {
+                    window.location.reload();
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

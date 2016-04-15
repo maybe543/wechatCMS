@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>升级</title>
+    <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css"
+          media="screen, projection">
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/alert.js"></script>
+    <script type="text/javascript">
+        var setleve = "{php echo $this->createMobileUrl('index', array('op' => 'uplevel'))}";
+        $(function () {
+            $("#click-pay").click(function () {
+                if (!confirm('是否提交升级申请?')) {
+                    return;
+                }
+                $.post(setleve, function (data) {
+                    var info = eval(data);
+                    if (info.s == 'ok') {
+                        window.location.reload();
+                    } else {
+                        alert(info.msg);
+                    }
+                }, 'json');
+            });
+        })
+    </script>
+</head>
+<body class="index-body">
+<div class="container-fluid">
+    {template 'navbar'}
+    <div class="row clearfix">
+        <div class="col-xs-12">
+            <div class="thumbnail hdiv-common"
+                 style="margin-right:-15px;margin-left:-15px;text-align:center;background: no-repeat;background-size: 200%, 100%;">
+                {if empty($exist_apply)}
+                <div style="margin-top:125px;">
+                    <button type="button" class="btn bold-common"
+                            style="background:#00D13D;width:70%;color:#FFFFFF;height:41px;" id="click-pay"
+                            data-id="266">
+                        {if $level > $cfg['level']}
+                        <span style="font-weight:bold;font-size:18px;">您已经是最高级别会员了</span>
+                        {else}
+                        <img src="../addons/xkd_fkz/template/mobile/image/p_{$level}.png" height="30"> &nbsp; &nbsp;
+                        &nbsp;<span style="font-weight:bold;font-size:18px;">￥ {$cfg["level_money$level"]}</span>
+                        {/if}
+                    </button>
+                </div>
+                {else}
+                {if !empty($manager) && !empty($parent)}
+                <div class="row clearfix">
+                    <div class="col-xs-6">
+                        <div style="margin-top:40px;"><img src="{$manager['avatar']}" alt="头像" class="img-circle"
+                                                           style="width:100px;height:100px;"></div>
+                        <div style="margin-top:30px;font-weight:bold;font-size:16px;">
+                            群主微信号：<span>{$manager['wechat']}</span></div>
+                        {if !empty($manager['qq'])}
+                        <div style="margin-top:10px;font-weight:bold;font-size:16px;">QQ号：<span>{$manager['qq']}</span>
+                        </div>
+                        {/if}
+                        {if !empty($manager['mobile'])}
+                        <div style="margin-top:10px;font-weight:bold;font-size:16px;">
+                            手机号：<span>{$manager['mobile']}</span></div>
+                        {/if}
+                    </div>
+                    <div class="col-xs-6">
+                        <div style="margin-top:40px;"><img src="{$parent['avatar']}" alt="头像" class="img-circle"
+                                                           style="width:100px;height:100px;"></div>
+                        <div style="margin-top:30px;font-weight:bold;font-size:16px;">
+                            上级微信号：<span>{$parent['wechat']}</span></div>
+                        {if !empty($parent['qq'])}
+                        <div style="margin-top:10px;font-weight:bold;font-size:16px;">QQ号：<span>{$parent['qq']}</span>
+                        </div>
+                        {/if}
+                        {if !empty($parent['mobile'])}
+                        <div style="margin-top:10px;font-weight:bold;font-size:16px;">
+                            手机号：<span>{$parent['mobile']}</span></div>
+                        {/if}
+                    </div>
+                </div>
+                {elseif !empty($parent)}
+                <div style="margin-top:40px;"><img src="{$parent['avatar']}" alt="头像" class="img-circle"
+                                                   style="width:100px;height:100px;"></div>
+                <div style="margin-top:30px;font-weight:bold;font-size:16px;">上级微信号：<span>{$parent['wechat']}</span>
+                </div>
+                {if !empty($parent['qq'])}
+                <div style="margin-top:10px;font-weight:bold;font-size:16px;">QQ号：<span>{$parent['qq']}</span></div>
+                {/if}
+                {if !empty($parent['mobile'])}
+                <div style="margin-top:10px;font-weight:bold;font-size:16px;">手机号：<span>{$parent['mobile']}</span></div>
+                {/if}
+                {/if}
+                <div style="margin-top:25px;">
+                    <span style="font-size:18px;font-weight:bold;color:red">等待升级...</span>
+                </div>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <!--<button onclick="location.reload(true)">RELOAD</button>-->
+</div>
+
+<div class="index-content">
+    <div class="readme">
+        <div class="title">互动说明</div>
+        <div class="content">
+            <ol>
+                {if $this->m_setting['adv_open']}
+                <li><p>升级成为会员可以在互粉朋友圈发广告，等级越高广告排名越靠前</p></li>
+                {/if}
+                <li><p>本页面头像与微信号是您的上级好友或者群主，请点击绿色升级按钮向上级好友发起升级申请</p></li>
+                <li><p>添加头像下面的微信号为好友，经上级好友的同意后转发相应的升级红包金额，并且备注“<b>我的编号{$member['uid']}，很高兴认识您</b>”</p></li>
+                <li><p>每次向上升一级须向您的上级好友转发相应的红包金额(微信转红包)，请注意每次升级的用户可能不同</p></li>
+                <li><p>发送红包以后，请耐心等待好友收取您的红包，如果对方在24小时没有收取，腾讯公司会自动将红包金额退回到您的账号上，您再主动联系平台客服为您处理升级</p></li>
+                <li><p>如果上级好友领取红包后15分钟未处理您的升级请求，您可以截图(发红包凭证)与平台联系，平台将冻结不按规操作者的账号</p></li>
+            </ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>

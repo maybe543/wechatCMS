@@ -1,0 +1,156 @@
+{template 'common/header'}
+<link type="text/css" rel="stylesheet" href="./addons/quickmoney/style/base.css" />
+<ul class="nav nav-tabs">
+  <li {if $operation == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('goods', array('op' => 'post'));}">添加</a></li>
+  <li {if $operation == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('goods', array('op' => 'display'));}">管理</a></li>
+</ul>
+{if $operation == 'post'}
+<div class="main">
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$item['id']}" />
+    <h4>编辑取现信息</h4>
+
+    <div class="form-group">
+      {php echo FormTpl::label2('取现名称', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('text', 'title', $item['title']); }
+      </div>
+    </div>
+
+    <div class="form-group">
+      {php echo FormTpl::label2('兑换钱数', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('text', 'cost', $item['cost'])}
+        <span class="help-block">用户兑换钱数。 如100.00元。 1个余额积分价值1块钱</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('兑换钱数自定义', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+          <label for="userchangecost" class="radio-inline"><input type="radio" name="userchangecost" value="0" id="userchangecost1"  {if !empty($item) && $item['userchangecost'] == 0}checked="true"{/if} />不允许自定义, 以上面兑换钱数为准</label>
+          &nbsp;&nbsp;&nbsp;
+          <label for="userchangecost" class="radio-inline"><input type="radio" name="userchangecost" value="1" id="userchangecost3"  {if !empty($item) && $item['userchangecost'] == 1}checked="true"{/if} /> 允许自定义，最低门槛不得低于上面的兑换钱数</label>
+          <span class="help-block">如果你觉得固定的兑换值模板不够爽，就选择允许自定义吧。选择后，用户在兑换时可以自行输入要兑换多少积分。例如：兑换钱数设定为1.00元，允许用户自定义，则用户可以自行输入1元，2元，3元等等，只要不低于1元，都可以。</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('宣传图', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('image', 'logo', $item['logo']); }
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('兑换门槛', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('option', 'vip_require', $item['vip_require'], array('0'=>'不限等级', '1'=>'VIP1', '2'=>'VIP2', '3'=>'VIP3', '4'=>'VIP4', '5'=>'VIP5', '6'=>'VIP6', '7'=>'VIP7', '8'=>'VIP8', '9'=>'VIP9'))}
+        <span class="help-block">必须满足一定的VIP级别才能兑换。为0时表示不限级别。</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      {php echo FormTpl::label2('单用户取现<br>次数上限', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('text', 'per_user_limit', $item['per_user_limit']); }
+          <span class="help-block">此项设置该规格的取现,每个用户可取现次数，防止频繁取现。为0时表示不限次数。</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('剩余可取现次数', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('text', 'amount', $item['amount']); }
+        <span class="help-block">此设置项设置该规格的取现，还可以取多少份。为0时不对外显示，不接受取现。</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      {php echo FormTpl::label2('兑换截止日期', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        {php echo FormTpl::getWebControl2('time', 'deadline', !empty($item['deadline']) ? strtotime($item['deadline']) : TIMESTAMP + 60*60*24*10)}
+        <span class="text-danger help-block">超过该日期后不可兑奖,并且自动从奖品列表中下架。</span>
+      </div>
+    </div>
+
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('取现方式', 'col-xs-12 col-sm-3 col-md-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+        <label for="exchangetype1" class="radio-inline"><input type="radio" name="exchangetype" value="1" id="exchangetype1"  {if !empty($item) && $item['exchangetype'] == 1}checked="true"{/if} />{php echo $_money->getExchangeTypeStr(1)}</label>
+        <label for="exchangetype2" class="radio-inline"><input type="radio" name="exchangetype" value="2" id="exchangetype2" {if empty($item) || $item['exchangetype'] == 2}checked="true"{/if} /> {php echo $_money->getExchangeTypeStr(2)}</label>
+        <label for="exchangetype3" class="radio-inline"><input type="radio" name="exchangetype" value="3" id="exchangetype3"  {if !empty($item) && $item['exchangetype'] == 3}checked="true"{/if} />{php echo $_money->getExchangeTypeStr(3)}</label>
+        <span class="help-block">兑换话费等虚拟物品，不需要让用户填写收货地址。实物需要邮寄，要填写收货地址。</span>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      {php echo FormTpl::label2('内容', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+      <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+        <textarea name="content" class="form-control richtext-clone" cols="70" rows="20">{$item['content']}</textarea>
+        <br>
+        全屏编辑效果更好噢。小工具:
+        <a href="http://wxedit.yead.net/" target="_blank" title="新窗口打开">易点微信编辑器</a> &nbsp;
+        <a href="http://www.135editor.com/" target="_blank" title="新窗口打开">135微信编辑器</a> &nbsp;(利用第三方编辑器，获得更好显示效果)
+      </div>
+    </div>
+
+    <div style="margin:0 0 10px 0" class="row">
+      {php echo FormTpl::label2('&nbsp;', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+      <div class="col-xs-12 col-sm-9 col-md-10">
+        <input name="submit" type="submit" value="提交" class="btn btn-primary">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <br>
+      </div>
+    </div>
+
+  </form>
+</div>
+<script language='javascript'>
+	require(['jquery', 'util'], function($, u){
+		$(function(){ $('.richtext-clone').each( function() { u.editor(this); });		});
+	});
+</script>
+{elseif $operation == 'display'}
+<div class="main">
+  <div style="padding:15px;">
+    <table class="table table-hover">
+      <thead class="navbar-inner">
+        <tr>
+          <th style="min-width:150px;">取现名称[门槛]</th>
+          <th style="min-width:150px;">放款方式</th>
+          <th style="width:100px;">剩余份数</th>
+          <th style="width:100px;">消耗积分</th>
+          <th style="width:100px;">兑换金额自定义</th>
+          <!--th style="width:400px;">描述</th-->
+          <th style="text-align:right; min-width:60px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {loop $list $item}
+        <tr>
+          <td>{$item['title']}[<span style="color:red">VIP{$item['vip_require']}</span>]</td>
+          <td>{php echo $_money->getExchangeTypeStr($item['exchangetype'])}</td>
+          <td>{$item['amount']}</td>
+          <td>{$item['cost']}{if $item['userchangecost'] == 1}起{/if}</td>
+          <td>{if $item['userchangecost'] == 1}允许{/if}</td>
+          <!--td>{php echo htmlspecialchars_decode($item['content'])}</td-->
+          <td style="text-align:right;">
+            <a href="{php echo $this->createWebUrl('goods', array('goods_id' => $item['goods_id'], 'op' => 'post'))}" title="编辑" class="btn btn-sm"><i class="fa fa-edit"></i></a>
+            <a href="{php echo $this->createWebUrl('goods', array('goods_id' => $item['goods_id'], 'op' => 'delete'))}" onclick="return confirm('此操作不可恢复，确认删除？');return false;" title="删除" class="btn btn-sm"><i class="fa fa-remove"></i></a>
+          </td>
+        </tr>
+        {/loop}
+      </tbody>
+    </table>
+  </div>
+</div>
+{/if}
+{template 'common/footer'}

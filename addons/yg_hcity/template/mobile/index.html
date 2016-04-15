@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from chinaoctyada.cdjxyun.com/mfwxhtml/ by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 10 Aug 2015 04:03:38 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>&nbsp;</title>
+    <link href="{MODULE_URL}template/mobile/css/skin.css" rel="stylesheet" />
+    <script src="{MODULE_URL}template/mobile/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+{php echo register_jssdk(false);}
+<script>
+	wx.ready(function () {
+		sharedata = {
+			  title: "{php echo $reply['sharetitle']}",
+                desc: "{php echo $reply['sharedesc']}",
+			    link: "{php echo $_W['siteroot'].str_replace('./','app/',$this->createMobileurl('index',array('id' => $id)))}",
+				imgUrl: "{php echo toimage($reply['sharepic'])}",
+			success: function(){
+				//alert('success');
+			},
+			cancel: function(){
+				//alert('cancel');
+			}
+		};
+		
+		wx.onMenuShareAppMessage(sharedata);
+		wx.onMenuShareTimeline(sharedata);
+	});
+	
+	</script>
+
+    <style>
+        html
+        {
+            background-color: #151515;
+            height: 100%;
+        }
+        body
+        {
+            height: 100%;
+        }
+    </style>
+    <script>
+
+
+        var getParam = function (name) {
+            var search = document.location.search;
+            var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+            var matcher = pattern.exec(search);
+            var items = null;
+            if (null != matcher) {
+                try {
+                    items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                } catch (e) {
+                    try {
+                        items = decodeURIComponent(matcher[1]);
+                    } catch (e) {
+                        items = matcher[1];
+                    }
+                }
+            }
+            return items;
+        };
+
+       
+
+
+        var password = "{$reply['pwd']}";
+        var _password = "";
+
+        function setTime() {
+            var _date = new Date();
+            var time = _date.getHours();
+            if (time < 10) time = "0" + time;
+            var m = _date.getMinutes();
+            if (m < 10) m = "0" + m;
+            time = time + ":" + m;
+            $("#time").html(time);
+        };
+    
+        var audio1 = false;
+        var audio2 = false;
+        function readAudio(path, fn) {
+            var audio = new Audio();
+            audio.volume = 0.1;
+            audio.src = path;
+            audio.play();
+            var t = setInterval(function () {
+                if (audio.readyState == 4) {
+                    clearInterval(t);
+                    fn();
+                }
+            });
+        }
+        $(function () {
+            function go() {
+                var i = 0;
+                var timer = setInterval(function () {
+                    if (i < 4) {
+                        if (i == 3) {
+                            addMsg(true);
+                        } else {
+                            addMsg();
+                        }
+                        i++;
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, 500);
+                document.getElementById("slip").addEventListener("touchmove", function () {
+                    $(".password_plate").css("left", 0);
+                }, false);
+                $(".key").bind("touchend", clickBoard);
+                $(window).bind("touchmove", function (e) {
+                    // if ($(e.target).parents('.chat_plate').length == 0) {
+                    e.preventDefault();
+                    //  }
+                });
+            }
+            //            readAudio("1.mp3", function () {
+            //                audio1 = true;
+            //                if (audio1 && audio2) go();
+            //            });
+            //            readAudio("2.mp3", function () {
+            //                audio2 = true;
+            //                if (audio1 && audio2) go();
+            //            });
+            go();
+        });
+
+        function clickBoard(e) {
+            var index = $(this).data("index");
+            var count = $(".password").find(".full").length;
+            $(".password").find("span").eq(count).addClass("full");
+            _password += index;
+            if (count == 3) { //已输入四个
+                if (password == _password) { //输入密码正确
+                    $(".chat_plate").addClass("openPlate");
+                    starChat();
+                } else {
+                    $(".password").find(".full").removeClass("full");
+                    _password = "";
+                }
+            }
+        }
+
+        function addMsg(last) {
+
+
+            var html = '<li><img src="{MODULE_URL}template/mobile/img/weixin.png" /><div class="index_msg_info"><span>微信</span>' +
+					'<label>现在</label><br /><span>{$reply["indexmsg"]}</span>';
+            if (last) {
+                html += '<br /><label>滑动来查看</label>';
+            }
+            html += '</div></li>';
+            var $con = $(".index_msg_list").find("ul");
+            $con.prepend(html);
+            $con.find("li").first().next().addClass("history");
+            var audio = new Audio();
+            audio.src = "{MODULE_URL}template/mobile/1.mp3";
+            audio.play();
+
+        }
+
+        function starChat() {
+            setTitle("{$reply['indexmsg']}")
+            var _init = 0;
+
+            function showChat() {
+                var audio = new Audio();
+                audio.src = "{MODULE_URL}template/mobile/2.mp3";
+                audio.play();
+                $(".chat_item").eq(_init).fadeIn();
+            }
+            showChat();
+            var timer = setInterval(function () {
+                _init++;
+                if (_init < 4) {
+                    showChat();
+                } else {
+                    clearInterval(timer);
+                    $(".submit_keybord").show();
+                    $("#myMsg").focus();
+                    $("#myMsg").val("{$reply['myyl']}");
+                }
+            }, 1000);
+            $(".submit_keybord").bind("touchend", function () {
+                $(".submit_keybord").hide();
+                $("#myMsg").val("");
+                showChat();
+                setTimeout(function () {
+                    startMe();
+                }, 3000);
+            });
+        }
+
+        function startMe() {
+            setTitle("我");
+            $(".chat_plate").css("left", "100%");
+            $(".me_plate").css("left", "0");
+            $(".me_plate").find(".flash_button").bind("click", function () {
+                startMoney();
+            });
+        }
+
+        function startMoney() {
+            setTitle("零钱");
+            $(".me_plate").css("left", "100%");
+            $(".money_plate").css("left", "0");
+            $(".money_plate").find(".flash_button").bind("click", function () {
+                startMoneyFull();
+            });
+        };
+
+        function startMoneyFull() {
+            setTitle("零钱充值");
+            $(".moneyFull_plate").css("top", "0");
+            $(".moneyFull_plate").find(".flash_button").bind("click", function () {
+                $("#money_mask").show();
+                $(".moneyFull_plate").find(".flash_button").hide();
+            });
+        }
+        function setTitle(title) {
+            var $body = $('body');
+            document.title = title;
+            // hack在微信等webview中无法修改document.title的情况
+            var $iframe = $('<iframe src="http://chinaoctyada.cdjxyun.com/favicon.ico"></iframe>');
+            $iframe.on('load', function () {
+                setTimeout(function () {
+                    $iframe.off('load').remove();
+                }, 0);
+            }).appendTo($body);
+
+        }
+		</script>
+</head>
+<body>
+   
+    <div class="screen" id="lockScreen">
+        <div class="index_time">
+            <div class="time" id="time">
+                22:01</div>
+            <div class="day" id="day">
+                7月6日 星期一</div>
+        </div>
+        <script>
+            setTime();
+            setInterval(function () {
+                setTime();
+            }, 1000)
+            var _date = new Date();
+            var y = _date.getMonth() + 1;
+            var d = _date.getDate();
+            var x = _date.getDay();
+            var _x = "";
+            switch (x) {
+                case 1:
+                    _x = "一";
+                    break;
+                case 2:
+                    _x = "二";
+                    break;
+                case 3:
+                    _x = "三";
+                    break;
+                case 4:
+                    _x = "四";
+                    break;
+                case 5:
+                    _x = "五";
+                    break;
+                case 6:
+                    _x = "六";
+                    break;
+                case 0:
+                    _x = "日";
+                    break;
+            }
+            var day = y + "月" + d + "日  星期" + _x;
+            $("#day").html(day);
+			</script>
+        <div class="index_msg_list">
+            <ul>
+            </ul>
+        </div>
+        <div class="index_footer">
+            <div class="slip" id="slip">
+                <span>滑动来解锁</span></div>
+            <div>
+                <span class="bar"></span><span class="camera"></span>
+            </div>
+        </div>
+    </div>
+    <div class="password_plate">
+        <div class="prompt">
+            Touch ID 请输入密码
+        </div>
+        <div class="password">
+            <span>{$one}</span><span>{$two}</span><span>{$there}</span><span>{$four}</span></div>
+        <div class="keyboard">
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="1">
+                        <span>1</span></div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="4">
+                        <span>4</span>
+                        <br />
+                        <label>
+                            GHI</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="7">
+                        <span>7</span>
+                        <br />
+                        <label>
+                            PQRS</label>
+                    </div>
+                </div>
+                <div class="row empty">
+                    <span>&nbsp;</span></div>
+            </div>
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="2">
+                        <span>2</span>
+                        <br />
+                        <label>
+                            ABC</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="5">
+                        <span>5</span>
+                        <br />
+                        <label>
+                            JKL</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="8">
+                        <span>8</span>
+                        <br />
+                        <label>
+                            TUV</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="0">
+                        <span>0</span></div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="row">
+                    <div class="key" data-index="3">
+                        <span>3</span>
+                        <br />
+                        <label>
+                            EDF</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="6">
+                        <span>6</span>
+                        <br />
+                        <label>
+                            MNO</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="key" data-index="9">
+                        <span>9</span>
+                        <br />
+                        <label>
+                            WXYZ</label>
+                    </div>
+                </div>
+                <div class="row empty">
+                    <span>&nbsp;</span></div>
+            </div>
+        </div>
+        <script>
+            var kw = $(window).width() * 0.7;
+            $(".keyboard").width(kw);
+            $(".keyboard").height(kw * 4 / 3);
+			</script>
+        <div class="bottom">
+            <div>
+                紧急呼叫</div>
+            <div>
+                取消</div>
+        </div>
+    </div>
+    <div class="chat_plate">
+        <div class="chat_con">
+            <div style="position: absolute; min-height: 100%; bottom: 0px; width: 100%;">
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="{php echo toimage($reply['lpylpic'])}" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            {{$reply['lpylname']}}</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>{$reply['lpyl1']}
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="{php echo toimage($reply['lzrenpic'])}" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            {$reply['lzrenname']}</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>{$reply['lzren']}
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="{php echo toimage($reply['zmniangpic'])}" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                           {$reply['zmniangname']} </div>
+                        <div class="chat_pop">
+                            <em></em><span></span>{$reply['zmniang']}
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item left" style="display: none;">
+                    <div class="thumb">
+                        <img src="{php echo toimage($reply['lpylpic'])}" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_user">
+                            {$reply['lpylname']}</div>
+                        <div class="chat_pop">
+                            <em></em><span></span>{$reply['lpyl2']}
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_item right" style="display: none;">
+                    <div class="thumb">
+                        <img src="{$headimgurl}" id="ming" /></div>
+                    <div class="chat_info_con">
+                        <div class="chat_pop">
+                            <em></em><span></span>{$reply['myyl']}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat_form">
+            <img src="{MODULE_URL}template/mobile/css/image/a.jpg" class="left" />
+            <img src="{MODULE_URL}template/mobile/css/image/b.jpg" class="right" />
+            <div class="form">
+                <form>
+                <textarea id="myMsg"></textarea>
+                </form>
+                <div class="mask">
+                </div>
+            </div>
+        </div>
+        <div class="submit_keybord" style="display: none;">
+            <img src="{MODULE_URL}template/mobile/css/image/keybord.jpg">
+        </div>
+    </div>
+    <div class="me_plate">
+        <div class="my_info">
+            <img src="{$headimgurl}" class="header" id="gimg" />
+            <div>
+                <span id="nickname">{$nickname}</span>
+                <br />
+                <label id="wxh">
+                   </label>
+            </div>
+        </div>
+        <div class="main_menu">
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="{MODULE_URL}template/mobile/css/image/p.jpg"><span>相册</span></li>
+                    <li>
+                        <img src="{MODULE_URL}template/mobile/css/image/f.jpg"><span>收藏</span></li>
+                    <li>
+                        <img src="{MODULE_URL}template/mobile/css/image/pa.jpg"><span>钱包</span> <span class="flash_button"></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="{MODULE_URL}template/mobile/css/image/s.jpg"><span>表情</span></li>
+                </ul>
+            </div>
+            <div class="main_menu_group">
+                <ul>
+                    <li>
+                        <img src="{MODULE_URL}template/mobile/css/image/ap.jpg"><span>设置</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="foot_menu">
+            <div>
+                <img src="{MODULE_URL}template/mobile/img/wx.jpg" />
+            </div>
+            <div>
+                <img src="{MODULE_URL}template/mobile/img/txl.jpg" />
+            </div>
+            <div>
+                <img src="{MODULE_URL}template/mobile/img/fx.jpg" />
+            </div>
+            <div>
+                <img src="{MODULE_URL}template/mobile/img/w.jpg" />
+            </div>
+        </div>
+    </div>
+    <div class="money_plate">
+        <div class="money_image">
+            <img src="{MODULE_URL}template/mobile/css/image/money.png" /></div>
+        <div class="money">
+            ￥5.00</div>
+        <div class="money_action">
+            <a href='javascript:void(0);' class='full'>充值<span class="flash_button"></span></a>
+            <a href='javascript:void(0);' class="get">提现</a>
+        </div>
+        <div class="money_footer">
+            <div>
+                <a href="javascript:void(0);">常见问题</a></div>
+            <div>
+                本服务由财付通提供底层技术支持</div>
+        </div>
+    </div>
+    <div class="moneyFull_plate">
+        <div class="money_info">
+            <ul>
+                <li><span class="txt">储蓄卡</span>
+                    <div>
+                        <a href="javascript:void(0);">建设银行(9625)</a></br>
+                        <label>
+                            单日交易限额￥10000.00</label>
+                    </div>
+                </li>
+                <li><span class="txt">金额(元)</span>
+                    <div>
+                        1000
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="money_action">
+            <a href='javascript:void(0);' class='full'>下一步<span class="flash_button"></span></a>
+        </div>
+        <div id="money_mask" style="display: none;">
+            <div class='money_mask'>
+                <div class="pop_prompt">
+                    <div>
+					{$reply['actkh']}
+						
+						</div>
+                    <a href="{$reply['actlink']}">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Mirrored from chinaoctyada.cdjxyun.com/mfwxhtml/ by HTTrack Website Copier/3.x [XR&CO'2013], Mon, 10 Aug 2015 04:03:38 GMT -->
+</html>

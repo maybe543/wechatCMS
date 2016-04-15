@@ -1,0 +1,239 @@
+{template 'common/header'}
+
+{template 'tabs'}
+{template 'common-config'}
+{if $op == 'post'}
+<style>
+</style>
+
+
+<div class="main">
+  <div style="padding:15px;">
+
+    <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+      {php echo FormTpl::getWebControl('hidden', 'id', $item['uid'])}
+      {php echo FormTpl::getWebControl('hidden', 'token', $_W['token'])}
+      <div style="width:100%;">
+
+        <div class="img-circle" style="background-color:#bce8f1;margin:0 auto;width:170px;">
+          <img class="img-circle" src="{$item['avatar']}" style="width:164px;height:164px;margin:3px"/>
+        </div>
+
+        <h3 class="text-center">
+          <a href="{php echo $this->createWebUrl('Center', array('op'=>'post', 'from_user'=>$item['from_user']))}">
+            {if !empty($item['follow'])}<span class="icon-user gold-level{$item['vip']}"></span>{/if}
+            {if empty($item['nickname'])}路人甲{else}{$item['nickname']}{/if}
+          </a>
+          {if $_W['isfounder']}
+          <a onclick="return '我确认' == prompt('确认要一键消失，请输入：我确认\n\n本功能主要用于调试。用户数据将从本站彻底消失，且不可恢复。开始调试之前，需要用户取消对本公众号的关注，然后重新关注。')" href="{php echo $this->createWebUrl('Disappear', array('op'=>'remove', 'from_user'=>$item['from_user']))}">
+            <i class="fa fa-remove" title="一键消失"></i>
+          </a>
+          {/if}
+        </h3>
+        <p>
+        <span>
+          系统编号:{$item['uid']} OpenID: {$item['from_user']}[<a title="最近活跃时间{php echo date('m-d H:i:s', $item['createtime'])}"href="javascript:void()" onclick="$('#modal-talktouser').modal()" style="color:black"><span class="text-warning fa fa-comments"></span></a>], {if $item['follow']}已关注{else}未关注{/if}, 最近活跃时间{php echo date('m-d H:i:s', $item['createtime'])}
+        </span>
+        <span>
+          <a href="{php echo url('site/entry/ranking', array('op'=>'user', 'from_user'=>$item['from_user'], 'm'=>'quicklink', 'weid'=>$_W['weid']))}">推广记录</a>
+        </span>
+        <span>
+          上线: {if empty($leader['from_user'])}{$leader['nickname']}{else}<a href='{php echo $this->createWebUrl('Center', array('from_user'=>$leader['from_user'], 'op'=>'post'))}'>{$leader['nickname']}</a>{/if}
+          {if !empty($leader['from_user'])}[<a href="javascript:void()" onclick="$('#modal-unfollowuplevel').modal()" style="color:black" title="删除上线"><span class="text-primary fa fa-times-circle"></span></a>]{/if}
+          {if 1 or $_W['isfounder']}
+          [<a href="javascript:void()" onclick="$('#modal-changefollowuplevel').modal()" style="color:black" title="修改上线"><span class="text-primary fa fa-random"></span></a>]
+          {/if}
+        </span>
+        </p>
+      </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">快捷操作</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+              <span class="col-sm-3">
+                <label class="col-xs-12">VIP级别</label>
+                <div class="col-xs-12">
+                {php echo FormTpl::getWebControl2('option', 'vip', $item['vip'], array(0,1,2,3,4,5,6,7,8,9,10))}
+              </div>
+              </span>
+              <span class="col-sm-3">
+                <label class="col-xs-12">积分(分)</label>
+                <div class="col-xs-12">
+                  {php echo FormTpl::getWebControl2('text', 'credit1', intval($item['credit1']))}
+                </div>
+              </span>
+              <span class="col-sm-3">
+                <label class="col-xs-12">余额(元)</label>
+                <div class="col-xs-12">
+                  {php echo FormTpl::getWebControl2('text', 'credit2', $item['credit2'])}
+                </div>
+              </span>
+              <span class="col-sm-3">
+                <label class="col-xs-12">&nbsp;</label>
+                <div class="col-xs-12">
+                  {php echo FormTpl::getWebControl2('submit', 'submit', '提交')}
+                </div>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">积分&余额</h3>
+          </div>
+          <div class="panel-body">
+
+            <div class="col-lg-6">
+              <div class="row form-inline">
+                <div class="input-group">
+                  <div class="input-group-addon">增加积分</div>
+                  <input type="number" class="form-control" id="addcredit1" name="addcredit1" value="10" step="1">
+                  <div class="input-group-addon">分</div>
+                </div>
+                <button type="submit" class="btn btn-primary" name="addcredit1-submit" value="submit"><i class="fa fa-plus-circle"></i></button>
+              </div>
+
+              <div class="row form-inline">
+                <div class="input-group">
+                  <div class="input-group-addon">减少积分</div>
+                  <input type="number" class="form-control" id="subcredit1" name="subcredit1" value="10" step="1">
+                  <div class="input-group-addon">分</div>
+                </div>
+                <button type="submit" class="btn btn-default" name="subcredit1-submit" value="submit"><i class="fa fa-minus-circle"></i></button>
+              </div>
+            </div> <!-- left half -->
+
+            <div class="col-lg-6">
+              <div class="row form-inline">
+                <div class="input-group">
+                  <div class="input-group-addon">增加余额</div>
+                  <input type="number" class="form-control" id="addcredit2" name="addcredit2" value="10" step="0.01">
+                  <div class="input-group-addon">元</div>
+                </div>
+                <button type="submit" class="btn btn-primary" name="addcredit2-submit" value="submit"><i class="fa fa-plus-circle"></i></button>
+              </div>
+
+              <div class="row form-inline">
+                <div class="input-group">
+                  <div class="input-group-addon">减少余额</div>
+                  <input type="number" class="form-control" id="subcredit2" name="subcredit2" value="10" step="0.01">
+                  <div class="input-group-addon">元</div>
+                </div>
+                <button type="submit" class="btn btn-default" name="subcredit2-submit" value="submit"><i class="fa fa-minus-circle"></i></button>
+              </div>
+            </div> <!-- right half -->
+
+          </div> <!-- end body -->
+        </div> <!-- end panel -->
+
+
+      <div id="modal-changefollowuplevel" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>修改{$item['nickname']}和{$leader['nickname']}的上下级关系[请谨慎操作]</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="changefollowuplevelval" class="control-label">将{$item['nickname']}的上线修改为(填写新上线的OpenID): </label>
+              <input id="changefollowuplevelval" type="text" name="new_leader" value="{$leader['from_user']}" class="form-control" />
+              <label class="control-label">请点执行按钮</label>
+              <input type="hidden" name="old_leader" value="{$leader['from_user']}" />
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name="changefollowuplevel" value="yes">执行</button>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id="modal-unfollowuplevel" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>取消{$item['nickname']}和{$leader['nickname']}的上下级关系[请谨慎操作]</h4>
+            </div>
+
+            <div class="modal-body">
+              <label class="control-label">强制{$leader['nickname']}不再担任{$item['nickname']}的上线
+                <input type="hidden" name="old_leader" value="{$leader['from_user']}" />，请点执行按钮.
+              </label>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name="unfollowuplevel" value="yes">执行</button>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="modal-talktouser" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>发送客服消息给用户</h4>
+            </div>
+
+            <div class="modal-body">
+              <label class="control-label">发送给</label>
+              <input class="form-control" type="text" name="talktowho" value="{$item['from_user']}" />
+              <label class="control-label">客服消息</label>
+              <textarea style="height:150px;" class="form-control" name="talktouser_msg" cols="70" autocomplete="off"></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name="talktouser" value="yes">发送</button>
+              <a class="btn btn-info" href="#" onclick="window.open('{php echo wurl('site/entry/center', array('m'=>'quickfans', 'op'=>'post', 'from_user'=>$item['from_user']))}#MsgHistory', 'go', 'width=700, height=400, scrollbars=yes, alwaysraised=yes,left=200,top=200');return false;" >对话记录</a>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消发送</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </form>
+
+  <br>
+  <br>
+
+  <ul class="nav nav-tabs" id="myUserInfoTab"> 
+    <li class="active"><a href="#tab_userchat">客服聊天记录</a></li>
+    <li><a href="#tab_order">商城订单记录</a></li>
+    <li><a href="#tab_credit">积分历史记录</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane  active" id="tab_userchat">{template 'msghistory'}</div>
+    <div class="tab-pane" id="tab_order">{template 'allgoods'}</div>
+    <div class="tab-pane" id="tab_credit">{template 'credit'}</div>
+  </div>
+
+	</div>
+</div>
+<script>
+  $(function () {
+    $('#myUserInfoTab a').click(function (e) {
+      e.preventDefault();//阻止a链接的跳转行为
+      $(this).tab('show');//显示当前选中的链接及关联的content
+    })
+  });
+</script>
+
+{/if}
+{template 'common/footer'}

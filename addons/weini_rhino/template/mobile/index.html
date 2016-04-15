@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>犀牛溜冰场</title>
+	<link href="{MODULE_URL}template/mobile/css/gamestyles.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0;" />
+    <script type="text/javascript" src="//upcdn.b0.upaiyun.com/libs/jquery/jquery-1.10.2.min.js"></script>
+    {php echo register_jssdk();}
+    <script>
+        var id = "{$id}";
+        var best_score = "{$best_score}";
+        var index = "{php echo $this->createMobileUrl('index',null,true)}&id="+id;
+        var rule = "{php echo $this->createMobileUrl('guize',null,true)}&id="+id;
+        var rec = "{php echo $this->createMobileUrl('rank',null,true)}&id="+id;
+        var ajaxurl = "{php echo $this->createMobileUrl('ajaxrec', array('id' => $id), true)}";
+        var module_url = "{MODULE_URL}";
+    </script>
+    <script type="text/javascript" src="{MODULE_URL}/template/mobile/game.min.js"></script>
+    <script>
+        var canvas;
+        var config = {
+            hotUrlDisabled: false,
+            coldUrlDisabled: false
+        }
+          function init() {
+    		  can = document.getElementById("Canvas");
+    		  }
+
+        function yx() {
+            canvas = document.getElementById("gameCanvas");
+            Main.initialize(canvas, config);
+        }
+	</script>
+</head>
+<body onload="init();yx()">
+    {if $isreg==0}
+    <div id="mcovear" class="pop" >
+        <div class="box">
+            <h1>填写您的资料</h1>
+            <div class="inputqy">
+                <h2 id="error_tip" style="color:#F00;"></h2>
+                <input type="text" id="true_name" placeholder="请填入真实的姓名" />
+                <input type="tel" id="phone" placeholder="请输入手机号码，以便领取奖品" />
+            </div>
+            <div class="but_con"  >
+                <button class="button_yes" onClick="sendtel()">确定</button>
+
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+    {/if}
+
+    <div id="loader" class="loader">
+        <div id="loaderPercents" class="loaderPercentage"></div>
+    </div>
+
+    <div class="canvasHolder">
+        <canvas id="gameCanvas" width="640" height="712"></canvas>
+    </div>
+
+    <script type="text/javascript">
+        wx.ready(function () {
+            sharedata = {
+                title: '{$share_title}',
+                desc: '{$share_desc}',
+                link: '{$share_url}',
+                imgUrl: '{$share_image}',
+                success: function(){
+                    var url = "{php echo $this->createMobileUrl('share', array('id' => $id), true)}";
+                    $.ajax
+                    ({
+                        url: url,
+                        type:'POST',
+                        data: {},
+                        dataType:'json',
+                        error: function () {
+                            alert('网络通讯异常，请稍后再试！');
+                        },
+                        success: function (result) {
+                            alert(result.msg);
+                            setTimeout('time_jump()', 1000);
+                        }
+                    });
+                },
+                cancel: function(){
+                    alert('您真的要取消分享么？就差一步就可以破纪录啦！');
+                }
+            };
+            wx.onMenuShareAppMessage(sharedata);
+            wx.onMenuShareTimeline(sharedata);
+        });
+        function time_jump() {
+            var url = "{php echo $this->createMobileUrl('index', array('id' => $id), true)}";
+            location.href = url;
+        }
+    </script>
+<script type="text/javascript">
+    var send_btn = false;
+    function sendtel() {
+        var true_name = $("#true_name").val();
+        var phone = $("#phone").val();
+        if(true_name == '') {
+            $("#error_tip").text('请填入真实的姓名');
+            return;
+        }
+        if(phone == '') {
+            $("#error_tip").text('请输入手机号码，用来领取奖品');
+            return;
+        }
+        var submitData = {
+            "realname" : true_name,
+            "phone" : phone,
+        };
+        if(send_btn) return;
+        send_btn = true;
+        $.ajax({
+            type : "POST",
+            url : "{php echo $this->createMobileUrl('mem',null,true)}&id="+id,
+            data : submitData,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            dataType : "json",
+            success : function(data){
+                send_btn = false;
+                $("#mcovear").remove();
+            },
+            timeout : 15000,
+            error : function(xhr, type){
+                send_btn = false;
+                alert('网路不稳定，请稍候重试');
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

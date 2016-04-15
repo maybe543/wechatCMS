@@ -1,0 +1,499 @@
+{php include $_template->template('header')}
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/jmtouch.css?v={TIMESTAMP}"  media="screen" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/metro.css?v={TIMESTAMP}" media="screen"  charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/deal_details.css?v={TIMESTAMP}" media="screen"  charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/styles.css?v={$CUR_VERSION}" />
+<script type="text/javascript" src="{$_tpl_dir_path}js/jquery.min.js"></script>
+<script type="text/javascript" src="{$_tpl_dir_path}js/scriptswipe.js?v={$CUR_VERSION}"></script>
+<script src="http://s1.jmstatic.com/templates/touch/css/v3/js/zepto.js?v=37"></script>
+<script src="{$_tpl_dir_path}/css/v3/js/jmtouch_h5.js?v=37"></script>
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/font-awesome.min.css" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/bootstrap.min.css" />
+
+  <style type='text/css'>
+    #poptip { position: fixed; top:40%;left:50%;width:160px;margin-left:-80px;height: 100px;background:#000; opacity: 0.7;filter:alpha(opacity=0.7); color:#fff;z-index: 999;  border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;}
+    #poptip_content { position: fixed; top:40%;left:50%;width:160px;margin-left:-80px; line-height:100px; height: 100px; color:#fff;text-align:center;font-size:14px;z-index: 9909}
+
+  </style>
+  <script language='javascript'>
+    function tip(msg,autoClose){
+      var div = $("#poptip");
+      var content =$("#poptip_content");
+      if(div.length<=0){
+        div = $("<div id='poptip'></div>").appendTo(document.body);
+        content =$("<div id='poptip_content'>" + msg + "</div>").appendTo(document.body);
+      }
+      else{
+        content.html(msg);
+        content.show(); div.show();
+      }
+      if(autoClose) {
+        setTimeout(function(){
+          content.fadeOut(500);
+          div.fadeOut(500);
+        },1000);
+      }
+    }
+
+    function tip_close(){
+      $("#poptip").fadeOut(500);
+      $("#poptip_content").fadeOut(500);
+    }
+  </script>
+
+
+
+    <!--header start-->
+    <div id="search_defer">
+      <style type="text/css">
+        header{overflow:hidden;position:relative;}
+      </style>
+      <!--script src="http://s1.jmstatic.com/templates/touch/css/v3/js/swipe.js?v=37"></script-->
+      <!-- gotop and float_car start-->
+      <a href="#page_top" class="go_top">
+        <img src="http://s1.jmstatic.com/templates/touch/css/v3/image/icon_top.png?v=37" />
+      </a>
+      <!-- gotop and float_car end-->
+
+      <style type="text/css">
+        .go_top{ bottom:60px; }
+      </style>
+      <div class="views content_title">
+        <a id="back" href = "javascript:history.back()">
+          <img src="http://s1.jmstatic.com/templates/touch/css/i/NavButtonBack.png" class="return">
+        </a>
+        <span id="page_title">{$goods['title']}</span>
+        <a class="go_home" href="{php echo $this->createMobileUrl('List')}"><img src="http://s1.jmstatic.com/templates/touch/css/v3/image/go_home.png" alt=""></a>
+      </div>
+
+            <!-- 幻灯片 -->
+            <div id="banner_box" class="box_swipe">
+                <ul>
+                  {loop $piclist $row}
+                    <li>
+                    <a href="{php echo toimage($row)}" rel='{php echo toimage($row)}'>
+                      <img src="{php echo toimage($row)}" alt="" />
+                    </a>
+                    </li>
+                    {/loop}
+                </ul>
+                <ol>
+                  {php $slideNum = 1;}
+                  {loop $piclist $row}
+                    <li{if $slideNum == 1} class="on"{/if}></li>
+                    {php $slideNum++;}
+                  {/loop}
+                </ol>
+            </div>
+
+            <!-- 幻灯片 end -->
+
+
+      <div class="details new_details">
+        <div class="detailsInfo new_detailsInfo">
+          <div class="detail_group">
+            <div class="detail_info_item clearfix" style="border-top: solid 1px #ddd;">
+              <div class="detail_price_info pull_left">
+                <div class="now_price">
+                  <span class="font_size12">
+                    {if $goods['min_buy_level'] > 0}
+                    <b style="font-weight:bold">VIP</b> <span style="font-size:22px">{$goods['min_buy_level']}</span>会员专享
+                    {/if}
+                    热销价
+                  </span>
+                  <span><span class="font_size12">￥</span>{$goods['marketprice']}</span>
+
+                  {if !empty($goods['max_coupon_credit']) and $goods['max_coupon_credit'] > 0 }
+                  <span class="font_size12"> 积分可抵扣</span>
+                  <span><span class="font_size12">￥</span>{$goods['max_coupon_credit']}</span>
+                  {/if}
+                </div>
+                <div class="farmer_price">
+                  <span class="font_size12">市场价</span>
+                  <span><span class="font_size12">￥</span>{$goods['productprice']}</span>
+                </div>
+              </div>
+              <div class="sale_info pull_right">
+                {if $goods['isdiscount']}
+                <p>
+                <label class="discount">
+                  {php echo round(($goods['marketprice'] / $goods['productprice']) * 10, 1)}折
+                  / 今日特惠
+                </label>
+                </p>
+                {/if}
+                <p>
+                <label class="bought">
+                </label>
+                </p>
+              </div>
+            </div>
+            <div class="detail_info_item deal_dscribe">{$goods['description']}</div>
+          </div>
+
+          <div class = "bottom_fixed">
+{if $goods['min_buy_level'] <= $fans['vip']}
+    {if $goods['isminimode'] == 1}
+            <input type = "submit" id="buy" class = "add_cart" value = "立即购买"/>
+    {else}
+            <a href="{php echo $this->createMobileUrl('MyCart')}" class="detail_car"><div class="detail_car_num" {if $carttotal <= 0} style="display:none"{/if}>{$carttotal}</div></a>
+            <input type = "submit" id="buy" class = "add_cart" value = "立即购买"/>
+            <input type = "submit" id="addtocart" class = "add_cart" value = "加入购物车"/>
+    {/if}
+{else}
+            <input type = "submit" id="disable_buy" class = "add_cart" style="width:150px;background-color:#C0C0C0" value = "高级会员专享商品"/>
+{/if}
+          </div>
+
+        </div>
+        {if $goods['istime']}
+        <div class="detail_group">
+          <div class = "h5">
+            <span class="icon-time icon-2x"></span>
+            秒杀倒计时
+                <em id="anticount">还剩<i>...</i></em>
+                <script language='javascript'>
+                  var time_last = {$timelast};
+                  var time_wait = {$timewait};
+                  var time_show = 0;
+                  var int_time = setInterval(function(){
+                    refresh_anti_count({$goods['id']});
+                  },1000);
+                  function refresh_anti_count(id){
+                    time_last--;
+                    time_wait--;
+                    if (time_wait > 0 || time_last > 0) {
+                      if (time_wait > 0) {
+                        // 提示需要等待开始
+                        time_show = time_wait;
+                        $("#buy").unbind();
+                        $("#addtocart").unbind();
+                        $("#buy").click(function(){ alert('客官别急，抢购还没开始。'); });
+                        $("#addtocart").click(function(){ alert('客官别急，抢购还没开始。'); });
+                      } else if (time_last > 0) {
+                        // 可以购买了
+                        time_show = time_last;
+                        $("#buy").unbind();
+                        $("#addtocart").unbind();
+                        $("#buy").click(function(){ buy();});
+                        $("#addtocart").click(function(){ addtocart();});
+                      }
+                      // 提示倒计时
+                      var days = parseInt(time_show/86400)
+                      var remain = parseInt(time_show%86400);
+                      var hours = parseInt(remain/3600)
+                      var remain = parseInt(remain%3600);
+                      var mins = parseInt(remain/60);
+                      var secs = parseInt(remain%60);
+
+                      var ret = "";
+                      if(days>0){ days = days+""; if(days.length<=1) { days="0"+days;} ret+=days+" 天 "; }
+                      if(hours>0){ hours = hours+""; if(hours.length<2) { hours="0"+hours;} ret+=hours+"小时"; }
+                      if(mins>0){ mins = mins+""; if(mins.length<=1) { mins="0"+mins;} ret+=mins+"分"; }
+                      secs = secs+""; if(secs.length<=1) { secs="0"+secs;} ret+=secs+"秒";
+                      if (time_wait > 0) {
+                        $("#anticount").html( "即将开始&nbsp;<i>" + ret + "</i>");
+                      } else if (time_last > 0) {
+                        $("#anticount").html( "还剩<i>" + ret + "</i>结束");
+                      }
+                    } else {
+                      // 提示已经结束
+                      $("#anticount").html( "时间到已下架");
+                      $("#buy").unbind();
+                      $("#addtocart").unbind();
+                      $("#buy").click(function(){ alert('时间到已下架'); });
+                      $("#addtocart").click(function(){ alert('时间到已下架'); });
+                      window.clearInterval(int_time);
+                    }
+                }
+                </script>
+          </div>
+        </div>
+        {else}
+        <script language='javascript'>
+          $(document).ready(function() {
+            $("#disable_buy").click(function(){ location.href='{php echo $this->module['config']['vip_buy_guide_link']}';});
+            $("#buy").click(function(){ buy();});
+            $("#addtocart").click(function(){ addtocart();});
+          });
+        </script>
+        {/if}
+
+        <div class="detail_group">
+          <div class = "h5">商品详细参数</div>
+          <input id="stock" type="hidden" value="{$goods['stock']}" />
+          <ul class = "details_arg">
+            <li>
+            <span class = "param_title">商品名称</span><span class = "param_content">{$goods['title']}</span>
+            </li>
+            {if $goods['weight'] ==0 or empty($goods['weight'])}
+            <li>
+            <span class = "param_title">邮费</span><span class = "param_content now_price">包邮</span>
+            </li>
+            {/if}
+            <li>
+            <span class = "param_title">已售</span><span class = "param_content">{$goods['sales']} {if !empty($goods['unit'])} {$goods['unit']}{/if}</span>
+            </li>
+            <li>
+            <span class = "param_title">还剩</span><span class = "param_content">{$goods['total']} {if !empty($goods['unit'])} {$goods['unit']}{/if}</span>
+            </li>
+            {if !empty($specs)}
+            <li>
+
+            <style>
+              .spec .spec_item {float: left;margin: 2px 8px 2px 0;}
+              .spec a {display: block;white-space: nowrap;text-decoration: none;padding: 4px 6px;border: 1px solid #ccc;background: #fff;color: #666;}
+              .spec .spec_selected a {padding: 3px 5px;border: 2px solid #e4393c;}
+              .spec .spec_item a:hover {border: 1px solid #e4393c; color:#e4393c !important;}
+            </style>
+            <span class = "param_title">规格</span><span class = "param_content spec">
+              {loop $specs $spec}
+              <span class="spec_item{if !empty($spec['selected'])} spec_selected{/if}"><a href="{$spec['ref']}" title="{$spec['title']}">{$spec['title']}</a></span>
+              {/loop}
+            </span>
+            </li>
+            {/if}
+            <li>
+            <span class = "param_title"></span>
+            <span class = "param_content">
+                <div class="featuresNum">
+                  <div class="input-group" style="width:100px;float:left;margin-left:0px;">
+                    <span class="input-group-btn">
+                      <button style="margin-right:0px" class="btn btn-default btn-sm" type="button" onclick="reduceNum()"><i class="icon-minus"></i></button>
+                    </span>
+                    <input type="tel" class="form-control input-sm pricetotal goodsnum" style="border-left:0;width:50px;text-align:center" value="1" id="total"  />
+                    <span class="input-group-btn">
+                      <button class="btn btn-default btn-sm" type="button" onclick="addNum()"><i class="icon-plus"></i></button>
+                    </span>
+                  </div>
+                </div>
+            </span>
+            </li>
+          </ul>
+        </div>
+        <!-- guarantee start -->
+
+    <div class="detail_group">
+          <div class = "h5">服务保证</div>
+          <div class="detail_info_item clearfix">
+            <a class="commit_icon metro_1_w pull_left left" href="#">
+              <img src="http://p1.jmstatic.com/mobile/global/guarantee/genuine_guarantee_58_64.png" alt="">
+              <div>原装正品</div>
+            </a>
+            <a class="commit_icon metro_1_w pull_left left" href="#">
+              <img src="http://p1.jmstatic.com/mobile/global/guarantee/interantion_shipping_58_64.png" alt="">
+              <div>全网最低</div>
+            </a>
+            <a class="commit_icon metro_1_w pull_left left" href="#">
+              <img src="http://p1.jmstatic.com/mobile/global/guarantee/reimburse_tariff_58_64.png" alt="">
+              <div>极速到货</div>
+            </a>
+            <a class="commit_icon metro_1_w pull_left left" href="#">
+              <img src="http://p1.jmstatic.com/mobile/global/guarantee/return_guarantee_7_58_64.png" alt="">
+              <div>轻松退货</div>
+            </a>
+          </div>
+    </div>
+        <!-- guarantee end-->
+        <div class="detail_group detail_report">
+          <div id="detail_nav">
+            <div class="detail_nav_inner">
+              <ul class="clearfix padding10">
+                <li class="detail_tap pull_left select" id="imgs_tap" style="width:100%">商品详情</li>
+              </ul>
+            </div>
+          </div>
+          <style>
+            .goods-detail{ padding:0px; margin:0px; height:auto; overflow:hidden; border-style:solid; border-width:1px 1px 1px 1px;}
+            .goods-detail p{ width:100%; height:auto; overflow:hidden; line-height:auto; margin-top:0px; text-indent:0em;}
+            .collapse_img { line-height:0px !important; }
+            .goods-detail p strong{ line-height:32px; }
+            .goods-detail img{ width:100%; height:auto; overflow:hidden;padding:0px; margin:0px;}
+          </style>
+          <div id="goods_detail" class="goods-detail">
+            {$goods['content']}
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+
+        var now_nav_top = $("#detail_nav").offset().top;
+
+        $(function(){
+          $('#goods_detail p').has('img').addClass('collapse_img');
+
+          $(window).scroll(function(){
+            now_nav_top = $("#detail_nav").offset().top;
+            if($(window).scrollTop()>=now_nav_top){
+              $(".detail_nav_inner").addClass('fix_top');
+            }
+            else{
+              $(".detail_nav_inner").removeClass('fix_top');
+            }
+          });
+        });
+      </script>
+
+      <!---footer start-->
+
+      <footer class="footer_container">
+      <div id="top_line"></div>
+      <div id="bottom_rights">
+      {if !empty($_W['account']['siteinfo']['footer'])}
+        <p>{php echo htmlspecialchars_decode($_W['account']['siteinfo']['footer'])}</p>
+      {else}
+        <p>©2015 {$_W['account']['name']}</p>
+      {/if}
+      </div>
+      </footer>
+
+    </div>
+    <!---footer end-->
+
+
+    <script type="text/javascript">
+      $(function () {
+        if($('.go_top').length==0){
+          var img_src_dir= "http://s1.jmstatic.com/templates/touch/css";
+          $('body').append('<a href="#" class="go_top"><img src="'+img_src_dir+'/v3/image/icon_top.png?v=10" data-original="'+img_src_dir+'/v3/image/icon_top.png?v=10" alt=""></a>');
+        }
+        var window_w=window.innerWidth|| document.documentElement.clientWidth|| document.body.clientWidth;
+        var window_h=window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight;
+        $(document).on('touchstart',function(){
+          start_top = $(window).scrollTop();
+        });
+        $(window).scroll(function(e){
+          if(document.body.scrollTop+document.documentElement.scrollTop>window_h*2){
+            $('.go_top').show();
+          }
+          else{
+            $('.go_top').hide();
+          }
+        });
+        $('.go_top').click(function(){
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+          return false;
+        })
+      });
+    </script>
+
+<script>
+  $(function() {
+    var stock = parseInt($("#stock").val());
+    $("#total").blur(function(){
+
+      var total = $("#total");
+      if(!total.isInt()){
+        total.val("1");
+      }
+      var mb = maxbuy;
+      if(mb>stock && stock!=-1){
+        mb = stock;
+      }
+      var num = parseInt(total.val() );
+      if(num>mb && mb>0){
+        tip("您最多可购买 " + mb + " 件!",true);
+        total.val(mb);
+      }
+    })
+  });
+  function addtocart() {
+    tip("正在处理数据...");
+    var total = $("#total").val();
+    var stock = parseInt($('#stock').text());
+    if(stock == 0) {
+      tip('库存不足，无法购买。');
+      return;
+    }
+    var url = '{php echo $this->createMobileUrl('mycart',array('op'=>'add','id'=>$goods['id']));}' + "&total=" + total;
+    $.getJSON(url, function(s){
+      if(s.result==0){
+        tip("只能购买 " + s.maxbuy + " 件!");
+      }else{
+        tip_close();tip("已加入购物车!");
+        $('#stock').text(stock - total);
+        $('.detail_car_num').css({'display':'block', 'width':'50px', 'height':'50px', 'line-height':'50px'}).html(s.total).animate({'display':'block', 'width':'12px', 'height':'12px', 'line-height':'12px'}, 'slow');
+      }
+    });
+  }
+  function buy() {
+    var stock = parseInt($('#stock').text());
+    if(stock == 0){
+      tip('库存不足，无法购买。');
+      return;
+    }
+    var total = $("#total").val();
+    location.href = '{php echo $this->createMobileUrl('confirm',array('id'=>$goods['id']));}'+ "&total=" + total;
+  }
+
+  var maxbuy = {php echo empty($goods['maxbuy'])?"0":$goods['maxbuy']};
+  function addNum(){
+    var total = $("#total");
+    if(!parseInt(total.val())) {
+      total.val("1");
+    }
+    var stock = $("#stock").html()==''?-1:parseInt($("#stock").html());
+    var mb = maxbuy;
+
+    if(mb>stock && stock!=-1){
+      mb = stock;
+    }
+    var num = parseInt(total.val() ) + 1;
+    if(num>stock && stock != -1) {
+      tip("您最多可购买 " + stock + " 件!",true);
+      num--;
+    }
+    if(num>mb && mb>0){
+      tip("您最多可购买 " + mb + " 件!",true);
+      num = mb;
+    }
+
+    total.val(num);
+  }
+
+  function reduceNum(){
+    var total = $("#total");
+    if(!parseInt(total.val())) {
+      total.val("1");
+    }
+    var num = parseInt( total.val() );
+    if(num-1<=0){
+      return;
+    }
+    num--;
+    total.val(num);
+  }
+
+
+
+$(function() {
+		//banner
+		var i = $(".box_swipe").find("li").length;
+		var proimg_count = i;
+        new Swipe($('#banner_box')[0], {
+            speed:500,
+            auto:3000,
+            callback: function(){
+                var lis = $(this.element).next("ol").children();
+                lis.removeClass("on").eq(this.index).addClass("on");
+            }
+        });
+
+		 //选择数量
+    $(".decrease").click(function(){
+			 var num = parseInt($(this).siblings('.goods_number').val());   
+			 if(num>1){
+				 $(this).siblings('#goods_number').val(num-1);
+			 }
+		 }); 
+		 $(".increase").click(function(){
+			 var num = parseInt($(this).siblings('.goods_number').val());   
+			 $(this).siblings('#goods_number').val(num+1);
+		 });
+});
+
+</script>
+
+{php include $_template->template('footer')}
+

@@ -1,0 +1,82 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li ><a href="{php echo $this->createWebUrl('activity');}">活动管理</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('activity', array('foo'=>'order', 'id'=>$activity['id']));}">查看票据记录</a></li>
+</ul>
+<div class="clearfix">
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="c" value="site" />
+                <input type="hidden" name="m" value="hawk_ticket" />
+                <input type="hidden" name="do" value="activity" />
+                <input type="hidden" name="id" value="{$activity['id']}" />
+                <input type="hidden" name="foo" value="order" />
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">购买者OPNEID</label>
+                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                        <input class="form-control" name="openid" type="text" value="{$_GPC['openid']}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">状态</label>
+                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="" {if empty($_GPC['status'])}checked="checked"{/if}> 不限
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="2" {if $_GPC['status']==2}checked="checked"{/if}> 已付款
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="3" {if $_GPC['status']==3}checked="checked"{/if}> 已验票
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label"></label>
+                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <button name="export" value="export" class="btn btn-default" data-original-title="" title=""><i class="fa fa-download"></i> 导出数据</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            票据记录
+        </div>
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th style="width:90px;"></th>
+                    <th style="width:100px;">昵称</th>
+                    <th style="width:200px;">OPENID</th>
+                    <th style="width:160px;">购票时间</th>
+                    <th style="width:100px;">票据状态</th>
+                    <th style="width:150px;">票据操作</th>
+                </tr>
+                {loop $ds $row}
+                <tr>
+                    <td><img src="{if empty($row['meminfo']['avatar'])} resource/images/noavatar_middle.gif {else}{$row['meminfo']['avatar']}{/if}" alt="" width="64" class="img-rounded" /></td>
+                    <td>{$row['meminfo']['nickname']}</td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info">{$row['openid']}</span>
+                    </td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info" title="购票时间">{php echo date('Y-m-d H:i:s', $row['createtime']);}</span> <br>
+                    </td>
+                    <td><span class="label label-info">{if $row['status']==2}已付款{/if}{if $row['status']==3}已核销{/if}</span></td>
+                    <td><a class="btn btn-default" href="{php echo $this->createWebUrl('activity', array('foo'=>'change','id'=>$row['id'],'opid'=>$row['openid']))}"><i class="fa fa-edit"></i>{if $row['status']==2}已使用{else}未使用{/if}</a><a class="btn btn-success" href="{php echo $this->createWebUrl('activity', array('foo'=>'log','id'=>$row['id']))}"><i class="fa fa-list"></i>日志</a></td>
+                </tr>
+                {/loop}
+            </table>
+        </div>
+        <div class="panel-body text-right">
+            {$pager}
+        </div>
+    </div>
+</div>
+{template 'common/footer'}

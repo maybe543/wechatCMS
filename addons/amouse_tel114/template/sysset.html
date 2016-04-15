@@ -1,0 +1,180 @@
+{template 'common/header'}
+<div class='container' style='padding: 0 5px 10px; margin: 0; width: 100%'>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('sysset');}">参数设置</a></li>
+	</ul>
+	<div class="panel panel-success">
+		<div class="panel-heading">参数设置</div>
+		<div class="panel-body">
+			<form class="form-horizontal" action="" method="post"> 
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">版权信息</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="copyright" class="form-control" value="{$set['copyright']}" />
+                        <span class="help-block">
+						如果没空的话，默认是本公众号
+					</span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">版权网址</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="comurl" class="form-control" value="{$set['comurl']}" />
+                        <span class="help-block">
+						建议用<a href="http://dwz.cn/" target="_blank">短网址转码</a>
+					</span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">公司年份</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="comdate" class="form-control" value="{$set['comdate']}" />
+                        <span class="help-block">
+						比如： 1999-2099
+					</span>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">引导关注</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="followurl" class="form-control" value="{$set['followurl']}" />
+                        <span class="help-block">
+						 建议用<a href="http://dwz.cn/" target="_blank">短网址</a>
+					</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">底部图片</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('thumb', $set['thumb'])}
+					<span class="help-block">
+						建议图片大小为： 235*25
+						比如：<img src="../addons/amouse_tel114/template/mobile/images/dibu.png" width="235px" height="25px;">
+					</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">首页LOGO</label>
+                    <div class="col-sm-9">
+                        {php echo tpl_form_field_image('logo', $set['logo'])}
+					<span class="help-block">
+						建议图片大小为： 165*50
+					</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否开启审核</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="radio" name="isopen" value="0"  {if $set['isopen']==0}checked="true"{/if} />是
+                        <input type="radio" name="isopen" value="1" id="form-isself-1"{if $set['isopen']==1}checked="true"{/if} />否
+                        <span class="help-block">如果开启审核，前台用户提交的时候则需要管理员审核才能显示。</span>
+                    </div>
+                </div>
+
+                <!--<div class="form-group" id="appid_div">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享AppId</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="appid_share" class="form-control"  value="{$set['appid_share']}" />
+                    </div>
+                </div>
+                <div class="form-group" id="appsecret_div">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享AppSecret</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="appsecret_share" class="form-control" value="{$set['appsecret_share']}" />
+                    </div>
+                </div>
+
+                <div class="form-group" id="image_div">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        借用说明：必需设置借用认证号的JS接口安全域名。在公众号设置-功能设置中，可以找到。
+                        <img src="../addons/amouse_article/style/images/jssdk.png">
+                    </div>
+                </div>-->
+
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="sharetitle" class="form-control" value="{$set['sharetitle']}" />
+                        <span class="help-block">
+						 比如： 电话114，本地生活运维利器，赶紧分享给你的小伙伴一起来玩玩吧。
+					</span>
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享描述</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="text" name="sharedesc" class="form-control" value="{$set['sharedesc']}" />
+                    </div>
+                </div>
+
+                <div class="form-group" >
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享缩略图</label>
+                    <div class="col-sm-9 col-xs-12">
+                        {php echo tpl_form_field_image('shareicon', $set['shareicon'])}
+                    </div>
+                </div>
+
+
+
+               <!-- <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否开启微招聘</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="radio" name="isopen" value="0" id="form-oauth-0"  {if $set['isopen'] == 0}checked="true"{/if}  /><label for="form-oauth-0"> 是</label>
+                        <input type="radio" name="isopen" value="1" id="form-oauth-1"  {if $set['isopen'] == 1}checked="true"{/if}  /><label for="form-oauth-1"> 否</label>
+                        <span class="help-block">如果购买了amouse_weijob,则可以打开，首页会把这个连接加上。{if}
+                            {if $_W['isfounder']}
+                            微招聘购买地址 <a href="http://s.we7.cc/index.php?c=store&a=home&do=application&id=320&type=module" target="_blank" >招聘</a>{/if}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否开启微房产</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="radio" name="ishouse" value="0" id="ishouse-0"  {if $set['ishouse'] == 0}checked="true"{/if}  /> 是
+                        <input type="radio" name="ishouse" value="1" id="ishouse-1"  {if $set['ishouse'] == 1}checked="true"{/if}  /> 否
+                        <span class="help-block">如果购买了amouse_house,则可以打开，首页会把这个连接加上。 {if $_W['isfounder']}微二手房购买地址
+                            <a href="http://s.we7.cc/index.php?c=store&a=home&do=application&id=262" target="_blank" >微二手房</a>{/if}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否开启微名片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="radio" name="iscard" value="0" id="iscard-0"  {if $set['iscard'] == 0}checked="true"{/if}  /> 是
+                        <input type="radio" name="iscard" value="1" id="iscard-1"  {if $set['iscard'] == 1}checked="true"{/if}  /> 否
+                        <span class="help-block">如果购买了ecard,则可以打开，首页会把这个连接加上。 {if $_W['isfounder']}微名片购买地址
+                            <a href="http://s.we7.cc/index.php?c=store&a=home&do=application&id=300" target="_blank" >微名片</a>{/if}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否开启精美图文</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type="radio" name="isarticle" value="0" id="isarticle-0"  {if $set['isarticle'] == 0}checked="true"{/if}  /> 是
+                        <input type="radio" name="isarticle" value="1" id="isarticle-1"  {if $set['isarticle'] == 1}checked="true"{/if}  /> 否
+                        <span class="help-block">如果购买了精美图文木块,则可以打开，首页会把这个连接加上。 {if $_W['isfounder']}精美图文购买地址
+                            <a href="http://s.we7.cc/index.php?c=store&a=home&do=application&id=270&type=module" target="_blank" >精美图文</a>{/if}
+                        </span>
+                    </div>
+                </div>-->
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <input name="token" type="hidden" value="{$_W['token']}"/>
+                        <button type="submit" class="btn btn-success col-sm-2" name="submit" value="提交">
+                            <i class="fa fa-check-circle"></i> 提交
+                        </button>
+                    </div>
+                </div>
+			</form>
+		</div>
+	</div>
+</div>
+　

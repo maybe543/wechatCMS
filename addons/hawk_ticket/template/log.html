@@ -1,0 +1,44 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li ><a href="{php echo $this->createWebUrl('activity');}">活动管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('activity', array('foo'=>'order', 'id'=>$orderinfo['actid']));}">查看票据记录</a></li>
+</ul>
+<div class="clearfix">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            管理日志
+        </div>
+        <div class="table-responsive panel-body">
+            <table class="table table-hover">
+                <tr>
+                    <th style="width:90px;"></th>
+                    <th style="width:100px;">操作员</th>
+                    <th style="width:200px;">OPENID</th>
+                    <th style="width:100px;">操作类型</th>
+                    <th style="width:130px;">操作时间</th>
+                    <th style="width:100px;">备注</th>
+                </tr>
+                {loop $ds $row}
+                <tr>
+                    <td><img src="{if empty($row['meminfo']['avatar'])} resource/images/noavatar_middle.gif {else}{$row['meminfo']['avatar']}{/if}" alt="" width="64" class="img-rounded" /></td>
+                    <td>{if !empty($row['meminfo']['nickname'])}{$row['meminfo']['nickname']}{else}管理员{/if}</td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info">{$row['scanown']}</span>
+                    </td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info">{if $row['type']==1}扫码验票{elseif $row['type']==2}后台操作{else}其他操作{/if}</span>
+                    </td>
+                    <td style="line-height:1.5em;">
+                        <span class="label label-info">{php echo date('Y-m-d H:i', $row['createtime']);}</span> <br>
+                    </td>
+                    <td>{$row['remark']}</td>
+                </tr>
+                {/loop}
+            </table>
+        </div>
+        <div class="panel-body text-right">
+            {$pager}
+        </div>
+    </div>
+</div>
+{template 'common/footer'}

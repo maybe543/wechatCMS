@@ -1,0 +1,143 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('add')}">创建解密活动</a></li>
+	<li><a href="{php echo $this->createWebUrl('list')}">管理解密活动</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('list')}">查看解密活动</a></li>
+</ul>
+
+
+<style>
+	.account-stat{overflow:hidden; color:#666;}
+	.account-stat .account-stat-btn{width:100%; overflow:hidden;}
+	.account-stat .account-stat-btn > div{text-align:center; margin-bottom:5px;float:left;width:33%; height:80px; padding-top:10px;font-size:16px; border-left:1px #DDD solid;}
+	.account-stat .account-stat-btn > div:first-child{border-left:0;}
+	.account-stat .account-stat-btn > div span{display:block; font-size:30px; font-weight:bold}
+</style>
+
+<div class="page-header">
+	<h4>{$puzzle['topic']} 
+		 <label class='label  label-default {if $puzzle['status']==1}label-success{/if} {if $puzzle['status']==2}label-info{/if}' >
+			{if $puzzle['status']==1}进行中{/if}
+			{if $puzzle['status']==2}未开始{/if}
+			{if $puzzle['status']==3}已结束{/if}
+		</label>
+	</h4>
+</div>
+<div class="panel panel-default" style="padding:1em;">
+	<div class="account-stat">
+		<div class="account-stat-btn">
+			<div>参与人数<span>{$static_all}</span></div>
+			<div>解答人数<span>{$static_answer}</span></div>
+			<div>答对人数<span>{$static_right}/{$puzzle['award']}</span></div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<nav role="navigation" class="navbar navbar-default navbar-static-top" style="margin-bottom:0;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="javascript:;" class="navbar-brand">参与者</a>
+			</div>
+			<ul class="nav navbar-nav nav-btns">
+				<li {if empty($_GPC['status']) || $_GPC['status'] == '0'} class="active" {/if} >
+					<a href="{php echo $this->createWebUrl('view', array('id' => $puzzle['id']))}">全部</a>
+				</li>
+				
+				<li {if $_GPC['status'] == '1'} class="active" {/if}>
+					<a href="{php echo $this->createWebUrl('view', array('id' => $puzzle['id'],'status'=>1))}">已解答</a>
+				</li>
+
+				<li {if $_GPC['status'] == '2'} class="active" {/if}>
+					<a href="{php echo $this->createWebUrl('view', array('id' => $puzzle['id'],'status'=>2))}">已答对</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:20%;">用户</th>
+					<th style="width:10%;">已收集线索数</th>
+					<th style="width:15%;">参与时间</th>
+					<th style="width:30%;">回答</th>
+					<th style="text-align:right;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+					<td>{$item['User']['nickname']}</td>
+					<td>{php echo count(explode(',',$item['clues']))}</td>
+					<td>{php echo date('Y-m-d h:i:s', $item[join_time]);}</td>
+					<td>
+						{if !empty($item['answer'])}
+						<label class='label  label-default {if $item['answer']==$puzzle['truth']}label-success{/if}' >
+							{$item['answer']}
+						</label>
+						 用时{$item['answer_time']}
+						{/if}
+					</td>
+					<td style="text-align:right;overflow:visible;">
+						{if $item['answer']==$puzzle['truth']}
+							{if empty($item['award_time'])}
+								<a href="javascript:;" onclick="displayPrize('{php echo $this->createWebUrl('prize', array('id'=>$puzzle['id'],'uid'=>$item['user_id']))}','{$item['User']['nickname']}','{$item['rank']}');" class="btn btn-success btn-sm">兑奖</a>
+							{else}
+								已兑奖：{php echo date('Y-m-d h:i:s', $item[award_time]);} {$item[award_remark]} 
+							{/if}
+						{/if}
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	function displayPrize(url,user,rank) {
+		require(['jquery', 'util'], function($, u) {
+			var content = '<form id="prize_form" class="form-horizontal form" action="'+url+'" method="post" >';
+			content+='<div class="form-group"><label class="col-xs-12 col-sm-3 col-md-2 control-label">兑奖者</label><div class="col-sm-9 col-xs-12"><input type="text" class="form-control" disabled value="'+user+'" /></div></div>';
+			content+='<div class="form-group"><label class="col-xs-12 col-sm-3 col-md-2 control-label">名次</label><div class="col-sm-9 col-xs-12"><input type="text" class="form-control" disabled value="'+rank+'" /></div></div>';
+			content+='<div class="form-group"><label class="col-xs-12 col-sm-3 col-md-2 control-label">兑奖码</label><div class="col-sm-9 col-xs-12"><input type="text" name="award_code" class="form-control" value="" /><div class="help-block">兑奖者拥有唯一的兑奖码</div></div></div>';
+			content+='<div class="form-group"><label class="col-xs-12 col-sm-3 col-md-2 control-label">备注</label><div class="col-sm-9 col-xs-12"><textarea name="award_remark" class="form-control" rows="5"></textarea><div class="help-block">兑奖备注</div></div></div>';
+			content+='</form>';
+			var footer =
+					'<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
+					'<button type="button" class="btn btn-success">确认兑奖</button>';
+			var diaobj = u.dialog('兑奖', content, footer);
+			diaobj.find('.btn-default').click(function() {
+				diaobj.modal('hide');
+			});
+			diaobj.find('.btn-success').click(function() {
+				var thebtn=$(this);
+				var theform=diaobj.find('#prize_form');
+				thebtn.button('loading');
+				$.post(theform.attr('action'),theform.serialize(),function(resp) {
+					if(resp.status==0){
+						thebtn.button('reset');
+						//$().alert()
+						alert(resp.info);
+						//util.message(resp.info);
+					}else{
+						util.message(resp.info,location.href);
+						//location.href=resp.data;
+					}
+				});
+				return false;
+			});
+			diaobj.modal('show');
+		});
+	}
+
+</script>
+
+{template 'common/footer'}

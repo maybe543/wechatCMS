@@ -1,0 +1,115 @@
+{template 'common/header'}
+<div class="panel panel-success">
+	<div class="panel-heading">
+		上传图片以及提交内容参数设置
+	</div>
+	<form id="reply-form" class="form-horizontal form"  method="post" enctype="multipart/form-data">
+	<div class="panel-body">
+	   <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝咨询微信号</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="contactweixin" value="{$settings['contactweixin']}">
+				<span class="help-block">粉丝咨询微信号</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页列表名称</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="indexlistname" value="{$settings['indexlistname']}">
+				<span class="help-block">首页列表名称</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">logo</label>
+			<div class="col-sm-9">
+				{php echo tpl_form_field_image('logo', $settings['logo']);}
+				<span class="help-block">logo 88*36</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝上传图片是否需要审核</label>
+			<div class="col-sm-9">
+				<label class="radio-inline">
+					<input type="radio" name="status" value="1" id="xh" {if $settings['status'] == '1'}checked="true"{/if}> 是
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="2" id="xh"  {if $settings['status'] == '2'}checked="true"{/if}>否
+				</label>
+				<span class="help-block">粉丝上传图片是否需要审核</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">粉丝提交心情内容是否需要审核</label>
+			<div class="col-sm-9">
+				<label class="radio-inline">
+					<input type="radio" name="contentstatus" value="1" id="xh" {if $settings['contentstatus'] == '1'}checked="true"{/if}> 是
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="contentstatus" value="2" id="xh"  {if $settings['contentstatus'] == '2'}checked="true"{/if}>否
+				</label>
+				<span class="help-block">粉丝提交心情内容是否需要审核</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">默认是显示还是隐藏粉丝心情内容</label>
+			<div class="col-sm-9">
+				<label class="radio-inline">
+					<input type="radio" name="yingcang" value="1" id="xh" {if $settings['yingcang'] == '1'}checked="true"{/if}>隐藏
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="yingcang" value="2" id="xh"  {if $settings['yingcang'] == '2'}checked="true"{/if}>显示
+				</label>
+				<span class="help-block">指粉丝提交内容时页面默认选择哪个状态按钮</span>
+			</div>
+		</div>
+		
+</div>		
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		定义分享相关参数<br><br>
+	</div>
+	
+	<div class="panel-body">
+	   <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">未关注粉丝引导素材</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="url" value="{$settings['url']}">
+				<span class="help-block">未关注粉丝引导素材</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="sharetitle" value="{$settings['sharetitle']}">
+				<span class="help-block">分享标题</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享显示的图片</label>
+			
+			<div class="col-sm-9">
+				{php echo tpl_form_field_image('sharepicurl', $settings['sharepicurl']);}
+				<span class="help-block">分享显示的图片</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享显示内容</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="sharecontent" value="{$settings['sharecontent']}">
+				<span class="help-block">分享显示内容</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+		<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+			<div class="col-sm-4">
+				<input name="submit" type="submit" value="保存" class="btn btn-success btn-block" />
+				
+				<input type="hidden" name="token" value="{$_W['token']}" />
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{template 'common/footer'}

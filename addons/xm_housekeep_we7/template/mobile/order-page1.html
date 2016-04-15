@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>订单详情</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
+<link href="css/iconfont/iconfont.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="js/star-rating.js" type="text/javascript"></script>-->
+</head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+	<div class="block ub-f1">
+    	<div class="c-wh uinn5 ubb tx-c b-bla01">订单详情</div>
+        <ul class="b-bla01 umar-t1 userlist uinn1">
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务项目：</div>
+                    <div class="ub ulev0 ub-f1 ">{php echo $this->gettypename($item[typeid])}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务时间：</div>
+                    <div class="ub ulev0 ub-f1 ">{$item[ftime]}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">其他说明：</div>
+                    <div class="ub ulev0 ub-f1 ">
+					{if $item[mark] == '' }
+						无
+					{else}
+						{$item[mark]}
+					{/if}
+					</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">当前状态：</div>
+                    <div class="ub ulev0 ub-f1 ">{php echo $this->getstate($item[state])}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务人员：</div>
+                    <div class="ub ulev0 ub-f1 ">{php echo $this->getwaiter($item[waiterid])}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务费用：</div>
+                    <div class="ub ulev0 ub-f1 ">
+					{if $item[closemoney] != ''}￥{$item[closemoney]}{/if}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">用户评价：</div>
+                    <div class="ub ulev0 ub-f1 ">
+                    <!--<input id="input-21a" value="0" type="number" class="rating" min=0 max=5 step=1 data-size="xl" >-->
+                    </div>
+                    <a href="#" class="ub uinn uba b-org uc-a1">点评</a>
+                </div>
+            </li>
+        </ul>
+        <!--<div class="uinn8 ub">
+            <button class="uinn211 c-org ub ub-pc uc-a1 ub-f1" style="margin-bottom:0.5em;" type="submit"><span class="ulev0 t-wh">提交订单</span></button>
+        </div>-->
+    </div>
+    <div class=" umar-t1" style="height:3em"></div>
+    
+	{template 'footer'}
+	
+</div>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/zepto1.3.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+<!--<script>
+    jQuery(document).ready(function () {
+        $(".rating-kv").rating();
+    });
+</script>-->
+</body>
+</html>
+

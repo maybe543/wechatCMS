@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}打赏活动{else}{$item['aname']}{/if}</title>
+<link rel="stylesheet" href="../addons/jy_crowdfunding/style.css"/>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #a60003;
+}
+    #bodybox {
+        position: relative;
+        margin: 0 auto;
+        height: 100%;
+        {if empty($item['huodong'])}
+        background: url(../addons/jy_crowdfunding/images/page2_bg.jpg) no-repeat;
+        {else}
+        background: url({$_W['attachurl']}{$item['huodong']}) ;
+        {/if}
+        background-size: 100% 100%;
+        overflow: hidden;
+        max-width: 640px;
+    }
+
+.page2-rule {
+    position: absolute;
+    right: 4%;
+    top: 2%;
+    width: 25%;
+}
+input,img{vertical-align:middle;}
+.input-div {
+    margin-top: 5%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+}
+.input-class {
+    background: none;
+    border: 1px solid rgb(215,199,173);
+    border-radius: 5px;
+    width: 54%;
+    line-height: 28px;
+    font-size: 1em;
+    margin-left: 5px;
+    color: rgb(215,199,173);
+}
+#page2-btn {
+    width: 46%;
+    margin-top: 5%;
+    margin-left: 27%;
+}
+/*---*/
+.textContent{
+    width: 85%;
+    margin: 5% auto 0 auto;
+    color: #fff0d1;
+    text-indent: 2em;
+    line-height: 22px;
+    font-size: 16px;
+}
+.tig{
+    width: 85%;
+    margin: 5% auto 0 auto;
+    color: #fff0d1;
+    text-indent: 2em;
+    font-size: 14px;
+}
+#textShow{
+    width: 100%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 16px;
+}
+.zhanwei{height: 200px;}
+@media screen and (max-width: 320px){
+}
+@media screen and (min-height: 567px) and (max-height: 568px){
+}
+@media screen and (min-width: 321px) and (max-width: 374px){
+    .zhanwei{height: 220px;}
+}
+@media screen and (min-width: 375px) and (max-width: 413px){
+    .zhanwei{height: 250px;}
+}
+@media screen and (min-width: 414px){
+    .zhanwei{height: 300px;}
+}
+</style>
+</head>
+<body>
+    <div id="bodybox">
+        <a href="{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('rule')}"><img class="page2-rule" src="../addons/jy_crowdfunding/images/page2_rule_btn.png"/></a>
+        <div class="zhanwei"></div>
+        <div class="input-div">我&nbsp想
+            <input class="input-class" id="destination" type="text" placeholder="点此立即输入" value="{$destination}"/>
+        </div>
+        
+        <div class="input-div">预&nbsp算
+            <input class="input-class" id="budget" type="tel" placeholder="想找朋友凑多少份子钱呢？" value="{$budget}"/>
+        </div>
+        <p id="textShow"></p>
+        {if empty($item['huodong_button_top'])}
+        <div class="textContent">参与打赏活动并成功的，晒截图并@九烨科技可信，可获任意1款小礼品做奖励呦</div>
+        {else}
+        <div class="textContent">{$item['huodong_button_top']}</div>
+        {/if}
+        <img id="page2-btn" src="../addons/jy_crowdfunding/images/page8_dashangBtn.png" onclick="showShareFunc()"/>
+        {if empty($item['huodong_button_bottom'])}
+        <div class="tig">求打赏单次活动有效期为48小时，活动到期后一周，份子钱存入我的微信钱包</div>
+        {else}
+        <div class="tig">{$item['huodong_button_bottom']}</div>
+        {/if}
+    </div>
+
+    <script src="http://libs.baidu.com/jquery/1.7.1/jquery.min.js"></script>
+    <script src="../addons/jy_crowdfunding/com.js"></script>
+    <script type="text/javascript">
+        $("#budget").bind('input propertychange', function() { 
+            var money = $("#budget").val();
+            if(money <= 299 && money>0){
+                $("#textShow").html("这个钱不够吧？");
+            }else if(money>=300 && money<=1999){
+                $("#textShow").html("小能手也要省着点花哟！");
+            }else if(money>=2000 && money<=4999){
+                $("#textShow").html("估计差不多，不用卖身卖艺神马的~");
+            }else if(money>=5000){
+                $("#textShow").html("你有那么多土豪朋友嘛？");
+            }
+            else{$("#textShow").html("");}
+        });
+        
+        function showShareFunc() {
+            d = $("#destination").val();
+            b = $("#budget").val();
+            if (d == "") {
+                TopBox.alert("请输入您想干嘛哦!");
+                return;
+            }
+            else if (b == "") {
+                TopBox.alert("请输入您想凑的份子钱!");
+                return;
+            }
+            else
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "{php echo $this->createMobileurl('huodong',array('op'=>'add'))}",
+                    data: { destination: d, budget: b},
+                    dataType: "text",
+                    
+                    success: function (d) {
+                        if (d == "1") {
+                            TopBox.alert("活动发起成功.", function () { window.location.href = '{php echo $this->createMobileurl('geren')}'; });
+                            //document.getElementById("share-bg").style.display = "block";
+                        } else if (d == "2") {
+                            TopBox.alert("你已发起过活动.", function () { window.location.href = '{php echo $this->createMobileurl('geren')}'; });
+                        } else {
+                            TopBox.alert("信息填写不正确");
+                        }
+                    },
+                    
+                    error: function (xml, text, thrown) {
+                        TopBox.alert("出错啦!");
+                    }
+                });
+            }
+            
+        }
+    </script>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            title: "赐我打赏吧",
+            desc: "发起打赏活动吧",
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index')}",
+            {if !empty($user['avatar'])}
+            imgUrl: "{$user['avatar']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_crowdfunding/images/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+
+                },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

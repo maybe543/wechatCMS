@@ -1,0 +1,56 @@
+{template 'common/header'}
+<style>
+    .eclipse {
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow: hidden;
+      max-width:140px;
+    }
+ </style>
+<style>
+  td {
+    vertical-align:middle !important;
+  }
+  .followtime {
+    font-size:13px;
+    text-align:right;
+    color:red;
+  }
+  body {
+    background-color:white;
+  }
+</style>
+
+<style>
+  .fansinfo {
+    margin-bottom:5px;
+  }
+  .fansname {
+    font-size:20px;
+    margin:5px 0px 8px 0px;
+  }
+</style>
+{if !empty($my)}
+<div class="fansinfo">
+  <div class="img-rounded" style="float:left;width:30%;margin:4px auto 4px;"><img class="img-rounded" src="{php echo tomedia($my['avater'])}" style="width:90px;"></div>
+  <div class="" style="float:left;width:70%;">
+    <div class="fansname"><b></b></div>
+    余额:{$credit['credit2']}<br>
+    关注日期:{php echo date('Y-m-d H:i:s',$my['createtime'])}  </div>
+</div>
+{/if}
+<div class="clearfix"></div>
+      <table class="table table-striped" style="width:100%;">
+        <tbody>
+        {loop $list $row}
+          <tr>
+            <td><img style="width:46px;height:46px" class="img-rounded" src="{php echo tomedia($row['avater'])}"></td>
+            <td><div class="eclipse">{$row['nickname']}</div></td>
+            <td class="followtime">{php echo $row['first_level'] + $row['secend_level']}人</td>
+          </tr>
+        {/loop}
+        </tbody>
+      </table>
+    <div id="footer" style="text-align:center;color:#918E8E;">@ {$_W['account']['name']}</div>
+{template 'footerbar'}
+{template 'common/footer'}

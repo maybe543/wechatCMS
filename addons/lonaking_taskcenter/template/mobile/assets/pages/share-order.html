@@ -1,0 +1,27 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="back"><i class="icon icon-angle-left icon-2x"></i></a>
+        </div>
+        <!-- We have home navbar without left link-->
+        <div class="center sliding">推广排名</div>
+        <div class="right">
+        </div>
+    </div>
+</div>
+<div class="page toolbar-fixed" data-page="share-order" id="share-order">
+    <div class="page-content">
+        <div class="content-block-title">您目前共推广<span class="color-red">{{user.follow_times}}</span>名粉丝,排名为<span class="color-red">{{user.sort}}</span></div>
+        <div class="list-block">
+			<ul>
+				{{#each users}}
+				<li class="item-content">
+					<div class="item-inner">
+						<div class="item-title">{{name}}</div>
+						<div class="item-after">{{score}}</div>
+					</div>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+</div>

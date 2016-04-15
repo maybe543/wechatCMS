@@ -1,0 +1,57 @@
+{template 'common/header'}
+ 
+
+ 
+<div class="main">
+	
+ 
+	<div class="panel panel-default">
+		<div class="panel-heading">提现列表 共{$total}粉丝，提现{$totalamount}元</div>
+		<div class="table-responsive panel-body">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th class="col-sm-1">昵称</th>
+						<th class="col-sm-1">姓名</th>
+						<th class="col-sm-1">微信号</th>						
+						<th class="col-sm-1">金额</th>	
+						<th class="col-sm-1">状态</th>					
+						<th class="col-sm-1">日期</th>						
+						<th class="col-sm-1">审核</th>						
+					</tr>
+				</thead>
+				{if !empty($list)}
+				{loop $list $key $order}
+				<tbody class="tr_order">
+					<tr>
+						<td>{$order['nickname']}</td>
+						<td>{$order['title']}</td>
+						<td>{$order['wxh']}</td>						
+						<td>{$order['amount']}</td>	
+						<td>
+						<span class="label label-success">{if $order['status'] == 1}审核通过{else}审核中{/if}</span>			
+						</td>					
+						<td>{php echo date('Y-m-d H:i:s',$order['createtime'])}</td>
+						{if $order['status'] == 0}
+						<td><a href="{php echo $this->createWebUrl('tixianshenhe', array('id'=>$order['id']));}">审核</a></td>
+						{/if}
+					</tr>
+				</tbody>				
+				{/loop}
+				{/if}
+				{if empty($list)}
+				<tr>
+					<td colspan="7">
+						没有提现记录
+					</td>
+				</tr>
+				{/if}
+			</table>
+			{$pager}
+ 
+		</div>
+	</div>
+</div>
+
+ 
+{template 'common/footer'}

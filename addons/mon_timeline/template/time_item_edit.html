@@ -1,0 +1,109 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li><a href="{php echo $this->createWebUrl('timelineMange');}">图片时间轴管理</a></li>
+
+        <li ><a href="{php echo $this->createWebUrl('timeItemList',array('tid'=>$tid))}">时间项管理</a></li>
+
+        <li  class="active"><a href="{php echo $this->createWebUrl('editTimeItem',array('tid'=>$tid))}">时间项添加</a></li>
+
+    </ul>
+
+
+
+    <br/>
+    <br/>
+
+    <form method="post">
+            <input type="hidden" name="tid" value="{$tid}">
+            <input type="hidden" name="item_id" value="{$item_id}">
+            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                        {if empty($item_id)}时间项目添加{else}时间项目编辑{/if}
+                    </div>
+                             <div class="panel-body">
+                                    <ul class="list-group">
+
+                    <li class="list-group-item ng-scope" style="border: 0" ng-repeat="item in context.items" id="append-list">
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目名称</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" class="form-control ng-pristine ng-valid" placeholder="" name="ititle" value="{$item['ititle']}">
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">描述说明</label>
+                            <div class="col-sm-9 col-xs-12">
+                             	<textarea style="height: 60px;" name="itext"
+                                          class="form-control span7" cols="60">{$item['text']}</textarea>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目时间</label>
+                            <div class="col-sm-9 col-xs-12">
+                                {php echo tpl_form_field_date('i_time',$item['i_time'],true)}
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目背景颜色</label>
+                            <div class="col-sm-9 col-xs-12">
+                               {php echo   tpl_form_field_color('i_bgcolor', $this->getItemBg($item['i_bgcolor']))}
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目图片</label>
+                            <div class="col-sm-9 col-xs-12">
+
+                                {php echo tpl_form_field_image('i_img',$item['i_img']);}
+                                建议宽*高(500*333)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">项目链接url</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" class="form-control ng-pristine ng-valid" placeholder="" name="i_url" value="{$item['i_url']}">
+                                <span class="help-block">完整链接:http://</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                            <div class="col-sm-9 col-xs-12">
+
+                                <input name="submit" type="submit" value="保存"
+                                       class="btn btn-primary span3"> <input type="hidden"
+                                                                             name="token" value="{$_W['token']}" />
+
+                            </div>
+                        </div>
+
+                    </li>
+
+                    </ul>
+
+                          </div>
+
+                </div>
+
+        </form>
+
+</div>
+<script>
+
+
+
+
+</script>
+
+{template 'common/footer'}

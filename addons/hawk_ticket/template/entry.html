@@ -1,0 +1,32 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('entry');}">使用说明</a></li>
+    <li><a href="{php echo $this->createWebUrl('activity');}">活动管理</a></li>
+</ul>
+<div class="clearfix">
+    <div class="alert alert-danger">
+        <h4>模块使用前需要注意</h4>
+        <p><strong>注意: 所有活动是以门票的形式为最终交易凭证，产品名称必填.</strong> </p>
+        <p><strong>注意: 活动展示有两种形式普通网页和海报，选择海报时必须自行设计单页图片</strong></p>
+        <p><strong>注意: 门票验证以现场扫码验证为准，建立活动时必须先在微擎中建立好用于核销的会员组</strong></p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            模块使用流程说明
+        </div>
+        <div class="panel-body">
+            <div class="alert alert-info">
+                <p>1.安装好模块后，先设置配置参数中关注素材在公众号管理平台素材管理中添加，</p>
+                <p>2.如果开启模版消息功能则必须先在公众号管理平台功能管理中申请模板消息功能</p>
+                <p><strong>3.配置做好后，在活动管理中新建活动，带＊说明的内容必写</p>
+                <p>4.活动建立好后在活动列表＝》活动地址，手机扫二维码可查看内容</p>
+                <p>5.用户访问可以通过菜单设置活动链接，普通网页用户点击可直接购买，海报图片要加购买提示点击直接购买</p>
+                <p>6.用户购买完成后，现场参加活动时出示票据二维码给授权微信号的店员或门卫，扫码即可验证是否通过放行</p>
+维              <P>7.用户票据错误或误操作时可以后台管理中票据管理修改票据状态，重新验票</P>
+            </div>
+        </div>
+    </div>
+
+</div>
+{template 'common/footer'}

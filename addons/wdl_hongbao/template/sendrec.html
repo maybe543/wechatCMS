@@ -1,0 +1,78 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{php echo $this->createWebUrl('sendrec');}">发放红包管理</a></li>
+        <li><a href="{php echo $this->createWebUrl('sendrec_add');}">添加发放红包记录</a></li>
+    </ul>
+ <div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+        <form action="./index.php" method="get" class="form-horizontal" role="form">
+            <input type="hidden" name="c" value="site" />
+            <input type="hidden" name="a" value="entry" />
+            <input type="hidden" name="m" value="wdl_hongbao" />
+            <input type="hidden" name="do" value="sendrec" />
+            {if $_GET['id'] != ''}
+            <input type="hidden" name="id" value="{$_GET['id']}" />
+            {else}
+            <input type="hidden" name="id" value="{$_GET['rid']}" />
+            {/if}
+              
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label" >openid</label>
+                <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="openid" id="openid" type="text" value="{$_GPC['openid']}">
+                </div>
+                <div class=" col-xs-12 col-sm-2 col-lg-2">
+                    <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                </div>
+            </div>
+            <div class="form-group">
+            </div>
+        </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body table-responsive">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:80px;">编号</th>
+                    <th class="row-hover">openid</th>
+                    <th class="row-hover">会员名称</th>
+                    <th class="row-hover">红包金额</th>
+                    <th class="row-hover">已提取</th>
+                    <th class="row-hover">发放时间</th>
+                    <th class="row-hover">发放状态</th>
+                    <th style="width:120px; text-align:right;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $row}
+                <tr> 
+                    <td>{$row['id']}</td>
+                    <td>{$row['openid']}</td>
+                    <td>{$row['nickname']}</td>
+                    <td>{php echo round($row['money']/100, 2);} 元</td>
+                    <td>{php echo $row['receive_flag'] == 'Y' ? '是' : '否';}</td>
+                    <td>{$row['send_time']}</td>
+                    <td>{$row['send_res']}</td>
+                    <td>
+                      <a class="btn btn-success btn-sm" href="{php echo $this->createWebUrl('sendrec_edit', array('id' => $row['id']))}" title="编辑"><i class="icon-edit"></i>编辑</a>
+                      <a class="btn btn-default btn-sm" href="#" onclick="drop_confirm('您确定要删除吗?', '{php echo $this->createWebUrl('sendrec_add',array('op'=>'delete', 'id'=>$row['id']))}');" title="删除"><i class="icon-remove"></i>删除</a>
+                    </td>
+                </tr>
+                {/loop}
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+</div>
+<script type="text/javascript">
+    function drop_confirm(msg, url){
+        if(confirm(msg)){
+            window.location = url;
+        }
+    }
+</script>
+{template 'common/footer'}

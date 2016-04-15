@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <title>{$_W['account']['name']}正在向您收款</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="{MODULE_URL}/template/mobile/style.css">
+</head>
+<body>
+    <div class="container ">
+        <div class="content free-cash ">
+            <div class="cashier-info-container center">
+                <div class="avatar cashier-avatar">
+                    <a href="#">
+                        <img class="circular" src="{$_W['account']['avatar']}" alt="">
+                    </a>
+                </div>
+                <div class="js-cashier-form block cashier-form text-left">
+                    <label for="cashier-price" class="font-size-12 cashier-label">金额（元）</label>
+                    <p class="cashier-field">
+                        <i class="money-text">¥</i>
+                        <input id="cashier-price" placeholder="" type="text" class="cashier-text" style="border-bottom: 1px solid #999;">
+                    </p>
+                </div>
+            </div>
+            <div class="action-container" id="js-cashier-action">
+                <div style="margin-bottom: 10px;">
+                    <button style="width: 100%;line-height:24px;font-size: 16px;" type="button" class="btn-pay btn btn-block btn-large btn-yzpay  btn-green">
+                        去付款
+                    </button>
+                </div>
+            </div>
+            <!-- <div class="center action-tip js-cashier-tip">支付完成后，如需退款请及时联系卖家</div> -->
+        </div>
+    </div>
+    <div class="footer" style="min-height: 86px;margin-top: 80px;">
+        <div class="copyright">
+            <div class="ft-copyright">
+                <a href="#" target="_blank">©{$_W['account']['name']}&nbsp;&nbsp;&nbsp;{php echo date('Y');}</a>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script> -->
+<script type="text/javascript">
+    window.onload=function () {
+        document.getElementById('js-cashier-action').onclick=function() {
+            var price=document.getElementById('cashier-price').value;
+            if (price) {
+                if (/^[0-9]*(\.[0-9]{1,2})?$/.test(price)) {
+                    location.href='{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('self_pay', array('tid'=>time().rand(1000,9999)));}&fee='+price;
+
+                }else{
+                    alert('格式不对');
+                }
+            };
+        };
+        document.getElementById('cashier-price').focus()
+    }
+</script>
+</html>

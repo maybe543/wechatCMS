@@ -1,0 +1,64 @@
+{php include $_template->template('header')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <a href="#" class="header_data_icon"></a>
+        <h1>商城</h1>
+    </header>
+    <!--header end-->
+	<!--footer-->
+    {php include $_template->template('footerbar')}
+	<!--footer end-->
+    <!--content-->
+    <div class="content">
+        <!--banner-->
+        <div class="detail-img">
+            <div id="banner_box" class="box_swipe">
+                <ul>
+                    {loop $advs $adv}
+                    <li>
+                      <a href="{if empty($adv['link'])}#{else}{$adv['link']}{/if}" rel='{$_W['attachurl']}{$adv['thumb']}'><img src="{$_W['attachurl']}{$adv['thumb']}" alt="" /></a>
+                    </li>
+                    {/loop}
+                </ul>
+                <ol>
+                  {php $slideNum = 1;}
+                  {loop $advs $adv}
+                    <li{if $slideNum == 1} class="on"{/if}></li>
+                  {php $slideNum++;}
+                  {/loop}
+                </ol>
+            </div>
+        </div>
+        <!--banner end-->
+        <!--推荐-->
+        <div class="homeItem">
+            <div class="homeItemMain">
+                <ul>
+                  {loop $rlist $item}
+                    {php include $_template->template('list_item')}
+                  {/loop}
+                </ul>
+            </div>
+        </div>
+        <!--推荐 end-->
+        {loop $recommendcategory $c}
+            {if !empty($c['list'])}
+        <!--栏目一-->
+        <div class="homeItem">
+            <div class="homeItemHead"><span></span><em>{$c['name']}</em></div>
+            <div class="homeItemMain" id="list_{$c['parentid']}_{$c['id']}">
+                <ul>
+                  {loop $c['list'] $item}
+                    {php include $_template->template('list_item')}
+                  {/loop}
+                </ul>
+            </div>
+        </div>
+          {/if}
+        {/loop}
+        <!--栏目一 end-->
+    </div>
+    <!--content end-->
+
+{php include $_template->template('footer')}

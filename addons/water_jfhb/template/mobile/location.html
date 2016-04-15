@@ -1,0 +1,74 @@
+     <script src="./source/modules/hair/template/js/jquery-1.7.2.min.js"></script>
+  
+   <script>
+    
+
+    
+    $(document).ready(function(){  
+      getLocation();
+    });
+    
+    
+	  function errorPosition(){
+	     //  alert("获取地址失败,接下来测试状态上传地址");
+	       //默认
+	       var lng=119.32131;
+	       var lat=26.061211;
+	       //测试状态
+	       sessionStorage.setItem("lat",lat);
+		   sessionStorage.setItem("lng",lng);
+		   updateLocation(lat,lng);
+	  }
+
+      function getLocation(){
+		    var options={
+		        enableHighAccuracy:true, 
+		        timeout:5000,
+		        maximumAge:3000
+		    }
+
+		    if(navigator.geolocation){
+		        //浏览器支持geolocation
+		        navigator.geolocation.getCurrentPosition(showPosition,errorPosition,options);
+		   }else{
+		        //浏览器不支持geolocation
+		    }
+		}
+
+
+		function showPosition(position)
+		{
+		  
+		  sessionStorage.setItem("lat",position.coords.latitude);
+		  sessionStorage.setItem("lng",position.coords.longitude);
+		  lat=position.coords.latitude;
+		  lng=position.coords.longitude;
+		  updateLocation(lat,lng);
+		  return;
+		  
+		  //百度地图获得地址
+	      var point = new BMap.Point(position.coords.longitude,position.coords.latitude);
+
+		  var geoc = new BMap.Geocoder(); 
+			
+		  geoc.getLocation(point, function(rs){
+				var address = rs.addressComponents;
+			});
+		}
+       function updateLocation(lat,lng){ 
+    	   var url="{php echo $this->createMobileUrl('updateLocation')}&lat="+lat+"&lng="+lng;
+    	   $.ajax({
+     	      type : "post",
+     	      async:false,
+     	      url : url,
+     	      success : function(resp){
+                //alert("上传地址成功：地址lat="+lat+"&lng="+lng);
+                
+     	      },
+     	      error:function(){
+     	          //alert('fail');
+     	      }
+     	    });
+       }
+       
+    </script>

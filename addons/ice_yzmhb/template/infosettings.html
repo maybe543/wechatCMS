@@ -1,0 +1,242 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $foo == 'sendlist'}class="active"{/if}><a href="{php echo $this->createWebUrl('sendlist', array('hbid' => $hbid))}">发放流水</a></li>
+	<li {if $foo == 'codeset'}class="active"{/if}><a href="{php echo $this->createWebUrl('codeset', array('hbid' => $hbid))}">验证码设置</a></li>
+	<li {if $foo == 'infoset'}class="active"{/if}><a href="{php echo $this->createWebUrl('infoset', array('hbid' => $hbid))}">红包参数</a></li>
+	<li {if $foo == 'rule'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('hbid' => $hbid))}">红包规则</a></li>
+</ul>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" id="setting-form">
+		<div class="panel panel-default">
+			<div class="panel-heading">验证码红包设置</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">活动名称</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[act_name]" class="form-control" value="{$settings['act_name']}" />
+					</div>
+				</div>
+
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">祝福语</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[wishing]" class="form-control" value="{$settings['wishing']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包发送方名称</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[send_name]" class="form-control" value="{$settings['send_name']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">活动开始时间</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_date('data[stime]', $settings['stime'], true);}
+						<span class="help-block bg-danger">如果不想触发活动，请将开始时间设置为当前时间之前</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">活动结束时间</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_date('data[etime]', $settings['etime'], true);}
+						<span class="help-block bg-danger">如果不想触发活动，请将结束时间设置为当前时间之前</span>
+					</div>
+				</div>
+
+				<!--
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">触发关键字</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[touchkey]" class="form-control" value="{$settings['touchkey']}" placeholder="回复此关键字领取红包"/>
+					</div>
+				</div>
+				-->
+			
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">随机数下界</label>
+					<div class="col-sm-8">
+						<input type="number" name="data[min_value]" class="form-control" value="{$settings['min_value']}" placeholder="随机数最小值"/>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">随机数上界</label>
+					<div class="col-sm-8">
+						<input type="number" name="data[max_value]" class="form-control" value="{$settings['max_value']}" placeholder="随机数最大值"/>
+					</div>
+				</div>
+				<!--
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包发放数字(上下界之间,英文逗号分隔)</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[sendnum]" class="form-control" value="{$settings['sendnum']}" placeholder="位于随机数最小值和最大值之间，当产生的随机数与此处填的一个值相符即发放红包"/>
+					</div>
+				</div>
+				-->
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">红包数量</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[total_num]" class="form-control" value="{$settings['total_num']}" placeholder="发送总数量"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">LOGOURL</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[logourl]" class="form-control" value="{$settings['logourl']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享标题</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[share_title]" class="form-control" value="{$settings['share_title']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享图片</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[share_img]" class="form-control" value="{$settings['share_img']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享链接</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[share_url]" class="form-control" value="{$settings['share_url']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享描述</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[share_content]" class="form-control" value="{$settings['share_content']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">备注</label>
+					<div class="col-sm-8">
+						<input type="text" name="data[remark]" class="form-control" value="{$settings['remark']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+						<input name="submit" type="submit" value="提交" class="btn btn-primary" />
+						<input type="hidden" name="token" value="{$_W['token']}" />
+						<input type="hidden" name="hbid" value="{$hbid}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+ 
+<script>
+require(['jquery', 'util'], function($, util){
+	$(function(){
+		$('#setting-form').submit(function(){
+			var result = true;
+			if($('input[name="data[appid]"]').val() == ''){
+				result = false;
+				util.message('未填写APPID.');
+			}
+			
+			if($('input[name="data[appsecrect]"]').val() == ''){
+				result = false;
+				util.message('未填写APPSECRECT.');
+			}
+			
+			if($('input[name="data[mchid]"]').val() == ''){
+				result = false;
+				util.message('未填写MCHID.');
+			}
+			
+			if($('input[name="data[partner]"]').val() == ''){
+				result = false;
+				util.message('未填写PARTNERKEY.');
+			}
+			
+			if($('input[name="data[act_name]"]').val() == ''){
+				result = false;
+				util.message('未填写活动名称.');
+			}
+			
+			if($('input[name="data[wishing]"]').val() == ''){
+				result = false;
+				util.message('未填写祝福语.');
+			}
+			
+			if($('input[name="data[remark]"]').val() == ''){
+				result = false;
+				util.message('未填写备注信息.');
+			}
+			
+			
+			if($('input[name="data[send_name]"]').val() == ''){
+				result = false;
+				util.message('未填写红包发送方名称.');
+			}
+			
+			/**
+			if($('input[name="data[endtime]"]').val() == ''){
+				result = false;
+				util.message('结束时间不能为空.');
+			}
+			if($('input[name="data[starttime]"]').val() == ''){
+				result = false;
+				util.message('开始时间不能为空.');
+			}
+			if($('input[name="data[randmin]"]').val() == ''){
+				result = false;
+				util.message('未填写随机数下界.');
+			}
+			if($('input[name="data[randmax]"]').val() == ''){
+				result = false;
+				util.message('未填写随机数上界.');
+			}
+			*/
+			// if($('input[name="data[sendnum]"]').val() == ''){
+			// 	result = false;
+			// 	util.message('未填写红包发放数字.');
+			// }
+			// if(isNaN($('input[name="data[money]"]').val())){
+			// 	result=false;
+			// 	util.message("基础红包金额必须为数字！");
+			// }
+			
+			// if(isNaN($('input[name="data[money_extra]"]').val())){
+			// 	result=false;
+			// 	util.message("加成红包金额必须为数字！");
+			// }
+			/*
+			var min=parseInt($('input[name="data[randmin]"]').val());
+			var max=parseInt($('input[name="data[randmax]"]').val());
+			
+			var sendnum=$('input[name="data[sendnum]"]').val();
+			var sendArr=sendnum.split(",");
+			for(var i=0;i<sendArr.length;i++){
+				var temp=parseInt(sendArr[i]);
+				if(isNaN(temp)){
+					result=false;
+					util.message("输入必须为数字，且以英文逗号分隔！");
+					break;
+				}
+				if(temp<min||temp>max){
+					result=false;
+					util.message("红包发放数字必须在上下界之间，且随机数下界必须小于上界！");
+					break;
+				}
+			}		
+			*/
+			return result;
+		});
+	});
+});
+</script>
+{template 'common/footer'}

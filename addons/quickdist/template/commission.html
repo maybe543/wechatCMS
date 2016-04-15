@@ -1,0 +1,63 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $operation == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('commission', array('operation' => 'display'))}">佣金列表</a></li>
+  {if $operation == 'detail'}<li class="active"><a href="{php echo $this->createWebUrl('commission', array('operation' => 'display', 'from_user'=>$_GPC['from_user']))}">已结算佣金订单</a></li>{/if}
+</ul>
+
+{if $operation == 'display' or $operation == 'detail'}
+<div class="main">
+	<div style="padding:15px;">
+    <p>说明:<br> 1. 所有返佣都以积分的形式存入用户系统积分中, 汇率为0.01元兑1积分
+    <br>2. 如果商品返佣值不足0.01元，则返佣值为0.00元
+    <br>3. 返佣=单价 x 数量 x 返佣比例
+    </p>
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:20px">订单</th>
+					<th style="width:40px">商品</th>
+					<th style="width:60px">单价</th>
+					<th style="width:40px">数量</th>
+					<th style="width:70px">返佣比例</th>
+					<th style="width:80px;">返佣</th>
+					<th style="width:100px;">购买者</th>
+					<th style="width:100px;">上线</th>
+					<th style="width:100px;">上线积分</th>
+					<th style="width:100px;">上线余额</th>
+					<th style="width:150px;">返佣日期</th>
+					<!--th style="width:120px; text-align:right;">操作</th-->
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+					<td>{$item['orderid']}</td>
+					<td>{$item['goodsid']}</td>
+					<td>{$item['price']}元</td>
+					<td>x {$item['total']}</td>
+					<td>{$item['rate']}  ({$item['level']}级)</td>
+					<td>{$item['commission_value']} 元</td>
+          <td>
+            <a href='{php echo wurl('site/entry/ranking', array('from_user'=>$item['order_openid'], 'weid'=>$_W['weid'], 'op'=>'user', 'm'=>'quicklink'))}'>
+              {php echo $orderfans[$item['order_openid']]['nickname']}
+            </a>
+          </td>
+          <td>
+            <a href='{php echo wurl('site/entry/ranking', array('from_user'=>$item['order_leader'], 'weid'=>$_W['weid'], 'op'=>'user', 'm'=>'quicklink'))}'>
+              {php echo $leaderfans[$item['order_leader']]['nickname']}
+            </a>
+          </td>
+					<td>{$leaderfans[$item['order_leader']]['credit1']}</td>
+					<td>{php echo sprintf("%.2f", $leaderfans[$item['order_leader']]['credit2'])}</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['createtime'])}</td>
+          <!--td style="text-align:right;"></td-->
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+{/if}
+
+{template 'common/footer'}

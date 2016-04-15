@@ -1,0 +1,46 @@
+    <script>
+      $(function() {
+        $('.qrcode_view_btn').click(function(e) {
+          //backup API: 
+          var api = 'http://api.kuaipai.cn/qr?chl=';
+          var api = "http://s.jiathis.com/qrcode.php?url=";
+          var encoded_verify_url = encodeURIComponent($(this).data('url'));
+          var img_url =  api + encoded_verify_url;
+          $('#popbox').find('img').attr('src', img_url);
+          $('#qrcode_container').show();
+          $('#popbox').show();
+        });
+        $('#qrcode_container').click(function(e) {
+          $('#qrcode_container').hide();
+          $('#popbox').hide();
+        });
+        $('#popbox').click(function(e) {
+          $('#qrcode_container').hide();
+          $('#popbox').hide();
+        });
+      });
+    </script>
+    <style type="text/css">
+      #qrcode_container{
+        position: fixed;
+        width:100%;height:100%;top:0px;left:0px;filter: Alpha(opacity=90);opacity:0.9; background:#000000; display:none;z-index:9998;}
+      #popbox {
+        width: 280px;
+        height: auto;
+        overflow: auto;
+        margin: auto;
+        position: absolute;
+        top: 100px; left: 0; bottom: 0; right: 0;
+        z-index:9999;
+        display:none;
+      }
+      #popbox img { width:280px;height:280px;}
+    </style>
+    <div id="qrcode_container">
+    </div>
+    <div id="popbox">
+      <img src="" />
+      <p style="color:white;text-align:center">请等待二维码加载完成后，出示给店员扫码确认。</p>
+      <br/>
+      <p style="color:white;text-align:center"><a class="btn btn-primary btn-sm" href="#">关闭</a></p>
+    </div>

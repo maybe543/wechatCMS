@@ -1,0 +1,77 @@
+<table class="tb">
+  <tr>
+    <th><span class="red"></span><label for="">杀价开关</label></th>
+    <td>
+      <label class="checkbox"><input type="checkbox" name="killenable" id="killenable" value="1"{if $item['killenable']==1} checked{/if} />开启杀价</label>
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">转发标题</label></th>
+    <td>
+      <input type="text" name="timelinetitle" id="timelinetitle" class="span6" value="{$item['timelinetitle']}" />
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">转发描述</label></th>
+    <td>
+      <input type="text" name="timelinedesc" id="timelinedesc" class="span6" value="{$item['timelinedesc']}" />
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">转发缩略图</label></th>
+    <td>
+      <div class="fileupload fileupload-new" data-provides="fileupload">
+        <div class="fileupload-preview thumbnail" style="width: 200px; height: 150px;">
+          <img src="./resource/attachment/{$item['timelinethumb']}" alt="" onerror="$(this).remove();"></div>
+        <div>
+          <span class="btn btn-file"  id="thumb_div" tabindex="-1"><span class="fileupload-new">选择图片</span>
+            <span class="fileupload-exists">更改</span><input name="timelinethumb" id="thumb" type="file" /></span>
+          <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">移除</a>
+        </div>
+      </div>
+      <span class="help-block">商品转发到朋友圈时显示的缩略图, 尺寸建议 200*200</span>
+    </td>
+  </tr>
+  <tr style="display:none">
+    <th><span class="red">*</span><label for="">最多砍价次数</label></th>
+    <td>
+      <div class="input-append">
+        <input type="text" name="killmaxtime" id='killmaxtime' class="span3" value="{$item['killmaxtime']}" />
+        <span class="add-on">次</span>
+      </div>
+      <span class="help-block">每个用户最多可以享受的杀价次数</span>
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">单品总折扣上限</label></th>
+    <td>
+      <div class="input-append">
+        <input type="text" name="killtotaldiscount" id='killtotaldiscount' class="span3" value="{$item['killtotaldiscount']}" />
+        <span class="add-on">元</span>
+      </div>
+      <span class="help-block">总折扣达到这么多时继续杀价不再给折扣</span>
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">每砍一刀最高折扣</label></th>
+    <td>
+      <div class="input-append">
+        <input type="text" name="killdiscount" id='killdiscount' class="span3" value="{$item['killdiscount']}" />
+        <span class="add-on">元</span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th><span class="red">*</span><label for="">每砍一刀最低折扣</label></th>
+    <td>
+      <div class="input-append">
+        <input type="text" name="killmindiscount" id='killmindiscount' class="span3" value="{$item['killmindiscount']}" />
+        <span class="add-on">元</span>
+      </div>
+      <span class="help-block">顾客在购买一件商品的时候可以邀请好友砍价，每个好友最多可砍一刀</span>
+      <span class="help-block">每砍一刀，该顾客可享受最高折扣到最低折扣之间的一个随机折扣。</span>
+      <span class="help-block">如果最高折扣为0，则提示客户运气不好，没砍下来。</span>
+      <span class="help-block">如果最高折扣等于最低折扣，则每次折扣固定。</span>
+    </td>
+  </tr>
+</table>

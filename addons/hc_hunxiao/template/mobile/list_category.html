@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html class="page_index" lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/foundation.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/common1.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/search-page.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/PreFoot.css">
+	<script src="../addons/hc_hunxiao/style/js/jquery.js"></script>
+    <script src="../addons/hc_hunxiao/style/js/foundation.js"></script>
+    <script src="../addons/hc_hunxiao/style/js/foundation.reveal.js"></script>
+    <script>
+        $(function () {
+            $("#search-input").focus(
+            function () {
+                $(this).css("width", "80%");
+                $("#search-btn").show();
+            }
+            )
+            if ($("#search-input").val() == "") {
+                $(this).css("width", "100%");
+                $("#search-btn").hide();
+            }
+        })
+        function btnSearch() {
+            var val = $("#search-input").val().trim();
+            if (val != "") {
+                window.location.href = "{php echo $this->createMobileUrl('list2', array('eid'=>$_GPC['eid']), true);}&keyword="+val;
+            }
+        }
+    </script>
+    <title>分类浏览</title>
+</head>
+<style>
+.search-class-a .aa {
+	float: right;
+	margin-top: 8px;
+	background: url("../addons/hc_hunxiao/style/images/icon-ps.png") -52px -20px;
+	width: 12px;
+	height: 11px;
+}
+</style>
+<body>
+    <section class="search-form">
+        <div class="search-inner">
+            <i class="icon-search-gray"></i>
+            <input class="search-input radius" id="search-input" type="text" placeholder="请输入关键词">
+            <button class="search-btn" id="search-btn" onclick="btnSearch()">搜索</button>
+        </div>
+    </section>
+    <section class="search-class">
+        <ul class="search-class-ul">
+            {loop $category $key $item}
+			<li onclick="isshow($('#{$key}'), $('#icon{$key}'));"><a class="search-class-a" >{$item['name']}<i id="icon{$key}" class="icon-arrow"></i></a></li>
+			{if !empty($children)}
+			<div id="{$key}" style="display:none;">
+			{loop $children $c}
+			{if $item['id']==$c['parentid']}
+			<li><a class="search-class-a" href="{php echo $this->createMobileUrl('list2', array('ccate' => $c['id']));}">&nbsp;——&nbsp;{$c['name']}</a></li>
+			{/if}
+			{/loop}
+			</div>
+			{/if}
+			{/loop}
+        </ul>
+    </section><br/><br/><br/><br/>
+     <div class="fixed bottom">
+<div class="distribution-tip" id="distribution-tip" style="display: none;"></div>
+<dl class="sub-nav nav-b5">
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('index')}"><i class="icon-nav-bag"></i>逛街</a></div>
+    </dd>
+    <dd class="active">
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('listCategory')}"><i class="icon-nav-search"></i>搜索</a></div>
+    </dd>
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('mycart')}"><i class="icon-nav-card"></i>购物车</a></div>
+    </dd>
+    <dd>
+		<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('fansindex')}"><i class="icon-nav-heart"></i>个人中心</a></div>
+	</dd>
+</dl>
+<script>
+function isshow(obj, iconobj){
+	if(obj.css('display')=='block'){
+		obj.css('display','none');
+		iconobj.removeClass('aa'); 
+		iconobj.toggleClass('icon-arrow');
+	} else {
+		obj.css('display','block');
+		iconobj.removeClass('icon-arrow'); 
+		iconobj.toggleClass('aa');
+	}
+}
+function showDistributionTip() {
+	$("#distribution-tip").fadeIn();
+	setTimeout(function () {
+		$("#distribution-tip").fadeOut();
+	}, 4000)
+}
+</script>
+    </div>
+</body>
+</html>

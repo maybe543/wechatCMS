@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+    <link href="{$_W['siteroot']}app/resource/css/bootstrap.min.css" rel="stylesheet">
+	<link href="{$_W['siteroot']}app/resource/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{$stylepath}/main.css" media="all">
+	<link rel="stylesheet" type="text/css" href="{$stylepath}/dialog.css" media="all">
+	<script type="text/javascript" src="{$stylepath}/jquery_min.js"></script>
+ 	<script type="text/javascript" src="{$stylepath}/main.js"></script>
+	<title>个人中心</title>
+	<script src="{$stylepath}/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="{$stylepath}/sweetalert.css">	
+	
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	<meta name="Keywords" content="">
+	<meta name="Description" content="">
+	
+	<meta content="telephone=no, address=no" name="format-detection">
+	<meta name="apple-mobile-web-app-capable" content="yes"> 
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+</head>
+<body onselectstart="return false;" ondragstart="return false;">
+	<div class="container my" style="padding:0px">
+		<header>
+		<div class="header">
+			<a href="#" class="setting">&nbsp;</a>
+			<div>
+				<ul class="tbox">
+					<li>
+						<span id="upload_header">
+							<img src="{$jfhb_user['headimgurl']}">
+						</span>
+					</li>
+					<li>
+						<h3>{$jfhb_user['nickname']}</h3>
+						<p style="display:none">邀请码:71258</p>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<ul class="box">	
+				    <li>
+						<a>
+							<label>满多少提现</label>
+							<span>{$tx_money}元</span>
+						</a>
+					</li>
+							
+					<li>
+						<a>
+							<label>已提现</label>
+							<span>{$jfhb_user['tx_money']}元</span>
+						</a>
+					</li>
+					<li>
+						<a>
+							<label>余额</label>
+							<span>{$jfhb_user['wtx_money']}元</span>
+						</a>
+					</li>
+					<li>
+						<a>
+							<label>总金额</label>
+							<span>{$jfhb_user['money']}元</span>
+						</a>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+	</header>
+	
+			<div class="body">
+			<ul class="list_ul">
+			<!--div>
+				<li class="li_l">
+					<a href="mobile.php?act=module&name=adv_sign&do=rank&weid=1"><label class="label"><i>&nbsp;</i>排行榜<span>&nbsp;</span></label></a>
+				</li>
+			</div-->
+			<div>
+			<li class="li_s" >
+				<a href="{php echo $this->createMobileUrl('top')}"><label class="label"><i>&nbsp;</i>
+					提现排行榜<span>&nbsp;</span></label></a>
+				</li>
+			
+				<li class="li_k" style='display:'>
+					<a href="{php echo $this->createMobileUrl('enter')}"><label class="label"><i>&nbsp;</i>
+					我的海报<span>&nbsp;</span></label></a>
+				</li>
+				<li class="li_k" style='display:none'>
+					<a><label class="label"><i>&nbsp;</i>今日邀请人数<font color="red">{$curr_count}</font>个 </label></a>
+				</li>
+				<li class="li_k" style='display:none'>
+					<a><label class="label"><i>&nbsp;</i>昨日邀请人数<font color="red">{$yesterday_count}</font>个</label></a>
+				</li>
+				
+				
+
+				
+			
+			   <li class="li_k">
+			   
+			<label class="label"><i>&nbsp;</i>
+					总邀请人数<font color="red">{$total_count}</font>个</label>
+				</li>
+				
+				
+			</div>
+    {if !empty($settings['show_money'])}
+			<div style="display:">
+							
+				
+			   <li class="li_s" >
+				<a href="{php echo $this->createMobileUrl('jfen')}"><label class="label"><i>&nbsp;</i>
+					金额明细<span>&nbsp;</span></label></a>
+				</li>
+				
+						
+				
+			</div>
+			{/if}
+			{if !empty($settings['tx_type']) && !empty($jfhb_user["user_status"])}
+			 <div style="margin:10px;text-align:center;">
+	           <a href="{php echo $this->createMobileUrl('user',array('op'=>'tx'))}"
+	           class='btn btn-large btn-primary' href='javascript:;'>立即提现</a>
+		     </div>
+			{/if}
+		</ul>
+		{if !empty($settings['copyright'])}
+		<div class="text-center footer" style="margin: 0px 0; width:100%;
+		 text-align:center; word-break:break-all;position: fixed;bottom: 1px;font-size:18px">
+			<a href="{$settings['copyright_url']}" style="color: #377795;">{$settings['copyright']}</a>
+		</div>
+		{/if}
+	</div>
+</div>
+{php echo register_jssdk(false);}
+<script type="text/javascript">
+    initShare();
+
+    function initShare(){
+        wx.ready(function () {
+        	wx.hideOptionMenu();
+          	         
+        });
+        
+    	
+
+    }
+
+</script>
+
+
+</body></html>

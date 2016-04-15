@@ -1,0 +1,156 @@
+{template 'common/header'}
+<div class="main">
+<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="" method="get" class="form-horizontal" role="form" id="form1">
+				<input type="hidden" name="c" value="site">
+				<input type="hidden" name="a" value="entry">
+				<input type="hidden" name="m" value="bobo_zhibo">
+				<input type="hidden" name="do" value="list">
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">直播标题</label>
+					<div class="col-sm-8 col-lg-9 col-xs-12">
+						<input class="form-control" name="keyword" id="" type="text" value="" placeholder="可查询直播标题">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">创建时间</label>
+					<div class="col-sm-4 col-xs-12">
+<script type="text/javascript">
+	require(["daterangepicker"], function($){
+		$(function(){
+			$(".daterange.daterange-date").each(function(){
+				var elm = this;
+				$(this).daterangepicker({
+					startDate: $(elm).prev().prev().val(),
+					endDate: $(elm).prev().val(),
+					format: "YYYY-MM-DD"
+				}, function(start, end){
+					$(elm).find(".date-title").html(start.toDateStr() + " 至 " + end.toDateStr());
+					$(elm).prev().prev().val(start.toDateStr());
+					$(elm).prev().val(end.toDateStr());
+				});
+			});
+		});
+	});
+</script>
+	<input name="time[start]" type="hidden" value="{$start}">
+	<input name="time[end]" type="hidden" value="{$end}">
+	<button class="btn btn-default daterange daterange-date" type="button" data-original-title="" title=""><span class="date-title">{$start} 至 {$end}</span> <i class="fa fa-calendar"></i></button>
+						</div>
+					<div class="col-sm-4 col-xs-12">
+						<button class="btn btn-default" data-original-title="" title=""><i class="fa fa-search"></i> 搜索</button>
+						<button name="export" value="export" class="btn btn-default" data-original-title="" title=""><i class="fa fa-download"></i> 导出数据</button>
+						<button type="button" class="btn btn-default" data-original-title="" title="">总记录数：{$total}</button>
+					</div>
+				</div>
+				<div class="form-group">
+				</div>
+			</form>
+		</div>
+	</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				直播列表
+			</div>
+			<div class="panel-body">
+			<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th align="center" style="width:20px;text-align:center;">ID</th>						
+                    <th align="center" style="width:80px;text-align:center;">直播标题</th>
+					<th align="center" style="width:100px;text-align:center;">直播图片</th>
+					<th align="center" style="width:30px;text-align:center;">直播人数设置</th>
+					<th align="center" style="width:30px;text-align:center;">直播人数浮动设置</th>
+					<th align="center" style="width:80px;text-align:center;">创建时间</th>
+					<th align="center" style="width:80px;text-align:center;">更新时间</th>
+					<th align="center" style="width:80px;text-align:center;">是否结束</th>
+					<th style="width:200px;text-align:center;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $row}
+					<tr>		
+						<td align="center" style="text-align:center;">{$row['id']}</td>
+                        <td align="center" style="text-align:center;color:red;">{$row['title']}</td>
+                        <td align="center" style="text-align:center;"><img src='../attachment/{$row['start_picurl']}' width="100"/></td>
+                        <td align="center" style="text-align:center;">{$row['renshu']}</td>
+                        <td align="center" style="text-align:center;">{$row['fudong']}</td>
+						<td align="center" style=" text-align:center;">{php echo date('Y-m-d H:i',$row['create_at'])}</td>
+						<td align="center" style="text-align:center;">{php echo date('Y-m-d H:i',$row['update_at'])}</td>
+						<td align="center" style="text-align:center;">{if $row['isjieshu']==1}正在进行{else}已结束{/if}</td>
+						<td align="center" style="text-align:center;">
+						<a href="{php echo $this->createWebUrl('zhibolist',array('zhiboid' =>$row['id']))}"><button class="btn btn-default" >查看</button></a>
+						{if $row['isjieshu']==1}<button class="btn btn-warning"  onclick="tianjia({$row['id']})">添加直播内容</button>{/if}
+						{if $row['isjieshu']==1}<a href="{php echo $this->createWebUrl('jieshu',array('zhiboid' =>$row['id']))}"><button class="btn btn-danger" >结束</button></a>{/if}
+						<a href="{php echo $this->createWebUrl('guanggao',array('zhiboid' =>$row['id']))}"><button class="btn btn-default" >广告</button></a>
+						</td>
+					</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+			</div>
+		</div>
+</div>
+		<div class="modal fade" id="myModal">
+		<div class="modal-dialog" style="margin-top: 100px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">添加图文直播内容</h4>
+				</div>
+				<form id="add_member" action="{php echo $this->createWebUrl('zhibo',array('operation' =>''))}" method="post" enctype="multipart/form-data" class="form-horizontal ">
+				<div class="modal-body">
+				<input type="hidden" id="zhiboid" name="zhiboid" />
+						<div class="form-group">
+		                    <label class="col-md-3 control-label" for="text-input"><span style='color:red'>*</span>直播文字内容</label>
+		                    <div class="col-md-9">
+				               	<textarea style="height:60px;" id='wenzi' name="wenzi" class="form-control" cols="60"></textarea>
+				            </div>
+					    </div>
+					    <div class="form-group">
+				            <label class="col-md-3 control-label"><span style='color:red'>*</span> 直播图片</label>
+				            <div class=" col-md-9">
+				               	{php echo tpl_form_field_image('zhibo_picurl');}
+				            <span style="color: red;">注：文字、图片、音频、视频不能同时为空！</span>
+				            </div>
+        				</div>
+        				<div class="form-group">
+				            <label class="col-md-3 control-label"><span style='color:red'>*</span> 直播音频</label>
+				            <div class=" col-md-9">
+				               	{php echo tpl_form_field_audio('zhibo_yinpin');}
+				            <span style="color: red;">注：文字、图片、音频、视频不能同时为空！格式为：MP3</span>
+				            </div>
+        				</div>
+        				<div class="form-group">
+				            <label class="col-md-3 control-label"><span style='color:red'>*</span> 直播视频</label>
+				            <div class=" col-md-9">
+				               	{php echo tpl_form_field_wechat_video('zhibo_shipin');}
+				            <span style="color: red;">注：文字、图片、音频、视频不能同时为空！格式为MP4</span>
+				            </div>
+        				</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-primary">确认添加</button>
+				</div>
+				    </form>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+<script>
+	require(['bootstrap'],function($){
+		$('.btn').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+	});
+	function tianjia(zhiboid){
+		$('#zhiboid').val(zhiboid);
+		$('#myModal').modal('show');
+	}
+
+</script>
+{template 'common/footer'}

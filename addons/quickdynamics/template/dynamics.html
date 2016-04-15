@@ -1,0 +1,51 @@
+{template 'common/header'}
+
+<div class="main">
+  <style>
+    .redfont {
+      color:red;
+    }
+    .tb .alert {
+      width:97% !important;
+    }
+  </style>
+
+<section data-id="24" class="135editor">
+    <section class="135brush" style="margin: 30px; padding: 15px;color: rgb(62, 62, 62); line-height: 24px;box-shadow: rgb(170, 170, 170) 0px 0px 3px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-box-shadow: rgb(170, 170, 170) 0px 0px 3px;">
+        <p>
+        <h4>运行状态: {if $leaseHold}运行中... {else}等待新任务中... {/if}
+          <span id="counter" style="color:gray"></span>
+          <span class="pull-right">
+            <a class="btn btn-success " onclick="return alert('3秒钟后立即生效')" href="{php echo $this->createWebUrl('Dynamics', array('op' => 'start'))}">启动</a>
+            <a class="btn btn-warning " onclick="return confirm(' Are You Satisified with my Service? 确认暂时让我休息下？3秒钟后立即生效. 不过只要你说“奥哟”的时候我就自动醒来啦!')" href="{php echo $this->createWebUrl('Dynamics', array('op' => 'stop'))}">停止</a>
+          </span>
+        </h4>
+        </p>
+    </section>
+</section>
+
+
+<section data-id="24" class="135editor">
+    <section class="135brush" style="margin: 30px; padding: 15px;color: rgb(62, 62, 62); line-height: 24px;box-shadow: rgb(170, 170, 170) 0px 0px 3px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-box-shadow: rgb(170, 170, 170) 0px 0px 3px;">
+        <p>
+          <h4>待处理消息数: {php echo intval($queueSize)}条</h4>
+        </p>
+    </section>
+</section>
+
+</div>
+    <script language="JavaScript">
+      var cnt = 3;
+      $('#counter').html(cnt + '秒后自动刷新');
+      function myrefresh()
+      {
+        if (cnt-- > 0) {
+          $('#counter').html(cnt + '秒后自动刷新');
+        } else {
+          window.location.reload();
+          cnt = 3;
+        }
+      }
+      setInterval('myrefresh()',1000); //指定1秒刷新一次 
+    </script>
+{template 'common/footer'}

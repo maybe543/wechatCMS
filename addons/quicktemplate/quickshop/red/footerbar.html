@@ -1,0 +1,10 @@
+    <!--footer-->
+    <footer id="footer">
+    	<ul>
+        <li{if strtolower($_GPC['do'])=='list' or empty($_GPC['do'])} class="on"{/if}><a href="{php echo $this->createMobileUrl('List')}"><em class="icon-home icon-3x"></em><span>商城</span></a></li>
+        <li{if strtolower($_GPC['do'])=='mycart'} class="on"{/if}><a href="{php echo $this->createMobileUrl('MyCart')}"><em class="icon-shopping-cart icon-3x"></em><span>购物车</span>{if $carttotal > 0}<i class="num_icon">{$carttotal}</i>{/if}</a></li>
+        <li{if strtolower($_GPC['do'])=='myorder'} class="on"{/if}><a href="{php echo $this->createMobileUrl('MyOrder', array('allstatus'=>1))}"><em class="icon-user icon-3x"></em><span>我的订单</span></a></li>
+        <li{if strtolower($_GPC['do'])=='center'} class="on"{/if}><a href="{php echo create_url('mobile/module/center', array('name'=>'quickcenter', 'weid'=>$_W['weid']))}"><em class="icon-th-large icon-3x"></em><span>我的账本</span></a></li>
+        </ul>
+    </footer>
+    <!--footer end-->

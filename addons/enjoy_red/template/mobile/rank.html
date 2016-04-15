@@ -1,0 +1,284 @@
+<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        
+<title>{$actdetail[title]}-排行榜</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+                <meta name="Keywords" content="">
+        <meta name="Description" content="">
+        <!-- Mobile Devices Support @begin1 -->
+            <meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+            <meta content="telephone=no, address=no" name="format-detection">
+            <meta name="apple-mobile-web-app-capable" content="yes"> <!-- apple devices fullscreen -->
+	        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		    {php echo register_jssdk(false);}
+		    <link rel="stylesheet" type="text/css" href="../addons/enjoy_red/template/mobile/css/index.css" media="all">
+		    <link rel="stylesheet" type="text/css" href="../addons/enjoy_red/template/mobile/css/button.css" media="all">
+        <style>
+            img{max-width:100%!important;}
+        </style>
+    </head>
+    <body>
+            <style type="text/css">
+        #start-page-main {background-image:url('{php echo tomedia($actdetail[bgpic])}');color:{$actdetail[color]};}/*首页背景*/
+        #start-page-main #title{
+    display: inline-block;
+    font-size: 2rem;
+    text-align: center;
+    margin: 60px 0 20px 0;
+    width: 100%;
+	font-family:"Helvetica";
+	opacity: .9;
+}
+#start-page-main #img{
+    margin: 0 10px 15px 10px;
+}
+#start-page-main #img img{
+    max-width: 100%;
+}
+#start-page-main .whiteFont p{
+    text-align: center;
+    font-size: .8rem;
+    margin-bottom: 5px;
+}
+#start-page-main .whiteFont span{
+    font-weight: bold;
+}
+#start-page-main .smallFont{
+    margin: 15px 50px 0 50px;
+}
+#start-page-main .smallFont2 {
+margin: 15px 20px 30px 20px;
+background:rgba(255,255,255,0.2);
+		padding:10px;
+}
+#start-page-main .smallFont2 p{
+
+	font: 18px/36px "Helvetica";
+	
+}
+#start-page-main .smallFont img{
+    max-width: 100%;
+}
+            .fixed-b {
+			    bottom: 0;
+			}
+			.fixed-t, .fixed-b {
+			    z-index: 800;
+			    position: fixed;
+			    left: 0;
+			    right: 0;
+			}
+			.fixed-wrap {
+			    background: rgba(0,0,0,.7);
+			}
+            
+			.btn01.sp2 {
+			    margin: 0.4em 0 0.4em 3.3%;
+			}
+			.btn01:visited {
+			    color: #ffffff;
+			}
+		.btn01 {
+			    display: block;
+			    width: 45%;
+			    height: 1.5em;
+			    line-height: 1.5;
+			    background: #d93710;
+			    border-bottom: 4px solid #c9222e;
+			    -webkit-border-radius: 5px;
+			    -moz-border-radius: 5px;
+			    border-radius: 8px;
+			    font-size: 1.5rem;
+			    color: #ffffff;
+			    text-align: center;
+			    float:left;
+			    text-decoration:none;
+			}
+    </style>
+	
+<script type="text/javascript">
+        (function () {
+            // 排行信息
+            window.rankData = [{$str}];
+			window.start_page_config = {
+				NEEDREGISTER : false,
+				RANKTOTALPAGE:225,
+									NUMLIMIT:false,
+													TOTALRESTTIMES:10000,
+													ISEND:false,
+								qzgz:0,
+				URL:{
+                    RANKDATA:""
+                },
+                PATH:{
+                    GAME:""
+                }
+            }
+        })();
+    </script>
+	<script type="text/javascript" src="../addons/enjoy_red/template/mobile/js/zepto_min.js?v=2014-10-22"></script>
+	<script type="text/javascript" src="../addons/enjoy_red/template/mobile/js/LocalResizeIMG_min.js?v=2014-10-22"></script>
+	<script type="text/javascript" src="../addons/enjoy_red/template/mobile/js/mobileBUGFix_min.js?v=2014-10-22"></script>
+	<script type="text/javascript" src="../addons/enjoy_red/template/mobile/js/iscroll_min.js?v=2014-10-22"></script>
+	<script type="text/javascript" src="../addons/enjoy_red/template/mobile/js/index.js?v=2014-10-22"></script>
+<div id="start-page">
+	<div id="start-page-main">
+	        <p id="title">{$actdetail[title]}</p>
+        <div class="whiteFont">
+{php echo htmlspecialchars_decode($actdetail[adept])}
+        </div>
+		<div id="btn-start" class="anim"></div>
+		<a id="btn-prize" class="anim" href=""></a>
+		<div class="panel-container">
+			<ul class="container-title">
+				<li><a class="btn-rank"></a></li>
+				<li><a class="btn-activity"></a></li>
+			</ul>
+			<div class="container-body">
+				<div class="container-content container-rank">
+					<table class="table-title">
+						<colgroup><col width="20%">
+						<col width="20%">
+						<col width="40%">
+						<col width="20%">
+						</colgroup><tbody><tr>
+							<th></th>
+							<th><span class="icon icon-head"></span></th>
+							<th><span class="icon icon-nick"></span></th>
+							<th><span class="icon icon-time"></span></th>
+						</tr>
+					</tbody></table>
+						<div class="table-scroll" style="overflow: hidden;">
+							<table class="table-body"
+								style="transition: transform 0ms; -webkit-transition: transform 0ms; transform-origin: 0px 0px 0px; transform: translate(0px, -10px) scale(1) translateZ(0px);">
+								<colgroup>
+									<col width="20%">
+									<col width="20%">
+									<col width="40%">
+									<col width="20%">
+								</colgroup>
+								<tbody>
+							<!--  	{php $i=0}
+								{loop $ranks $item}
+								{php $i++}
+									<tr>
+										<td>{if $i==1}<span class="icon_rank rank1"></span>{else if $i==2}
+										<span class="icon_rank rank2"></span>{else if $i==3}
+										<span class="icon_rank rank3"></span>{else}
+										<span>{$i}</span>
+										{/if}
+										
+										</td>
+										<td><span class="icon-img-bg"><img
+												src="{$item[avatar]}"
+												class="icon-img"></span></td>
+										<td>{$item[nickname]}</td>
+										<td>{$item[sum]}</td>
+									</tr>
+							{/loop}
+									<tr class="page-loading-box">
+										<td colspan="4"><div class="page-loading">显示前20名</div></td>
+									</tr>-->
+								</tbody>
+							</table>
+							<div
+								style="position: absolute; z-index: 100; width: 7px; bottom: 2px; top: 2px; right: 1px; pointer-events: none; transition: opacity 0ms 0ms; -webkit-transition: opacity 0ms 0ms; overflow: hidden; opacity: 1;">
+								<div
+									style="position: absolute; z-index: 100; border: 1px solid rgba(255, 255, 255, 0.901961); box-sizing: border-box; width: 100%; border-radius: 3px; pointer-events: none; transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); -webkit-transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); transform: translate(0px, 4.15730337078652px) translateZ(0px); height: 215px; background: padding-box padding-box rgba(0, 0, 0, 0.498039);"></div>
+							</div>
+						</div>
+						<table class="table-bottom">
+							<colgroup>
+								<col width="20%">
+								<col width="80%">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td><span class="icon-img-bg"> <img src="{$user[avatar]}" class="icon-img">
+									</span></td>
+									<td>我的累计金额：<b>{$county}</b>元，可提现<b>{$countm}</b>元
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				<div class="container-content container-acitivity">
+						<div class="container-activity-box">
+							<div class="container-activity-content" style="overflow: hidden;">
+								<div class="text" style="transition: transform 0ms; -webkit-transition: transform 0ms; transform-origin: 0px 0px 0px; transform: translate(0px, 0px) translateZ(0px);">
+									<span class="icon2 icon-time"></span><br>
+									{php echo htmlspecialchars_decode($actdetail[rule])}	
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="company-rights"></div>
+	<div class="ads show" style="height:160px;">
+				<!--<img src="http://stc.weimob.com/img/magpiebridge/bottom_ads.jpg/ads.jpg"/>
+			<a href="{$actdetail[sucai]}"><img src="../addons/enjoy_red/template/mobile/images/bottom_ads.jpg">
+           </a><div class="btn-close-ad"></div>
+           <a href="{php echo $this->createMobileUrl('entry')}" class="a_demo_two" > 返回游戏</a>-->
+         <div class="fixed-wrap fixed-b">
+       
+            <a class="btn01 sp2 btnShare" href="{php echo $this->createMobileUrl('entry')}">继续游戏</a>
+            <a class="btn01 sp2 btnShare"  href="{php echo $this->createMobileUrl('mylog')}">我的奖池</a>
+            </div>  
+	</div>
+
+	</div>
+</div>
+<div class="register-panel-layer"></div>
+<div class="register-panel" id="panel-register">
+	<div class="register-main">
+		<div class="register-content">
+			<span class="icon-player"></span>
+			<div class="icon-img-bg">
+				<img class="icon-img" src="http://stc.weimob.com/img/magpiebridge/icon_head_empty.png" defaultsrc="http://stc.weimob.com/img/magpiebridge/icon_head_empty.png">
+			</div>
+			<span class="icon-edit"></span>
+
+			<form enctype="multipart/form-data" action="/webmagpiebridge/login" method="post" onsubmit="return validation()">
+				<input type="hidden" name="input-file">
+				<input type="hidden" name="headimgurl" value="">
+				<input type="hidden" name="id" value="2737">
+				<input type="hidden" name="v" value="">
+				<input type="hidden" name="pid" value="1071">
+				<input type="hidden" name="shareid" value="">
+				<input type="hidden" name="wechatid" value="">
+				<input type="file" class="input-file" name="picurl">
+				<input placeholder="请输入昵称" type="text" id="username" name="username" value="">
+				<input placeholder="请输入手机号" type="tel" id="tel" name="tel">
+				<div class="btn-layout">
+					<input class="btn-cancel" type="reset" value="">
+					<input class="btn-start" type="submit" value="">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="register-panel" id="panel-without-times">
+	<div class="register-main">
+		<div class="register-content">
+			<div class="icon-without-times"></div>
+			<div class="result-page-prize">很可惜</div>
+			<p class="plus">你的游戏机会已经用完<br>明天再来吧</p>
+			<div class="btn-layout">
+				<span class="btn-know"></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+        		<div mark="stat_code" style="width:0px; height:1000px; display:none;">
+					</div>
+	
+
+
+
+
+<!-- weixin js sdk end -->
+</body><iframe id="__WeixinJSBridgeIframe_SetResult" style="display: none;"></iframe><iframe id="__WeixinJSBridgeIframe" style="display: none;"></iframe></html>

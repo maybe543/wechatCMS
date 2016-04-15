@@ -1,0 +1,238 @@
+<style>
+  .uploadify {
+    position: relative;
+    margin-bottom: 1em;
+  }
+  .uploadify-queue {
+    margin-bottom: 1em
+  }
+  .uploadify-queue-item {
+    background-color: #f5f5f5;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font: 11px Verdana,Geneva,sans-serif;
+    margin-top: 5px; 
+    padding: 10px
+  }
+
+  .uploadify-error {
+    background-color: #fde5dd!important
+  }
+
+  .uploadify-queue-item .cancel a {
+    background: url('/media/images/wm/1uploadify-cancel.png') 0 0 no-repeat;
+    float: right;
+    height: 16px;
+    text-indent: -9999px;
+    width: 16px
+  }
+
+  .uploadify-queue-item.completed {
+    background-color: #e5e5e5
+  }
+
+  .uploadify-progress {
+    background-color: #e5e5e5;
+    margin-top: 10px;
+    width: 100%
+  }
+
+  .uploadify-progress-bar {
+    background-color: #09f;
+    height: 3px;
+    width: 1px
+  }
+
+  .ipost-list {
+    position: relative;
+    width: 100%;
+    margin:0px;
+  }
+  .ipost-list .holder {
+    float: left;
+    display: inline;
+    width: 114px;
+    height: 112px;
+    margin-right: 12px;
+    font-size: 12px;
+    position: relative;
+    border: 2px dashed #ccc;
+}
+.imgbox {
+    float: left;
+    display: inline;
+    width: 124px;
+    height: 200px;
+    margin-right: 12px;
+    font-size: 12px;
+    position: relative;
+}
+
+.item_box {
+    display: block;
+    width: 110px;
+    height: 180px;
+    padding: 6px;
+    border: #d3d3d3 1px solid;
+    background-color: #f6f6f6;
+}
+
+.item_input textarea {
+    width: 118px;
+    height: 20px;
+    margin-top: 0;
+    margin-top: 0\0;
+    *margin-top: -1px;
+    _margin-top: -1px;
+    border: #d3d3d3 1px solid;
+    border-top: none;
+    display: block;
+    font: 12px/20px Arial, "SimSun";
+    overflow: hidden;
+    padding: 0 2px;
+}
+
+.item_input .shadow {
+    display: none;
+}
+
+.item_input.on {
+    display: block;
+    z-index: 98;
+    background-color: #f6f6f6;
+    position: absolute;
+    width: 158px;
+    padding: 4px;
+    border: #d3d3d3 1px solid;
+    top: 87px;
+}
+
+    .item_input.on .hc {
+        display: block;
+    }
+
+    .item_input.on .shadow {
+        padding: 0;
+        _width: 181px;
+    }
+
+    .item_input.on i.tline {
+        position: absolute;
+        height: 1px;
+        overflow: hidden;
+        left: 0;
+        top: -1px;
+        width: 93px;
+        background-color: #f6f6f6;
+        display: block;
+    }
+
+    .item_input.on textarea {
+        border: #e3e3e3 1px solid;
+        width: 152px;
+        height: 50px;
+    }
+
+    .hc {
+      display: none;
+    }
+
+.item_input.on em {
+    line-height: 18px;
+    color: #d4d4d2;
+}
+
+a.item_close {
+position: absolute;
+display: block;
+width: 14px;
+height: 14px;
+background-position: -100px -182px;
+right: -6px;
+top: -6px;
+text-indent: -9999px;
+overflow: hidden;
+background-image: url({RES_IMG}image_upload_cancel.png);
+}
+a.item_close:hover {
+    text-decoration: none;
+    background-position: -100px -200px;
+}
+</style>
+<!---批量上传-->
+    <tr>
+        <th>二维码海报背景图</th>
+        <td>
+            <div class="photo_list">
+                <input name="token" type="hidden" value="{$_W['token']}" />
+                <span id="selectimage" tabindex="-1" class="btn btn-primary"><i class="icon-plus"></i> 上传照片</span>
+                <span class="help-block">图片格式必须为jpg，大小建议为：530像素 * 800像素，每张图片大小建议控制在200KB以内。可以一次上传多张海报，不同用户可以看到不同内容（随机）。</span>
+                <span style="color:red;"><input name="piclist" type="hidden" value="{$item['piclist']}" /></span>
+                <div id="file_upload-queue" class="uploadify-queue"></div>
+                <ul class="ipost-list ui-sortable" id="fileList">
+                    {loop $item['bgimages'] $v}
+                    <li class="imgbox" style="list-type:none">
+                        <a class="item_close" href="javascript:;" onclick="deletepic(this);" title="删除"></a>
+                        <span class="item_box">
+                            <img src="{$_W['attachurl']}{$v}" style="max-height:100%;">
+                        </span>
+                        <input type="hidden" value="{$v}" name="attachment[]">
+                    </li>
+                    {/loop}
+                </ul>
+        </td>
+    </tr>
+<!--批量上传结束-->
+
+<script language="javascript">
+$(function(){
+	var i = 0;
+	$('#selectimage').click(function() {
+		var editor = KindEditor.editor({
+			allowFileManager : false,
+			imageSizeLimit : '30MB',
+			uploadJson : './index.php?act=attachment&do=upload'
+		});
+		editor.loadPlugin('multiimage', function() {
+			editor.plugin.multiImageDialog({
+				clickFn : function(list) {
+					if (list && list.length > 0) {
+						for (i in list) {
+							if (list[i]) {
+								html =	'<li class="imgbox" style="list-type:none">'+
+								'<a class="item_close" href="javascript:;" onclick="deletepic(this);" title="删除"></a>'+
+								'<span class="item_box"> <img src="'+list[i]['url']+'" style="max-height:100%"></span>'+
+								'<input type="hidden" name="attachment[]" value="'+list[i]['filename']+'" />'+
+								'</li>';
+								$('#fileList').append(html);
+								i++;
+							}
+						}
+						editor.hideDialog();
+					} else {
+						alert('请先选择要上传的图片！');
+					}
+				}
+			});
+		});
+	});
+});
+function deletepic(obj){
+	if (confirm("确认要删除？")) {
+		var $thisob=$(obj);
+		var $liobj=$thisob.parent();
+		var picurl=$liobj.children('input').val();
+		$.post('{php echo $this->createMobileUrl('AjaxDeleteImage',array())}',{ pic:picurl},function(m){
+			if(m=='1') {
+				$liobj.remove();
+			} else {
+				alert("删除失败");
+			}
+		},"html");
+	}
+}
+
+    </script>
+
+

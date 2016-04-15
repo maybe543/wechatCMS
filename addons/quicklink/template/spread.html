@@ -1,0 +1,17 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+	<li {if $op == 'leaflet'}class="active"{/if}><a href="{php echo $this->createWebUrl('spread', array('op' => 'leaflet'));}">传单库</a></li>
+  <li {if $op == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('spread', array('op' => 'post'));}">编辑传单</a></li>
+</ul>
+
+
+{if $op == 'post'}
+  {template 'post'}
+{/if}
+{if $op == 'leaflet'}
+  {template 'spread-list'}
+{/if}
+
+
+{template 'common/footer'}

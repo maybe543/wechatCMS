@@ -1,0 +1,338 @@
+{php $bootstrap_type = 3;}
+{template 'header'}
+{template 'common'}
+{php $cfg = $this->module['config'];}
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style.css?{TIMESTAMP}">
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style_new.css?{TIMESTAMP}">
+<style>
+.brief img{ width:100% !important;}
+</style>
+<!--<div class="head">
+
+	<span class="title">　　{$item['title']}</span>
+	
+</div>-->
+<div class="detail-main" style="margin-bottom:10px;">
+	<div class="detail-img">
+		<img src="{$_W['attachurl']}{$item['thumb']}" alt="" />	
+		
+	</div>
+	<div class="detail-div ">
+      <div class="show_div_1" style="margin-bottom:10px; padding:0 !important;">
+		<!--<div class="detail-group title">{$item['title']}</div>
+		<div class="detail-group last">
+			<span style="color:#999;">已筹资 :</span><span class="text-info" style="font-size:14px; font-weight:bold;">¥{$item['finish_price']}({php echo floor($item['finish_price']*100/$item['limit_price'])}％) </span><span style="color:#999;">目标:¥{$item['limit_price']}</span>
+		</div>
+		<div class='detail-group progress_c'>
+			<div class="progress">
+  				<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}" aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+    				<span class="sr-only">{php echo $item['finish_price']*100/$item['limit_price']}% Complete</span>
+  				</div>
+			</div>
+		</div>
+		<div class='detail-group last-day'>
+			<span style="float:left";>{$item['donenum']} <span style="color:#999;">份爱心支持</span></span>
+			<span style="float:right";>剩余{php echo $item['deal_days'] - floor((time() - $item['createtime'])/86400)}天</span>
+		</div>-->
+        
+        
+        
+        
+        
+   <div class="i_d_6" >
+      <div style="height:30px; line-height:30px; position:relative;">
+        <div class="progress float_l" style="height:4px; width:84%;margin-bottom: 0px; margin-top:14px;">
+          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}"  aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+            
+          </div>
+        </div>
+        <div class="float_r" style="vertical-align:bottom; width:15%; overflow:hidden; padding-top:0px; text-align:left; padding-right:15px; color:#fe6903;"><span id="bfb_show">{php echo round($item['finish_price']*100/$item['limit_price'],2)}</span>%</div>
+        <div class="clear"></div>
+        </div>
+      <div class="i_d_6_1" style=" border-right:1px solid #ececec;">
+      <div class="float_l i_d_3_1_text1"><span style="color:#e39a65; font-size:16px">{php echo round($item['limit_price'])}</span>
+     <div style="margin-top:3px;"> 目标（元）</div>
+     </div>
+      <div class="clear"></div>
+      </div>
+      
+      <div class="i_d_6_1" style=" border-right:1px solid #ececec;">
+      <div class="float_l i_d_3_1_text1"><span style="color: #e39a65;font-size:16px">{$item['finish_price']}</span>
+     <div style="margin-top:3px;"> 已筹款（元）</div>
+     </div>
+      <div class="clear"></div>
+      </div>
+      
+      <div class="i_d_6_1" style="">
+      <div class="float_l i_d_3_1_text1"><span style="color:#e39a65;font-size:16px">{$item['donenum']}</span>
+     <div style="margin-top:3px;"> 爱心（份）</div>
+     </div>
+      <div class="clear"></div>
+      </div>
+      
+    </div>
+        </div>
+        
+        <div class="show_div_1" style="margin-bottom:10px; padding:0 15px 15px 15px;">
+        <div class='detail-group brief' style="">
+        <div class="i_d_8_1" style="font-size:18px;border-left:none !important; padding-left:0 !important; margin-left:0 !important; border-bottom:1px solid #ececec">
+          <div style="border-bottom:#f4810a 2px solid; width:80px; font-size:16px; ">
+        项目进度</div>
+        </div>
+			<div class="xmxq" style=" font-size:14px !important;">{$item['jinzhan']}</div>
+		</div>
+        </div>
+        
+      <div class="show_div_1" style="margin-bottom:0px; padding:0px 15px 15px 15px;">
+      <div class='detail-group brief' style="">
+        <div class="i_d_8_1" style="font-size:18px;border-left:none !important; padding-left:0 !important; margin-left:0 !important; border-bottom:1px solid #ececec;">
+        <div style="border-bottom:#f4810a 2px solid; width:80px; font-size:16px; ">
+        项目详情
+        </div></div>
+        <div style=" font-size:12px !important;">
+			{$item['content']}
+         </div>
+		</div>
+        
+        <div class="i_d_8_1">善款接收机构</div>
+        <div class="i_d_8_2" style="padding-left:15px;">
+        {$cfg['shopname']}
+        </div>
+      
+      </div>
+
+
+
+		<!--<div class='detail-group' style="font-size:14px;">
+			<span class="col-xs-8" style="width:100%;">
+				<span style="float:right;";><a href="{if !empty($item['url'])}{$item['url']}{else}{php echo $this->createMobileUrl('detail_more',array('id'=>$item['id']))}{/if}" style="color:#33cdd6;">查看详情>></a></span>
+			</span>
+		</div>-->
+        <!--<div style="text-align:center; font-size:12px; color:#666; padding:10px 0;">青年创业教育发展基金</div>-->
+	</div>
+    
+<div class="i_d_10" style="border-top:#ececec 1px solid;">
+     {if $subscribe == 1 }
+       <div class="i_d_10_1 btn btn-danger  btn-block" id="wyjk" style="background:#fe6903; border-color:#fe6903; color:#fff;">我要捐款</div>
+       {elseif strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') == false}   
+            <div class="i_d_10_1 btn btn-danger  btn-block" id="wyjk" style="background:#fe6903; border-color:#fe6903; color:#fff;">我要捐款</div>
+        {else} 
+       <div class="i_d_10_1 btn btn-danger  btn-block" id="guanzhu" style="background:#fe6903; border-color:#fe6903; color:#fff;">请点击关注并捐款</div>
+      {/if}
+  
+     
+    </div>    
+      <!--金额弹窗-->
+    <div class="jetc" style="border-top:#ececec 1px solid; padding:10px 15px !important;">
+	<!--<div class="detail-chooseback">选择捐款</div>-->
+	{loop $items $row}
+    {if $row['price']==1}
+    {else}
+	<!--<div class="detail-div img-rounded detail-content" style="word-break:break-all">
+		<div class='detail-group top'>
+			<a href="{php echo $this->createMobileUrl('confirm',array('id'=>$item['id'], 'item_id'=>$row['id']));}">
+			<span class="col-xs-8" style="width:100%;">
+				<span style="color:#33cdd6;font-size:18px;font-weight:bold;">¥{$row['price']}</span> <span style="color:#999;">{$row['donenum']}人已支持</span>
+				<span style="float:right;color:#33cdd6;">立即捐助<i class="glyphicon glyphicon-chevron-right"></i></span>
+			</span>
+			</a>
+		</div>
+		<hr style="margin-top: 5px;margin-bottom: 5px;" />
+	</div>-->
+    <div class="float_l"><div class="input_2"  style="position:relative;"><span class="font_2">{php echo floor($row['price'])}</span>元
+     <div style="position:absolute; right:0; bottom:0;" class="arrow-left"></div>
+     <div class="gou_b"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></div>
+        <input type="text" style=" display:none;" value="{php echo $this->createMobileUrl('confirm',array('id'=>$item['id'], 'item_id'=>$row['id']));}"  />
+
+    </div>
+    </div>
+    
+    {/if}
+	{/loop}
+    <div class="float_l" style="width:35%;"><div class="input_1" style="position:relative;"><input name="price" id="price_input" value="" size="6" class=" input_2 font_3" placeholder="其他" style="width:70%; padding:10px 30px 10px 10px; font-size:14px; color:#fe6903; "/><span style="display:inline-block; margin-left:-30px;font-size:12px; color:#939393;">元</span>
+    
+    </div>
+    <a href="javascript:void(0)" id="price"><span style="float:right;color:#fff; display:none;background:#fe6903 !important;">立即捐助<i class="glyphicon glyphicon-chevron-right"></i></span></a>
+    </div>
+    
+    
+    	
+<label style="display:none;" id="jine"></label>
+     <div class="clear"></div>
+     <a href="###" id="jk_btn" ><div class="btn btn-danger  btn-block" style="background:#fe6903; border-color:#fe6903; color:#fff;">立即捐款</div></a>
+     <div class="has-success i_d_14">
+      <div class="radio">
+        <label>
+          <input type="radio" id="checkboxSuccess" value="option1"  checked style=" margin-top:2px;">
+          同意并接收<a href="http://gongyichina.org/addons/hx_zhongchou/template/mobile/xieyi.html">《基金云爱心捐赠协议》</a>
+        </label>
+      </div>
+    </div>
+     
+</div>
+
+     
+ <!--遮蔽层-->
+    <div style="" id="zbz">
+      
+    </div>
+</div>
+
+<script type="text/javascript">
+function addtocart(){
+	var url = "{php echo murl('entry//mycart',array('pid'=>$id,'op'=>'add','m'=>'hx_zhongchou'),true)}"
+	$.getJSON(url, function(s){
+		if(s.result==0){
+			tip("操作失败");
+		}else{
+			if (s.t == 'add') {
+				tip_close();tip("收藏成功");
+			}else{
+				tip_close();tip("取消收藏成功");
+			}
+			
+			$('#carttotal').css({'width':'50px', 'height':'50px', 'line-height':'50px'}).html(s.total).animate({'width':'20px', 'height':'20px', 'line-height':'20px'}, 'slow');
+			$('#deal_like_label').html(s.ptotal);
+		}
+	});
+}
+
+ 	$("#price").click(
+ 	function(){
+		var  price = $('#price_input').val();
+		window.location.href = "{php echo $this->createMobileUrl('confirm',array('id'=>$item['id'], 'item_id'=>$row['id']));}&price="+price;
+	 });
+	
+	
+
+
+</script>
+ <script>
+ function changeTwoDecimal_f(x) {
+    var f_x = parseFloat(x);
+    if (isNaN(f_x)) {
+        alert('function:changeTwoDecimal->parameter error');
+        return false;
+    }
+    var f_x = Math.round(x * 100) / 100;
+    var s_x = f_x.toString();
+    var pos_decimal = s_x.indexOf('.');
+    if (pos_decimal < 0) {
+        pos_decimal = s_x.length;
+        s_x += '.';
+    }
+    while (s_x.length <= pos_decimal + 2) {
+        s_x += '0';
+    }
+    return s_x;
+}
+ window.onload=function(){
+	 var bfb="{php echo $item['finish_price']*100/$item['limit_price']}";
+	 bfb=changeTwoDecimal_f(bfb);
+	 $("#bfb_show").html(bfb);
+	 $(".input_2").eq(0).click();
+	 }
+     $("#wyjk").click(
+	 function(){
+		 $(".jetc").show();
+		 $("#zbz").show();
+		 });
+	 $("#guanzhu").click(
+	 function(){
+		window.location.href = "{$cfg['noticeemail']}";
+		 });
+	$("#zbz").click(
+	 function(){
+		 $(".jetc").hide();
+		 $("#zbz").hide();
+		 });
+	var dizhi="";
+	$(".input_2").click(
+	 function(){
+		$(".input_2").css("border-color","#ccc"); 
+		$(".input_2").css("border-width","1px");
+		$(this).css("border-color","#fe6903");
+		$(this).css("border-width","2px");
+		$(".input_2").find(".arrow-left").hide();
+		$(".input_2").find(".gou_b").hide();
+		$(this).find(".arrow-left").show();
+		$(this).find(".gou_b").show();
+		$("#price").val("");
+		dizhi=$(this).find("input").val().toString();
+		 });
+	
+	$("#jk_btn").click(
+	 function(){
+		
+		/* if($("#jine").text()==""){alert("请选择或者输入捐款金额");}*/
+	   if($("#price_input").val()==""){
+		location.href=dizhi;}
+		
+		 else if($("#price_input").val()!=""){
+         $("#price").click();
+		}
+		
+		
+		 });		 
+		 
+    </script>
+    
+{php $title = $goods['title'];}
+
+{php $_share = array('content' => $item['brief'], 'title' => $item['title'], 'imgUrl' => tomedia($item['thumb']));}
+
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+ <script>
+ 
+	wx.config({
+		debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: '{$_W["oauth_account"]["key"]}', // 必填，公众号的唯一标识
+		timestamp:'{php echo $time}', // 必填，生成签名的时间戳
+		nonceStr: '{php echo $nonceStr}', // 必填，生成签名的随机串
+		signature: '{php echo $signature}',// 必填，签名，见附录1
+		jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		
+    });
+	
+	
+
+wx.ready(function () {
+    // 在这里调用 API
+	
+	wx.onMenuShareAppMessage({
+	  title: '{$title}', // 分享标题
+	  desc: '{php  echo cutstr(strip_tags($item["brief"]),40)}', // 分享描述
+	  link: '{php echo $url}', // 分享链接
+	  imgUrl: '{$_W["attachurl"]}{$item["thumb"]}', // 分享图标
+	  type: '', // 分享类型,music、video或link，不填默认为link
+	  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	  success: function () { 
+		  // 用户确认分享后执行的回调函数
+	  },
+	  cancel: function () { 
+		  // 用户取消分享后执行的回调函数
+	  }
+});
+
+ 
+ 
+ 	 wx.onMenuShareTimeline({
+		title: '{$title}', // 分享标题
+		link: '{php echo $url}', // 分享链接
+		imgUrl: '{$_W["attachurl"]}{$item["thumb"]}', // 分享图标
+		success: function () { 
+			// 用户确认分享后执行的回调函数
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+		  }
+    });  
+	
+ });	
+ 
+	</script>
+
+
+{template 'footer'}

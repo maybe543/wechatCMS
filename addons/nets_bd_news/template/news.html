@@ -1,0 +1,362 @@
+﻿{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+	<li><a  href="/web/index.php?c=site&a=entry&op=display&do=Hxscategory&m=nets_bd_news">分类管理</a></li>
+    <li {if $_GPC['op']=='display' && empty($_GPC['cloud'])} class="active"{/if}><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsnews&m=nets_bd_news">新闻管理</a></li>
+	<li  {if $_GPC['op']=='add'} class="active"{/if}><a href="/web/index.php?c=site&a=entry&op=add&do=Hxsnews&m=nets_bd_news">添加新闻</a></li>
+
+</ul>
+{if $_GPC['op']=='add'}
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">添加新闻</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">标题</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="title" class="form-control" value="{$record['title']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">简介</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea name="brief" class="form-control">{$record['brief']}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">缩略图</label>
+					<div class="col-sm-8 col-xs-12">
+						{php load()->func('tpl')}
+						{php echo tpl_form_field_image('picture',$record['picture'])}
+					<div class="input-group " style="font-size:16px;">
+						<br/>
+						<input type="checkbox" style="padding:10px;-webkit-transform: scale(2);" name="autolitpic"/>  提取内容第一张图片为缩略图 
+						<br/><br/>
+						<input type="checkbox" style="padding:10px;-webkit-transform: scale(2);" name="isshowdetail" {if $record['isshowdetail']==1}checked="true"{/if} id="isshowdetail"/>  是否在详情页显示
+					</div>					
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">内容</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_ueditor('content', $record['content']);}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分类</label>
+					<div class="col-sm-9 col-xs-12">
+						<select name="cid" class="form-control tpl-category-parent">
+							{loop $category $item}
+								<option value="{$item['id']}" {if $record['cid']==$item['id']} selected="selected" {/if}>{$item['name']}</option>
+							{/loop}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">来源</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="source" class="form-control" value="{$record['source']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">来源URL</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="source_url" class="form-control" value="{$record['source_url']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">作者</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="author" class="form-control" value="{$record['author']}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">标签</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="tag" class="form-control" value="{$record['tag']}">
+						<div class="help-block">新闻标签，多个用英文,分隔 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">排序</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="sort" class="form-control" value="{$record['sort']}">
+						<div class="help-block">数字越大越靠前展示 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">赞数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="like_num" class="form-control" value="{$record['like_num']}">
+						<div class="help-block">新闻的初始赞数 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">阅读数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="click_num" class="form-control" value="{$record['click_num']}">
+						<div class="help-block">新闻初始的阅读数 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">评论数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="comment_num" class="form-control" value="{$record['comment_num']}">
+						<div class="help-block">新闻初始的评论数 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">转发数</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="share_num" class="form-control" value="{$record['share_num']}">
+						<div class="help-block">新闻初始的转发数 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否推荐</label>
+					<div class="col-sm-9 col-xs-12">
+						<select name="ishome" class="form-control tpl-category-parent">
+								<option value="0" {if $record['ishome']==0} selected="selected" {/if}>不推荐</option>
+								<option value="1" {if $record['ishome']==1} selected="selected" {/if}>推荐</option>
+						</select>
+						<div class="help-block">推荐在首页优先展示 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="hidden" name="id" value="{$record['id']}"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+{/if}
+{if $_GPC['op']=='display'}
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form2">
+		{if !empty($_GPC["cloud"])}
+			<input type="hidden" name="cloud" value="1">
+		{/if}
+			<input type="hidden" name="op" value="display">
+			<input type="hidden" name="do" value="Hxsnews">
+			<input type="hidden" name="post" value="1">
+			<input type="hidden" name="page" value="1">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 control-label">关键字</label>
+				<div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+					<input class="form-control" name="keyword" id="keyword" type="text" value="{$_GPC['keyword_c']}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 control-label">{if empty($_GPC["cloud"])}新闻分类{else}新闻标签{/if}</label>
+				<div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+						<select class="form-control tpl-category-parent" id="tag" name="tag">
+							<option value="">{if empty($_GPC["cloud"])}请选择新闻分类{else}请选择新闻标签{/if}</option>
+							{if empty($_GPC["cloud"])}
+								<option value="-1"  {if $_GPC['tag']=="-1"} selected="true" {/if}>未分类</option>
+							{/if}
+							{loop $tagRecord $r}
+							<option {if !empty($_GPC["cloud"])} value="{$r['tag']}" {if $_GPC['tag_c']==$r['tag']}selected="true"{/if} {else}value="{$r['id']}"  {if $_GPC['tag_c']==$r['id']}selected="true"{/if} {/if}>{$r['tag']}</option>
+							{/loop}
+						</select>
+				</div>
+				{if !empty($_GPC["cloud"])}
+				<div class="pull-right col-xs-12 col-sm-2 col-md-2 col-lg-2">
+					<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+				{/if}
+			</div>
+			{if empty($_GPC["cloud"])}
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 control-label">新闻标签</label>
+				<div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+						<select class="form-control tpl-category-parent" id="tag1" name="tag1">
+							<option value="">请选择新闻标签</option>
+							{loop $group_tag $r}
+							<option {if $_GPC['tag1_c']==$r['tag']}selected="true"  {/if} value="{$r['tag']}">{$r['tag']}</option>
+							{/loop}
+						</select>
+				</div>
+				<div class="pull-right col-xs-12 col-sm-2 col-md-2 col-lg-2">
+					<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+			</div>
+			{/if}
+		</form>
+		
+	</div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        新闻管理
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+					
+					<script>
+						function selectAll(obj1) 
+						{ 
+						  var obj = document.getElementsByName("checkAll"); 
+						  if(obj1.checked == false) 
+						  { 
+							  for(var i=0; i<obj.length; i++) 
+							  { 
+								obj[i].checked=false; 
+							  } 
+						  }else{ 
+							  for(var i=0; i<obj.length; i++) 
+							  {	  
+								obj[i].checked=true; 
+							  }	
+						  }
+							getNewsId();
+						}
+						function getNewsId(){
+							var ids="";
+							var obj = document.getElementsByName("checkAll"); 
+							for(var i=0; i<obj.length; i++){ 
+								if(obj[i].checked){
+									ids+=","+obj[i].id;
+								}
+							} 
+							document.getElementById("importids").value=ids.substring(1,ids.length);
+						}
+					</script>
+                    <th style="width:50px;"><input type="checkbox" id="selAll" name="selAll" onclick="selectAll(this)"/>全选</th>
+					
+					<th style="width:150px;">标题</th>
+                    <th style="width:80px;">作者</th>
+					<th style="width:80px;">推荐</th>
+					{if empty($_GPC["cloud"])}
+					<th style="width:80px;">标签</th>
+					<th style="width:80px;">排序</th>
+					<th style="width:80px;">阅读数</th>
+					<th style="width:80px;">转发数</th>
+					{/if}
+                    <th style="width:100px;">创建时间</th>
+					{if empty($_GPC["cloud"])}
+					<th style="width:120px;">操作</th>
+					{/if}
+                </tr>
+            </thead>
+     
+			<tbody id="tdbody">
+				{loop $record $r}
+				<tr>
+                    <td><input type="checkbox" id="{$r['id']}" onclick="getNewsId()" name="checkAll"/></td>
+                    <td style="white-space: inherit;"><p>{if !empty($r['Name'])}[{$r['Name']}]&nbsp;&nbsp;{/if}{$r["title"]}</p></td>
+                    <td style="white-space: inherit;">{$r["author"]}</td>
+					<td>{if $r["ishome"]==1}是{else}否{/if}</td>
+					{if empty($_GPC["cloud"])}
+					<td>
+					{$r["tag"]}
+					</td>
+					<td>{if empty($r["sort"])}0{else}{$r["sort"]}{/if}</td>
+                    <td>
+					{$r["click_num"]}
+					</td>
+					<td>
+					<a href="/web/index.php?c=site&a=entry&op=showcommon&t=share&do=Hxsnews&m=nets_bd_news&id={$r['id']}&showcommon={$r['id']}">
+					{$r["share_num"]}
+					</a>
+					</td>
+					{/if}
+					
+                    <td><?php echo date("Y-m-d",$r["createtime"])?></td>
+					
+					{if empty($_GPC["cloud"])}
+					<td>
+					<a href="/web/index.php?c=site&a=entry&op=add&do=Hxsnews&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">修改</a>
+					<a href="/web/index.php?c=site&a=entry&op=del&do=Hxsnews&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">删除</a>
+					</td>
+					{/if}
+                </tr>
+				{/loop}
+				<tr>
+                    
+					{if !empty($_GPC["cloud"])}
+					<td  colspan="4">
+					<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form3">
+						<input type="hidden" name="cloud" value="1">
+						<input type="hidden" name="op" value="display">
+						<input type="hidden" name="do" value="Hxsnews">
+						<input type="hidden" name="post" value="1">
+						<span style="float:left; padding:10px;"><input type="checkbox" id="selAll" name="selAll" onclick="selectAll(this)"/>全选</span>
+						<button class="btn btn-default"><i class="fa fa-plus"></i> 入库</button>
+						<input type="hidden" id="importids" name="importids" value="" />
+					</form>
+					{else}
+					<td  colspan="9">
+					<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form3">
+						<input type="hidden" name="op" value="display">
+						<input type="hidden" name="do" value="Hxsnews">
+						<input type="hidden" name="post" value="1">
+						<span style="float:left; padding:10px;"><input type="checkbox" id="selAll" name="selAll" onclick="selectAll(this)"/>全选</span>
+						<select class="form-control tpl-category-parent" style="width:150px;float:left;" id="category" name="category">
+							<option value="">移入到分类</option>
+							{loop $tagRecord $r}
+							<option value="{$r['id']}">{$r['tag']}</option>
+							{/loop}
+						</select>
+						<select class="form-control tpl-category-parent" style="width:150px;float:left;" id="ishome" name="ishome">
+							<option value="1">推荐到首页</option>
+							<option value="">不推荐</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-default"><i class="fa fa-plus"></i> 保存</button>
+						<input type="hidden" id="importids" name="importids" value="" />
+					</form>
+					{/if}
+                    </td>
+                </tr>
+			</tbody>
+        </table>
+		{$pager}
+    </div>
+	
+</div>
+{/if}
+
+
+{if $_GPC['op']=='showcommon'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {$record["title"]} &nbsp;&nbsp;{$typename}   <a  class="btn btn-default" onclick="history.go(-1);">返回</a>
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:150px;">用户</th>
+                    <th style="width:180px;">内容</th>
+                    <th style="width:100px;">时间</th>
+					<th style="width:80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $comment $r}
+				<tr>
+                    <td style="white-space: inherit;"><p>{$r["nickname"]}</p></td>
+                    <td style="white-space: inherit;">{$r["comment_content"]}</td>
+					
+                    <td><?php echo date("Y-m-d",$r["createtime"])?></td>
+					<td>
+					<a href="/web/index.php?c=site&a=entry&op=showcommon&t={$_GPC['t']}&del={$r['id']}&do=Hxsnews&m=nets_bd_news&id={$id}&showcommon={$id}" class="btn btn-primary">删除</a>
+					</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/if}
+{template 'common/footer'}

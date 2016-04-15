@@ -1,0 +1,68 @@
+{template 'common/header'}
+<style>
+.label{cursor:pointer;}
+</style>
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li{if $_GPC['do'] == 'manage'} class="active"{/if}><a href="{php echo $this->createWebUrl('manage');}">管理一站到底活动</a></li>
+		<li{if $_GPC['do'] == 'post'} class="active"{/if}><a href="{php echo url('platform/reply/post',array('m'=>'stonefish_fighting'));}"><i class="fa fa-plus"></i> 添加一站到底活动</a></li>
+		<li{if $_GPC['do'] == 'fansdata'} class="active"{/if}><a href="{php echo $this->createWebUrl('fansdata',array('rid' => $rid));}">参与粉丝</a></li>
+		<li{if $_GPC['do'] == 'sharedata'} class="active"{/if}><a href="{php echo $this->createWebUrl('sharedata',array('rid' => $rid));}">分享数据</a></li>
+		<li{if $_GPC['do'] == 'answerdata'} class="active"{/if}><a href="{php echo $this->createWebUrl('answerdata',array('rid' => $rid));}">答题记录</a></li>
+		<li{if $_GPC['do'] == 'rankdata'} class="active"{/if}><a href="{php echo $this->createWebUrl('rankdata',array('rid' => $rid));}">粉丝排行</a></li>
+		<li{if $_GPC['do'] == 'rankdaydata'} class="active"{/if}><a href="{php echo $this->createWebUrl('rankdaydata',array('rid' => $rid));}">每日排行</a></li>
+		<li{if $_GPC['do'] == 'trend'} class="active"{/if}><a href="{php echo $this->createWebUrl('trend',array('rid' => $rid));}">活动分析</a></li>
+		<li{if $_GPC['do'] == 'posttmplmsg'} class="active"{/if}><a href="{php echo $this->createWebUrl('posttmplmsg',array('rid' => $rid));}">消息通知</a></li>
+		<li><a href="{php echo url('platform/reply/post',array('m'=>'stonefish_fighting', 'rid' => $rid));}">编辑一站到底活动</a></li>
+	</ul>
+<div class="panel panel-default">
+<div class="panel-heading">
+	<div class="row-fluid">
+    	<div class="span8 control-group">
+			<a class="btn btn-default{if $_GPC['rank']=='sharenum'} btn-primary active{/if}" href="{php echo $this->createWebUrl('rankdata',array('rid'=>$rid,'rank'=>'sharenum'))}">分享排行榜</a>
+			<a class="btn btn-default{if $_GPC['rank']=='day'} btn-primary active{/if}" style="margin:0px 10px;" href="{php echo $this->createWebUrl('rankdata',array('rid'=>$rid,'rank'=>'day'))}">今日排行榜</a>
+			<a class="btn btn-default{if $_GPC['rank']=='rank' || $_GPC['rank']==''} btn-primary active{/if}" href="{php echo $this->createWebUrl('rankdata',array('rid'=>$rid,'rank'=>'rank'))}">总排行榜</a>
+			<a class="btn btn-warning" style="float:right;" href="{php echo $this->createWebUrl('download',array('rid'=>$rid,rank=>$_GPC['rank'],'data'=>'rankdata'))}"><i class="fa fa-download"></i> 导出{$statustitle}排行榜</a>
+        </div>
+    </div>
+</div>
+<div style="position:relative">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover" style="position:relative">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:50px;">排名</th>
+					<th style="width:50px;">头像</th>
+					<th style="width:100px;">真实姓名</th>
+					<th style="width:100px;">手机号码</th>
+					<th style="width:100px;">助力情况</th>
+					<th style="width:150px;">参与时间</th>
+					<th style="width:50px;">分享值</th>
+					<th style="width:50px;">今日得分</th>
+					<th style="width:50px;">总得分</th>
+				</tr>
+			</thead>
+			<tbody>
+				{php $i=1;}
+				{loop $list $row}
+				<tr>
+					<td>{php echo $i+$psize*($_GPC['page']-1)}</td>
+					<td><img src="{php echo toimage($row['avatar'])}" width="30"></td>
+					<td>{if !empty($row['realname'])}{$row['realname']}{else}{$row['nickname']}{/if}</td>
+					<td>{$row['mobile']}</td>
+					<td>{if $row['share_num']==0}未成功分享{else}助力情况[{$row['sharenum']}]{/if}</td>
+					<td>{php echo date('Y/m/d H:i',$row['createtime']);}</td>
+					<td>{$row['sharenum']}</td>
+					<td>{$row['day_credit']}</td>
+					<td>{$row['last_credit']}</td>
+				</tr>
+				{php $i++;}
+				{/loop}				
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
+{$pager}
+</div>
+{template 'common/footer'}

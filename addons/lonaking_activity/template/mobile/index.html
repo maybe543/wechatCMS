@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html data-user-list-api="{$urls['enroll_list_api']}" data-enroll-api="{$urls['enroll_api']}" data-qrcode="{$html['enroll_record']['qrcode']}" data-status="{$html['enroll_record']['status']}" data-share-api="{$urls['share_api']}">
+<head>
+    <title>{$html['activity']['name']}</title>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="share_logo" content="{$share['share_logo']}" />
+    <meta name="share_url" content="{$share['share_url']}" />
+    <meta name="share_title" content="{$share['share_title']}" />
+    <meta name="share_content" content="{$share['share_description']}" />
+    <link rel="stylesheet" href="../addons/lonaking_activity/template/mobile/css/common.css" />
+    <link rel="stylesheet" href="../addons/lonaking_activity/template/mobile/css/detail.css" />
+    <link rel="stylesheet" href="../addons/lonaking_activity/template/mobile/resource/sweetalert/sweetalert.css" />
+    <script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_activity/template/mobile/js/index.js?v={php echo rand(1,9999)}" ></script>
+    <script src="../addons/lonaking_activity/template/mobile/resource/sweetalert/sweetalert.min.js"></script>
+</head>
+<body style="">
+<div class="outSide" id="global_content">
+    <div class="content-body" id="content-body">
+        <!--活动标题、头像、分享数-->
+        <div class="detail_title">
+            <h1 class="detail_title_h1" id="dt_title">{$html['activity']['name']}</h1>
+        </div>
+        <div class="detail_user hdMan">
+            <div class="userPicA">
+                <a href="javascript:void(0);"> <img class="userPic default_img" src="{$_W['attachurl']}{$html['activity']['admin_pic']}" alt="" /> </a>
+            </div>
+            <div class="hdman_r">
+                <div class="yhName">
+                    <a href="javascript:void(0);" class="subinfo_name" id="subinfo_name" >{$html['activity']['admin_name']}</a>
+                    <p class="fbTime">{php echo date("Y-m-d",$html['activity']['create_time'])}</p>
+                </div>
+                <div class="dt_review_item_count">
+                    <a class="info_share" id="info_share">分享{$html['activity']['share']}+</a>
+                    <span id="info_hits">阅读{$html['activity']['click']}+</span>
+                </div>
+            </div>
+
+        </div>
+        <!--时间、地址、报名数 start-->
+        <div class="detail_time_attr_join">
+            <div class="detail_time_attr_join_gray">
+                <div class="detail_Time">
+                    <img src="../addons/lonaking_activity/template/mobile/image/icon_time2.png" alt="" class="icon_T" />
+                    <div class="detail_Time_n">
+                        <p> {$html['activity']['start']} 至 {$html['activity']['end']}<br /> </p>
+                    </div>
+                </div>
+                <div class="detail_Attr">
+                    <a href="javascript:void(0);" class=" dt_address_item" >
+                        <div class="detail_Attr_K">
+                            <p class="addressP">{$html['activity']['address']}</p>
+                        </div> </a>
+                </div>
+                <div class="detail_Joinnum" id="detail_Joinnum">
+                    <div class="detail_Joinnum_t">
+                        <p>已有<span>{$html['activity']['enroll_count']}</span>人报名</p>
+                    </div>
+                    <div class="detail_Joinnum_b">
+                        <p> {if $html['activity']['enroll_limit'] > 0}仅限{$html['activity']['enroll_limit']}人报名参加{else}不限制名额{/if} </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dt_content" class="dt_content">
+            {$html['activity']['content']}
+        </div>
+        {if $html['activity']['enroll_count']>0}
+            <div class="dt_zan">
+                <a class="gray" href="javascript:void(0);" >报名列表</a>
+            </div>
+            <a name="a_join_list"></a>
+            <div class="dt_join_menu_bg" id="dt_join_menu_bg">
+                <div  class="dt_join_top">
+                    <p id="dt_join_count" class="dt_join_topL"><span id="join_total">{$html['activity']['enroll_count']}</span>人已完成报名</p>
+                </div>
+                <ul style="" class="dt_list_main" id="dt_list_main">
+                    {loop $html['enroll_list'] $d}
+                    <li id="div_join_id_1ac0t" class="dt_review_main" >
+                        <div class="dt_review_K">
+                            <div class="dt_guess_item_icon">
+                                <a  href="javascript:void(0);">
+                                    <img class="default_img" src="{$d['pic']}">
+                                </a>
+                            </div>
+                            <div class="dt_guess_item_title dt_loadNew">
+                                <a  href="javascript:void(0);">{$d['name']}</a>
+                            </div>
+                            <p class="dt_guess_item_time">{php echo date("Y-m-d",$d['create_time'])}</p>
+                        </div>
+                    </li>
+                    {/loop}
+                </ul>
+                {if $html['activity']['enroll_count'] > 10}
+                <div class="dt_join_more" id="join_loading" style="display: block;"><a class="moreBtn" ><span>展开更多报名</span></a></div>
+                {/if}
+            </div>
+        {/if}
+        <div id="ba_Bj" class="ba_Bj">
+            <img title="" src="{php echo tomedia($html['config'][logo])}"/>
+        </div>
+    </div>
+</div>
+<div class="tc_c2" id="join_box" style="left: 0px;position: fixed; bottom: -300px; display: none">
+    <div class="join_box_Xq_out">
+        <div class="tc_c_close">
+            <p>完善报名信息</p>
+            <div id="close_join_box"><img title="关闭" src="../addons/lonaking_activity/template/mobile/image/share_qr_close3.png"></div>
+        </div>
+        <div class="join_box_Xq">
+            <ul id="ul_join_property" class="pop_massage">
+                <li type="danH">
+                    <div class="optionsName">姓名</div>
+                    <div class="inpoutK">
+                        <input type="text" name="name" maxlength="40" data-tip="姓名不能为空" placeholder="请输入姓名" class="font0">
+                    </div>
+                </li>
+
+                <li type="danH">
+                    <div class="optionsName">手机</div>
+                    <div class="inpoutK">
+                        <input type="text" name="mobile" data-tip="手机号码不能为空" placeholder="请输入手机号码" maxlength="40" class="font0">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="tc_c_btn2" id="xdBtn_nopay" style="display: block;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                    <td><div class="input_submit_div"><a id="a_submit_nopay" href="javascript:void(0);" >报名</a></div></td>
+                </tr>
+                </tbody></table>
+        </div>
+    </div>
+</div>
+<div id="cover2" style="display: none;"></div>
+<div id="toast" class="toast" style="display: none;"></div>
+
+<!--吸底按钮-->
+<div class="dt_join_bar" id="dt_join_bar" style="bottom: 0px;">
+    <div class="dt_join_bar_outside">
+        <ul class="dt_join_bar_ul_app">
+            <li class="r">
+                {if $html['enroll_status']}
+                <div id="dt_join_bar_title_mb_ok">
+                    <a class="btn_style2" href="javascript:void(0)"><p class="bar_img"><span><img class="dt_join_bar_icon" src="../addons/lonaking_activity/template/mobile/image/icon_man2.png" alt="" /></span></p> <p class="bar_tit"><span>已报名</span></p></a>
+                </div>
+                {else}
+                <div id="dt_join_bar_title_mb">
+                    <a href="javascript:void(0)"><p class="bar_img"><span><img class="dt_join_bar_icon" src="../addons/lonaking_activity/template/mobile/image/icon_man2.png" alt="" /></span></p> <p class="bar_tit"><span>我要报名</span></p></a>
+                </div>
+                {/if}
+            </li>
+        </ul>
+    </div>
+</div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+        debug: false,
+        appId: '{$html['jsconfig']['appId']}',  //微信的appid需要在公众平台生成
+        timestamp: '{$html['jsconfig']['timestamp']}', //这是由php部分生成的
+        nonceStr: '{$html['jsconfig']['nonceStr']}', //这是由php部分生成的
+        signature: '{$html['jsconfig']['signature']}', //这是由php部分生成的
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+        ]
+    });
+</script>
+<script src="../addons/lonaking_activity/template/mobile/js/wxshare.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>订单详情</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<style type="text/css">
+img{vertical-align:middle;}
+#QuacorGrading input{background:url('{MODULE_URL}/template/mobile/images/grading.png') no-repeat scroll right center;cursor:pointer;height:30px;width:30px;padding:0;border:0;}
+#QuacorGrading1 input{background:url('{MODULE_URL}/template/mobile/images/grading.png') no-repeat scroll right center;cursor:pointer;height:30px;width:30px;padding:0;border:0;}
+</style>
+</head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+	<div class="block ub-f1">
+    	<div class="c-wh uinn5 ubb tx-c b-bla01">订单详情</div>
+        <ul class="b-bla01 umar-t1 userlist uinn1">
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务项目：</div>
+                    <div class="ub ulev0 ub-f1 ">{php echo $this->gettypename($item[typeid])}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务时间：</div>
+                    <div class="ub ulev0 ub-f1 ">{$item[ftime]}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">其他说明：</div>
+                    <div class="ub ulev0 ub-f1 ">
+					{if $item[mark] == '' }
+						无
+					{else}
+						{$item[mark]}
+					{/if}
+					</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">当前状态：</div>
+                    <div class="ub ulev0 ub-f1 ">{php echo $this->getstate($item[state])}</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务人员：</div>
+					<div class="ub ulev0 ub-f1 ">
+					<a href="{php echo $this->createMobileUrl('staff',array('staff_id'=>$item[waiterid],'name'=>'xm_housekeep'))}">
+						{php echo $this->getwaiter($item[waiterid])}
+					</a>
+					</div>
+                </div>
+            </li>
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">服务费用：</div>
+                    <div class="ub ulev0 ub-f1 ">
+					{if $item[closemoney] != ''}￥{$item[closemoney]}{/if}</div>
+                </div>
+            </li>
+			
+			{if $item[closemoney] != ''}
+            <li class="ub ub-ac">
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">我的评分：</div>
+                    <div class="ub ulev0 ub-f1 ">
+                    	<div id="QuacorGrading" style="">
+                            <input name="1" type="button"  />
+                            <input name="2" type="button"  />
+                            <input name="3" type="button"  />
+                            <input name="4" type="button"  />
+                            <input name="5" type="button"  />
+                            <span id="QuacorGradingValue"><b><font size="5" color="#fd7d28">{$item[xing]}</font></b>分</span>
+                        </div>
+                    </div>
+                    <!--<a href="#" class="ub uinn uba b-org uc-a1">点评</a>-->
+                </div>
+			</li>
+			
+			<li class="ub ub-ac">
+				<div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <div class="t-gra">我的评价：</div>
+                    <div class="ub ulev0 ub-f1 ">
+                    	{php echo $this->getComment($item['orderformid'])}
+                    </div>
+                </div>
+            </li>
+			{/if}
+        </ul>
+		
+		{if $item[closemoney] != ''}
+			{if $item[xing] == ''}
+			<div class="uinn8 ub">
+				<div class="uinn211 ub ub-pc uc-a1 ub-f1 uba b-org" id="open1" style="margin-bottom:0.5em;"><span class="ulev0 t-red">点评本次服务</span></div>
+			</div>
+			{/if}
+		{/if}
+		
+    </div>
+    <div class=" umar-t1" style="height:3em"></div>
+	{template 'footer'}
+</div>
+
+
+<div id="layer1" class="c-bla80 fix0" style="left:0; right:0; top:0; bottom:0; z-index:99; display:none">
+	<div class="tx-c" style="position:absolute; top:1rem; right:1rem; width:2rem; height:2rem; z-index:999">
+    	<i id="close1" class="iconfont icon-danchuguanbi t-wh " style=" font-size:2rem;line-height:2rem"></i>
+    </div>
+    <div class="ub ub-ver ub-ac ub-pc" style="width:100%; height:100%">
+    	<div class="uc-a1 c-gra1" style="width:80%;">
+        	<div class="uinn8 ubb b-bla01 font-b tx-c">请给予评价</div>
+            <div class="uinn8 tx-c" id="QuacorGrading1">
+            	<input name="1" type="button" />
+                <input name="2" type="button" />
+                <input name="3" type="button" />
+                <input name="4" type="button" />
+                <input name="5" type="button" />
+                
+            </div>
+            <div class="tx-c">
+            	<span id="QuacorGradingValue1"><b><font style="font-size:4rem" color="#fd7d28">3</font></b>分</span>
+				<input type="hidden" name="xing" id="xing" />
+				<input type="hidden" name="staff_id" id="staff_id" value="{$item[waiterid]}" />
+				<input type="hidden" name="orderid" id="orderid" value="{$item[orderformid]}" />
+            </div>
+			
+			<div class="tx-c">
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12 ulev1">
+						<textarea class="form-control" name="comment" id="comment" rows="4" cols="30" placeholder="亲，有什么就说什么"></textarea>
+                    </div>
+                </div>
+			</div>
+			
+            <div class="uinn8 ub">
+                <button onClick="getSub()" class="uinn211 c-org block uc-a1 ub-f1 tx-c t-wh ulev0" style="margin-bottom:0.5em;" type="submit">提交点评</button>
+            </div>
+			
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/zepto1.3.min.js"></script>-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/jquery_min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+<script type="text/javascript">
+var GradList = document.getElementById("QuacorGrading").getElementsByTagName("input");
+for(var di=0;di<parseInt(document.getElementById("QuacorGradingValue").getElementsByTagName("font")[0].innerHTML);di++){
+	GradList[di].style.backgroundPosition = 'left center';
+};
+for(var i=0;i < GradList.length;i++){
+	//GradList[i].onmouseover = function(){
+	/*GradList[i].onclick = function(){
+		for(var Qi=0;Qi<GradList.length;Qi++){
+			GradList[Qi].style.backgroundPosition = 'right center';
+		}
+		for(var Qii=0;Qii<this.name;Qii++){
+			GradList[Qii].style.backgroundPosition = 'left center';
+		}
+		document.getElementById("QuacorGradingValue").innerHTML = '<b><font size="5" color="#fd7d28">'+this.name+'</font></b>分';
+	}*/
+};
+</script>
+<script type="text/javascript">
+var GradList1 = document.getElementById("QuacorGrading1").getElementsByTagName("input");
+for(var di=0;di<parseInt(document.getElementById("QuacorGradingValue1").getElementsByTagName("font")[0].innerHTML);di++){
+	GradList1[di].style.backgroundPosition = 'left center';
+};
+for(var i=0;i < GradList1.length;i++){
+	//GradList[i].onmouseover = function(){
+	GradList1[i].onclick = function(){
+		for(var Qi=0;Qi<GradList1.length;Qi++){
+			GradList1[Qi].style.backgroundPosition = 'right center';
+		}
+		for(var Qii=0;Qii<this.name;Qii++){
+			GradList1[Qii].style.backgroundPosition = 'left center';
+		}
+		document.getElementById("QuacorGradingValue1").innerHTML = '<b><font style="font-size:4rem" color="#fd7d28">'+this.name+'</font></b>分';
+		document.getElementById("xing").value = this.name;
+	}
+};
+</script>
+<script type="text/javascript">
+$("#open1").click(function(){
+	$("#layer1").show();
+})
+$("#close1").click(function(){
+	$("#layer1").hide();
+	//$("#layer1").css(top,"100px")
+})
+
+function getSub(){
+	var xing = document.getElementById("xing").value;
+	var staff_id = document.getElementById("staff_id").value;
+	var orderid = document.getElementById("orderid").value;
+	var comment = document.getElementById("comment").value;
+	
+	$.ajax({
+		url: "{php echo $this->createMobileUrl('comment', array());}",
+		type:"POST",
+		data:{'xing':xing,'staff_id':staff_id,'orderid':orderid,'comment':comment},
+		dataType:"json",
+		success: function(res){
+			if(res == "1"){
+				window.location.reload();
+			}else{
+				alert('对不起,评论失败');
+			}
+		}
+	});
+}
+</script>
+</body>
+</html>
+

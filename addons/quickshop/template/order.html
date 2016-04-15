@@ -1,0 +1,117 @@
+{template 'common/header'}
+{template 'common'}
+<ul class="nav nav-tabs">
+  <li {if $operation == 'display' && $status == Order::$ORDER_NEW}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_NEW))}">待付款</a></li>
+  <li {if $operation == 'display' && $status == Order::$ORDER_PAYED}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_PAYED))}">待发货</a></li>
+  <li {if $operation == 'display' && $status == Order::$ORDER_DELIVERED}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_DELIVERED))}">待收货</a></li>
+  <li {if $operation == 'display' && $status == Order::$ORDER_RECEIVED}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_RECEIVED))}">已收货</a></li>
+  <li {if $operation == 'display' && $status == Order::$ORDER_CANCEL}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => Order::$ORDER_CANCEL))}">已取消订单</a></li>
+  <li {if $operation == 'display' && empty($status)}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status'=>0))}">全部订单</a></li>
+</ul>
+
+{if $operation == 'display'}
+
+{template 'order_search'}
+
+<div class="main">
+	<div style="padding:15px;">
+    <h4>{if !empty($_GPC['search'])}搜索到符合条件的{/if}{$status_text}订单数:{$total}
+      {if empty($_GPC['search'])}
+      <a style="float:right;padding:4px;margin:10px;" onclick="return confirm('此操作可能耗时较久，确认吗？'); return false;" href="{php echo $this->createWebUrl('DownloadOrder', array('status'=>$status, 'all'=>$_GPC['all'] ))}" title="导出" class="btn btn-mini"><i class="icon-download"> 导出数据</i></a>
+      {/if}
+
+      {if $status == Order::$ORDER_PAYED}
+      <a style="float:right;padding:4px;margin:10px;" target="_blank" href="{php echo $this->createWebUrl('BatchOrder')}" title="批量发货" class="btn btn-mini btn-primary"><i class="icon-truck"> 批量发货 </i></a>
+      {/if}
+
+
+    </h4>
+    <br/>
+
+<form method="post" class="form-horizontal" id="form1">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+          <th style="width:70px;text-overflow:inherit;" >编号</th>
+					<th style="width:90px">订单号</th>
+					<th style="width:80px;">姓名</th>
+					<th style="width:110px;">电话</th>
+					<th style="width:90px;">支付</th>
+					<th style="width:50px;">配送</th>
+					<th style="width:80px;">省份</th>
+		      <!--th style="width:70px;">运费</th-->
+          <th style="width:100px;">总价</th>
+          <th style="width:90px;">状态</th>
+					<th style="width:115px;">下单时间</th>
+					<th style="width:80px;">状态更新</th>
+					<th style="width:50px; text-align:right;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+          <td>
+            <input type="checkbox" name="orderid[]" value="{$item['id']}" class="">
+            {$item['id']}
+          </td>
+					<td>{$item['ordersn']}</td>
+					<td>{$address[$item['addressid']]['realname']}</td>
+					<td>{$address[$item['addressid']]['mobile']}</td>
+          <td><span class="label label-{php echo Order::getPayTypeLabel($item['paytype']);}">{php echo Order::getPayTypeName($item['paytype']);}</span></td>
+          <td>{if $item['sendtype']==2}自提{elseif $item['sendtype']==1}快递{$item['dispatch']['dispatchname']}{else}未知{/if}</td>
+					<td>{$address[$item['addressid']]['province']} </td>
+          <!--td>{$item['dispatchprice']}</td-->
+					<td>{$item['price']} 元</td>
+					<td>
+            <span class="label label-info">{php echo $_order->getOrderStatusName($item['status'])}</span>
+					</td>
+					<td>{php echo date('m-d H:i:s', $item['createtime'])}</td>
+          <td>{php echo WechatUtil::format_date($item['updatetime'])}</td>
+					<td style="text-align:right;"><a href="{php echo $this->createWebUrl('order', array('op' => 'detail', 'id' => $item['id']))}">详情</a></td>
+				</tr>
+				{/loop}
+			</tbody>
+      <tfoot class="navbar-inner">
+        <tr>
+{if ($status == Order::$ORDER_NEW or $status == Order::$ORDER_CANCEL) && $this->module['config']['enable_user_remove_order'] == 1}
+          <td><input type="checkbox" name="" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});"></td>
+          <td colspan="10">
+            <input type="submit" name="batchremoveorder" class="btn btn-primary" value="批量删除订单">
+            <input name="token" type="hidden" value="{$_W['token']}" />
+{/if}
+{if $status == Order::$ORDER_DELIVERED}
+          <td><input type="checkbox" name="" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});"></td>
+          <td colspan="10">
+            <input type="submit" name="batchconfirmreceived" class="btn btn-primary" value="批量确认收货">
+            <input name="token" type="hidden" value="{$_W['token']}" />
+{/if}
+{if $status == Order::$ORDER_RECEIVED}
+          <td><input type="checkbox" name="" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});"></td>
+          <td colspan="10">
+            <a href="{php echo wurl('site/entry/order', array('m'=>'quickdist', 'status'=>Order::$ORDER_RECEIVED))}" class="btn btn-success">前往【分销管理】发放佣金</a>
+{/if}
+          </td>
+        </tr>
+      </tfoot>
+
+		</table>
+  </form>
+		{$pager}
+	</div>
+</div>
+<script>
+require(['jquery', 'util'], function($, u){
+  $('#form1').submit(function(){
+    if($(":checkbox[name='orderid[]']:checked").size() > 0){
+      return confirm('确认批量操作？');
+    }
+    u.message('没有选择订单', '', 'error');
+    return false;
+  });
+});
+</script>
+
+{elseif $operation == 'detail'}
+  {template 'order-detail'}
+{/if}
+{template 'common/footer'}

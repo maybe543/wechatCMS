@@ -1,0 +1,99 @@
+{template 'common/header'}
+<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="" method="get" class="form-horizontal" role="form">
+				
+				<input type="hidden" name="c" value="site" />
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="m" value="qw_zf" />
+                <input type="hidden" name="do" value="order" />
+                
+                
+                
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 control-label">单号</label>
+					<div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+						 <div class="col-sm-9">
+                      <input type="text" name="ordersn" class="form-control" value="{$_GPC['ordersn']}" />
+                    </div>
+					</div>
+				</div>
+				
+				
+					<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 control-label">类型</label>
+					<div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+						<label>
+				      <input type="radio" name="status" 
+				         value="1">支付成功
+				   </label>
+				   
+				      <label>
+				      <input type="radio" name="status"  value="0" >未支付
+				   </label>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+			<button type="submit" class="btn btn-primary col-lg-1" name="submit" value="提交">提交</button>
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">支付订单列表</div>
+		<div class="panel-body">
+			<div class="table-responsive panel-body">
+				<table class="table table-hover" style="min-width: 300px;">
+					<thead class="navbar-inner">
+						<tr>
+							<!--<th class="col-sm-1">排序</th>-->
+							<!--<th class="col-sm-2">货位名称</th>-->
+							<th class="col-sm-2">订单号</th>
+							<th class="col-sm-1">用户</th>
+							<th class="col-sm-1">支付金额</th>
+							<th class="col-sm-1">商家</th>
+					        <th class="col-sm-1">时间</th>
+							
+							<th class="col-sm-1">状态</th>
+							
+							   
+						</tr>
+					</thead>
+					<tbody>
+						{loop $list $index $item}
+						<tr>
+							<!--<td><input type="text" name="disorder" value="{$item['disorder']}"> </td>-->
+							
+							<!--<td>{$item['huowei']}</td>-->
+							<td>{$item['ordersn']}</td>
+							<td>{$item['nickname']}</td>
+							<td>{$item['fee']}</td>
+							<td>{$item['title']}</td>
+							
+							<td>{$item['addtime']}</td>
+							<!--<td>{$item['danwei']}</td>
+							<td>{$item['num']}</td>-->
+							<td>{if $item['status']==1}成功{else}未支付{/if}</td>
+							
+							
+						
+					
+						</tr>
+						{/loop}
+						{if empty($list)}
+						<tr>
+							<td colspan="8">
+							暂时没有支付订单
+							</td>
+						</tr>
+						{/if}
+					</tbody>
+				</table>
+				{$pager}
+			</div>
+		</div>
+	</div>

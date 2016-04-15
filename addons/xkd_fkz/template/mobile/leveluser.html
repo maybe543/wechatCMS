@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>{$parent_name}的{$junior_list[$child_level]['name']}</title>
+     <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css" media="screen, projection">
+</head>
+<body>
+<div class="container-fluid">
+{template 'navbar'}
+<style>
+	.sty1{border-top:1px dashed green;width:20%;}
+	.sty2{border-top:1px dashed green;height:40px;line-height:40px;}
+	#load-more{  margin: 20px auto;width: 30%;height: 40px;border-radius: 5px;background: green;text-align: center;line-height: 40px;font-size: 20px;color: #fff;cursor: pointer;margin-bottom: 50px;}
+</style>
+<div class="row clearfix header-banner" style="background:green;">
+	<div class="col-md-12">
+	</div>
+</div>
+<div class="row clearfix">
+	<div class="col-md-12">
+		<div class="center-common">
+			<table class="table">
+				<tbody id="data-list-reg">	
+					<tr>
+					    <td class="sty1">
+					    	头像
+					    </td>
+					    <td class="sty2">
+					    	微信昵称
+					    </td>
+					    <td class="sty2">
+					    	微信账号
+					    </td>
+					</tr>				
+					{loop $list $child}
+					<tr>
+					    <td class="sty1">
+					    	<img src="{$child['avatar']}" width="40" height="40" class="img-circle">
+					    </td>
+					    <td class="sty2">
+					    	{$child['nickname']}（{$child['level_text']}）
+					    </td>
+					    <td class="sty2">
+					    	{$child['wechat']}
+					    </td>
+					</tr>
+					{/loop}
+					</tbody>
+			</table>					
+		</div>
+	</div>
+</div>
+{$pager}
+</div>
+<footer class="footer">
+	<p>&nbsp;</p>
+</footer>
+</body>
+</html>

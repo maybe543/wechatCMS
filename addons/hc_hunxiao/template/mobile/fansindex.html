@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/foundation.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/PreFoot.css">
+    <script src="../addons/hc_hunxiao/style/js/ClassFirst.js?item=common|dis&_=15050710214663"></script>
+    <script src="../addons/hc_hunxiao/style/js/jquery.js"></script>
+    <script src="../addons/hc_hunxiao/style/js/foundation.js"></script>
+    <script src="../addons/hc_hunxiao/style/js/foundation.reveal.js"></script>
+    <script src="../addons/hc_hunxiao/style/js/func.js"></script>
+</head>
+
+<body class="body-gray">
+    <!--mask begin-->
+    <div class="mask"></div>
+    <!--mask end-->
+    <!--topbar begin-->
+    <input type="hidden" id="hiddenCustomerID" value="52833" />
+
+    <!--topbar begin-->
+    <div class="fixed tab-bar">
+
+        <section class="left-small">
+            <a class="menu-icon" onclick="window.history.go(-1)"><span></span></a>
+        </section>
+        <section class="middle tab-bar-section">
+            <h1 class="title">个人中心</h1>
+        </section>
+
+    </div>
+    <!--topbar end-->
+    <!--head begin-->
+
+
+    <div class="panel memberhead">
+        
+        <div class="header-l">
+            <i class="icon-level-dis">{if !empty($profile['headimg'])}<img style="border-radius:36px; weight:70px; height:70px;" src="{$profile['headimg']}" >{else}
+				<img src="../addons/hc_hunxiao/style/images/header.png" style="border-radius:36px; weight:70px; height:70px;">{/if}</i>
+        </div>
+        
+        <div class="header-r">
+            <ul class="distributor-infor">
+                <li><span class="distributor-infor-label">姓名：</span><span class="distributor-infor-c">{$profile['realname']}</span></li>
+                <li><span class="distributor-infor-label">电话：</span><span class="distributor-infor-c">{$profile['mobile']}</span>
+                <li><span class="distributor-infor-label">积分：</span><span class="distributor-infor-c" id="mygold">{$fcredit}</span></li>
+				<li><span class="distributor-infor-label">注册时间：</span><span class="distributor-infor-c">{php echo date('Y-m-d', $profile['createtime']);} </li>
+            </ul>
+
+        </div>
+    </div>
+    <!--head end-->
+    <!--count begin-->
+    <div class="row count">
+        <div class="small-4 columns mid">
+            <a href="javascript:void(0)" class="count-a">
+                <p class="count-dis-mony">{$commissioned}</p>
+                <span class="count-title">已结佣(元)</span></a>
+        </div>
+        <div class="small-4 columns mid">
+            <a href="javascript:void(0)" class="count-a">
+                <p class="count-dis-mony">{$commissioning}</p>
+                <span class="count-title">未结佣(元)</span></a>
+        </div>
+        <div class="small-4 columns last">
+            <a href="javascript:void(0)" class="count-a">
+                <p class="count-dis-mony">{$allcommission}</p>
+                <span class="count-title">总佣金(元)</span></a>
+        </div>
+    </div>
+    <!--count end-->
+	{if !empty($highmember)}
+    <div class="distributor-from">你是由【{$highmember['realname']}】推荐</div>
+	{/if}
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" onclick="report()"><span class="text" id="wxqd">{if $credit == -1}点击签到{else}已签到{/if}</span></a>
+            </li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" href="{php echo $this->createMobileUrl('fansindex', array('op'=>'lowfans', 'level'=>4, 'lowfansids'=>$allteamid));}"><i class="icon-personal"></i><span class="text">我的团队</span><i class="arrow"></i><span class="tip-number">{$allteamnum}</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" href="javascript:void(0)"><i class="icon-personal"></i><span class="text">我的代理商</span><i class="arrow"></i><span class="tip-number">{$allteamnum3}</span></a>
+                <div class="member-nav-sub">
+                    <ul class="member-nav-sub-ul">
+                        {loop $fanslevel $key $f}
+							{if $key<=3}
+								<li class="member-nav-sub-li"><a href="{php echo $this->createMobileUrl('fansindex', array('op'=>'lowfans', 'level'=>$key, 'lowfansids'=>$lowfansids[$key]));}"><span class="text">{php echo heihei($key)}级代理商</span><i class="arrow"></i><span class="tip-number">{$lowfansnum[$key]}</span></a></li>
+							{else}
+								{php break;}
+							{/if}
+                        {/loop}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" href="{php echo $this->createMobileUrl('fansindex', array('op'=>'loworder', 'level'=>4));}"><i class="icon-lowLevel"></i><span class="text">我的团队订单</span><i class="arrow"></i><span class="tip-number">{$allteamordernum}</span></a>
+            </li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" href="javascript:void(0)"><i class="icon-lowLevel"></i><span class="text">我推荐的订单</span><i class="arrow"></i><span class="tip-number">{$allteamordernum3}</span></a>
+                <div class="member-nav-sub">
+                    <ul class="member-nav-sub-ul">
+                        {loop $list $key $l}
+							{if $key<=3}
+							<li class="member-nav-sub-li"><a href="{php echo $this->createMobileUrl('fansindex', array('op'=>'loworder', 'level'=>$key));}"><span class="text">{php echo heihei($key)}级订单</span><i class="arrow"></i><span class="tip-number">{$lowordernum[$key]}</span></a></li>
+							{else}
+								{php break;}
+							{/if}
+                        {/loop}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li class="last">
+                <a id="menu-accordian02" href="{php echo $this->createMobileUrl('myorder');}"><i class="icon-lowLevel"></i><span class="text">我的订单</span><i class="arrow"></i><span class="tip-number">{$allordernum}</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="panel member-nav">
+        <ul class="side-nav">
+            <li id="brokerage"><a href="{php echo $this->createMobileUrl('commission')}"><i class="icon-commission"></i><span class="text">我的佣金</span><i class="arrow"></i>
+            </a></li>
+        </ul>
+    </div>
+    <div class="panel member-nav">
+        <ul class="side-nav">
+            <li><a href="{php echo $this->createMobileUrl('register', array('id'=>$profile['id'], 'opp'=>'complate'))}"><i class="icon-card"></i><span class="text">我的资料</span><i class="arrow"></i></a></li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li><a href="{php echo $this->createMobileUrl('myqrcode')}"><i class="icon-qrcode-propu"></i><span class="text">推广二维码</span><i class="arrow"></i></a></li>
+        </ul>
+    </div>
+	<div class="panel member-nav">
+        <ul class="side-nav">
+            <li><a href="{php echo $this->createMobileUrl('phb')}"><i class="icon-qrcode-propu"></i><span class="text">上月精英富豪版</span><i class="arrow"></i></a></li>
+        </ul>
+    </div>
+    <!--side nav end-->
+    <!--bottom begin-->
+    <div class="h50"></div>
+    <div class="fixed bottom">
+       <dl class="sub-nav nav-b5">
+			<dd>
+				<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('index')}"><i class="icon-nav-bag"></i>逛街</a></div>
+			</dd>
+			<dd>
+				<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('listCategory')}"><i class="icon-nav-search"></i>搜索</a></div>
+			</dd>
+			<dd>
+				<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('mycart')}"><i class="icon-nav-card"></i>购物车</a></div>
+			</dd>
+			<dd class="active">
+				<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('fansindex')}"><i class="icon-nav-heart"></i>个人中心</a></div>
+			</dd>
+		</dl>
+    </div>
+    <!--bottom end-->
+<div onclick="this.style.display = 'none';" id="isshow" style="display:none;">
+{if !empty($profile['headimg'])}
+	<img style="width:20%; height:70px;z-index:999; position:fixed; top:3%;left:40%;" src="{$profile['headimg']}" >
+{else}
+	<img src="../addons/hc_hunxiao/style/images/header.png" style="width:20%; height:70px;z-index:999; position:fixed; top:3%;left:40%;">
+{/if}
+<span style="font-size:18px;text-align:center;width:40%;height:20px;z-index:999; position:fixed; top:18.2%;left:30%;">我是<font color="red">{$profile['realname']}</font></span>
+{if !empty($gzurl['qrpicture'])}
+<img style="z-index:998; position:fixed; top:0px; width:100%; height:100%;" src="{$_W['attachurl']}{$gzurl['qrpicture']}">
+{else}
+<div style="z-index:998; position:fixed; top:0px; width:100%; height:100%; background-color:#000; opacity:0.3;">
+</div>
+{/if}
+<img style="z-index:999; position:fixed; width:44%; top:50%; left:29%;" src="../addons/hc_hunxiao/style/images/share/{$weid}share{$id}.png" />
+</div>
+<script>
+function report(){
+	if({$credit}!=-1){
+		return;
+	}
+	$.ajax({
+		type: "POST",
+		url: "{php echo $this->createMobileurl('fansindex',array('op'=>'report'))}",
+		dataType: "text",
+		
+		success: function (d) {
+			if(d!=0){
+				window.document.getElementById('wxqd').innerHTML = '获得'+d+'分';
+				var credit = parseInt(window.document.getElementById('mygold').innerHTML);
+				var credit1 = credit + parseInt(d);
+				window.document.getElementById('mygold').innerHTML = credit1;
+			}
+			if(d==0){
+				alert('请勿重复签到！');
+				location.reload();
+			}
+			if(d==-1){
+				alert('需要关注该公众号才能签到哦！');
+				location.href = '{$gzurl['gzurl']}';
+			}
+		},
+		
+		error: function (xml, text, thrown){
+			TopBox.alert("出错啦!");
+		}
+	});
+}
+
+</script>
+<script type="text/javascript">
+function myQrcode(){
+	window.document.getElementById('isshow').style.display = 'block';
+}
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}	
+<script>
+wx.config({
+	debug: false,   
+	appId: '<?php echo $signPackage["appId"];?>',
+	timestamp: '<?php echo $signPackage["timestamp"];?>',
+	nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	signature: '<?php echo $signPackage["signature"];?>',
+	jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+});
+
+wx.ready(function () {
+	var shareData = {
+		title: "{$profile['realname']}",
+		desc: "{$gzurl['description']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('fansindex',array('mid'=>$id))}",
+		imgUrl: "{$profile['headimg']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	var shareData1 = {
+		title: "{$gzurl['description']}",
+		desc: "{$profile['realname']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('fansindex',array('mid'=>$id))}",
+		imgUrl: "{$profile['headimg']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+	wx.onMenuShareTimeline(shareData1);
+});
+</script>
+</body>
+</html>

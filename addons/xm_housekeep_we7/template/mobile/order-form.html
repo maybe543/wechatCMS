@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>提交订单</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<style>
+.android-ics{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;	
+	}
+</style>
+
+<script>
+function checkform(){
+	var ftime = document.getElementById('svctime').value;
+	var address = document.getElementById('didian').value;
+	if(ftime == ''){
+		alert('请选择时间');
+		return false;
+	}
+	if(address == ''){
+		alert('请输入地址');
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+	<form class="block ub-f1" action="{php echo $this->createMobileUrl('Saveorderform',array('id'=>$id,'name'=>'xm_housekeep_we7'));}" method="POST" onSubmit="return checkform()">
+    	<div class="c-wh uinn5 ubb tx-c b-bla01">{$typename}</div>
+        <div class=" umar-t1 uinn1">
+        	<a href="{php echo $this->createMobileUrl('price',array('id'=>$item[id],'name'=>'xm_housekeep_we7'));}" class="ub uc-a1 uinn c-org1 uba b-bla01 ub-ac">
+                <div class="ub-f1">
+                    <marquee scrollamount="4" style="width:100%; height:1rem" class="t-bla">{$item[price]}</marquee>
+                </div>
+                <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+            </a>
+        </div>
+        <ul class="ubt ubb b-bla01 umar-t1 userlist">
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-shijian ulev2 umar-r umar-l1 t-blu2"></i>
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <!--<div>服务时间</div>-->
+                    <div class="ub ulev0 ub-f1 ">
+                    	<input type="text" name="ftime" placeholder="请选择服务时间" value=""  id="svctime" class="uinn ulev0 ub-f1" />
+                    </div>
+                    <div class="uinn"></div>
+                </div>
+            </li>
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-didian ulev2 umar-r umar-l1 t-blu2"></i>
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <!--<div>留言</div>-->
+                    <div class="ub ulev0 ub-f1 ">
+                    	<input type="text" name="address" placeholder="请输入服务地点" value="{$members[address]}" id="didian" class="uinn ulev0 ub-f1" />
+                    </div>
+                    <div class="uinn"></div>
+                </div>
+            </li>
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-dianhua ulev2 umar-r umar-l1 t-blu2"></i>
+                <div class="ub ub-f1 ub-ac ubb b-bla01 uinn5">
+                    <!--<div>留言</div>-->
+                    <div class="ub ulev0 ub-f1 ">
+                    	<input type="text" name="mobile" placeholder="请输入手机号" value="{$members[mobile]}" id="mobile" class="uinn ulev0 ub-f1" />
+                    </div>
+                    <div class="uinn"></div>
+                </div>
+            </li>
+            <li class="ub c-wh ub-ac">
+            	<i class="iconfont icon-dingzhipeisongyaoqiu ulev2 umar-r umar-l1 t-blu2"></i>
+                <div class="ub ub-f1 ub-ac uinn5">
+                    <!--<div>留言</div>-->
+                    <div class="ub ulev0 ub-f1 ">
+                    	<input type="text" name="mark" placeholder="其他要求" value="" id="qita" class="uinn ulev0 ub-f1" />
+                    </div>
+                    <div class="uinn"></div>
+                </div>
+            </li>
+        </ul>
+        <div class="uinn8 ub">
+            <button class="uinn211 c-org block uc-a1 ub-f1 tx-c t-wh ulev0" style="margin-bottom:0.5em;" type="submit">提交订单</button>
+        </div>
+    </form>
+    <div class=" umar-t1" style="height:3em"></div>
+    
+	{template 'footer'}
+</div>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/zepto1.3.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.zepto.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.core.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.scroller.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.datetime.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.scroller.android-ics.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.i18n.zh.js"></script>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.scroller.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/js/mobiscroll/mobiscroll.scroller.android-ics.css">
+<script type="text/javascript">
+    var keyword = 'project_clean_fridge';
+    var city = '北京';
+	(function(a) {
+    var b = {weekText: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],daysCount: 15,};
+    a.mobiscroll.presets.datehour = function(p) {
+        var v = a.extend({}, p.settings), x = a.extend(p.settings, b, v), t = a(this);
+        var l = new Date();
+        var o = [];
+        var e = {label: "日期",keys: [],values: [],};
+        var w = {label: "时间",keys: [],values: [],};
+        for (var k = 0; k < x.daysCount; k++) {
+            var j = l.valueOf();
+            j = j + k * 24 * 60 * 60 * 1000;
+            j = new Date(j);
+            var u = j.getFullYear();
+            var g = j.getMonth() + 1;
+            var r = j.getDate();
+            var f = g + "月" + r + "日&nbsp;" + x.weekText[j.getDay()];
+            if (g <= 9) {
+                g = "0" + g
+            }
+            if (r <= 9) {
+                r = "0" + r
+            }
+            var q = u + "-" + g + "-" + r;
+            e.keys.push(q);
+            if (k == 0) {
+                f = "今天"
+            } else {
+                if (k == 1) {
+                    f = "明天"
+                }
+            }
+            e.values.push(f)
+        }
+        for (var n = 0; n <= 23; n++) {
+            if (n <= 9) {
+                n = "0" + n
+            }
+            w.keys.push(n + ":00",n+":30");
+        }
+        for(var i = 0; i<w.keys.length; i++){
+            w.values.push(w.keys[i])
+        }        
+        var c = [];
+        c.push(e);
+        c.push(w);
+        o.push(c);
+        return {wheels: o,parseValue: function(I, D) {
+                console.info("parseValue:" + I);
+                var B = new RegExp(/[0-9]{4}-[0-9]{2}-[0-9]{2}[" "]{1}[0-9]{2}[:]{1}[0-9]{2}/);
+                if (I == null || I == "" || !B.test(I)) {
+                    var H = new Date();
+                    var C = H.getHours();
+                    var s = H.getMinutes();
+                    if (C >= 0 && C < 8 || (C == 8 && s == 0)) {
+                        C = 10
+                    } else {
+                        if (C >= 8 && C < 17 || (C == 17 && s == 0)) {
+                            if (s == 0) {
+                                C = C + 2
+                            } else {
+                                C = C + 3
+                            }
+                        } else {
+                            H = H.valueOf();
+                            H = H + 24 * 60 * 60 * 1000;
+                            H = new Date(H);
+                            C = 10
+                        }
+                    }
+                    if (C > 19) {
+                        C = 19
+                    }
+                    var G = H.getFullYear();
+                    var z = H.getMonth() + 1;
+                    var F = H.getDate();
+                    z = z <= 9 ? "0" + z : z;
+                    F = F <= 9 ? "0" + F : F;
+                    C = C <= 9 ? "0" + C : C;
+                    I = G + "-" + z + "-" + F + " " + C + ":00";
+                    console.info("defaultValue:" + I)
+                }
+                var h = I.split(" "), E = [], A = 0, J;
+                a.each(D.settings.wheels, function(i, d) {
+                    a.each(d, function(y, m) {
+                        m = m.values ? m : convert(m);
+                        J = m.keys || m.values;
+                        if (a.inArray(h[A], J) !== -1) {
+                            E.push(h[A])
+                        } else {
+                            E.push(J[0])
+                        }
+                        A++
+                    })
+                });
+                return E
+            },validate: function(C, I) {
+                var N = new Date();
+                var s = N.getHours();
+                var h = N.getMinutes();
+                if (s >= 0 && s < 8 || (s == 8 && h == 0)) {                    
+                    if(s >= 0 && s < 8 && keyword == "project_cleaning" && city == "北京"){
+                        console.log("00:00 ~ 07:59");
+                        s = 12;
+                    }else{
+                        s = 10
+                    }
+                } else {
+                    if (s >= 8 && s < 17 || (s == 17 && h == 0)) {
+                        if(keyword == "project_cleaning" && city == "北京"){
+                            if((s + 4) > 18 || ((s + 4) == 18 && h > 0)){
+                                console.log(s+"1")
+                                N = N.valueOf();
+                                N = N + 24 * 60 * 60 * 1000;
+                                N = new Date(N);
+                                if((s + 4) >= 20){
+                                    console.log("00:00 ~ 07:59");
+                                    s = 12;
+                                }else{
+                                    s = 8;
+                                }
+                            }else{
+                                s = s + 4;
+                            }
+                        }else{
+                            if (h == 0) {
+                                s = s + 2
+                            } else {
+                                s = s + 2
+                            }
+                        }
+                    } else {
+                        N = N.valueOf();
+                        N = N + 24 * 60 * 60 * 1000;
+                        N = new Date(N);
+                        if(keyword == "project_cleaning" && city == "北京"){
+                             console.log("16:00 ~ 23:59++++");
+                            s = 12;
+                        }else{
+                            s = 8
+                        }
+                    }
+                }
+                if (s > 19) {
+                    console.log(s+",")
+                    s = 19
+                }
+                var B = N.getFullYear();
+                var G = N.getMonth() + 1;
+                var K = N.getDate();
+                G = G <= 9 ? "0" + G : G;
+                K = K <= 9 ? "0" + K : K;
+                s = s <= 9 ? "0" + s : s;
+                var E = B + "-" + G + "-" + K;
+                var L = a(".dw-ul", C).eq(0);
+                var D = a(".dw-ul", C).eq(1);
+                var O = a(".dw-li", L).index(a('.dw-li[data-val="' + E + '"]', L)), M = a(".dw-li", L).size();
+                a(".dw-li", L).removeClass("dw-v").slice(O, M).addClass("dw-v");
+                var A = s + ":00", z = "19:00";
+                var J = p.temp;
+                if (J[0] != E) {
+                    A = "08:00"
+                } else {
+                    if (N.getHours() > 20 || (N.getHours() == 20 && h > 0)) {
+                        if(keyword == "project_cleaning" && city == "北京"){
+                            A = "12:00";
+                        }else{
+                            A = "10:00";
+                        }
+                    }
+                }
+                var H = a(".dw-li", D).index(a('.dw-li[data-val="' + A + '"]', D)), F = a(".dw-li", D).index(a('.dw-li[data-val="' + z + '"]', D));
+                a(".dw-li", D).removeClass("dw-v").slice(H, F + 1).addClass("dw-v")
+            },}
+    };
+    a.mobiscroll.presetShort("datehour")
+})(jQuery);
+
+</script>
+<script type="text/javascript">
+	$(function () {
+		var dateScroll = function(){
+			var date = new Date();
+			var curr = new Date().getFullYear(),
+				d = date.getDate(),
+				m = date.getMonth();
+			$('#svctime').scroller('destroy').scroller({
+				preset: 'datehour',
+				minDate: new Date(curr, m, d, 8, 00),
+				maxDate: new Date(curr, m, d+7),
+				invalid: [{ d: new Date(), start: '00:00', end: (date.getHours()+2)+':'+date.getMinutes() }],
+				theme: "android-ics light",
+				mode: "scroller",
+				lang: 'zh',
+				display:"bottom",
+				animate: "slideup",
+				stepMinute: 30,
+				dateOrder: 'MMDdd',
+				timeWheels: 'HHii',
+				rows:3
+			});
+		}
+		dateScroll();//时间选择控件
+	});
+
+
+	
+</script>

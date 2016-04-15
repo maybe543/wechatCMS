@@ -1,0 +1,11 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+	<li {if $op == 'black'}class="active"{/if}><a href="{php echo $this->createWebUrl('blacklist', array('op' => 'black'));}">黑名单</a></li>
+</ul>
+
+{if $op == 'black'}
+  {template 'black'}
+{/if}
+
+{template 'common/footer'}

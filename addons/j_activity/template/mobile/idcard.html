@@ -1,0 +1,22 @@
+{template 'header'}
+{php $_showMenu=1;}
+<style>
+.panel-body img{ max-width:100%;}
+</style>
+<Div class="header">
+  <div class="box">
+    <div class="boxsize-2"><A href="javascript:history.back()"><i class="fa fa-angle-left"></i></A></div>
+    <div class="boxsize-8">身份二维码</div>
+    <div class="boxsize-2"><A href="javascript:location.reload()"><i class="fa fa-refresh"></i></A></div>
+  </div>
+</Div>
+<div class="fixed_first">&nbsp;</div>
+<div class="jp_10_5">
+  <div class="panel panel-info">
+    <div class="panel-heading">请将下面二维码给活动组织者扫描签到</div>
+    <div class="panel-body text-center">
+    	{php echo "<img src='".$codename."'/>"}
+    </div>
+  </div>
+</div>
+{template 'footer2'}

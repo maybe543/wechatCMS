@@ -1,0 +1,12 @@
+{template 'common/header'}
+<style>
+	
+	img{height:auto;padding:0; margin:0; width:100%;}
+</style>
+{if count($account)<2}
+本类型优惠码已经发放完毕，请过段时间再领取
+{else}
+优惠码是：{$account[code]}，是:{$covertss[name]}
+<img src="../addons/kasen_zhekou/template/mobile/images/quan_5.png" />
+分享给朋友，我领到了一张五元优惠券
+{/if}

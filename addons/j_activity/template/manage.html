@@ -1,0 +1,456 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+  <li {if $operation == 'post'}class="active"{/if}><a href="./index.php?c=platform&a=reply&do=post&m=j_activity">添加活动</a></li>
+  <li {if $operation == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('manage', array('op' => 'display'))}">管理活动</a></li>
+</ul>
+<script>
+require(['bootstrap'],function($){
+	$('.btn,.tips').hover(function(){
+		$(this).tooltip('show');
+	},function(){
+		$(this).tooltip('hide');
+	});
+});
+</script>
+{if $operation == 'post'}
+<div class="main">
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{php echo $id}" />
+    <div class="panel panel-default">
+  <div class="panel-heading"> 活动管理 </div>
+  <input type="hidden" name="reply_id" value="{$reply['id']}" />
+  <div class="panel-body"> {if $reply['rid']}
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">查看内容</label>
+      <div class="col-sm-9">
+        <p class="form-control-static">
+        <a href="{php echo $this->createWebUrl('joiner', array('id' => $reply['rid']))}" target="_blank">查看报名情况</a>
+        </p>
+      </div>
+    </div>
+    {/if}
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动标题</label>
+      <div class="col-sm-9">
+        <input type="text" value="{$reply['title']}" class="form-control" name="title" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名状态</label>
+      <div class="col-sm-9">
+        <label class="radio-inline">
+          <input type="radio" name="status" value="0" {if $reply['status'] == 0 || empty($reply['status'])} checked{/if} />
+          未开始</label>
+        <label class="radio-inline">
+          <input type="radio" name="status" value="1" {if $reply['status'] == 1} checked{/if} />
+          进行中</label>
+        <label class="radio-inline">
+          <input type="radio" name="status" value="2" {if $reply['status'] == 2} checked{/if} />
+          已结束</label>
+        <label class="radio-inline">
+          <input type="radio" name="status" value="-1" {if $reply['status'] == -1} checked{/if} />
+          关闭报名</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动图片</label>
+      <div class="col-sm-9"> {php echo tpl_form_field_image('picture', $reply['picture']);}
+        <div class="help-block">用于单图文回复的显示</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">转发时小图</label>
+      <div class="col-sm-9">{php echo tpl_form_field_image('clientpic', $reply['clientpic']);}
+        <div class="help-block">转发到朋友圈或者朋友时的图标</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">主办方</label>
+      <div class="col-sm-9">
+        <input type="text" value="{$reply['organizer']}" class="form-control" name="organizer" />
+        <div class="help-block">适用于自己的平台发布多个商家的活动</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动标签</label>
+      <div class="col-sm-9 form-inline">
+        <div class="input-group ">
+          <span class="input-group-addon"><input type="radio" name="selectlabel" value="推荐" /></span>
+          <input type="text" value="推荐" style="width:80px"  class="form-control" disabled="disabled">
+        </div>
+        <div class="input-group ">
+          <span class="input-group-addon"><input type="radio" name="selectlabel" value="付费"  /></span>
+          <input type="text" value="付费" style="width:80px" class="form-control" disabled="disabled">
+        </div>
+        <div class="input-group ">
+          <span class="input-group-addon"><input type="radio" name="selectlabel" value="官方" /></span>
+          <input type="text" value="官方" style="width:80px" class="form-control" disabled="disabled">
+        </div>
+        <div class="input-group ">
+          <span class="input-group-addon"><input type="radio" name="selectlabel" value="自定义" checked="checked" /></span>
+          <input type="text" style="width:80px" class="form-control" name="selectlabeltext" value="{$reply['label']}">
+        </div>
+        <div class="help-block">添加后，将在列表右上角多出一个标签</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动简介</label>
+      <div class="col-sm-9">
+        <textarea style="height:150px;" name="description" class="form-control" cols="60">{$reply['description']}</textarea>
+        <div class="help-block">用于图文显示的简介和转发到朋友圈</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名时段</label>
+      <div class="col-sm-9"> 
+      {php echo tpl_form_field_daterange('jointime', array('start' => date('Y-m-d H:i', $reply['joinstarttime']),'end'=>date('Y-m-d H:i', $reply['joinendtime'])),true)} </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动时段</label>
+      <div class="col-sm-9"> {php echo tpl_form_field_daterange('acttime', array('start' => date('Y-m-d H:i', $reply['starttime']),'end'=> date('Y-m-d H:i', $reply['endtime'])),true)} </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动地点</label>
+      <div class="col-sm-9">
+        <input name="address" type="text" class="form-control" value="{$reply['address']}"/>
+        <div class="help-block">活动的地点名称，简单即可。</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">经纬度</label>
+      <div class="col-sm-9 col-xs-12 form-inline">
+        
+        <input type="text" name="longitude" value="{$reply['longitude']}" placeholder="经度" class="form-control"/> 
+        <input type="text" name="latitude" value="{$reply['latitude']}" placeholder="纬度"  class="form-control"/> 
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">选择坐标</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动介绍</label>
+      <div class="col-sm-9">
+      {php echo tpl_ueditor('info', $reply['info']);}
+        <!--<textarea style="height:150px;" name="info" class="form-control rich-text" cols="60">{$reply['info']}</textarea>-->
+        <div class="help-block">活动介绍。</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则</label>
+      <div class="col-sm-9">
+        <!--<textarea style="height:150px;" name="rule" class="form-control rich-text2" cols="60">{$reply['rule']}</textarea>-->
+        {php echo tpl_ueditor('rule', $reply['rule']);}
+        <div class="help-block">活动的相关说明和活动奖品介绍。</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">成果花絮</label>
+      <div class="col-sm-9">
+        <!--<textarea style="height:150px;" name="content" class="form-control rich-text3" cols="60">{$reply['content']}</textarea>-->
+        {php echo tpl_ueditor('content', $reply['content']);}
+        <div class="help-block">活动结束后显示。</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名群组</label>
+      <div class="col-sm-9">
+        <label class="radio-inline">
+          <input type="radio" name="usertype" value="-1" {if $reply['usertype'] == -1} checked{/if} />
+          无限制</label>
+          {loop $grouplist $row}
+        <label class="radio-inline">
+          <input type="radio" name="usertype" value="{$row['groupid']}" {if $reply['usertype'] == $row['groupid']} checked{/if} />
+          只有<strong>{$row['title']}</strong>可参加</label>
+          {/loop}
+          <div class="help-block">V3.0版本由于报名采用ajax提交数据，暂不支持分组</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名费用</label>
+      <div class="col-sm-9 form-inline">
+        <div class="input-group ">
+          <input type="text" value="{$reply['charge']}" style="width:120px" class="form-control" name="charge" >
+          <span class="input-group-addon">/人</span> </div>
+        <div class="help-block">报名费用,支持0.01以上；需要在参数设置中开启支付功能，并且是认证服务号才能用哦</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名人数</label>
+      <div class="col-sm-9 form-inline">
+        <div class="input-group ">
+          <input type="text" value="{php echo intval($reply['applicants'])}" style="width:80px" class="form-control" name="applicants" >
+          <span class="input-group-addon">人</span> </div>
+        <div class="help-block">限制报名人数,设置0为不限制</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">回调提示</label>
+      <div class="col-sm-9">
+        <input type="text" value="{$reply['redirectmsg']}" class="form-control" name="redirectmsg" >
+        <div class="help-block">报名后的提示</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名回调连接</label>
+      <div class="col-sm-9">
+        <input type="text" value="{$reply['redirecturl']}" class="form-control" name="redirecturl" >
+        <div class="help-block">报名成功后，将跳转的连接。方便商家做横向兼容，如去到有赞付款等。</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">入选人数</label>
+      <div class="col-sm-9 form-inline">
+        <div class="input-group ">
+          <input type="text" value="{php echo intval($reply['quota'])}" style="width:80px" class="form-control" name="quota" >
+          <span class="input-group-addon">人</span> </div>
+        <div class="help-block">入选人数,设置0为不限制</div>
+      </div>
+    </div>
+    <!--<div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">积分奖励</label>
+      <div class="col-sm-9 form-inline">
+        <div class="input-group ">
+          <span class="input-group-addon">报名成功</span>
+          <input type="text" value="{php echo intval($reply['credit_join'])}" style="width:80px" class="form-control" name="credit_join" >
+          <span class="input-group-addon">分</span> </div>
+        <div class="input-group ">
+          <span class="input-group-addon">入选</span>
+          <input type="text" value="{php echo intval($reply['credit_in'])}" style="width:80px" class="form-control" name="credit_in" >
+          <span class="input-group-addon">分</span> </div>
+        <div class="input-group ">
+          <span class="input-group-addon">签到</span>
+          <input type="text" value="{php echo intval($reply['credit_append'])}" style="width:80px" class="form-control" name="credit_append" >
+          <span class="input-group-addon">分</span> </div> 
+          
+        <div class="help-block">设置0为不添加积分;设置为负数为，参加需要积分</div>
+      </div>
+    </div>-->
+    
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">签到验证码</label>
+      <div class="col-sm-9 form-inline">
+        <input type="text" value="{$reply['appendcode']}" style="width:160px" class="form-control" name="appendcode" >
+        <div class="help-block">验证码,请注意大小写</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名者其他资料</label>
+      <div class="col-sm-9 form-inline">
+        <div id="parama"></div>
+        <a href="javascript:addparama()"><i class="icon-plus-sign-alt"></i> 添加</a> </div>
+      <div class="help-block">如家庭，收入等</div>
+    </div>
+  </div>
+  <!----> 
+</div>
+    <div class="form-group col-xs-12">
+      <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+      <input type="hidden" name="token" value="{$_W['token']}" />
+    </div>
+  </form>
+</div>
+<!--腾讯地图坐标-->
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">请选择地点</h4>
+      </div>
+      <div class="modal-body">
+      <div class="input-group" style="margin-bottom:10px">
+        <input type="text" id="address" class="form-control" placeholder="请输入地址来直接查找相关位置">
+        <span class="input-group-btn">
+          <button class="btn btn-default" onclick="codeAddress()" type="button">&nbsp;&nbsp;搜索&nbsp;&nbsp;</button>
+        </span>
+      </div>
+      <div style="width:100%;height:400px" id="container"></div>
+      </div>
+      <div class="modal-footer">
+      	<input type="hidden" id="map_lng" class="form-control" />
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="chooseMap()">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+<script type="text/javascript">
+$(document).ready(function(e) {
+    init();
+});
+var geocoder,map,marker = null;
+var init = function() {
+	var mapbegin_lat=$("input[name='latitude']").val() ? parseFloat($("input[name='latitude']").val()) : 39.916527;
+	var mapbegin_lng=$("input[name='longitude']").val() ? parseFloat($("input[name='longitude']").val()) : 116.397128;
+    var center = new qq.maps.LatLng(mapbegin_lat,mapbegin_lng);
+    map = new qq.maps.Map(document.getElementById('container'),{
+        center: center,
+        zoom: 15,
+    });
+	var marker = new qq.maps.Marker({
+        position: center,
+        draggable: true,
+        map: map
+    });
+	qq.maps.event.addListener(map, 'click', function(event) {
+		marker.setMap(null);
+        marker=new qq.maps.Marker({
+          position:event.latLng, 
+		  draggable: true,
+          map:map
+        });
+		$("#map_lng").val(event.latLng);
+    });
+	qq.maps.event.addListener(marker, 'mouseup', function(event) {
+		marker.setMap(null);
+        marker=new qq.maps.Marker({
+          position:event.latLng,
+		  draggable: true, 
+          map:map
+        });
+		$("#map_lng").val(event.latLng);
+    });
+    geocoder = new qq.maps.Geocoder({
+        complete : function(result){
+            map.setCenter(result.detail.location);
+			marker.setMap(null);
+            marker = new qq.maps.Marker({
+                map:map,
+				draggable: true,
+                position: result.detail.location
+            });
+			$("#map_lng").val(result.detail.location);
+        }
+    });
+}
+function codeAddress() {
+    var address = document.getElementById("address").value;
+    geocoder.getLocation(address);
+}
+function chooseMap(){
+	if($("#map_lng").val().indexOf(",")>0){
+		mapary=$("#map_lng").val().split(",");
+		$("input[name='latitude']").val(mapary[0]);
+		$("input[name='longitude']").val(mapary[1]);
+	}
+	$('#myModal').modal('hide');
+}
+//-------
+var i=0;
+function addparama(){
+	var temp="<div><label dd='"+i+"' class='form-inline'><input class='form-control' name='parama-key-new["+i+"]' placeholder='键'/> : <select class='form-control' name='parama-val-new["+i+"]'><option value='1'>文本</option><option value='2'>图片</option></select> <a href='javascript:del("+i+")'><i class='glyphicon glyphicon-remove-circle'></i></a></label></div>";
+	$("#parama").append(temp);
+	i++;
+}
+oparama=eval({php echo $reply['parama']});
+addOldparama(oparama);
+function addOldparama(parama){
+	if(parama.length<5)return;
+	
+	for(var key in parama) {
+		temp="<div><label ddold='"+key+"' class='form-inline' ><input class='form-control' name='parama-key["+key+"]' value='"+key+"' placeholder='键'/> : ";
+		temp+="<select class='form-control' name='parama-val["+key+"]'>";
+		if(parama[key]==1){
+			temp+="<option value='1' selected>文本</option><option value='2'>图片</option>";
+		}else{
+			temp+="<option value='1'>文本</option><option value='2' selected>图片</option>";
+		}
+		
+		temp+="</select> <a href=\"javascript:delo('"+key+"')\"><i class='glyphicon glyphicon-remove-circle'></i></a></label></div>";
+		$("#parama").append(temp);
+	}
+}
+function del(obj){
+	$("label[dd='"+obj+"']").remove();
+}
+function delo(obj){
+	$("label[ddold='"+obj+"']").remove();
+}
+</script>
+{elseif $operation == 'display'}
+<style>
+.tl span{color:#999;}
+.category td div{ padding-bottom:3px;}
+.table td,.table-hover td{overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal}
+</style>
+<script language="javascript" src="../addons/j_activity/image/bootstrap-tooltip.js"></script>
+<script language="javascript" src="../addons/j_activity/image/bootstrap-popover.js"></script>
+<div class="main">
+  <div class="category">
+    <form action="" method="post" onsubmit="return formcheck(this)">
+      <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="width:40px">#</th>
+                <th style="width:120px">活动图片</th>
+                <th style="width:220px">活动名称</th>
+                <th>时间</th>
+                <th>参数数量</th>
+                <th>费用</th>
+                <th>报名情况</th>
+                <th>访问</th>
+                <th>状态</th>
+                <th style="text-align:right">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            {loop $list $row}
+            <tr>
+              <td>{$row['id']}</td>
+              <td><img src="{$_W['attachurl']}{$row['picture']}" width="120" style="max-height:120px"/></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:auto;white-space:normal"><a href="#" title="{$row['title']}">{$row['title']}</a></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:auto;white-space:normal">
+              	<div><span class="label label-info">报：{php echo date('m-d',$row['joinstarttime'])." 至 ".date('m-d',$row['joinendtime'])}</span></div>
+                <div><span class="label label-warning">活：{php echo date('m-d',$row['starttime'])." 至 ".date('m-d',$row['endtime'])}</span></div>
+              </td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              	{php $p=json_decode($row["parama"],true);}
+                {php $str="";}
+                {php foreach($p as $index=>$r) {}
+                {if $r==1}{php $str.='文本：'.$index.'<br>'}{else}{php $str.='图片：'.$index.'<br>'}{/if}
+                {php }}
+                <span class="label label-primary" data-container="body"  data-toggle="popover" data-placement="right" data-content="{php echo $str}">{php echo count($p)}</span>
+               
+              </td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{$row['charge']}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal"><b style="color:#F00;">{php echo pdo_fetchcolumn("select count(*) FROM ".tablename('j_activity_winner')." WHERE aid = '".$row['id']."'")}</b>
+              /{$row['applicants']}/{$row['quota']}
+              </td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              	{$row['visitied']} / {php echo pdo_fetchcolumn("select count(*) FROM ".tablename('j_activity_record')." WHERE aid = '".$row['id']."'")}
+              </td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              {if $row['joinstarttime']>TIMESTAMP}<span class="label label-default">未开始</span>{/if}
+              {if $row['joinstarttime']<TIMESTAMP && $row['joinendtime']>TIMESTAMP}<span class="label label-info">报名中</span>{/if}
+              {if $row['joinendtime']<TIMESTAMP}<span class="label label-warning">报名结束</span>{/if}
+              {if $row['endtime']<TIMESTAMP}<br><span class="label label-danger">活动结束</span>{/if}
+              </td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;text-align:right">
+              <div>
+              <a href="{php echo $this->createWebUrl('screen', array('id' => $row['rid']))}" target="_blank"  class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="点指兵兵"><i class="fa fa-dashboard"></i></a>&nbsp;&nbsp; 
+              <a href="{php echo $this->createWebUrl('lucky', array('id' => $row['rid']))}" target="_blank"  class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="点指兵兵-中奖名单"><i class="fa fa-trophy"></i></a>&nbsp;&nbsp; 
+              <a href="{php echo $this->createWebUrl('attend', array('id' => $row['id']))}" target="_blank"  class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="bottom" title="签到处"><i class="fa fa-pencil"></i></a>
+              </div>
+               <div>
+              <a href="{php echo $this->createWebUrl('joiner', array('id' => $row['rid']))}"  class="btn btn-info btn-sm"  target="_blank" data-toggle="tooltip" data-placement="bottom" title="查看报名情况"><i class="fa fa-eye"></i></a>&nbsp;&nbsp; 
+              <a href="{php echo $this->createWebUrl('manage', array('op' => 'post','id' => $row['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="编辑"><i class="fa fa-edit"></i></a>
+              </div>
+              </td>
+            </tr>
+            {/loop}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{/if}
+<script language="javascript">
+$(function () {
+  $('[data-toggle="popover"]').popover();
+  
+})
+</script> 
+{template 'common/footer'} 

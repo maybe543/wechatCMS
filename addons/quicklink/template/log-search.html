@@ -1,0 +1,25 @@
+<form action="{php echo $this->createWebUrl('Spread')}" method="get">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">搜索 （输入OpenID）</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-10 col-sm-10 col-xs-12">
+        {php echo FormTpl::getWebControl2('text', 'keyword', $_GPC['keyword']) }
+        </div>
+        <div class="col-lg-2 col-sm-2 col-xs-12">
+        {php echo FormTpl::getWebControl2('submit', 'submit', '搜索') }
+        </div>
+        {php echo FormTpl::getWebControl2('hidden', 'token', $_W['token'])}
+        {php echo FormTpl::getWebControl2('hidden', 'op', $op)}
+        {php echo FormTpl::getWebControl2('hidden', 'search', $op)}
+        {php echo FormTpl::getWebControl2('hidden', 'c', 'site')}
+        {php echo FormTpl::getWebControl2('hidden', 'a', 'entry')}
+        {php echo FormTpl::getWebControl2('hidden', 'm', 'quicklink')}
+        {php echo FormTpl::getWebControl2('hidden', 'do', 'ranking')}
+      </div>
+    </div>
+  </div>
+</form>
+

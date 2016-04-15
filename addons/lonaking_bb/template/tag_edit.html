@@ -1,0 +1,66 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('tagManage');}">标签管理</a></li>
+	</ul>
+	<form class="form-horizontal form" id="setting-form" action=""
+		method="post">
+		<div class="panel panel-default">
+			<div class="panel-heading">{$option}</div>
+			<div class="panel-body">
+				<!-- id-->
+				<div class="form-group hide">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">id</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="tag[id]"
+							value="{$tag['id']}" />
+							<span class="help-block">id,隐藏</span>
+					</div>
+				</div>
+				<!-- name-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">标签名称</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="tag[tag]"
+							value="{$tag['tag']}" required/>
+							<span class="help-block">标签名称,字数不要太多了</span>
+					</div>
+				</div>
+				<!-- color-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">标签颜色</label>
+					<div class="col-sm-8">
+						<label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio1" value="color-pink" {if $tag['color'] == 'color-pink'}checked="checked"{/if}>
+							粉色
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio2" value="color-orange" {if $tag['color'] == 'color-orange'}checked="checked"{/if}>
+							橙色
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio3" value="color-purple" {if $tag['color'] == 'color-purple'}checked="checked"{/if}>
+							紫色
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio3" value="color-blue" {if $tag['color'] == 'color-blue'}checked="checked"{/if}>
+							蓝色
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio3" value="color-cyan" {if $tag['color'] == 'color-cyan'}checked="checked"{/if}>
+							宝蓝
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio3" value="color-teal" {if $tag['color'] == 'color-teal'}checked="checked"{/if}>
+							茶色
+						</label> <label class="radio-inline"> <input type="radio"
+							name="tag[color]" id="inlineRadio3" value="color-indigo" {if $tag['color'] == 'color-indigo'}checked="checked"{/if}>
+							indigo
+						</label> <span class="help-block">优惠券颜色：默认红色</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input name="token" type="hidden" value="{$_W['token']}" /> <input
+				type="submit" class="btn btn-primary col-lg-1" name="submit"
+				value="提交" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

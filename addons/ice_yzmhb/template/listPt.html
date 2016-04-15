@@ -1,0 +1,97 @@
+{template 'common/header'}
+
+<script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js">
+</script>
+<ul class="nav nav-tabs">
+	<li {if $foo == 'listPt'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('foo' => 'listPt'))}">普通红包规则</a></li>
+	<li {if $foo == 'listLb'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('foo' => 'listLb','op' => 'listLb','type' => '2'))}">裂变红包规则</a></li>
+	<li {if $foo == 'listC'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('foo' => 'listC','op' => 'listLb','type' => '3'))}">小伙伴猜红包规则</a></li>
+	<li {if $foo == 'listQ'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('foo' => 'listQ','op' => 'listLb','type' => '4'))}">小伙伴抢红包规则</a></li>
+	<li {if $foo == 'listSw'}class="active"{/if}><a href="{php echo $this->createWebUrl('rule', array('foo' => 'listSw','op' => 'listSw','type' => '5'))}">实物红包</a></li>
+	
+</ul>
+<!-- 
+ -->
+ <div class="panel panel-info">
+        <div class="panel-body">
+				<a href="{php echo $this->createWebUrl('rule', array('foo' => 'listPt','op' => 'post'))}">添加普通红包规则</a>
+        </div>
+    </div>
+<style>
+.album_list{overflow:hidden; list-style: none; padding:0; margin:0;}
+.album_list li{border:1px #DDD solid; width:232px; float:left; margin-right:15px; margin-bottom:10px;padding:4px;}
+.album_list li .album_pic{display:block; width:224px; height:130px; overflow:hidden;}
+.album_list li .album_pic img{display:block; height:129px; margin:0 auto;}
+.album_list li .album_main{padding:10px; overflow:hidden;}
+.album_list li .album_main .album_title{font-size:16px; height:20px; width:217px; overflow:hidden;}
+.album_list li .album_main .pull-left{color:#999;}
+.album_manage .table th{width:120px;}
+.album_manage #albums_head img{margin-right:10px; max-height:70px;}
+</style>
+<div class="panel-body table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th style="width:10px;"></th>
+								<th style="width:80px;">红包金额范围</th>
+								<th style="width:80px;">红包数量</th>
+								<th style="width:150px;">概率</th>
+								<th style="width:150px;">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						{loop $list $row}
+						<tr>
+							<td>{if count($list) > 0}{/if}</td>
+							<td>
+								<div class="type-parent">{$row['money_range']}&nbsp;&nbsp;
+
+								</div>
+								</td>
+								
+								
+								<td>
+								<div class="type-parent">{$row['prizesum']}&nbsp;&nbsp;
+
+								</div>
+								</td>
+
+									<td>
+								<div class="type-parent">{$row['prizeodds']}&nbsp;&nbsp;
+
+								</div>
+								</td>
+								
+							<td>
+								<a href="{php echo $this->createWebUrl('manage', array('op' => 'post','foo'=>'listAct', 'pid' => $row['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="编辑"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+								<a href="{php echo $this->createWebUrl('manage', array('op' => 'deletePt', 'pid' => $row['id']))}" onclick="return confirm('确认删除吗？');return false;" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="删除"><i class="fa fa-times"></i></a>
+							</td>
+						</tr>
+						{/loop}
+						</tbody>
+					</table>
+				</div>
+				 {$pager}
+<div id='msg'></div>
+<script language="javascript">
+function ajaxopen(url) {
+	$.get(url+'&time='+new Date().getTime(), function(data){ 
+                        $("#msg").html(data);
+	});	
+	return false;
+}
+var category = {php echo json_encode($children)};
+function fetchChildCategory(cid) {
+	var html = '<option value="0">请选择二级分类</option>';
+	if (!category || !category[cid]) {
+		$('#cate_2').html(html);
+		return false;
+	}
+	for (i in category[cid]) {
+		html += '<option value="'+category[cid][i][0]+'">'+category[cid][i][1]+'</option>';
+	}
+	$('#cate_2').html(html);
+}
+</script>
+
+{template 'common/footer'}

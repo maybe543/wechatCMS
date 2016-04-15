@@ -1,0 +1,30 @@
+<div class="form-group">
+  {php echo FormTpl::label2('填写说明', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+      <span class="red">本栏目内容均为选填, 如不填写则会自动从商品详情页中提取.</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('转发标题', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php echo FormTpl::getWebControl2('text', 'timelinetitle', $item['timelinetitle'])}
+    <span class="help-block">可选, 如果不填写则默认使用商品名称</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('转发描述', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php echo FormTpl::getWebControl2('text', 'timelinedesc', $item['timelinedesc'])}
+    <span class="help-block">可选, 如果不填写则自动从商品详情页面中提取文字。一般自动提取的内容质量不高, 建议填写本项。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('缩略图', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php echo FormTpl::getWebControl2('image', 'timelinethumb', $item['timelinethumb'])}
+    <span class="help-block">可选。商品转发到朋友圈时显示的缩略图, 尺寸建议 200*200。如不填写，则自动提取详情页内图片。</span>
+  </div>
+</div>

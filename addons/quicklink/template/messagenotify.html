@@ -1,0 +1,38 @@
+
+<h4>新用户扫码关注后立即推送内容：</h4>
+
+<div class="form-group">
+  {php echo FormTpl::label2('标题', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'title', $item['title']); }
+    <span class="help-block">标题如果留空，则用户扫码关注后不推送任何提示信息。</span>
+    <span class="text-block">消息中可以使用<kbd>nickname</kbd>表示扫码者的昵称，<kbd>fanid</kbd>表示第多少位用户, <kbd>leader</kbd>表示上线昵称</span>
+    <span class="text-block">例如：欢迎光临nickname, 您在leader的推荐下，成为第fanid位加盟人人赚分销商城的用户!</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('推送消息配图', 'col-xs-12 col-sm-3 col-md-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('image', 'thumb', $item['thumb']); }
+    <div class="help-block text-danger">大图片建议尺寸：900像素 * 500像素。如不上传图片，则回复【说明】中指定的文本消息，而不回复图文消息。</div>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('推送消息说明', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'desc', $item['desc']); }
+    <span class="text-block">消息中可以使用<kbd>nickname</kbd>表示扫码者的昵称，<kbd>fanid</kbd>表示第多少位用户, <kbd>leader</kbd>表示上线昵称</span>
+    <span class="text-block">例如：欢迎光临nickname, 您在leader的推荐下，成为第fanid位加盟人人赚分销商城的用户!</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('打开页面地址', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'url', $item['url']); }
+  </div>
+</div>
+

@@ -1,0 +1,63 @@
+@charset "utf-8";
+/*全局设置结束*/
+body{background:#EEE;}
+h1,h2,h3,h4,h5,h6{line-height:normal; margin:0;}
+.header{font-size:16px;text-align:center;line-height:40px;position:fixed; left: 0; top:0; right: 0;background:#FFF; z-index:3}
+.header div[class^='boxsize']{border-bottom:1px solid #DDD;}
+.header a{display:block;text-align:center;text-decoration:none;color:#999;font-size:13px;}
+.header a:active{ background:#DDD;}
+.headermenu a{display:block;text-align:center;text-decoration:none;color:#999;font-size:13px; line-height:28px;}
+.fixed_first{ margin-top:39px; height:1px;}
+
+.footermenu{ position:fixed;height:40px; border-top:1px solid #DDD; background:#FFF; bottom:0; left:0;right:0;z-index:3}
+/**/
+.ad_banner{width:100%;}
+.ad_banner img{width:100%; max-height:100px;}
+/*公共*/
+.box{display:box;display:-webkit-box;}
+.boxsize-1{-webkit-box-flex:1;box-flex:1;}
+.boxsize-2{-webkit-box-flex:2;box-flex:2;}
+.boxsize-3{-webkit-box-flex:3;box-flex:3;}
+.boxsize-4{-webkit-box-flex:4;box-flex:4;}
+.boxsize-5{-webkit-box-flex:5;box-flex:5;}
+.boxsize-6{-webkit-box-flex:6;box-flex:6;}
+.boxsize-7{-webkit-box-flex:7;box-flex:7;}
+.boxsize-8{-webkit-box-flex:8;box-flex:8;}
+.boxsize-9{-webkit-box-flex:9;box-flex:9;}
+.boxsize-10{-webkit-box-flex:10;box-flex:10;}
+
+.jmh_10{ min-height:10px;}
+.jm_t10{margin-top:10px;}
+.jm_b10{margin-bottom:10px;}
+.jp_b10{ padding-bottom:10px;}
+.jp_10{ padding:10px;}
+.jp_5{ padding:5px;}
+.jp_10_5{ padding:10px 5px;}
+.jtable{display:table; width:100%;}
+.jrow{display:table-row;}
+.jcell{display:table-cell; vertical-align:middle;}
+.jcell-1{ width:10%}
+.jcell-2{ width:20%}
+.jcell-3{ width:30%}
+.jcell-4{ width:40%}
+.jcell-5{ width:50%}
+.jcell-6{ width:60%}
+.jcell-7{ width:70%}
+.jcell-8{ width:80%}
+.jcell-9{ width:90%}
+/*首页*/
+.j_list_v,.j_list_v li{ list-style:none; margin:0; padding:0;}
+.j_list_v{background:#FFF;}
+.j_list_v li{ border-bottom:#DDD 1px solid;}
+.j_list_v li a{display:block;}
+.j_list_v li a div[class^="col-"]{ margin:0; padding:0;}
+.j_list_v li a div[class^="col-"]:first-child{ padding-right:10px;}
+.j_list_v li a div[class^="col-"] p{ display:table-cell; height:80px; vertical-align:middle; }
+.j_list_v li a div[class^="col-"]:last-child p{ text-align:right; width:100%;}
+/*.j_list_v li a div[class^="col-"] p img{max-width:100%}*/
+.j_list_v li a:active{ background:#DDD;}
+.j_list_v li a{ display:block;padding:10px; text-decoration:none;}
+.j_list_v li h2{ font-weight:bold; font-size:14px; margin:0 0 5px 0; line-height:20px; text-align:left;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.j_list_v li small{ display:block; padding:0; color:#999;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.j_list_v li small span{color:#666;}
+/**/

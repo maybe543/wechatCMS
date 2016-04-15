@@ -1,0 +1,109 @@
+{template 'header'}
+<link type="text/css" rel="stylesheet" href="{RES_CSS}base.css" />
+<link type="text/css" rel="stylesheet" href="{RES_CSS}style.css?v=203" />
+<script type="text/javascript" src="{RES_JS}script.js"></script>
+<title>取现信息</title>
+<section class="reserve">
+<!--content-->
+<section class="reserve_content">
+<!--title-->
+<p class="reserve_title"><span>请认真填写以下信息,客服人员将会与您联系</span></p>
+<!--tielt end-->
+<!--details-->
+<section class="reserve_details">
+{php foreach(explode("-",$goods_info['title']) as $v) echo "<p>" . $v . "</p>"; }
+</section>
+<!--details end-->
+<!--data-->
+<section class="reserve_data">
+
+<form action="" method="post" data-ajax="false" onsubmit="return check(this)">
+  <input name="id" type="hidden" id="id" value="{$goods_list['goods_id']}" />
+  <input name="act" type="hidden"  value="module">
+  <input name="name" type="hidden"   value="quickmoney">
+  <input name="do" type="hidden"  value="Exchange">
+  <input name="weid" type="hidden"  value="{$_W['weid']}">
+
+  <section class="data_box">
+  <label class="data_box_l">真实姓名</label>
+  <span class="data_box_r"><input type="text" name="realname" value="{$profile['realname']}" placeholder="请输入您的真实姓名" class="txt" /></span>
+  </section>
+  <section class="data_box">
+  <label class="data_box_l">联系电话</label>
+  <span class="data_box_r"><input name="mobile" type="text" value="{$profile['mobile']}" placeholder="请输入您的手机" class="txt" /></span>
+  </section>
+  {if $goods_info['userchangecost'] == 1}
+  <section class="data_box">
+  <label class="data_box_l">兑换金额</label>
+  <span class="data_box_r"><input type="text" name="cost" value="{$goods_info['cost']}" placeholder="请输入您要兑换的积分数" class="txt" /></span>
+  </section>
+  {else}
+  <input name="cost" type="hidden"  value="{$goods_info['cost']}">
+  {/if}
+  {if $goods_info['exchangetype'] == 1}
+  <section class="data_box">
+    <label class="data_box_l">支付宝</label>
+    <span class="data_box_r"><input name="alipay" type="text" value="{$profile['alipay']}" placeholder="现金将打入支付宝" class="txt" /></span>
+    </section>
+  {elseif $goods_info['exchangetype'] == 2}
+    <section class="data_box">
+      <label class="data_box_l">银行卡号</label>
+      <span class="data_box_r"><input name="bankcard" type="text" value="" placeholder="现金将打入本银行卡内" class="txt" /></span>
+    </section>
+    <section class="data_box">
+      <label class="data_box_l">开户行</label>
+      <span class="data_box_r"><input name="bankname" type="text" value="" placeholder="开户行必须输入正确" class="txt" /></span>
+    </section>
+  {/if}
+  <section class="data_box">
+  <label class="data_box_l">备注</label>
+  <span class="data_box_r"><input name="note" type="text" value="" placeholder="其它事项请在此说明" class="txt" /></span>
+  </section>
+  <!--btn-->
+  <section class="reserve_btn_box">
+  <input type="submit" value="提交登记" class="reserve_btn" />
+  </section>
+  <!--btn end-->
+  <input type="hidden" name="token" value="{$_W['token']}" />
+</form>
+</section>
+<!--data end-->
+</section>
+<!--content end-->
+</section>
+
+<!--p><a href="{php echo murl('entry/module/goods', array('m'=>'quickmoney', 'weid'=>$_W['weid']))}">跳到兑换页面</a></p-->
+<script type="text/javascript">
+  function check(form) {
+    if (!form['realname'].value) {
+      alert('请输入您的真实姓名！');
+      return false;
+    }
+    if (!form['mobile'].value) {
+      alert('请输入您的手机号码！');
+      return false;
+    }
+    if (!/^1[0-9]{10}/.test(form['mobile'].value)) {
+      alert('请输入正确的手机号码！');
+      return false;
+    }
+    {if $item['exchangetype'] == 1}
+    if (!form['alipay'].value) {
+      alert('请输入您的支付宝！');
+      return false;
+    }
+    {else $item['exchangetype'] == 2}
+    if (!form['bankcard'].value) {
+      alert('请输入您的银行卡号！');
+      return false;
+    }
+    if (!form['bankname'].value) {
+      alert('请输入您的开户行名称，如农业银行北京中关村分行！');
+      return false;
+    }
+    {/if}
+    return true;
+  }
+</script>
+
+{template 'footer'}

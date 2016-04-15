@@ -1,0 +1,5 @@
+<li>
+<a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}"><img src="{$_W['attachurl']}{$item['thumb']}"><p>
+  <em>{if !empty($item['istime'])}秒杀{elseif !empty($item['isdiscount'])}折扣{elseif !empty($item['ishot'])}热卖{elseif !empty($item['isnew'])}新品{else}推荐{/if}</em><span>￥{$item['marketprice']}</span></p></a>
+</li>
+

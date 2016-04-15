@@ -1,0 +1,1047 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta property="wb:webmaster" content="a314cb0fa82db1ba">
+    <title>{php if(isset($title)) $_W['page']['title'] = $title}{if !empty($_W['page']['title'])}{$_W['page']['title']} - {/if}{if !empty($_W['account']['name'])}{$_W['account']['name']}{/if}{if !empty($_W['page']['sitename'])} - {$_W['page']['sitename']}{else}{if IMS_FAMILY != 'x'} - Powered by 012wz.com{/if}{/if}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <!-- Mobile Devices Support @begin -->
+    <meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+    <meta content="no-cache" http-equiv="pragma">
+    <meta content="0" http-equiv="expires">
+    <meta content="telephone=no, address=no" name="format-detection">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- apple devices fullscreen -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Mobile Devices Support @end -->
+ <!--必要样式-->
+  <script type="text/javascript" src="{php echo FMURL}mobile/templates/stylebase/style/js/jquery.min.js"></script>
+  <script type="text/javascript" src="{FMURL}mobile/templates/stylebase/style/js/timeCountDown.js?ver=0.0.4"></script>
+  <script type="text/javascript" src="{FMURL}mobile/templates/stylebase/style/js/mp3.js?ver=1.11"></script>
+  <script type="text/javascript" src="{FMURL}mobile/templates/stylebase/style/js/jquery-ui-1.9.2.custom.js"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="{FMURL}mobile/templates/stylebase/style/css/colorbox.css?ver=1.0">
+  <script type="text/javascript" src="{FMURL}mobile/templates/stylebase/style/js/jquery.colorbox.js?ver=1.0"></script>
+  <link rel="stylesheet" href="{FMURL}mobile/templates/stylebase/style/css/champagnerose.css?ver=1.0" type="text/css">
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+ 	<link rel='stylesheet' href='{FMURL}mobile/templates/stylebase/style/css/style.css?ver=1.0' type='text/css' media='all' />
+	<script src="{FMURL}mobile/templates/stylebase/style/js/global_brain.js?ver=1.0" type="text/javascript"></script>
+	<script type="text/javascript">
+	// jssdk config 对象
+	jssdkconfig = {php echo json_encode($_W['account']['jssdkconfig']);} || {};
+	
+	// 是否启用调试
+	jssdkconfig.debug = false;
+	
+	jssdkconfig.jsApiList = [
+		'checkJsApi',
+		'onMenuShareTimeline',
+		'onMenuShareAppMessage',
+		'onMenuShareQQ',
+		'onMenuShareWeibo',
+		'openLocation',
+		'getLocation'
+	];
+	</script>
+
+
+    
+	<style>
+	     .swiper-container{width:100%;max-height:200px;color:#fff;text-align:center;}.pagination{position:absolute;z-index:20;right:10px;}.swiper-pagination-switch{display:inline-block;width:5px;height:5px;border-radius:5px;background:#222;margin-right:5px;opacity:0.8;border:1px solid #fff;cursor:pointer;}.swiper-visible-switch{background:#aaa;}.swiper-active-switch{background:#fff;}
+	     .imgplay{max-height:200px;width:100%}
+	</style>
+
+    <script>
+
+        $(function(){
+            $("#sfx").click(function(){
+
+                $('#plug').trigger("click");
+            })
+
+            $("#hdtitle").toggle(
+                function(){
+                    $("#listmore").show();
+
+                },
+                function(){$("#listmore").hide();}
+            );
+            //each遍历文本框
+
+            //保存当前文本框的值
+
+            $("#soname").click(function(){
+                $("#sfxsfx").html("搜索跳转中");
+                setload();
+                var name=unescape($(".auto").val());
+                 window.location.href='{php echo $this->createMobileUrl('photosvote', array('rid' => $rid))}&keyword='+name;
+               
+            });
+            $('#plug').click(function(){
+                $(".dzptit").html("添加我们后,回复【投票】参与活动"); 
+                if($("#soso").css('display')=='block')$("#soso").css('display','none');
+                if($("#sfx").css('display')=='block')$("#sfx").css('display','none');
+                if($(".dzpwrap").css('display')=='block')$(".dzpwrap").css('display','none');
+                $('#share_layer').hide();
+                $(this).hide();
+
+            });
+
+            $('#sou').click(function(){
+
+                $('#plug').show();
+                // $("#soso").css('left',parseInt(($(window).width()-$("#codevote").width())/2));
+                var top = $(window).scrollTop();
+                $("#soso").css('top',top);
+                $("#soso").css('display','block');
+                //$(".auto").focus();
+            });
+
+            $('#shares').click(function(){
+               // alert("点击当前屏幕右上角,三个点,选择分享到朋友圈或者发给朋友.\r\n\r\n悄悄的,在公众号中回复: 拉票   两个字,能获取更多拉票技能呢.");
+               // return false;
+                $('#plug').show();
+                $('#share_layer').css('height', $(document).height()).show();
+                var top = $(window).scrollTop();
+                $('#share_layer').css('top',top);
+                return false;
+            });
+            $("#jieshao").toggle(
+                function(){
+                    $("#ms").show();
+                },
+                function(){$("#ms").hide();}
+            );
+        })
+    </script>
+
+</head>
+
+<body>
+
+{template 'templates/stylebase/hnav'}
+{template 'templates/stylebase/tvote'}
+<style type="text/css">
+	body {background: #533887;font-size: 62.5%;}
+  	ul {background: #533887;}
+  	ul#count li {background: #533887;}
+  	#time_conter {background: #cb418e url({FMURL}mobile/templates/stylebase/style/images/c.png?v=1.1) no-repeat 14px center;  background-size: 42px 42px;}
+  	#three {
+    background: #ee428c;
+    }
+  #three p {
+    color: #f1cac2;
+  }
+  .line {
+    background: #f15c9c;
+  }
+  .sorts a.active {
+    border-bottom: #f3e4c2 solid 1px;
+      background: #F2688A;
+  }
+  .sorts a {
+    background: #848484;
+    color: #f3e4c2;
+    border-bottom: #fcf0dd solid 1px;
+  }
+  .descarrow {
+    background: #ee428c url({FMURL}mobile/templates/stylebase/style/images/j1.png?ver=0.3) center center no-repeat;
+    color: #fff;
+    background-size: 16px auto;
+  }
+  .pinterestUl .pinterestLi {
+    background-color: #f2688a;
+    border: 0px solid #f2688a;
+    box-shadow: 0 2px 8px rgba(237, 189, 189, 0.3);
+  }
+  .pinterestUl .pinterestLi:hover {
+    border: 1px solid #FAFAFA;
+    background-color: #F2688A;
+    box-shadow: 0 2px 8px rgba(237, 189, 189, 0.3);
+  }
+  .btn {
+    background: none repeat scroll 0 0 #ee428c;
+    border: 0px solid #FA548C;
+    color: #f3e4c2;
+    /**width: 90px;*/
+    }
+    .count {
+    color: #f3d0a9;
+  }
+  #count span {
+    color: #f3e4c2;
+  }
+  ul#count p {
+    font-size: 1.4em;
+    color: #FDF2D7;
+  }
+  .p {
+    color: #f3d0a9;
+  }
+  a {
+    outline: none;
+    color: #f3e4c2;
+  }
+  #listmore a, #taglist a {
+    color: #F3E4C8;
+    border: 1px #f2688a solid;
+    background: #f2688a;
+  }
+  .soubg {
+    background: #F2688A;
+  }
+  .stop {
+    width: 100%;
+    height: 230px;
+    background: url('{php echo toimage($reply['picture'])}') center center no-repeat;
+    background-size: 100% 100%;
+    line-height: 230px;
+      margin-bottom: 20px;
+  }
+  #cboxContent, #cboxLoadedContent {
+    background: #F2688A;
+  }
+  .ldesc {
+    color: #f3e4c2;
+  }
+  .pinterestUl .pinterestLi .pinterest_title {
+    color: #936F47;
+  }
+    .arrow {
+        position: fixed;
+        z-index: 100;
+        width: 48px;
+        height: 48px;
+        background: url("{FMURL}mobile/templates/stylebase/style/images/up.png");
+        background-size:100%;
+        bottom: 90px;
+        left: 50%;
+        text-align: center;
+        margin-left: -24px;
+        animation: arrowUp 2s infinite ease-in;
+        -webkit-animation: arrowUp 2s infinite ease-in;
+    }
+    @keyframes arrowUp {
+        0% {transform:translateY(42px);opacity: 0;}
+        60% {transform:translateY(12px); opacity: 1;}
+        100% {transform:translateY(0px); opacity: 0;}
+    }
+    @-webkit-keyframes arrowUp {
+        0% {-webkit-transform:translateY(42px);opacity: 0;}
+        60% {-webkit-transform:translateY(12px); opacity: 1;}
+        100% {-webkit-transform:translateY(0px); opacity: 0;}
+    }
+</style>
+<div class="arrow"></div>
+<!--background-->
+<div style="display: none;" id="plug"><img src="{FMURL}images/share.png" width="100%"></div>
+<!--sharediv-->
+<div id="share_layer" style="z-index:9999999;max-height:200px; display: none;position:absolute;top:0;right:0;"><img style="width:100%" src=""></div>
+
+
+<div id="soso">
+    <div class="soubg">
+        <div class="stop"></div>
+        <input type="text" value="" placeholder="可输入 编号ID 或者 昵称、姓名" class="auto" style="width: 70%; height: 36px; line-height: 36px; font-size: 1.5em; border-radius: 8px; padding-left: 8px; border: 0px; color: rgb(185, 185, 185); background: rgb(240, 240, 240);" autocomplete="off">
+        <a id="soname">搜索</a>
+        <div style="width: 100%;height:48px;font-size:1.2em;line-height:48px">分享从搜索开始~~</div>
+    </div>
+    <div style="width: 100%;padding-top:10px;text-align:center">
+        <strong class="soarrow"></strong>
+    </div>
+</div>
+
+
+
+<!--body-->
+<div id="content" style="max-width: 640px;margin: 0 auto;">
+{if !empty($banners)}
+  <style type="text/css">
+      .box_swipe {
+        overflow: hidden;
+        position: relative;
+      }
+      .box_swipe ul {
+        overflow: hidden;
+        position: relative;
+      }
+      .box_swipe ul > li {
+        float:left;
+        width:100%;
+        position: relative;
+      }
+      .box_swipe ul > li a{
+        color:#FFF;
+        text-decoration:none;
+      }
+      .box_swipe ul > li .title{
+        position: absolute;
+        bottom: 6px;
+        display: block;
+        width: 70%;
+        height:20px;
+        padding:0 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color:#FFF;
+        z-index:100;
+         line-height: 20px;
+
+      }
+      .box_swipe>ol{
+        height:20px;
+        position: relative;
+        z-index:10;
+        margin-top:-25px;
+        text-align:right;
+        padding-right:15px;
+        background-color:rgba(0,0,0,0.3);
+      }
+      .box_swipe>ol>li{
+        display:inline-block;
+        margin-bottom:1px;
+        width:8px;
+        height:8px;
+        background-color:#757575;
+        border-radius: 8px;
+      }
+      .box_swipe>ol>li.on{
+        background-color:#ffffff;
+      }
+  </style>
+  <div id="banner_box" class="box_swipe" style="  max-width: 640px;  margin: 0 auto;  margin-bottom: -10px;">
+      <ul id="bheight">
+          {loop $banners $mid $banner}
+            <li>
+                <a href="{if empty($banner['link'])}#{else}{$banner['link']}{/if}"><img src="{php echo toimage($banner['thumb'])}" alt="{$banner['bannername']}"  width='100%' style="max-height:600px;" />
+                </a>
+                <span class="title" style="color:#fff;">{$banner['bannername']}</span>
+            </li>
+          {/loop}
+      </ul>
+      <ol>
+        {loop $banners $$slideNum $banner}
+          <li{if $slideNum == 0} class="on"{/if}></li>
+        {/loop}
+      </ol>
+  </div>
+  <script type="text/javascript" src="../addons/fm_photosvote/template/js/swipe.js?{php echo time()}"></script>
+  <script>
+      $(function() {
+        new Swipe($('#banner_box')[0], {
+        speed:500,
+            auto:3000,
+            callback: function(){
+            var lis = $(this.element).next("ol").children();
+                lis.removeClass("on").eq(this.index).addClass("on");
+            }
+        });
+      });
+  </script>
+{else}
+<div style="width:100%;border:0px;"><img style="vertical-align:top; display:block;border:0;width:100%;padding:0;margin:0;width:100%;border:0px;" alt="" src="{php echo toimage($reply['picture'])}?{php echo time()}"></div>
+{/if}
+    <!--voteinfo-->
+    <ul id="count" style="margin:0;">
+   		<li class="lf"><p>{if empty($reply['csrs'])}参与选手{else}{$reply['csrs']}{/if}</p><p style="padding:0"><span>{$csrs}</span></p></li>
+    	<li class="ls" style="width:34%"><p>{if empty($reply['ljtp'])}累计投票{else}{$reply['ljtp']}{/if}</p><p style="padding:0"><span id="acount">{$ljtp}</span></p></li>
+    	<li style="width:33%"><p>{if empty($reply['cyrs'])}参与人数{else}{$reply['cyrs']}{/if}</p><p style="padding:0"><span>{$cyrs}</span></p></li>
+    </ul>
+
+    <div style="clear: both"></div>
+    <!--linebig-->
+    <div id="time_conter">
+        <p style="">距活动结束还有：</p>
+        <div id="timejs" style=""><span id="day" class="day time_td"></span><small>天</small><span id="hour" class="hour time_td"></span><small>时</small><span id="mini" class="time_td mini ml5"></span><small>分</small><span id="sec" class="sec time_td"></span><small>秒</small></div>
+    </div>
+    <script type="text/javascript">
+        var zxx = {
+            obj: function(){
+                return {
+                    hm: $("#hm"),
+                    sec: $("#sec"),
+                    mini: $("#mini"),
+                    hour: $("#hour"),
+                    day: $("#day"),
+                    month: $("#month"),
+                    year: $("#year")
+                }
+            }
+        };
+        var endtime = "{$reply['end_time']}000";
+       
+        fnTimeCountDown(endtime, zxx.obj());
+        
+    </script>
+    <!--linebig-->
+    <!--标题-->
+    <div id="three">
+        <!--标题-->
+        <div id="shares" style="position:relative;"><img class="timg timgt" alt="" src="{FMURL}mobile/templates/stylebase/style/images/champagnerose_wx1.png" width="20"> <p class="title"><span></span>{$reply['title']}</p></div>
+        <div class="line"></div>
+        <!--简介-->
+        <div id="jieshao" style="position:relative;"><img class="timg" alt="" src="{FMURL}mobile/templates/stylebase/style/images/champagnerose_desc1.png" width="20"> <p class="title"><span></span>活动简介</p><span class="descarrow"></span></div>
+        <div id="ms"><p>{$reply['description']}</p></div>
+        <div class="line none"></div>
+        <!--报名-->
+        <div id="shares" style="position:relative;"><img class="timg" alt="" src="{FMURL}mobile/templates/stylebase/style/images/wybm.png" width="20"> <a href="{php echo $this->createMobileUrl('reg', array('rid' => $rid))}"><p class="title"><span></span>{if !empty($mygift)}编辑{else}我要报名{/if}</p></a></div>
+        <div class="line"></div>
+
+    </div> <!--three-->
+    <div style="height:10px;max-width: 640px;width:100%">  </div>
+    <div style="padding: 0 12px;">
+    	{if $reply['isindex'] == 1 && !empty($advs)}{template 'templates/stylebase/zanzhu'}{/if}
+        <div class="sorts flex">
+            <a style="width:100%" href="{php echo $this->createMobileUrl('photosvote', array('rid' => $rid))}" {if $_GPC['indexorder'] == 4}{else}class="active"{/if}><span class="all">随便看看</span></a>
+            <a style="width:100%;margin-right:0px;" href="{php echo $this->createMobileUrl('photosvote', array('rid' => $rid, 'indexorder' => 4))}" {if $_GPC['indexorder'] == 4}class="active"{else}{/if}>人气选手</a>
+        </div>
+        <div style="height:10px;max-width: 640px;width:100%"></div>
+            {if !empty($tags)}
+              <div id="taglist" style="padding:0">
+                {loop $tags $tag}
+  			         	<a href="{php echo $this->createMobileUrl('photosvote', array('rid' => $rid, 'tagid' => $tag['id']))}">{$tag['title']}</a>
+  			        {/loop}
+                  <div style="clear:both"></div>
+              </div>
+              <div style="height:14px;max-width: 640px;width:100%"></div>
+            {/if}
+    </div>
+
+    <!--pic vote start-->
+    <div id="thumbs " class="masonry" style="margin: 0px auto; padding-left: 12px;  margin-top: -15px; ">
+		<div id="post" >
+			<div class="entry-content">
+				<!--artworks list start-->
+				<ul class="pinterestUl" id="pinterestList">
+					{if !empty($titem)}
+            {php $tphotosnum = $this->getphotosnum($rid, $uniacid,$titem['from_user']); $tlevel = $this->fmvipleavel($rid, $uniacid, $titem['from_user']);$tfmimage = $this->getpicarr($uniacid,$rid, $titem['from_user'],0);}
+						<li class="pinterestLi" id="artwork_{$titem['uid']}">
+						    <script type="text/javascript">
+						        $(document).ready(function(){
+								  $("#light_{$titem['uid']}").click(function(){
+												$("#light_{$titem['uid']}").colorbox({inline:true, width:"96%", height:"90%"});
+									fmloadding('.overlay_container', '小提示：点击图片查看所有哦~~');
+								  });
+								  $(".group_{$titem['uid']}").click(function(){
+												$(".group_{$titem['uid']}").colorbox({rel:'group_{$titem['uid']}', transition:"fade", width:"90%", height:"55%"});
+								  });
+								  $("#creply_{$titem['uid']}").click(function(){
+									$("#creply_{$titem['uid']}").colorbox({iframe:true, width:"100%", height:"90%"});
+								  }); 
+						        });
+						    </script>
+							<div style="display:none">
+			                 	<div id="inline_content_{$titem['uid']}">
+			                      	<div id="tch_{$titem['uid']}" style="width:100%;position:relative;max-height: 500px;overflow: hidden;">
+			                      		<a href="{php echo $this->createMobileUrl('tuserphotos', array('rid'=> $rid, 'tfrom_user' => $titem['from_user']))}"  title="{php echo $this->getusernames($titem['realname'], $titem['nickname'])}">
+			                          		<img id="bigimg{$titem['uid']}" style="width:100%; " src="{php echo $this->getphotos($tfmimage['photos'], $titem['avatar'], $reply['picture'])}" title="{php echo $this->getusernames($titem['realname'], $titem['nickname'])}">
+			                          	</a>
+                                    <span style="  position: absolute; left: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">{$tphotosnum} 张</strong></span>
+                            <span style="  position: absolute; right: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">ID: {$titem['uid']}</strong></span>
+			                      	</div>
+			                      	<div class="ldesc"><span class="descyl">"</span>{php echo cutstr($titem['photoname'], '30')}  <span class="descyr">"</span></div><div style="text-align:right" class="ldesc">— {php echo $this->getusernames($titem['realname'], $titem['nickname'])} <span class="level level_{$tlevel}">{$tlevel}</span><span style="width:2px;height:10px;"></span></div>
+			                      	<div style="position: relative;padding-bottom:2px;">
+			                          	<div id="bigbt{$titem['uid']}" style="float:left;padding-top:10px">
+			                             	<button meid="{$titem['uid']}" onclick="tvotep('{$titem['from_user']}', '{$ljtp}')" class="btn" type="button"><img src="{FMURL}mobile/templates/stylebase/style/images/tptb1.png" style="  width: 30px; position: relative; top: -6px;left: -15px;}" ><span style=" position: relative;     top: -4px;  margin-left: -12px; font-size: 12px;">投票</span></button>
+
+                                    <span id="photosnum_{$titem['from_user']}" class="count" meid="{$titem['uid']}" style="font-size: 2.5em;">{php echo $titem['photosnum'] + $titem['xnphotosnum']}</span><span class="p" style="font-size:1.1em;padding-left:2px;">票</span>
+                                    <a id="creply_{$titem['uid']}" href="{php echo $this->createMobileUrl('comment', array('rid' => $rid, 'tfrom_user'=> $titem['from_user']))}" style="text-decoration: inherit;"><span class="count" meid="{$mygift['uid']}" style="font-size: 2.5em;">{$tcommentnum}</span><span class="p" style="font-size:1.1em;padding-left:2px;  text-decoration: underline;">条评论</span></a>
+			                          	</div>
+			                          	<div style="float:right;padding-top:10px">
+			                            	<button onclick="shareurl();" class="btn" type="button" style="width:100px">♥ {$reply['lapiao']}</button>
+			                          	</div>
+			                          	<div style="clear:both"></div>
+			                      	</div>
+			                  	</div>
+				            </div>
+				           <!-- <a  href="#inline_content_{$titem['uid']}" id="light{$titem['uid']}" style="display:none;">-->
+							<a href="#inline_content_{$titem['uid']}" id="light_{$titem['uid']}"  class="pinterest_img">
+								<img src="{php echo $this->getphotos($tfmimage['photos'], $titem['avatar'], $reply['picture'])}" alt="{php echo $this->getusernames($titem['realname'], $titem['nickname'], '15')}" data-original="{php echo $this->getphotos($titem['photo'], $titem['avatar'], $reply['picture'])}" id="artwork_img_{$titem['uid']}" />
+								<div style="text-align:center;  background: #f3e4c2;  padding: 6px 0;">
+									<a onclick=""class="pinterest_title">{php echo $this->getusernames($titem['realname'], $titem['nickname'], '15')} <span class="level level_{$tlevel}">{$tlevel}</span></a>
+								</div>
+							</a>
+
+							<span style="  position: absolute; right: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">ID: {$titem['uid']}</strong></span>
+							
+							<div class="comments-link">
+								<button onclick="tvotep('{$titem['from_user']}', '{$ljtp}')" class="btn" type="button"><img src="{FMURL}mobile/templates/stylebase/style/images/tptb1.png" style="  width: 30px; position: relative; top: -6px;left: -15px;}" ><span style="  position: relative;   top: -2px;margin-left: -12px;font-size:0.8em;">投票</span></button>&nbsp;&nbsp;<span id="photosnum{$titem['from_user']}" class="count" meid="{$titem['uid']}">{php echo $titem['photosnum'] + $titem['xnphotosnum']}</span><span class="p" style="font-size:1.1em;padding-left:2px;">票</span>
+							</div><!-- .Vote-link -->
+						</li>
+					{/if}	
+					 {loop $userlist $item}
+           {if $fromuser == $item['from_user']}{php continue;}{/if}
+           {php $commentnum = $this->getcommentnum($rid, $uniacid,$item['from_user']); $photosnum = $this->getphotosnum($rid, $uniacid,$item['from_user']); $level = $this->fmvipleavel($rid, $uniacid, $item['from_user']);$fmimage = $this->getpicarr($uniacid,$rid, $item['from_user'],0);}
+
+   
+						<li class="pinterestLi" id="artwork_{$item['uid']}">
+						    <script type="text/javascript">
+						        $(document).ready(function(){
+                      $("#light{$item['uid']}").click(function(){
+						            $(this).colorbox({inline:true, width:"96%", height:"90%"});
+                        fmloadding('.overlay_container', '小提示：点击图片查看所有哦~~');
+                      });
+                      $(".group{$item['uid']}").click(function(){
+						            $(this).colorbox({rel:'group{$item['uid']}', transition:"fade", width:"90%"});
+                       });
+                      $("#creply{$item['uid']}").click(function(){
+                        $(this).colorbox({iframe:true, width:"95%", height:"90%"});
+                       });
+						        });
+						    </script>
+							<div style="display:none">
+                
+                 	<div id="inline_content{$item['uid']}">
+                      	<div id="ch_{$item['uid']}" style="width:100%;position:relative;max-height: 500px;overflow: hidden;">
+                          	<a href="{php echo $this->createMobileUrl('tuserphotos', array('rid'=> $rid, 'tfrom_user' => $item['from_user']))}"  title="{php echo $this->getusernames($item['realname'], $item['nickname'], '25', $from_user)}">
+                          		<img id="bigimg{$item['uid']}" style="width:100%;" src="{php echo $this->getphotos($fmimage['photos'], $item['avatar'], $reply['picture'])}">
+                          		
+                          	</a>
+                            <span style="  position: absolute; left: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">{$photosnum} 张</strong></span>
+                            <span style="  position: absolute; right: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">ID: {$item['uid']}</strong></span>
+                      	</div>
+                      	<div class="ldesc"><span class="descyl">"</span>{php echo cutstr($item['photoname'], '30')}  <span class="descyr">"</span></div><div style="text-align:right" class="ldesc">— {php echo $this->getusernames($item['realname'], $item['nickname'], '15', $from_user)} <span class="level level_{$level}">{$level}</span><span style="width:2px;height:10px;text-indent:-99999px;display:inline-block;"></span></div>
+                      	<div style="position: relative;padding-bottom:2px;">
+                          	<div id="bigbt{$item['uid']}" style="float:left;padding-top:10px">
+                             	<button meid="{$item['uid']}" onclick="tvotep('{$item['from_user']}', '{$ljtp}')" class="btn" type="button"><img src="{FMURL}mobile/templates/stylebase/style/images/tptb1.png" style="  width: 30px; position: relative; top: -6px;left: -15px;}" ><span style=" position: relative;     top: -4px;  margin-left: -12px; font-size: 12px;">投票</span></button>
+                              <span id="photosnum_{$item['from_user']}" class="count" meid="{$item['uid']}" style="font-size: 2.5em;">{php echo $item['photosnum'] + $item['xnphotosnum']}</span><span class="p" style="font-size:1.1em;padding-left:2px;">票</span>
+                               <a id="creply{$item['uid']}" href="{php echo $this->createMobileUrl('comment', array('rid' => $rid, 'tfrom_user'=> $item['from_user']))}" style="text-decoration: inherit;"><span class="count" meid="{$mygift['uid']}" style="font-size: 2.5em;">{$commentnum}</span><span class="p" style="font-size:1.1em;padding-left:2px;  text-decoration: underline;">条评论</span></a>
+                          	</div>
+                          	<div style="float:right;padding-top:10px">
+                            	<button onclick="shareurl();" class="btn" type="button" style="width:100px">♥ {$reply['lapiao']}</button>
+                          	</div>
+                          	<div style="clear:both"></div>
+                      	</div>
+                  	</div>
+	            </div>
+				           <!-- <a  href="#inline_content{$item['uid']}" id="light{$item['uid']}" style="display:none;">-->
+							<a href="#inline_content{$item['uid']}" id="light{$item['uid']}"  class="pinterest_img">
+								<img src="{php echo $this->getphotos($fmimage['photos'], $item['avatar'], $reply['picture'])}" alt="{php echo $this->getusernames($item['realname'], $item['nickname'], '15', $from_user)}" data-original="{php echo $this->getphotos($item['photo'], $item['avatar'], $reply['picture'])}" id="artwork_img_{$item['uid']}" />
+
+								<div style="text-align:center;  background: #f3e4c2;  padding: 6px 0;">
+									<a onclick="" class="pinterest_title">{php echo $this->getusernames($item['realname'], $item['nickname'], '15', $from_user)} <span class="level level_{$level}">{$level}</span></a>
+								</div>
+							</a>
+							<span style="  position: absolute; right: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">ID: {$item['uid']}</strong></span>
+							
+
+							<div class="comments-link">
+								<button onclick="tvotep('{$item['from_user']}', '{$ljtp}')" class="btn" type="button"><img src="{FMURL}mobile/templates/stylebase/style/images/tptb1.png" style="  width: 30px; position: relative; top: -6px;left: -15px;}" ><span style="  position: relative;   top: -2px; margin-left: -12px;  font-size: 0.8em;">投票</span></button>&nbsp;&nbsp;<span id="photosnum{$item['from_user']}" class="count" meid="{$item['uid']}">{php echo $item['photosnum'] + $item['xnphotosnum']}</span><span class="p" style="font-size:1.1em;padding-left:2px;">票</span>
+							</div><!-- .Vote-link -->
+						</li>
+					{/loop}	
+						
+				</ul>
+				
+        <p id="pinterestMore"></p>
+				<p id="pinterestDone"></p>
+				<!--artworks list end-->
+					<!--ajaxvote-->
+        <div id="load" class="load" style="display: none; max-width: 85%; min-height: 77px; min-width: 270px; position: absolute; text-align: center; border-radius: 10px; z-index: 99999999; background: url({FMURL}mobile/templates/stylebase/style/images/tusi.png) no-repeat;"><p style="color: #ffffff;line-height: 77px;font-size: 2.2em;"><span id="sfxsfx">拼命加载中 </span><img src="{FMURL}mobile/templates/stylebase/style/images/pload.gif"></p></div>
+			</div><!-- .entry-content -->
+		</div><!-- #post -->
+		
+		<footer id="colophon" role="contentinfo">
+			
+			<div class="site-info">
+			  {if $reply['iscopyright']==1}<a href="{$reply['copyrighturl']}">&copy; {$reply['copyright']}</a>{else}<a href="javascript:;">{if empty($footer_off)}&copy;{if empty($_W['account']['name'])}&copy; 2015 FantasyMoons All Rights Reserved{else}{$_W['account']['name']}{/if} {$_W['setting']['copyright']['statcode']}{/if}{/if} 			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+
+		<script src="{FMURL}mobile/templates/stylebase/style/js/returnTop.js" type="text/javascript"></script>
+		<a id="returnTop" href="###" onclick="scrollPosition()" class="hide">
+		  <span id="returnTop_a"></span>
+		  <span id="returnTop_b"></span>
+		</a>
+		
+          
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+	var pinterest_doing=0;//是否正在排列
+var pinterest_current=0;//当前排列到第几个
+var pinterest_done=0;//是否全部加载完毕
+
+function pinterestInit(obj,add){
+	pinterest_doing=1;
+	var perBlock="{$psize}";//设定每次加载块数
+	var gapWidth=25;//设定块间距
+	var containerPadding=5;//设定外边距
+	var columns=4;//设定最大列数
+
+	obj.style.transition="height 1s";
+	var totalWidth=obj.offsetWidth;
+	if(totalWidth<=720) {
+		columns--; 
+		if(totalWidth<=552) {
+			columns--;
+			if(totalWidth<=312) {
+				columns--;
+			}
+		}
+	}
+	obj.className="pinterestUl";
+	addClass(obj, "col"+columns);
+
+	var singleWidth=totalWidth/columns-gapWidth;
+
+	var column=new Array();
+	for(i=0;i<columns;i++){//set the columns and each top
+		if (!column[i]) column[i]=0;
+	}
+	function findMaxHeight(){
+		var maxHeight=column[0];
+		var maxColum=0;
+		for(var i=0;i<column.length;i++){
+			if(maxHeight<=column[i]){
+					maxHeight=column[i];
+					maxColum=i;
+				}
+			}
+		return {"maxHeight":maxHeight, "maxColum":maxColum }
+	}
+	function findMinHeight(){
+		var minHeight=column[0];
+		var minColum=0;
+		for(var i=0;i<column.length;i++){
+			if(minHeight>column[i]){
+					minHeight=column[i];
+					minColum=i;
+				}
+			}
+		return {"minHeight":minHeight, "minColum":minColum }
+	}
+
+
+	var totalItem=obj.children.length;
+	if(add) {
+		pinterest_current+=perBlock;
+	}//判断是否增加数量
+	for(var num=0; num<totalItem; num++ ){
+		if (num>= Math.max(pinterest_current, perBlock) ) break;
+		obj.children[num].style.display="block";
+		
+		var atColum=findMinHeight().minColum;
+		var atHeight=findMinHeight().minHeight;
+
+		//obj.children[num].getElementsByTagName("img")[0].src = obj.children[num].getElementsByTagName("img")[0].getAttribute("data-original");
+
+		obj.children[num].style.left =  atColum * (singleWidth + gapWidth) + containerPadding + "px";
+		obj.children[num].style.top = gapWidth + atHeight + "px" ;
+		column[atColum] += obj.children[num].offsetHeight+gapWidth;
+		
+	}
+	pinterest_current = num ;
+	//console.log(pinterest_current);
+	if(pinterest_current>=totalItem){//全部加载完毕
+		pinterest_done=1;
+		document.getElementById("pinterestDone").style.display="block";
+    document.getElementById("pinterestMore").style.display="none";
+		document.getElementById("load").style.display="none";
+	}
+
+	obj.style.height= (findMaxHeight().maxHeight+40)+"px";
+	
+	setTimeout( function(){
+		pinterest_doing=0;
+	}, 500);
+}
+var pinterestObj=document.getElementById("pinterestList");
+
+addEvent(window, "resize", function(){
+	setTimeout( function(){
+		if(pinterest_doing==0) {
+			pinterest_doing=1;
+			pinterestInit(pinterestObj);
+		}
+	}, 800);
+});
+
+addEvent(window, "scroll", function(){
+	if (document.body.scrollHeight-getViewPortSize().y <= getScrollOffsets().y+2){
+		if(!pinterest_done){//如果没有全部加载完毕，显示loading图标
+			//addClass(pinterestObj ,"pinterestUl_loading");
+			setload();
+		}else {
+			document.getElementById("pinterestDone").style.display="block";
+      document.getElementById("pinterestMore").style.display="none";
+			$('.load').hide();
+
+		}
+		setTimeout( function(){
+			if(pinterest_doing==0) {
+				pinterest_doing=1;
+				pinterestInit(pinterestObj, true );
+			}
+		}, 500);
+	}
+});
+//addDOMLoadEvent( pinterestInit(pinterestObj) );
+addDOMLoadEvent( function(){
+	setTimeout( function(){
+		pinterestInit(pinterestObj);
+		//console.log("2000");
+	}, 2000)
+});
+
+
+    function shareurl(id){
+        //alert("在公众号中回复: 拉票   两个字,获取拉票技能.回复：投票技巧 四个字可查看投票攻略");
+       // return false;
+        $('#plug').show();
+        $('#share_layer').css('height', $(document).height()).show();
+        var top = $(window).scrollTop();
+        $('#share_layer').css('top',top);
+        return false;
+
+    }
+    $(function(){
+        //$(".inline").colorbox({inline:true, width:"96%"});
+        $("#paihang").click(function(){
+            $(this).colorbox({iframe:true, width:"100%", height:"90%"});
+            tusi('点击选手可以查看详细信息');
+        })
+        $("#cjdzp").click(function(){
+            $(this).colorbox({iframe:true, width:"90%", height:"90%"});
+        })
+        $("#baoming").click(function(){
+            $(this).colorbox({iframe:true, width:"90%", height:"90%"});
+        })
+        $("#tpph").click(function(){
+            $(this).colorbox({iframe:true, width:"90%", height:"90%"});
+        })
+    });
+
+    function loadImage(images, id) {
+    	 $(function(){
+    	 	var inline = "#light"+ id;
+	        //$(".inline").colorbox({inline:true, width:"96%"});
+	       
+	        $(inline).ready(function(){
+	            $(inline).colorbox({inline:true, width:"90%"});
+	            //tusi('点击排行选手名可直达哦');
+	        })
+	      
+	    });
+
+    }
+
+
+    function setload(){
+
+        var div =$('.load');
+        div.css('zIndex',99999999);
+        div.css('display','block');
+        div.css('left',parseInt(($(window).width()-div.width())/2));
+       // var bottom = parseInt($(window).height()*0.2);
+        //div.css('bottom',bottom);
+
+    }
+
+
+    function tusi(txt,lh,pt,ti,fun){
+        if(!ti)ti=3000;
+        if(!lh)lh=77;
+        if(!pt)pt=0;
+        $('.tusi').remove();
+        var div = $('<div style="background: url('+'{FMURL}mobile/templates/stylebase/style/images/tusi.png'+') no-repeat;max-width: 85%;min-height: 77px;min-width: 270px;position: absolute;left: -1000px;top: -1000px;text-align: center;border-radius:10px;"><p style="color: #ffffff;line-height: '+lh+'px;font-size: 2em;padding-top:'+pt+'px;">'+txt+'</p></div>');
+        $('body').append(div);
+        div.css('zIndex',9999999);
+        div.css('left',parseInt(($(window).width()-div.width())/2));
+        var top = parseInt($(window).scrollTop()+($(window).height()-div.height())/2);
+        div.css('top',top);
+        setTimeout(function(){
+            div.remove();
+            if(fun){
+                fun();
+            }
+        },ti);
+    }
+    
+</script>
+
+    <script>
+        function loaddzp(){
+            $('#plug').show();
+            var div =$('.dzpwrap');
+            div.css('zIndex',99999999);
+            div.css('display','block');
+            div.css('left',parseInt(($(window).width()-div.width())/2));
+            var top = parseInt($(window).scrollTop()+($(window).height()-div.height())/2-45);
+            div.css('top',top);
+
+        }
+    </script>
+    <div style="display:none"><img src="{FMURL}mobile/templates/stylebase/style/images/d.png"></div>
+
+<div style="display:none">
+    <input id="dialogJ_hid" type="hidden">
+
+</div>
+
+
+
+    <style type="text/css">
+        body { margin-bottom:60px !important; }
+        a, button, input { -webkit-tap-highlight-color:rgba(255, 0, 0, 0); }
+        ul, li { list-style:none; margin:0; padding:0 }
+        .top_bar { position: fixed; z-index: 900; bottom: -1px; left: 0; right: 0; margin: auto; font-family: Helvetica, Tahoma, Arial, Microsoft YaHei, sans-serif; }
+        .top_menu { display:-webkit-box; border-top: 0px solid #524945; display: block; width: 100%; background: #CB418E; height: 48px; display: -webkit-box; display: box; margin:0; padding:0; -webkit-box-orient: horizontal; background: -webkit-gradient(linear, 0 0, 0 100%, from(#CB418E), to(#CB418E), color-stop(60%, #CB418E)); box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1) inset;padding-top:3px; }
+
+
+        .top_bar .top_menu>li { -webkit-box-flex:1; position:relative; text-align:center; }
+        .top_menu li:first-child { background:none; }
+        .top_bar .top_menu>li>a { height:48px; margin-right: 1px; display:block; text-align:center; color:#FFF; text-decoration:none; text-shadow: 0 1px rgba(0, 0, 0, 0.3); -webkit-box-flex:1; }
+        .top_bar .top_menu>li.home { max-width:70px }
+        .top_bar .top_menu>li.home a { height: 66px; width: 66px; margin: auto; border-radius: 60px; position: relative; top: -17px; background: url({FMURL}mobile/templates/stylebase/style/images/hb1.png?{php echo time()}) no-repeat center center; background-size: 100% 100%; }
+
+
+
+        .top_bar .top_menu>li>a label { overflow:hidden; margin: 0 0 0 0;  display: block !important; line-height: 18px; text-align: center; }
+        .top_bar .top_menu>li>a img { padding: 3px 0 0 0; height: 24px; width: 24px; color: #fff; line-height: 48px; vertical-align:middle; }
+        .top_bar li:first-child a { display: block; }
+
+        .menu_font { text-align:left; position:absolute; right:10px; z-index:500; background: -webkit-gradient(linear, 0 0, 0 100%, from(#524945), to(#48403c), color-stop(60%, #524945)); border-radius: 5px; width: 120px; margin-top: 10px; padding: 0; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); }
+
+
+        .menu_font.hidden { display:none; }
+        .menu_font { top:inherit !important; bottom:60px; }
+        .menu_font li a { height:40px; margin-right: 1px; display:block; text-align:center; color:#FFF; text-decoration:none; text-shadow: 0 1px rgba(0, 0, 0, 0.3); -webkit-box-flex:1; }
+        .menu_font li a { text-align: left !important; }
+        .top_menu li:last-of-type a { background: none; overflow:hidden; }
+        .menu_font:after { top: inherit!important; bottom: -6px; border-color: #48403c rgba(0, 0, 0, 0) rgba(0, 0, 0, 0); border-width: 6px 6px 0; position: absolute; content: ""; display: inline-block; width: 0; height: 0; border-style: solid; left: 80%; }
+        .menu_font li { border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+        .menu_font li:first-of-type { border-top: 0; }
+        .menu_font li:last-of-type { border-bottom: 0; }
+        .menu_font li a { height: 40px; line-height: 40px !important; position: relative; color: #fff; display: block; width: 100%; text-indent: 10px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .menu_font li a img { width: 20px; height:20px; display: inline-block; margin-top:-2px; color: #fff; line-height: 40px; vertical-align:middle; }
+        .menu_font>li>a label { padding:3px 0 0 3px;overflow:hidden; margin: 0; }
+        #menu_list0 { right:0; left:10px; }
+        #menu_list0:after { left: 20%; }
+        #sharemcover { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; z-index: 20000; }
+        #sharemcover img { position: fixed; right: 18px; top: 5px; width: 260px; height: 180px; z-index: 20001; border:0; }
+
+        .top_bar .top_menu>li>a:hover, .top_bar .top_menu>li>a:active { backgrounsd-color:#333; }
+        #sou:hover, #sou:active {background-color:none; }
+        .menu_font li a:hover, .menu_font li a:active { backgrousnd-color:#333; }
+
+
+        .menu_font li:first-of-type a { border-radius:5px 5px 0 0; }
+        .menu_font li:last-of-type a { border-radius:0 0 5px 5px; }
+        #plug-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0); z-index:800; }
+        #cate18 .device {bottom: 49px;}
+        #cate18 #indicator {bottom: 240px;}
+        #cate19 .device {bottom: 49px;}
+        #cate19 #indicator {bottom: 330px;}
+        #cate19 .pagination {bottom: 60px;}
+    </style>
+    <div id="sharemcover" onclick="document.getElementById('sharemcover').style.display='';" style=" display:none"><img src=""></div>
+
+    <div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
+        <nav>
+            <ul id="top_menu" class="top_menu">
+                <li> <a href="{php echo $this->createMobileUrl('photosvote', array('rid' => $rid, 'page' => $overpager))}"><img src="{FMURL}mobile/templates/stylebase/style/images/home.png"><label style="font-size: 1.1em;letter-spacing: .07em">首页</label></a>
+                	<ul id="menu_list0" class="menu_font" style=" display:none">          </ul>
+                </li>  
+
+                <li> 
+                    {if !empty($mygift)}
+                      {php $mphotosnum = $this->getphotosnum($rid, $uniacid,$mygift['from_user']); $mlevel = $this->fmvipleavel($rid, $uniacid, $mygift['from_user']);$mfmimage = $this->getpicarr($uniacid,$rid, $mygift['from_user'],0)}
+                      <script type="text/javascript">
+                          $(document).ready(function(){
+                             $("#light_{$from_user}").click(function(){
+                                $("#light_{$from_user}").colorbox({inline:true, width:"96%", height:"90%"});
+                                fmloadding('.overlay_container', '小提示：点击图片查看所有哦~~');
+                              })
+                              $("#creply_{$from_user}").click(function(){
+                                  $(this).colorbox({iframe:true, width:"100%", height:"90%"});
+                              })
+                              $("#ubianji_{$from_user}").click(function(){
+                                  $(this).colorbox({iframe:true, width:"90%", height:"90%"});
+                              })
+                          });
+                      </script>
+                        <div style="display:none">
+                          <div id="inline_content_{$from_user}">
+                                <div id="chm_{$item['uid']}" style="width:100%;position:relative;max-height: 500px;overflow: hidden;">
+                                    <a href="{php echo $this->createMobileUrl('tuserphotos', array('rid'=> $rid, 'tfrom_user' => $from_user))}"  title="{php echo $this->getusernames($mygift['realname'], $mygift['nickname'],'15', $from_user)}">
+                                      <img id="bigimg{$mygift['uid']}" style="width:100%" src="{php echo $this->getphotos($mfmimage['photos'], $mygift['avatar'], $reply['picture'])}">
+                                       
+                                    </a>
+                                     <span style="  position: absolute; left: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">{$mphotosnum} 张</strong></span>
+                                       <span style="  position: absolute; right: 6px;top: 6px; padding: 12px 17px; border-radius: 5px; width: auto;  height: 0px;text-align: center;  background: rgba(0, 0, 0, 0.5);  color: #fff; font-size: 12px;line-height: 0px;"><strong class="bnum">ID: {$mygift['uid']}</strong></span>
+                                </div>
+                                <div class="ldesc"><span class="descyl">"</span>{php echo cutstr($mygift['photoname'], '30')}  <span class="descyr">"</span></div><div style="text-align:right" class="ldesc">— {php echo $this->getusernames($mygift['realname'], $mygift['nickname'], '15', $from_user)} <span class="level level_{$mlevel}">{$mlevel}</span><span style="width:2px;height:10px;color:#000"> <a href="{php echo $this->createMobileUrl('reg', array('rid'=> $rid))}" >【编辑】</a></span></div>
+                                <div style="position: relative;padding-bottom:2px;">
+                                    <div id="bigbt{$mygift['uid']}" style="float:left;padding-top:10px">
+                                      <button id="tpph" href="{php echo $this->createMobileUrl('paihang', array('rid' => $rid, 'tfrom_user'=> $from_user, 'votelog' => '1'))}" class="btn" type="button" style="width:100px;"><img src="{FMURL}mobile/templates/stylebase/style/images/tptb1.png" style="  width: 30px; position: relative; top: -6px;left: -15px;}" ><span style="   position: relative;     top: -4px;  margin-left: -12px; font-size: 12px;width:90px;">投我的票</span></button>
+                                      <span id="photosnum_{$mygift['from_user']}" class="count" meid="{$mygift['uid']}" style="font-size: 2.5em;">{php echo $mygift['photosnum'] + $mygift['xnphotosnum']}</span><span class="p" style="font-size:1.1em;padding-left:2px;">票</span>
+                                     <a id="creply_{$from_user}" href="{php echo $this->createMobileUrl('comment', array('rid' => $rid, 'tfrom_user'=> $from_user))}" style="text-decoration: inherit;"><span class="count" meid="{$mygift['uid']}" style="font-size: 2.5em;">{$mcommentnum}</span><span class="p" style="font-size:1.1em;padding-left:2px;  text-decoration: underline;"> 条评论</span></a>
+                                    </div>
+                                    <div style="float:right;padding-top:10px">
+                                      <button onclick="shareurl();" class="btn" type="button" style="width:100px">♥ {$reply['lapiao']}</button>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                      </div>
+                      <a href="#inline_content_{$from_user}" id="light_{$from_user}"><img src="{FMURL}mobile/templates/stylebase/style/images/bm.png?ver=3"><label style="font-size: 1.1em;letter-spacing: .07em">我的</label></a>
+                    {else}
+                      <a  href="{php echo $this->createMobileUrl('reg', array('rid'=> $rid))}"><img src="{FMURL}mobile/templates/stylebase/style/images/bm.png?ver=3"><label style="font-size: 1.1em;letter-spacing: .07em">报名</label></a>
+                    {/if}
+                	  <ul id="menu_list0" class="menu_font" style=" display:none"></ul>
+
+                </li><li class="home"><a id="sou"></a></li>    	
+
+                <li> <a id="paihang" href="{php echo $this->createMobileUrl('paihang', array('rid'=> $rid))}"><img src="{FMURL}mobile/templates/stylebase/style/images/paih.png?ver=2"><label style="font-size: 1.1em;letter-spacing: .07em">排行</label></a>     	
+                	<ul id="menu_list0" class="menu_font" style=" display:none">          </ul>
+                </li>    	
+                <li> <a onclick="javascript:displayit(3)"><div style="position:relative"><img src="{FMURL}mobile/templates/stylebase/style/images/more1.png">
+                	<div style="position:absolute;top:2px;right:30%;background:red;color:#fff;-moz-border-radius: 15px;-webkit-border-radius: 15px;border-radius:15px;padding:0 4px;">2</div></div><label style="font-size: 1.1em;letter-spacing: .07em">更多</label></a>        	
+	                <ul id="menu_list3" class="menu_font" style=" display:none;font-size: 1.3em;">   
+	                	<li> 
+                       <script type="text/javascript">
+                          $(document).ready(function(){
+                             $("#light_des").click(function(){
+                                $("#light_des").colorbox({inline:true, width:"96%",height:"100%"});
+                                //fmloadding('.overlay_container', '小提示：点击图片查看所有哦~~');
+                              })
+                          });
+                      </script>
+                       <div style="display:none">
+                          <div id="inline_content_des">
+                                <div style="width:100%;position:relative;color:#fff">
+                                   {$reply['content']}
+                                </div>
+                                 <div style="clear:both"></div>
+                            </div>
+                      </div>
+                      <a href="#inline_content_des" id="light_des"><img src="{FMURL}mobile/templates/stylebase/style/images/wode.png"><label>活动详情</label></a></li>     
+	               		<li> <a onclick="shareurl();"><img src="{FMURL}mobile/templates/stylebase/style/images/fx.png?ver=3"><label>点击分享</label></a></li>     
+	              	</ul>
+                </li>    
+               </ul>
+        </nav>
+    </div>
+    <div id="plug-wrap" onclick="closeall()" style="display: none;"></div>
+    <script>
+        function displayit(n){
+            var count = document.getElementById("top_menu").getElementsByTagName("ul").length;
+            for(i=0;i<count;i++){
+                if(i==n){
+                    if(document.getElementById("top_menu").getElementsByTagName("ul").item(n).style.display=='none'){
+                        document.getElementById("top_menu").getElementsByTagName("ul").item(n).style.display='';
+                        document.getElementById("plug-wrap").style.display='';
+                    }else{
+                        document.getElementById("top_menu").getElementsByTagName("ul").item(n).style.display='none';
+                        document.getElementById("plug-wrap").style.display='none';
+                    }
+                }else{
+                    document.getElementById("top_menu").getElementsByTagName("ul").item(i).style.display='none';
+                }
+            }
+        }
+        function closeall(){
+            var count = document.getElementById("top_menu").getElementsByTagName("ul").length;
+            for(i=0;i<count;i++){
+                document.getElementById("top_menu").getElementsByTagName("ul").item(i).style.display='none';
+            }
+            document.getElementById("plug-wrap").style.display='none';
+        }
+
+    </script>
+
+
+<?php
+	$_share['title'] = !empty($_share['title']) ? $_share['title'] : $_W['account']['name'];
+	$_share['imgUrl'] = !empty($_share['imgUrl']) ? $_share['imgUrl'] : '';
+	if(isset($_share['content'])){
+		$_share['desc'] = $_share['content'];
+		unset($_share['content']);
+	}
+	$_share['desc'] = !empty($_share['desc']) ? $_share['desc'] : '';
+	$_share['desc'] = preg_replace('/\s/i', '', str_replace('	', '', cutstr(str_replace('&nbsp;', '', ihtmlspecialchars(strip_tags($_share['desc']))), 60)));
+	if(empty($_share['link'])) {
+		$_share['link'] = '';
+		$query_string = $_SERVER['QUERY_STRING'];
+		if(!empty($query_string)) {
+			//加上分享人的uid
+			parse_str($query_string, $query_arr);
+			$query_arr['u'] = $_W['member']['uid'];
+			$query_string = http_build_query($query_arr);
+			$_share['link'] = $_W['siteroot'].'app/index.php?'. $query_string;
+		}
+	}
+?>
+	<script type="text/javascript">
+	
+	
+	wx.config(jssdkconfig);
+	
+	var $_share = {php echo json_encode($_share);};
+	
+	if(typeof sharedata == 'undefined'){
+		sharedata = $_share;
+	} else {
+		sharedata['title'] = sharedata['title'] || $_share['title'];
+		sharedata['desc'] = sharedata['desc'] || $_share['desc'];
+		sharedata['link'] = sharedata['link'] || $_share['link'];
+		sharedata['imgUrl'] = sharedata['imgUrl'] || $_share['imgUrl'];
+	}
+	
+	function tomedia(src) {
+		if(typeof src != 'string')
+			return '';
+		if(src.indexOf('http://') == 0 || src.indexOf('https://') == 0) {
+			return src;
+		} else if(src.indexOf('../addons') == 0 || src.indexOf('../attachment') == 0) {
+			src=src.substr(3);
+			return window.sysinfo.siteroot + src;
+		} else if(src.indexOf('./resource') == 0) {
+			src=src.substr(2);
+			return window.sysinfo.siteroot + 'app/' + src;
+		} else if(src.indexOf('images/') == 0) {
+			return window.sysinfo.attachurl+ src;
+		}
+	}
+	
+	if(sharedata.imgUrl == ''){
+		var _share_img = $('body img:eq(0)').attr("src");
+		if(_share_img == ""){
+			sharedata['imgUrl'] = window.sysinfo.attachurl + 'images/global/wechat_share.png';
+		} else {
+			sharedata['imgUrl'] = tomedia(_share_img);
+		}
+	}
+	
+	if(sharedata.desc == ''){
+		var _share_content = _removeHTMLTag($('body').html());
+		if(typeof _share_content == 'string'){
+			sharedata.desc = _share_content.replace($_share['title'], '')
+		}
+	}
+	wx.ready(function () {			
+		wx.onMenuShareAppMessage(sharedata);
+		wx.onMenuShareTimeline(sharedata);
+		wx.onMenuShareQQ(sharedata);
+		wx.onMenuShareWeibo(sharedata);
+    wx.hideMenuItems({
+        menuList: [
+          'menuItem:share:qq',
+          'menuItem:share:weiboApp',
+          'menuItem:share:facebook',
+          'menuItem:share:QZone',
+          'menuItem:copyUrl',
+          'menuItem:originPage',
+          'menuItem:readMode',
+          'menuItem:openWithQQBrowser',
+          'menuItem:openWithSafari',
+          'menuItem:share:email'
+        ]
+    });
+		getlocaltion();
+	});
+	</script>
+   </body></html>

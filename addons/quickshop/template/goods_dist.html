@@ -1,0 +1,101 @@
+<div class="form-group">
+  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
+    说明
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-10">
+    <dl>
+      <dd><em style="color:red">层级说明：<kbd>会员(路人甲)</kbd> 的上线是 <kbd>推销员</kbd>的上线是<kbd>经理</kbd>的上线是<kbd>老板</kbd></em></dd>
+    <dd>下面填入的0.32等小数表示返利百分比。例如， 推销员0.32, 经理0.1, 老板0.05, 表示成交一件100元（成交价）的商品，返利32元给推销员，10元给经理，5元给老板</dd>
+    <dd> 当会员购买一件商品后，基于商品售价, 给各个层次的分销返利比例设置如下:</dd>
+    <dd> 返利方式有两种：<kbd>返利到积分</kbd>，每1分钱自动兑换成1积分，存入系统积分中；<kbd>返利到现金</kbd>，则按照实际返利钱数，存入到现金账户中。系统积分，可用于积分兑换；现金账户，可用于提现</dd>
+  </dl>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('返利方式', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label for="credittype1" class="radio-inline"><input type="radio" name="credittype" value="1" id="credittype1"  {if !empty($item) && $item['credittype'] == 1}checked="true"{/if} /> 返利为积分(credit1)</label>
+    <label for="credittype2" class="radio-inline"><input type="radio" name="credittype" value="2" id="credittype3"  {if !empty($item) && $item['credittype'] == 2}checked="true"{/if} /> 返利为现金(credit2)</label>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('&nbsp;', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <kbd>路人甲扫描推销员的二维码后，大家得到的返利比例设置如下：</kbd>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('给推销员返利比例', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'rate1', $item['rate1'])}
+      <span class="input-group-addon">0≤返利比例≤1</span>
+    </div>
+    <span class="help-block">请输入0到1之间的小数，可以为0或1。例如: 0.32</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('给经理返利比例', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'rate2', $item['rate2'])}
+      <span class="input-group-addon">0≤返利比例≤1</span>
+    </div>
+    <span class="help-block">请输入0到1之间的小数，可以为0或1。例如: 0.10</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('给老板返利比例', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <div class="input-group">
+      {php echo FormTpl::getWebControl2('text', 'rate3', $item['rate3'])}
+      <span class="input-group-addon">0≤返利比例≤1</span>
+    </div>
+    <span class="help-block">请输入0到1之间的小数，可以为0或1。例如: 0.05</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('说明', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <label class="control-label">由于腾讯限制，分销层次过多可能会被判定为非法分销。所以建议层数为1层。层数为1层时，二级分销返利和三级分销返利填0即可。</label>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="form-group">
+  {php echo FormTpl::label2('开启单品分销', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    {php $_link = wurl('profile/module/setting', array('m'=>'quickshop')); }
+    {if (empty($this->module['config']['enable_single_goods_id'])) }
+    <a class="btn btn-primary" href="{$_link}#single_shop">前往开启</a>
+    {elseif ($item['id'] == $this->module['config']['enable_single_goods_id']) }
+    <a class="btn btn-warning" href="{$_link}#single_shop">已开启</a>
+    {else}
+    <a class="btn" href="{$_link}#single_shop">前往查看当前分销单品</a>
+    {/if}
+  </div>
+</div>
+
+{if ($item['id'] == $this->module['config']['enable_single_goods_id']) }
+<div class="form-group">
+  {php echo FormTpl::label2('单品分销封面', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+		<textarea name="cover_content" class="form-control richtext-clone" cols="70" rows="100">{$item['cover_content']}</textarea>
+    <br>
+    全屏编辑效果更好噢。小工具:
+    <a href="http://wxedit.yead.net/" target="_blank" title="新窗口打开">易点微信编辑器</a> &nbsp;
+    <a href="http://www.135editor.com/" target="_blank" title="新窗口打开">135微信编辑器</a> &nbsp;(利用第三方编辑器，获得更好显示效果)
+	</div>
+</div>
+{/if}
+

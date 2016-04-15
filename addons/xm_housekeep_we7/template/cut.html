@@ -1,0 +1,88 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li class="active" ><a href="{php echo $this->createWebUrl('cut');}">提成列表</a></li>
+		{if in_array('21', $power)}
+		<li><a href="{php echo $this->createWebUrl('facut');}">发放列表</a></li>
+		{/if}
+    </ul>
+	
+	<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<div class="panel-body">
+				<form action="./index.php" method="get" class="form-horizontal" role="form">
+					<input type="hidden" name="c" value="site" />
+					<input type="hidden" name="a" value="entry" />
+					<input type="hidden" name="m" value="xm_housekeep" />
+					<input type="hidden" name="do" value="Cut" />
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+						<div class="col-sm-8 col-lg-9">
+							<input class="form-control" name="keyword" placeholder="提成员工关键字"  type="text" value="{$_GPC['keyword']}">
+						</div>
+						<div class=" col-xs-12 col-sm-2 col-lg-2">
+							<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+						</div>
+					</div>
+					<div class="form-group">
+					</div>
+				</form>
+			</div>
+	
+		</div>
+	
+	
+		<div class="panel panel-default">
+			<div class="table-responsive panel-body">
+	
+		<div style="padding:15px;">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				<tr>
+					<th>员工名称</th>
+					<th>手机号码</th>
+					<th>性别</th>
+					<th>提成金额</th>
+					<th>已结金额</th>
+					<th>剩余金额</th>
+					<th width="350">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				{loop $list $row}
+				<tr>
+					<td>{$row[name]} </td>
+					<td>{$row[mobile]} </td>
+					<td>{php echo $this->getSex($row[sex])} </td>
+					<td>{$row[cutmoney]}</td>
+					<td>{$row[getmoney]}</td>
+					<td>{php echo $row[cutmoney]-$row[getmoney]} </td>
+					<td >
+						{if in_array('19', $power)}
+							{if $row[cutmoney] != 0}
+							<a class="btn btn-default" rel="tooltip" href="{php echo $this->createWebUrl('Cutlog',array('id'=>$row['id'],'name'=>'xm_housekeep'));}" title=""><i class="glyphicon glyphicon-edit"></i></i>提成流水</a>
+							{/if}
+						{/if}
+						
+						{if in_array('20', $power)}
+							{if $row[cutmoney]-$row[getmoney]>0}
+							<a class="btn btn-default" rel="tooltip" href="{php echo $this->createWebUrl('Givecut',array('id'=>$row['id'],'name'=>'xm_housekeep'));}" title=""><i class="glyphicon glyphicon-edit"></i></i>发放提成</a>
+							{/if}
+						{/if}
+						
+						{if in_array('21', $power)}
+							{if $row[getmoney] != 0}
+							<a class="btn btn-default" rel="tooltip" href="{php echo $this->createWebUrl('Facut',array('staff_id'=>$row['id'],'name'=>'xm_housekeep'));}" title=""><i class="glyphicon glyphicon-edit"></i></i>发放流水</a>
+							{/if}
+						{/if}
+						
+					</td>
+				</tr>
+				{/loop}
+				</tbody>
+			</table>
+			{$pager}
+		</div>
+	</div>
+</div>
+{template 'common/footer'}

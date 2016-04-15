@@ -1,0 +1,57 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">    
+  <title>{$contents['title']}</title>
+
+
+  <meta name="renderer" content="webkit">
+
+
+  <meta http-equiv="Cache-Control" content="no-siteapp"/> 
+
+
+  <meta name="mobile-web-app-capable" content="yes"> 
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">  
+
+
+  
+  <meta name="msapplication-TileColor" content="#0e90d2">
+ 
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css">  
+
+<style type="text/css">
+  body{font-family: 微软雅黑}
+  .am-thumbnail{margin-bottom: 1px}
+</style> 
+{php echo register_jssdk($debug);} 
+</head>
+  <body style="background:#fff"> 
+
+<div class="am-popup">
+  <div class="am-popup-inner">    
+    <div class="am-popup-bd">
+      <h3 class="weui_cells_title">{$contents['title']}</h3>
+      <form  id="form" action="" method="post" class="form-inline" enctype="multipart/form-data">
+      <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+          <div class="weui_cell_bd weui_cell_primary">
+            <textarea name="content" class="weui_textarea" placeholder="请输入评论" rows="3"></textarea>           
+          </div>
+        </div>
+      </div>       
+      <input name="submit" type="submit" class="weui_btn weui_btn_primary" value="提交">
+      <input type="hidden" name="token" value="{$_W['token']}" />
+      </form>
+    </div>
+  </div>
+</div>
+
+  </body>  
+</html>

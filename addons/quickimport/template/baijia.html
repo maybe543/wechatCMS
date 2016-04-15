@@ -1,0 +1,30 @@
+{template 'common/header'}
+<div class="main">
+  <style>
+    .redfont {
+      color:red;
+    }
+  </style>
+  <form action="" method="post" class="form-horizontal form">
+    <h4>兑换说明(显示在兑换页面顶端)</h4>
+    <table class="tb">
+
+      <tr>
+        <th>数据表前缀：</th>
+        <td>
+          百家：<input name="bj_prefix" type="text" value="bjfx_" class="span3" />
+          晓楚：<input name="xc_preifx" type="text" value="ims_" class="span3" />
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td>
+          <input name="submit" type="submit" value="提交" class="btn btn-primary span3" />
+          <input type="hidden" name="token" value="{$_W['token']}" />
+          <input type="hidden" name="op" value="post" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+  {template 'common/footer'}

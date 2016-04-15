@@ -1,0 +1,40 @@
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="max-width:20px;">传单ID</th>
+					<th style="max-width:300px;">传单名</th>
+					<th style="max-width:20px;">发展用户</th>
+					<th style="max-width:40px;">关键词</th>
+					<th style="max-width:20px;">链接关注送分</th>
+					<th style="text-align:right; max-width:60px;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $mylist $item}
+				<tr style="color:green">
+					<td>{$item['channel']}</td>
+					<td>{$item['title']}</td>
+					<td>{php echo intval($followCount[$item['channel']]['cnt'])}人</td>
+          {if count( $keywords[$item['channel']] ) > 0}
+          <td>{loop $keywords[$item['channel']] $w}<span class="label label-default">{$w['content']}</span><br>{/loop}</td>
+          {else}
+          <td>[<a href="{php echo create_url('rule/post', array('module'=>'quicklink'))}">设置</a>]</td>
+          {/if}
+          <td>{if $item['active']}<span class="label label-warning">通过商城链接关注送积分</span>{/if}</td>
+          <td style="text-align:right;">
+            <a href="{php echo $this->CreateWebUrl('Spread', array('op' => 'active', 'channel'=>$item['channel']))}" title="通过商城链接也能关注微信号，也可以给上线送积分。送分标准参考当前红心海报。" class="btn btn-small"><i {if $item['active']}style="color:red"{/if} class="icon-heart"></i></a>
+            <a href="{php echo $this->CreateWebUrl('Spread', array('op' => 'refresh', 'channel'=>$item['channel']))}" title="清空二维码传单缓存" onclick="return confirm('清空传单缓存。\n请注意，此操作完成后，用户点击菜单会重新生成二维码，生成速度和首次生成二维码相同。\n如非必要，请勿清空二维码传单缓存');return false;" class="btn btn-small"><i class="icon-refresh"></i></a>
+            <a href="{php echo $this->CreateWebUrl('Spread', array('op' => 'post', 'channel'=>$item['channel']))}" title="编辑" class="btn btn-small"><i class="icon-edit"></i></a>
+            <a href="{php echo $this->CreateWebUrl('Spread', array('op' => 'delete', 'channel'=>$item['channel']))}" title="删除" onclick="return confirm('此操作不可恢复，确定？');return false;" class="btn btn-small"><i class="icon-remove"></i></a>
+          </td>
+         </tr>
+				{/loop}
+			</tbody>
+      <span class="help-block">通过商城链接关注系统，送分送多少，给上线发什么通知，都是通过【红心】海报设定。</span>
+		</table>
+		{$pager}
+	</div>
+</div>
+

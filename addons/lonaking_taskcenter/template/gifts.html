@@ -1,0 +1,66 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li><a href="{php echo $this->createWebUrl('users');}">推广员管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('tasks');}">推广任务管理</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('gifts');}">礼品管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('ads');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('giftorders');}">兑换记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('checkRecordManage');}">核销记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('tplNoticeConfig');}">模板消息设置</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+		<a href="{php echo $this->createWebUrl('gift');}" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> 添加礼品</a>
+	</ul>
+	<div>
+		<a href="{php echo $this->createWebUrl('gifts')}"><button type="button" class="btn btn-default btn-sm {if $status == -1 }active{/if}">所有记录</button></a>
+		<a href="{php echo $this->createWebUrl('gifts',array('s'=>0))}"><button type="button" class="btn btn-default btn-sm {if $status == 0}active{/if}">停止</button></a>
+		<a href="{php echo $this->createWebUrl('gifts',array('s'=>1))}"><button type="button" class="btn btn-default btn-sm {if $status == 1}active{/if}">在售</button></a>
+
+	</div>
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				<tr>
+					<th width="10%">编号</th>
+					<th width="20%">标题</th>
+					<th width="10%">价格</th>
+					<th width="10%">类型</th>
+					<th width="15%">剩余</th>
+					<th width="10%">限制领取</th>
+					<th width="10%">兑换量</th>
+					<th width="10%">状态</th>
+					<th width="15%">审核</th>
+					<th width="10%">抽奖</th>
+					<th width="30%">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+					{loop $gifts $gift}
+						<tr class="{if $gift['status'] == 0}info{elseif $gift['status'] == 1}{/if}">
+							<td data-id="{$gift['id']}">{$gift['id']}</td>
+							<td>{$gift['name']}</td>
+							<td>{$gift['price']}</td>
+							<td><span class="label label-danger">{if $gift['mode'] == 1}{if $gift['hongbao_mode'] == 1}定额红包{elseif $gift['hongbao_mode'] == 2}随机红包{/if}{elseif $gift['mode'] == 2}话费{elseif $gift['mode'] == 3}实物礼品{elseif $gift['mode'] == 4}自领礼品{/if}</span></td>
+							<td>{$gift['num']}</td>
+							<td>{$gift['limit_num']}</td>
+							<td>{$gift['sold']}</td>
+							<td>{if $gift['status'] == 0}停止{elseif $gift['status'] == 1}在售{/if}</td>
+							<td>{if $gift['auto_success'] == '1'}<span class="label label-danger">自动通过</span>{else}<span class="label label-success">人工审核</span>{/if}</td>
+							<td>{if $gift['raffle'] == 0}{elseif $gift['raffle'] == 1}<span class="label label-success">抽奖</span>{/if}</td>
+							<td>
+								<!--<button class="btn btn-success btn-sm"><i class="glyphicon glyphicon-download"> 下架</i></button>
+								<button class="btn btn-success btn-sm hide"><i class="glyphicon glyphicon-download"> 上架</i></button>-->
+	                        	<a href="{php echo $this->createWebUrl('gift',array('id'=>$gift['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+	                        	<a href="{php echo $this->createWebUrl('gift_remove',array('id'=>$gift['id']));}"  class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"> 删除</i></a>
+	                        </td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</form>
+		{$pager}
+	</div>
+</div>
+{php $this->taskService->checkRegister($this->module);}
+{template 'common/footer'}

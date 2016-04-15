@@ -1,0 +1,51 @@
+{template 'common/header'}
+<div class="main">
+  <form class="form-horizontal form" id="" action="" method="post">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        设置
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">送积分</label>
+          <div class="col-sm-8">
+            <input class="form-control" name="credit" type="text" value="{$settings['credit']}" placeholder="0或者不填则不送">
+            <span class="help-block">每支付1元送多少积分，例如支付1元，这里填5就是送了5积分（不够1元则不算）</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">扫码支付类型</label>
+          <div class="col-sm-9 col-xs-12">
+            <label class='radio-inline'><input type="radio" name="scan_type" value="1"  {if $settings['scan_type'] == 1} checked="true" {/if}> 类型1</label>
+            <label class='radio-inline'><input type="radio" name="scan_type" value="2" {if $settings['scan_type'] == 2} checked="true" {/if}>类型2</label>
+            <span class="help-block">类型1是直接调用微信提供的扫码支付接口，类型2是调用微擎的收银台</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">模板消息id</label>
+          <div class="col-sm-8">
+            <input class="form-control" name="tpl_id" type="text" value="{$settings['tpl_id']}">
+            <span class="help-block">模板消息id，从微信后台获取</span>
+          </div>
+        </div>
+        <div class="alert alert-danger text-center" style="margin-bottom:10px">
+            <div class="alert-heading text-left">先去微信公众号后台“模板库”搜索“支付成功通知”的模板，然后添加，然后把得到的模板ID填到这里</div>
+            <img style="width:100%" src="/addons/czt_wx_collection/template/screenshot.png" class="center-align">
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-sm-12">
+      <input name="token" type="hidden" value="{$_W['token']}" />
+      <input type="submit" class="btn btn-primary col-lg-1" name="submit" value="提交" />
+    </div>
+  </form>
+</div>
+
+<script language='javascript'>
+  require(['jquery', 'util'], function($, u){
+    $(function(){
+
+    });
+  });
+</script>
+{template 'common/footer'}

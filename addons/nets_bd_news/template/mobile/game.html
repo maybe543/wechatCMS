@@ -1,0 +1,81 @@
+﻿<?php$pagetitle="活动列表";?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">小积分赢大奖</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide" id="head_menu">
+	
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<div class="ui-pulldown-refresh">
+  <div style="bottom:0px;"><i></i><span>下拉刷新</span></div>
+</div>
+
+
+
+<section class="f-main-box"></section>
+<section class="f-products-box f-products-box-new">
+{loop $games $g}
+<section class="box bond-box scroll-ajax-anim" style="opacity: 1;">
+      <div class="bond-top">
+	  <?php $count=pdo_fetchcolumn("select count(*) from ims_netsbd_integral_game_record where gameid=".$g['id']);
+				$b="1";
+				if(strtotime($g["endtime"])<strtotime(date("Y-m-d h:m:s"))){
+					$b="0";
+				}
+			?>
+        <div class="title-line" {if $b=="1"} onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=gamedetail&m=nets_bd_news&id={$g['id']}'" {/if}> <span class="name">{$g['title']}<i></i></span> <span class="type">{if $b=="1"}立即参与{else}已结束{/if}</span> </div>
+        <ul class="info">
+          <li {if $b=="1"} onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=gamedetail&m=nets_bd_news&id={$g['id']}'" {/if}>
+            <img src="/attachment/{$g['picture']}" width="80%" alt="">
+          </li>
+          <li>
+            <p class="positive">{$g["integral_eq_game"]} <i>元</i></p>
+            <p>开始时间：<?php echo $g['begintime'];?></p>
+			<p>结束时间：<?php echo $g['endtime'];?></p>
+			
+			
+			<p>参与人数：{$count}/{$g["num_eq_result"]} 人</p>
+			<p></p>
+          </li>
+        </ul>
+      </div>
+</section>
+{/loop}
+<!--底部菜单[[-->
+<section class="detail-bottommenu" id="UIDropMenu">
+  <ul class="detail-bottommenu-list">
+    <li class="detail-bottommenu-share"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=news&m=nets_bd_news"> <i class="hover"></i>
+      <p>资讯</p>
+      </a> </li>
+    <li class="detail-bottommenu-care"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=money&m=nets_bd_news"> <i></i>
+      <p>抢钱</p>
+      </a> </li>
+    <!--<li class="detail-bottommenu-support"> <a href="javascript:void(0)">
+      <p>立即支持</p>
+      </a> </li>-->
+    <!--<li class="detail-bottommenu-support detail-bottommenu-hover">
+        	<a href="#">
+            	<p>立即支持</p>
+            </a>
+        </li>-->
+  </ul>
+</section>
+<script>
+	var uniacid="{$_W['uniacid']}";
+	var page="{$pindex}";
+	var total_page="{$total_page}";
+	var append_divid="content";
+	var cid=0;
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+{template 'common'}
+{template 'common_share'}
+</body>
+</html>

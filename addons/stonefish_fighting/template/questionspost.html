@@ -1,0 +1,126 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li{if $_GPC['do'] == 'manage'} class="active"{/if}><a href="{php echo $this->createWebUrl('manage');}"> 管理一站到底活动</a></li>
+		<li{if $_GPC['do'] == 'post'} class="active"{/if}><a href="{php echo url('platform/reply/post',array('m'=>'stonefish_fighting'));}"><i class="fa fa-plus"></i> 添加一站到底活动</a></li>
+		<li{if $_GPC['do'] == 'template'} class="active"{/if}><a href="{php echo $this->createWebUrl('template');}"> 管理活动模板</a></li>
+        <li{if $_GPC['do'] == 'templatepost'} class="active"{/if}><a href="{php echo url('site/entry/templatepost',array('m'=>'stonefish_fighting'));}"><i class="fa fa-plus"></i> 添加活动模板</a></li>
+		<li{if $_GPC['do'] == 'tmplmsg'} class="active"{/if}><a href="{php echo $this->createWebUrl('tmplmsg');}"> 管理消息模板</a></li>
+        <li{if $_GPC['do'] == 'tmplmsgpost'} class="active"{/if}><a href="{php echo url('site/entry/tmplmsgpost',array('m'=>'stonefish_fighting'));}"><i class="fa fa-plus"></i> 添加消息模板</a></li>
+		<li{if $_GPC['do'] == 'questions'} class="active"{/if}><a href="{php echo $this->createWebUrl('questions');}"> 管理题库</a></li>
+        <li{if $_GPC['do'] == 'questionspost' || $_GPC['do'] == ''} class="active"{/if}><a href="{php echo url('site/entry/questionspost',array('m'=>'stonefish_fighting'));}"><i class="fa fa-plus"></i> 添加题库问题</a></li>
+	</ul>
+	<div class="alert alert-info">
+	    <a href="{php echo $this->createWebUrl('questions');}" title="留言记录" class="btn btn-primary"><i class="fa fa-refresh"></i> 题库管理</a>
+		<a href="{php echo url('site/entry/questionspost',array('m'=>'stonefish_fighting'));}" class="btn btn-primary" style="margin:0px 15px;"><i class="fa fa-plus"></i> 添加题库问题</a>
+		<a href="{php echo $this->createWebUrl('questiontype');}" class='btn btn-danger'  title="题库分类设置"><i class='fa fa-plus'></i> 题库分类设置</a>
+	</div>
+	<form action="" class="form-horizontal form" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="id" value="{$item['id']}">
+	<input type="hidden" name="uniacid" value="{$item['uniacid']}">
+    <div class="panel panel-default">
+	    <div class="panel-heading">题库问题配置</div>
+	        <div class="panel-body">
+			    {if $item['uniacid']!=0}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">类型</label>
+					<div class="col-sm-9">
+						<label class="radio-inline">
+                	        <input type="radio" name="public" value="1" {if $item['public'] == 1} checked="checked"{/if}/>公库
+                        </label>
+                        <label class="radio-inline">
+                	        <input type="radio" name="public" value="0" {if $item['public'] == 0} checked="checked"{/if}/>私库
+                        </label>
+					</div>
+				</div>
+				{else}
+				<input type="hidden" name="public" value="1">
+				{/if}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">问题类型</label>
+					<div class="col-sm-9">
+						<select name="questiontype" class="form-control">
+					        {loop $questiontype $questiontypes}
+					        <option value="{$questiontypes['id']}" {if $questiontypes['id'] == $item['questiontype']}selected{/if}>{$questiontypes['gname']}</option>
+					        {/loop}
+				        </select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label" style="color:red">题目</label>
+					<div class="col-sm-9">
+						<input type="text" name="question" value="{if !empty($item['question'])}{$item['question']}{/if}" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分值</label>
+					<div class="col-sm-9">
+						<input type="text" name="figure" value="{if !empty($item['figure'])}{$item['figure']}{/if}" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项A</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionA']}" name="optionA">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionAtrue" value="1" {if $item['optionAtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项B</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionB']}" name="optionB">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionBtrue" value="1" {if $item['optionBtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项C</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionC']}" name="optionC">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionCtrue" value="1" {if $item['optionCtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项D</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionD']}" name="optionD">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionDtrue" value="1" {if $item['optionDtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项E</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionE']}" name="optionE">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionEtrue" value="1" {if $item['optionEtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选项F</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" value="{$item['optionF']}" name="optionF">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="checkbox-inline"><input type="checkbox" name="optionFtrue" value="1" {if $item['optionFtrue'] == 1}checked{/if}> 正确答案</label>
+                    </div>							
+                </div>
+	        </div>			
+        </div>
+		<div class="form-group">
+		    <div class="col-sm-12">
+			    <button type="submit" class="btn btn-primary col-lg-3" name="submit" value="题库问题配置">题库问题配置</button>
+			    <input type="hidden" name="token" value="{$_W['token']}" />
+		    </div>
+	    </div>
+    </div>
+	</form>
+</div>
+{template 'common/footer'}

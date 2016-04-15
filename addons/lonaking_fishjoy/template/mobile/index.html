@@ -1,0 +1,242 @@
+
+<!doctype html>
+<html data-score-lottery-url="{$url['score_lottery']}" data-config-url="{$url['config']}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-icon" href="../addons/lonaking_fishjoy/template/mobile/images/icon.png"/>
+<link rel="apple-touch-startup-image" href="../addons/lonaking_fishjoy/template/mobile/images/icon.png" />
+
+<style type="text/css">
+	body, div, canvas
+	{
+		image-rendering: optimizeSpeed;
+		-webkit-image-rendering: optimizeSpeed;
+		-webkit-interpolation-mode: nearest-neighbor;
+	}
+	body{padding:0; margin:0;font-size:12px;background-color:#000;}
+	body, html{height: 100%;}
+	#outer{height:100%; overflow:hidden; position:relative; width:100%;}
+	#outer[id]{display:table; position:static;}
+	#middle{position:absolute; top:50%;} /* for ie only*/
+	#middle[id]{display:table-cell; vertical-align:middle; position:static;}
+	p{
+		margin:0 ;
+	}
+	input{
+		border-radius: 4px;
+		border: 1px solid #ffffff;
+		height: 40px;
+		position: relative;
+		display: block;
+		background: rgba(255,255,255,0.8);
+		color: #000000;
+		font-weight: bolder;
+		font-size: 18px;
+		padding-left: 8px;
+
+	}
+	.page{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		overflow: hidden;
+		background: #000;
+	}
+	.page img{
+		width: 100%;
+	}
+	.page .bottom{
+		position: absolute;
+		display: block;
+		z-index: -1;
+		bottom: 0px;
+	}
+	.page .btn_img{
+
+	}
+	.page .count{
+		width: 100px;
+		background: rgba(255,255,255,0.6);
+		border-radius: 4px;
+		position: absolute;
+		z-index: 100;
+		margin: 5px;
+		padding: 5px;
+		text-align: center;
+		font-size: 16px;
+		font-weight: bold;
+
+	}
+	.page .count p{
+		margin:5px;
+	}
+	.page .bg{
+		position: absolute;
+		z-index: -1;
+	}
+	.page .container{
+		margin-top: 10%;
+	}
+	.page .container>img{
+		z-index: 1;
+		position: relative;
+	}
+	.page .awards-box{
+		position: relative;
+		display: block;
+		border: 2px solid #0087b7;
+		background: #02babc;
+		width: 64%;
+		margin: 0 auto;
+		margin-top: -10%;
+
+		padding: 10px;
+		text-align: center;
+	}
+	.page  .awards-box h1{
+		font-weight: bolder;
+		color: #fff100;
+		font-size: 28px;
+		text-shadow: 1px 1px 1px #0087b7;
+	}
+	.page  .awards-box p.text_lg{
+		margin:0px 0px 5px 0px ;
+		font-weight: bolder;
+		color: #fff;
+		font-size: 16px;
+	}
+	.page  .awards-box p{
+		color: #dedede;
+		font-size: 14px;
+		margin:0px;
+	}
+	.page .submitBox{
+		margin: 15px 0px;
+	}
+	.page .submitBox .btn,.popUp .popContainer .btn{
+		padding: 8px 15px;
+		border-radius: 2px;
+		border: none;
+		background: #e71873;
+		color: #fff;
+	}
+	.popUp{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		/* margin: 0 auto; */
+		background: rgba(0,0,0,0.6);
+		z-index: 10000;
+	}
+	.popUp .popContainer{
+		width: 72%;
+		border: 2px solid #0087b7;
+		background: #02babc;
+		margin: 0 auto;
+		margin-top: 30%;
+		padding: 15px;
+	}
+</style>
+
+<title></title>
+
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/js/jquery.cookies.2.2.0.min.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/js/quark.base-1.0.0.alpha.min.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/R.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/Utils.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/fishjoy.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/FishManager.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/FishGroup.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/views/Fish.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/views/Cannon.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/views/Bullet.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/views/Num.js"></script>
+<script type="text/javascript" src="../addons/lonaking_fishjoy/template/mobile/src/views/Player.js"></script>
+</head>
+
+<body>
+<div id="page1" class="page" style="z-index: 1000;display: none">
+	<div class="" id="paramLogo">
+
+	</div>
+	<div class="" id="paramText">
+
+	</div>
+	<div class="btn_img" id="start">
+		<img src="../addons/lonaking_fishjoy/template/mobile/images/1_03.png">
+	</div>
+	<div class="bottom" id="paramBg1">
+
+	</div>
+</div>
+<div class="page" id="page2" style="z-index: 999;">
+	<div class="count">
+		<p class="">倒计时：<span id="count"></span></p>
+	</div>
+	<div id="outer">
+		<div id="middle">
+			<div id="container" style="position:relative;top:-50%;margin:0 auto;"></div>
+			<div id="msg"></div>
+		</div>
+	</div>
+	<div id="fps" style="position:absolute;opacity:0;top:0;left:0;color:#fff;"></div>
+</div>
+<div id="page3" class="page" style="z-index: 998;">
+	<div class="bg" id="paramBg3">
+
+	</div>
+	<div class="container">
+		<img id="paramAwardImg" />
+		<div class="awards-box">
+			<div class="">
+				<h1 id="alarm">你真棒！</h1>
+				<p id="awardDiv" class="text_lg"></p>
+				<p class="">共获得：<span id="score"></span>分</p>
+			</div>
+			<div class="submitBox">
+				<div>
+					<button class="btn" onclick="javascript:void(0)" type="button" id="goToAgain">再来一次</button>
+					<a class="btn" href="{$url['gift_shop_url']}" type="button">兑换礼品</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="popUp" id="popUp" style="display: none">
+	<div class="popContainer">
+		<div class="submit_success" style="display: none">
+			<p style="font-size: 24px;font-weight: bolder;line-height: 32px;border-bottom: 1px solid #ccc;margin-bottom: 10px;">提示</p>
+			<h4>中奖结果提交成功!</h4>
+			<p style="font-size: 10px;margin-top: 5px;color: #fff;" id="param_success_tip">请您2月14日至九久日本料理上海任意门店消费，凭手机号码获取情人节礼物。</p>
+			<a href="javascript:window.location.reload();" class="btn" style="position: relative;
+display: block;
+text-align: center;
+margin-top: 14px;">确定</a>
+		</div>
+		<div class="submit_">
+			<iframe id="hidden_frame" hidden="hidden"  name="hidden_frame"></iframe>
+			<form action="/rest/lightApp/award/submit" method="post" target="hidden_frame"  id="submitRes">
+				<p style="font-size: 24px;font-weight: bolder;line-height: 48px;border-bottom: 1px solid #fff;margin-bottom: 10px;color: #fff;">提交领奖信息</p>
+				<input type="hidden" id="activityId" name="activityId" value="">
+				<input type="hidden" id="token" name="token" value="">
+				<input type="hidden" id="prizeName" name="prizeName" value="">
+				<input class="" id="phone"  name="phone" placeholder="请输入你的手机号" >
+				<p style="font-size: 10px;margin-top: 5px;color: #F8F8F8;padding-left: 5px;">领奖时请出示该手机号码进行领奖！</p>
+			</form>
+			<button id="Button1"  href="javascript:void(0)" class="btn" style="width: 100%;margin-top: 10px;font-size: 18px;">提交</button>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+
+	})
+</script>
+{php $this->playerService->checkRegister($this->module);}
+</html>

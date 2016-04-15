@@ -1,0 +1,18 @@
+{loop $this->_ad_temp_data $key $item}{php $$key = $item}{/loop}<dl class="index-list-in">
+    <dd>
+        <ul>
+			{loop $_ads $item}
+			<li>
+				<a href="{$item['url']}">
+					 {if $item['img']}
+					<img src="{$item['img']}"/>
+					<p>{$item['title']}</p>
+					{else}
+					<p class="noimg">{$item['title']}</p>
+					{/if}
+				</a>
+			</li>
+			{/loop}
+		</ul>
+    </dd>
+</dl>

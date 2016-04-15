@@ -1,0 +1,58 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+	</ul>
+	<div>
+
+	</div>
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th width="7%">编号</th>
+	                    <th width="15%">粉丝昵称</th>
+						<th width="15%">得分</th>
+						<th width="15%">分享</th>
+						<th width="20%">游戏时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $page['data'] $d}
+						<tr>
+							<td data-id="{$d['id']}">{$d['id']}</td>
+							<td>{$d['nickname']}</td>
+							<td>{$d['score']}</td>
+							<td>{if $d['shared']}已分享{else}未分享{/if}</td>
+							<td>{php echo date("Y-m-d",$d['play_time'])}</td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</form>
+		{$page['pager']}
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".del-ad").on("click",function(){
+			var btn = $(this);
+			var url = btn.data('url')
+			var tr = btn.parent().parent();
+			$.post(url,function(result){
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					//移除dom
+					tr.remove();
+				}
+			});
+
+		});
+	});
+</script>
+{template 'common/footer'}

@@ -1,0 +1,87 @@
+
+<style>
+#search-bar button,#search-bar input {
+  box-sizing:border-box;
+  font-size:14px;
+  height:34px
+}
+#hardware ul li h3,#hardware ul li p,#hardware ul a {
+  text-decoration:none
+}
+#doc-ft h4,#doc-ft a {
+  font-size:14px;
+  line-height:24px
+}
+ul {
+  list-style-type:none
+}
+input,button {
+  font-family:'微软雅黑'
+}
+p,ul,li,body {
+  margin:0;
+  padding:0
+}
+section h2.hd {
+  background:#F5F5F5;
+  border-left:4px solid #3ba354;
+  color:#3ba354;
+  font-size:14px;
+  font-weight:400;
+  height:35px;
+  line-height:35px;
+  margin:0;
+  padding:0 11px
+}
+.clearfix:after {
+  clear:both;
+  content:"";
+  display:table;
+  overflow:hidden
+}
+#doc {
+  background:#FFF;
+  width:100%
+}
+#doc-hd {
+  background:#FFF;
+  height:40px;
+  padding-top:1px
+}
+#carousel {
+  height:159px;
+  position:relative;
+  width:100%
+}
+#search-bar {
+  margin:15px 8px
+}
+
+#search-bar input {
+  background:none;
+  border:1px solid #ed145b;
+  border-radius:0;
+  float:left;
+  padding:9px;
+  width:75%
+}
+#search-bar button {
+  background:#ed145b;
+  border:none;
+  color:#FFF;
+  float:right;
+  padding:0;
+  text-align:center;
+  width:25%
+}
+
+</style>
+<section id="search-bar">
+<form action="{php echo $this->createMobileUrl('Search')}" method="post">
+<div class="search-form clearfix">
+<input type="text" name="keyword" autocomplete="off" placeholder="" value="{$_GPC['keyword']}">
+<button class="search-btn" type="submit">搜索商品</button>
+</div>
+</form>
+</section>
+

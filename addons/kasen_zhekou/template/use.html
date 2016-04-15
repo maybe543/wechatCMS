@@ -1,0 +1,53 @@
+{template 'common/header'}
+	<div class="panel panel-default">	  
+	  <div class="panel-heading">使用优惠券</div>
+	  <div class="panel-body">
+		<p>输入优惠券代码</p>
+	  </div>
+	 <form action="" method="post" style='width:300px;padding:15px;'>
+	  <div class="form-group">
+		<input name='code' type='text' class="form-control" rows="20" />
+	  </div>
+	  <input name="state" type="hidden" value="0" />
+	  <input name="token" type="hidden" value="{$_W['token']}" />
+	  <input type="submit" name="submit" value="查询" />
+	</form>
+	</div>
+	{if count($accounts)==0}
+	请查询
+	{else if count($accounts)==1}
+	此优惠券不存在
+	{else}
+	<form action="" method="post" style='width:300px;padding:15px;'>
+	  <div class="form-group">
+	  <ul class="list-group">
+		  <li class="list-group-item">
+			<span class="badge">{$accounts[code]}</span>
+			优惠券
+		  </li>
+		  <li class="list-group-item">
+			<span class="badge">{php $sql="select * from ".tablename('ks_yhq')." where `pid`= '".$accounts[pid]."'"; $account = pdo_fetch($sql); echo $account[desc]}</span>
+			隶属
+		  </li>
+		  <li class="list-group-item">
+			<span class="badge">{if $accounts['use']==0} 否	{else}	是	{/if}</span>
+			使用
+		  </li>
+		  <li class="list-group-item">
+			<span class="badge">{if $accounts['void']==0} 否	{else}	是	{/if}</span>
+			作废
+		  </li>		  
+		</ul>		
+		
+	  </div>
+	  <input name="code" type="hidden" value="{$accounts[code]}" />
+	  <input name="state" type="hidden" value="1" />
+	  <input name="token" type="hidden" value="{$_W['token']}" />
+	  {if $accounts['void']==0 and $accounts['use']==0}
+	  <input type="submit" name="submit" value="确定使用" />
+	  {else}
+	  <input type="button" style="color:#666" value="已经使用或作废"  disabled="">
+	  {/if}
+	</form>
+	{/if}
+{template 'common/footer'}

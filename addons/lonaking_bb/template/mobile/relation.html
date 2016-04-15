@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html data-follow-status="{$html['follow_status']}" data-openid="{$html['openid']}" data-follow-url="{$url['follow_url']}" data-pipei-url="{$url['pipei']}" data-add-tag-url="{$url[add_tag]}" data-remove-tag-url="{$url[remove_tag]}" data-hang-up-url="{$url['hang_up']}">
+<head>
+  <meta charset="utf-8">
+  <meta name="share_logo" content="{$html['share_logo']}" />
+  <meta name="share_url" content="{$html['share_url']}" />
+  <meta name="share_title" content="{$html['share_title']}" />
+  <meta name="share_content" content="{$html['share_content']}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>{$html['title']}</title>
+  <!-- Path to Framework7 Library CSS-->
+  <link rel="stylesheet" href="../addons/lonaking_bb/template/mobile/assets/css/framework7.material.min.css">
+  <link rel="stylesheet" href="../addons/lonaking_bb/template/mobile/assets/css/framework7.material.colors.min.css">
+  <link rel="stylesheet" href="../addons/lonaking_bb/template/mobile/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../addons/lonaking_bb/template/mobile/assets/assets/css/main.css">
+  <link rel="stylesheet" href="../addons/lonaking_bb/template/mobile/assets/assets/css/index/index.css">
+</head>
+<body>
+<!-- Status bar overlay for fullscreen mode-->
+<div class="statusbar-overlay"></div>
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<!-- Views-->
+<div class="views">
+  <!-- Your main view, should have "view-main" class-->
+  <div class="view view-main">
+    <!-- Top Navbar-->
+    <div class="navbar">
+      <div class="navbar-inner">
+        <!-- We have home navbar without left link-->
+        <div class="center sliding">{$html['title']}</div>
+      </div>
+    </div>
+    <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+    <div class="pages navbar-through">
+      <!-- Page, data-page contains page name-->
+      <div data-page="index" class="page toolbar-fixed" id="index">
+
+        <div class="toolbar tabbar tabbar-labels">
+          <div class="toolbar-inner">
+            <a href="javascript:void(0);" class="tab-link active pipei {if $html['relation']['id']}hide{/if}">点击匹配</a>
+            <a href="javascript:void(0);" class="tab-link active load hide">
+              <i class="icon-spinner icon-spin icon-4x"></i>
+            </a>
+            <a href="javascript:void(0);" class="tab-link active pipei-success hang-up {if $html['relation']['id']}{else}hide{/if}">挂断对方</a>
+          </div>
+        </div>
+        <!-- Scrollable page content-->
+        <div class="page-content">
+          <div class="tag-list">
+            <div class="content-block-title">点击选择或取消你的标签</div>
+            <div class="content-block tag-list">
+              <!-- 标签展示 -->
+              {loop $html['tags'] $tags}
+              <p class="buttons-row">
+                  {loop $tags $tag}
+                    <a href="#" class="button {$tag['color']} {if $tag['selected']}selected{else}unselected{/if}" data-id="{$tag['id']}" data-name="{$tag['tag']}">{$tag['tag']}</a>
+                  {/loop}
+              </p>
+              {/loop}
+            </div>
+          </div>
+          <div class="current-chat-info">
+            <div class="content-block-title">当前匹配的用户(关闭页面发送消息给公众平台即可聊天)</div>
+            <div class="list-block media-list">
+              <ul>
+                {if $relation_user}
+                <li>
+                  <div class="item-content">
+                    <div class="item-media"><img src="{$relation_user['tag']['avatar']}" width="44"></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">{if empty($relation_user['nickname'])}神秘用户{else}{$relation_user['nickname']}{/if} &nbsp;<i class="icon-user {if $relation_user['tag']['sex'] == 1}color-blue{else}color-pink{/if}"></i></div>
+                        <div class="item-after">聊天将在{$relation_user['over_minute']}分钟后结束</div>
+                      </div>
+                      <div class="item-subtitle">{$relation_user['address']}</div>
+                    </div>
+                  </div>
+                </li>
+                {else}
+                {/if}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+  wx.config({
+    debug: false,
+    appId: "{$html['jsconfig']['appId']}",  //微信的appid需要在公众平台生成
+    timestamp: "{$html['jsconfig']['timestamp']}", //这是由php部分生成的
+    nonceStr: "{$html['jsconfig']['nonceStr']}", //这是由php部分生成的
+    signature: "{$html['jsconfig']['signature']}", //这是由php部分生成的
+    jsApiList: [
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage',
+      'onMenuShareQQ',
+      'onMenuShareWeibo',
+    ]
+  });
+</script>
+<script type="text/javascript" src="../addons/lonaking_bb/template/mobile/assets/share/wxshare.js"></script>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="../addons/lonaking_bb/template/mobile/assets/js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="../addons/lonaking_bb/template/mobile/assets/js/framework7.min.js"></script>
+<script type="text/javascript" src="../addons/lonaking_bb/template/mobile/assets/assets/js/main.js"></script>
+<script type="text/javascript" src="../addons/lonaking_bb/template/mobile/assets/assets/js/index/index.js"></script>
+<!-- Path to your app js-->
+</body>
+</html>

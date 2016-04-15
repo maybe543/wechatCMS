@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{if !$user['fullname']}正在进入...{else}{$butname}资料{/if} - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+</head>
+
+<body>
+
+
+<header class="top"{if !$user['fullname']} style="display:none;"{/if}>
+    <h1>{$butname}资料</h1>
+    {if $user['fullname']}
+    <a class="back" href="javascript:history.go(-1);">返回</a>
+    {/if}
+</header>
+
+
+<div class="personal-box"{if !$user['fullname']} style="display:none;"{/if}>
+    <ul class="">
+        <li>
+            <label for="">昵称</label>
+            <input type="text" class="txt-input" name="fullname" id="fullname" value="{if !$user['fullname']}匿名{else}{$user['fullname']}{/if}">
+        </li>
+        <li>
+            <button type="submit" class="btn-submit" onclick="submit();">保存</button>
+        </li>
+    </ul>
+</div>
+
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    //
+    function submit(){
+        var s = "dosubmit=submit&fullname="+$('#fullname').val();
+        $.ajax({
+            type: "POST",
+            url: "{php echo get_url()}",
+            data: s,
+            dataType: "json",
+            success: function (msg) {
+                $.alertk(msg.message);
+                if (msg.success == "1"){
+                    window.location.href = "{if $gourl}{$gourl}{else}{php echo urwdo('index')}{/if}";
+                }
+            },
+            error: function (msg) {
+                alert("保存错误！");
+            }
+        });
+    }
+    {if !$user['fullname']}submit();{/if}
+</script>
+</body>
+</html>

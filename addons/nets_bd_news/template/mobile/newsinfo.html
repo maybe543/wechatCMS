@@ -1,0 +1,120 @@
+<?php$pagetitle=$news["title"];?>
+
+{template 'mobile_head'}
+<style>
+	.read-later-wrap span,.read-later-wrap a {
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px 8px 2px 8px;
+    border-radius: 1px;
+    color: #fff;
+    position: relative;
+    z-index: 0;
+    background: #08c;
+}
+.read-later-wrap {
+    text-align: right;
+}
+</style>
+<?php 
+//先使旧的cookie失效
+setcookie('hxs_news_re','', time()-3600);
+$re=$_GPC['re'];
+//保存新的cookie
+setcookie('hxs_news_re', $re, time()+3600);
+?>
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=news&m=nets_bd_news'"><i></i></div>
+    <div class="title">
+      <?php
+		if(!empty($_GPC["re"])){
+			$reuid=$_GPC["re"];
+			$remember=pdo_fetch("select * from ".tablename('mc_members')." where uid=:id",array("id"=>$reuid));
+			if(strstr($remember['avatar'],"http://")){$imgurl=$remember["avatar"];}else{$imgurl="/attachment/".$remember["avatar"];}
+			$recount=pdo_fetchcolumn("SELECT COUNT(0) FROM ims_netsbd_news_comment WHERE  uid=".$reuid." and comment_content LIKE '%^新闻分享被阅读_".$news["id"]."%'");
+		}
+		
+		//print($news['id']);
+?>
+      {if empty($imgurl)}
+      新闻详情  
+      {else}
+      <div style="width:100%; float:left;font-size:14px;"> <img src="{$imgurl}" width="35" />{$remember['nickname']}的媒体有{$recount}次的浏览 </div>
+      {/if} </div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+  <script>
+	var uniacid="{$_W['uniacid']}";
+	var page="{$pindex}";
+	var total_page="{$total_page}";
+	var append_divid="content";
+	var cid=0;
+	var sourceid="{$news['id']}";
+	var reuid="{$_GPC['re']}";
+	var share_newsid="1";
+</script> 
+  <?php
+if(strstr($news['picture'],"http://")){$imgurl=$news["picture"];}else{$imgurl="/attachment/".$news["picture"];} 
+$share_img=$imgurl;
+$share_title=$news["title"];
+$share_desc=$news["brief"];
+?>
+{template 'common_share'}
+
+</header>
+<section class="Content-details">
+  <div class="Content-center">
+    <div class="Content-details1">
+      <h1>{$news["title"]}
+	  </h1>
+	  
+      <p class="news-info">
+        <time><?php echo date("Y-m-d h:m:s",$news["createtime"])?></time>
+        <span>{$news["source"]}</span><span>&nbsp;&nbsp;{$news["click_num"]}</span>
+		<div class="read-later-wrap">
+		<span><a class="btn-on" onclick="click_readlate({$news['id']})">稍后阅读<i></i></a></span>
+      </div>
+		</p>
+		
+    </div>
+    <div class="Content-details1"> <br/>
+      <p class="news-info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$news["brief"]} </p>
+    </div>
+    {if $news["isshowdetail"]=="1"}
+    <?php if(strstr($news['picture'],"http://")){$imgurl=$news["picture"];}else{$imgurl="/attachment/".$news["picture"];} ?>
+    <div class="Content-details1" style="text-align:center;"> {if !empty($news["picture"])} <img src="{$imgurl}"  onerror="$(this).parent().hide();" ></img> {/if} </div>
+    {/if}
+    <div class="top-read"> {template 'ad_detail_top'} </div>
+    <div class="Contentdetails"> <?php echo htmlspecialchars_decode($news["content"])?> </div>
+    <div class="top-read"> {template 'ad_detail_footer'} </div>
+    <div class="top-read">
+      <h3><i></i><span>热读</span></h3>
+      <ul>
+        {loop $hotnews $h}
+        <li><a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=newsinfo&m=nets_bd_news&id={$h['id']}">{$h["title"]}</a></li>
+        {/loop}
+      </ul>
+    </div>
+  </div>
+  <div id="SOHUCS"></div>
+      <script id="changyan_mobile_js" charset="utf-8" type="text/javascript" 
+	src="http://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=cys3MPC0A&conf=prod_31bcc9e8e3e4a7e8b3a7f2fe451cf756 
+">
+</script> 
+</section>
+ 
+
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script> 
+<script>
+	click_news(sourceid,reuid);
+</script> 
+{template 'common'}
+
+</body></html>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.012wz.com" versionCode="0.6,0.7">
+	<application setting="true">
+		<name><![CDATA[扫码支付/扫码签到]]></name>
+		<identifie><![CDATA[bm_qrsign]]></identifie>
+		<version><![CDATA[2.3]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[扫码签到&扫码支付]]></ability>
+		<description><![CDATA[扫码签到&扫码支付]]></description>
+		<author><![CDATA[柒柒源码]]></author>
+		<url><![CDATA[http://h770.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+			<message type="text" />
+			<message type="image" />
+		</handles>
+		<rule embed="true" />
+	</platform>
+	<bindings>
+		<rule>
+			<entry title="签到统计" do="record" state="" direct="false" />
+			<entry title="开始抽奖" do="play" state="" direct="false" />
+			<entry title="中奖记录" do="winner" state="" direct="false" />
+			<entry title="支付记录" do="payed" state="" direct="false" />
+		</rule>
+		  <home call="getItemTiles" />
+	</bindings>
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_bm_qrsign_payed` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rid` int(11) NOT NULL DEFAULT '0',
+  `fromuser` text NOT NULL,
+  `username` text NOT NULL,
+  `paytime` int(11) NOT NULL DEFAULT '0',
+  `qrmoney` float(10,2) DEFAULT '0.00',
+  `credit` int(11) NOT NULL DEFAULT '0',
+  `play_time` int(11) NOT NULL DEFAULT '0',
+  `avatar` varchar(500) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `dateline` int(10) unsigned NOT NULL DEFAULT '0',
+  `clientOrderId` varchar(50) NOT NULL,
+  `play_status` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_bm_qrsign_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rid` int(11) NOT NULL DEFAULT '0',
+  `fromuser` text NOT NULL,
+  `username` text NOT NULL,
+  `today_rank` int(11) NOT NULL DEFAULT '0',
+  `sign_time` int(11) NOT NULL DEFAULT '0',
+  `last_sign_time` int(11) NOT NULL DEFAULT '0',
+  `continue_sign_days` int(11) NOT NULL DEFAULT '0',
+  `maxcontinue_sign_days` int(11) NOT NULL DEFAULT '0',
+  `total_sign_num` int(11) NOT NULL DEFAULT '0',
+  `maxtotal_sign_num` int(11) NOT NULL DEFAULT '0',
+  `first_sign_days` int(11) NOT NULL DEFAULT '0',
+  `maxfirst_sign_days` int(11) NOT NULL DEFAULT '0',
+  `credit` int(11) NOT NULL DEFAULT '0',
+  `play_status` int(1) NOT NULL DEFAULT '0',
+  `play_time` int(11) NOT NULL DEFAULT '0',
+  `avatar` varchar(500) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_bm_qrsign_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rid` int(10) unsigned NOT NULL DEFAULT '0',
+  `weid` int(11) NOT NULL,
+  `n` int(10) NOT NULL DEFAULT '0',
+  `desc` varchar(500) NOT NULL DEFAULT '',
+  `pictype` int(1) NOT NULL DEFAULT '0',
+  `picurl` varchar(200) NOT NULL DEFAULT '',
+  `urlx` varchar(200) NOT NULL DEFAULT '',
+  `title` varchar(100) NOT NULL DEFAULT '',
+  `starttime` datetime NOT NULL,
+  `endtime` datetime NOT NULL,
+  `qrcode` varchar(100) NOT NULL DEFAULT '',
+  `urly` varchar(200) NOT NULL DEFAULT '',
+  `url1` varchar(200) NOT NULL DEFAULT '',
+  `url2` varchar(200) NOT NULL DEFAULT '',
+  `memo1` varchar(100) NOT NULL DEFAULT '',
+  `memo2` varchar(100) NOT NULL DEFAULT '',
+  `play_times` int(10) NOT NULL DEFAULT '0',
+  `play_nums` int(10) NOT NULL DEFAULT '0',
+  `play_type` int(1) NOT NULL DEFAULT '0',
+  `qrtype` int(1) NOT NULL DEFAULT '0',
+  `qrmoney` float(10,2) DEFAULT '0.00',
+  `qrerrormemo` varchar(100) NOT NULL DEFAULT '',
+  `qrerrorurl` varchar(200) NOT NULL DEFAULT '',
+  `memo` varchar(100) NOT NULL DEFAULT '',
+  `qrinput` int(1) NOT NULL DEFAULT '0',
+  `logo` varchar(100) NOT NULL DEFAULT '',
+  `play_status` int(1) NOT NULL DEFAULT '0',
+  `templateid` varchar(100) NOT NULL DEFAULT '',
+  `awaremethod` varchar(100) NOT NULL DEFAULT '',
+  `awaretime` varchar(100) NOT NULL DEFAULT '',
+  `openid` varchar(100) NOT NULL DEFAULT '',
+  `templateid1` varchar(100) NOT NULL DEFAULT '',
+  `button` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_bm_qrsign_winner` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rid` int(10) unsigned NOT NULL DEFAULT '0',
+  `from_user` varchar(32) NOT NULL DEFAULT '',
+  `username` text NOT NULL,
+  `dateline` int(10) unsigned NOT NULL DEFAULT '0',
+  `ip` char(15) NOT NULL DEFAULT '',
+  `awardid` int(10) unsigned NOT NULL DEFAULT '0',
+  `awardname` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `avatar` varchar(500) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `rid` (`rid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+
+	]]></install>
+	<uninstall><![CDATA[
+	]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

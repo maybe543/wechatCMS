@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.012wz.com" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[微E名片]]></name>
+		<identifie><![CDATA[amouse_ecard]]></identifie>
+		<version><![CDATA[2.1]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[千叶微名片，这不是简单的微名片。]]></ability>
+		<description><![CDATA[千叶微名片，这不是简单的微名片，帮你快速结交朋友，建立人脉。生成一个名片二维码，扫描二维码可以保存到手机联系人中。]]></description>
+		<author><![CDATA[Angel Cms]]></author>
+		<url><![CDATA[www.012wz.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+            <message type="text" />
+		</subscribes>
+		<handles>
+			<message type="text" />
+		</handles>
+		<rule embed="false" />
+	</platform>
+	<bindings>
+        <cover>
+            <entry title="我的名片首页" do="index" />
+        </cover>
+
+		<menu>
+            <entry title="基本设置" do="sysset" state="" direct="false" />
+			<entry title="名片管理" do="ecard" direct="false" />
+            <entry title="背景图片" do="bg" />
+            <entry title="行业管理" do="industry" direct="false" />
+            <entry title="音乐管理" do="music" direct="false" />
+		</menu>
+    </bindings>
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_amouse_house` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `weid` int(11) DEFAULT NULL,
+  `title` varchar(25) NOT NULL COMMENT '标题',
+  `price` varchar(100) NOT NULL COMMENT '租金总价',
+  `square_price` varchar(100) NOT NULL COMMENT '每平方价格',
+  `area` varchar(100) NOT NULL COMMENT '面积',
+  `house_type` varchar(100) NOT NULL COMMENT '户型',
+  `floor` varchar(100) NOT NULL COMMENT '楼层',
+  `orientation` varchar(100) NOT NULL COMMENT '朝向',
+  `type` varchar(2) NOT NULL COMMENT '0：出租；1：求租；2：出售/3：求购',
+  `status` varchar(2) NOT NULL COMMENT '是否显示/审核',
+  `recommed` int(1) NOT NULL COMMENT '推荐 0未推荐 1推荐',
+  `contacts` varchar(100) NOT NULL COMMENT '联系人',
+  `phone` varchar(13) NOT NULL COMMENT '联系电话',
+  `introduction` text NOT NULL COMMENT '详细描述',
+  `openid` varchar(25) NOT NULL COMMENT '微信OPENID',
+  `createtime` int(10) NOT NULL,
+  `thumb3` varchar(1000) NOT NULL DEFAULT '',
+  `thumb4` varchar(1000) NOT NULL DEFAULT '',
+  `thumb1` varchar(1000) NOT NULL DEFAULT '',
+  `thumb2` varchar(1000) NOT NULL DEFAULT '',
+  `place` varchar(1000) NOT NULL DEFAULT '',
+  `lat` varchar(1000) NOT NULL DEFAULT '0.0000000000',
+  `lng` varchar(1000) NOT NULL DEFAULT '0.0000000000',
+  `location_p` varchar(1000) NOT NULL DEFAULT '',
+  `location_c` varchar(1000) NOT NULL DEFAULT '',
+  `location_a` varchar(1000) NOT NULL DEFAULT '',
+  `brokerage` varchar(1000) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `indx_weid` (`weid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='租房出售' AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_house_slide` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `weid` int(10) unsigned NOT NULL,
+  `url` varchar(200) NOT NULL DEFAULT '',
+  `slide` varchar(200) NOT NULL DEFAULT '',
+  `listorder` int(10) unsigned NOT NULL DEFAULT '0',
+  `isshow` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示',
+  `createtime` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_impress_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL COMMENT 'uid',
+  `oid` varchar(100) NOT NULL COMMENT '微信会员openID',
+  `vote` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赞',
+  `nickname` varchar(200) NOT NULL COMMENT '用户昵称',
+  `realname` varchar(200) NOT NULL COMMENT '昵称',
+  `content` varchar(200) NOT NULL COMMENT '印象内容',
+  `createtime` int(10) unsigned NOT NULL COMMENT '评论时间',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='印象记录' AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_impress_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uniacid` int(10) unsigned NOT NULL COMMENT '公众账号id',
+  `oid` varchar(50) NOT NULL COMMENT '微信会员openID',
+  `nickname` varchar(200) NOT NULL COMMENT '昵称',
+  `avatar` varchar(255) NOT NULL COMMENT '头像',
+  `mobile` varchar(11) NOT NULL COMMENT '手机号码',
+  `createtime` int(10) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `uniacid` (`uniacid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='参与人' AUTO_INCREMENT=5 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_newflats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `weid` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL COMMENT '姓名',
+  `thumb` varchar(255) NOT NULL COMMENT '图片',
+  `price` varchar(100) NOT NULL COMMENT '价格',
+  `type` varchar(200) NOT NULL COMMENT '建筑类型',
+  `years` varchar(100) NOT NULL COMMENT '产权年限',
+  `wytype` varchar(100) NOT NULL COMMENT '物业类别',
+  `cqtype` varchar(100) NOT NULL COMMENT '产权类型',
+  `jzarea` varchar(100) NOT NULL COMMENT '建筑面积',
+  `ratio` varchar(100) NOT NULL COMMENT '容积率',
+  `floor_area` varchar(100) NOT NULL COMMENT '房屋面积',
+  `afforestation` varchar(100) NOT NULL COMMENT '绿化率',
+  `total` varchar(100) NOT NULL COMMENT '总户型',
+  `door_area` varchar(100) NOT NULL COMMENT '户型面积',
+  `road_transport` varchar(100) NOT NULL COMMENT '道路交通',
+  `investors` varchar(100) NOT NULL COMMENT '投资商',
+  `developers` varchar(100) NOT NULL COMMENT '开发商',
+  `property_compay` varchar(100) NOT NULL COMMENT '物业公司',
+  `propertypay` varchar(100) NOT NULL COMMENT '物业费',
+  `features` varchar(100) NOT NULL COMMENT '楼盘特色',
+  `sales_addres` varchar(100) NOT NULL COMMENT '售楼地址',
+  `checkin_time` varchar(100) NOT NULL COMMENT '入住时间',
+  `sales_status` varchar(100) NOT NULL COMMENT '销售状况',
+  `average_price` varchar(100) NOT NULL COMMENT '均价',
+  `discounted_costs` varchar(100) NOT NULL COMMENT '折扣价格',
+  `payment` varchar(100) NOT NULL COMMENT '付款方式',
+  `business` varchar(100) NOT NULL COMMENT '商业配套',
+  `banks` varchar(100) NOT NULL COMMENT '银行',
+  `trading_area` varchar(100) NOT NULL COMMENT '商圈',
+  `park` varchar(100) NOT NULL COMMENT '公园',
+  `hotel` varchar(100) NOT NULL COMMENT '酒店',
+  `supermarket` varchar(100) NOT NULL COMMENT '超市',
+  `humanities` varchar(100) NOT NULL COMMENT '人文自然景观',
+  `supporting` varchar(100) NOT NULL COMMENT '社区内配套',
+  `internal` varchar(100) NOT NULL COMMENT '内部配套',
+  `parking_number` varchar(100) NOT NULL COMMENT '车位数',
+  `base` varchar(100) NOT NULL COMMENT '基本参数',
+  `equally` varchar(100) NOT NULL COMMENT '公摊系数',
+  `surrounding` varchar(100) NOT NULL COMMENT '周边商业',
+  `landscape` varchar(100) NOT NULL COMMENT '周边景观',
+  `hospitals` varchar(100) NOT NULL COMMENT '周边医院',
+  `school` varchar(100) NOT NULL COMMENT '周边学校',
+  `traffic` varchar(100) NOT NULL COMMENT '交通',
+  `construction` varchar(100) NOT NULL COMMENT '建筑施工单位',
+  `design` varchar(100) NOT NULL COMMENT '规划设计单位',
+  `salecom` varchar(100) NOT NULL COMMENT '销售公司',
+  `address` varchar(255) NOT NULL COMMENT '销售公司所在位置图片',
+  `introduction` text NOT NULL COMMENT '详细描述',
+  `readcount` int(11) DEFAULT '0' COMMENT '阅读量',
+  `openid` varchar(25) NOT NULL COMMENT '微信OPENID',
+  `like` int(11) DEFAULT '0' COMMENT '点赞',
+  `createtime` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `indx_weid` (`weid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_sysset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `weid` int(11) DEFAULT '0',
+  `jjrmobile` varchar(13) NOT NULL COMMENT '手机',
+  `broker` varchar(200) NOT NULL COMMENT '经纪人',
+  `guanzhuUrl` varchar(255) DEFAULT '1' COMMENT '引导关注',
+  `copyright` varchar(255) DEFAULT '' COMMENT '版权',
+  `newflat_images` varchar(255) DEFAULT '' COMMENT '楼盘图片设置',
+  `isoauth` int(10) DEFAULT '1' COMMENT '是否开启高级权限',
+  `isshow` int(10) DEFAULT '1' COMMENT '是否只显示经纪人信息',
+  `cnzz` varchar(255) DEFAULT '' COMMENT '统计',
+  `appid` varchar(255) DEFAULT '',
+  `appsecret` varchar(255) DEFAULT '',
+  `appid_share` varchar(255) DEFAULT '',
+  `appsecret_share` varchar(255) DEFAULT '',
+  `defcity` varchar(1000) DEFAULT '中国',
+  `nickname` varchar(500) DEFAULT NULL COMMENT '昵称',
+  `openid` varchar(500) DEFAULT NULL COMMENT 'openid',
+  `isadjuest` varchar(1) DEFAULT '1' COMMENT '是否审核',
+  PRIMARY KEY (`id`),
+  KEY `indx_weid` (`weid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_bg` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
+  `displayorder` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_bjyy` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL,
+  `musicid` int(10) NOT NULL,
+  `from_user` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_card` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `from_user` varchar(255) NOT NULL,
+  `mid` int(10) NOT NULL COMMENT '会员表id',
+  `mobile` tinyint(1) DEFAULT '0' COMMENT 'type=1;0代表全部可见，1代表互相收藏可见，2代表自己可见',
+  `email` tinyint(1) DEFAULT '0' COMMENT 'type=2;0代表全部可见，1代表互相收藏可见，2代表自己可见',
+  `weixin` tinyint(1) DEFAULT '0' COMMENT 'type=3;0代表全部可见，1代表互相收藏可见，2代表自己可见',
+  `address` tinyint(1) DEFAULT '0' COMMENT 'type=4;0代表全部可见，1代表互相收藏可见，2代表自己可见',
+  `bgimg` varchar(255) DEFAULT NULL,
+  `shopName` varchar(255) DEFAULT NULL,
+  `templateFile` varchar(300) DEFAULT 'qianx_index',
+  `shopIcon` varchar(255) DEFAULT NULL,
+  `shopUrl` varchar(255) DEFAULT NULL,
+  `zan` int(10) DEFAULT '0',
+  `view` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_companyinfo` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL,
+  `cid` int(10) NOT NULL,
+  `from_user` varchar(255) NOT NULL,
+  `img` text,
+  `content` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_industry` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `displayorder` int(10) DEFAULT NULL,
+  `weid` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+
+INSERT INTO `ims_amouse_weicard_industry` (`id`, `title`, `displayorder`, `weid`) VALUES
+(1, 'IT·互联网·游戏', 1, 0),
+(2, '金融业（投资·保险·证券·基金）', 2, 0),
+(3, '医疗·保健·美容', 4, 0),
+(4, '教育·培训·科研·院校', 5, 0),
+(5, '通信行业', 6, 0),
+(6, '房地产开发·建筑与工程', 7, 0),
+(7, '广告·会展·公关', 8, 0),
+(8, '电子·微电子', 9, 0),
+(9, '物业管理·商业中心', 10, 0),
+(10, '家居·室内设计·装潢', 11, 0),
+(11, '中介服务', 12, 0),
+(12, '专业服务（咨询·财会·法律等）', 13, 0),
+(13, '检验·检测·认证', 14, 0),
+(14, '贸易·进出口', 15, 0),
+(15, '媒体·出版·文化传播', 16, 0),
+(16, '印刷·包装·造纸', 17, 0),
+(17, '快速消费品', 18, 0),
+(18, '耐用消费品', 19, 0),
+(19, '玩具·工艺品·收藏品·奢侈品', 20, 0),
+(20, '家电业', 21, 0),
+(21, '办公设备·用品', 22, 0),
+(22, '批发·零售', 23, 0),
+(23, '交通·运输·物流', 24, 0),
+(24, '娱乐·运动·休闲', 25, 0),
+(25, '制药·生物工程', 26, 0),
+(26, '医疗设备·器械', 27, 0),
+(27, '环保行业', 28, 0),
+(28, '石油·化工·矿产·采掘·冶炼·原材料', 29, 0),
+(29, '能源·水利', 30, 0),
+(30, '仪器·仪表·工业自动化·电气', 31, 0),
+(31, '汽车·摩托车', 32, 0),
+(32, '机械制造·机电·重工', 33, 0),
+(33, '原材料及加工', 34, 0),
+(34, '农·林·牧·渔', 35, 0),
+(35, '航空·航天研究与制造', 36, 0),
+(36, '船舶制造', 37, 0),
+(37, '政府·非营利机构', 38, 0),
+(38, '酒店/旅游', 39, 0),
+(39, '餐饮/娱乐', 40, 0),
+(40, '直销行业', 41, 0),
+(41, '美容美发', 42, 0),
+(42, '教育·培训·科研·院校·大学', 43, 0),
+(45, 'DNF', 44, 0);
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_member` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) DEFAULT NULL,
+  `realname` varchar(50) DEFAULT NULL,
+  `mobile` varchar(11) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `job` varchar(50) DEFAULT NULL,
+  `qq` varchar(50) DEFAULT NULL,
+  `industry` varchar(50) DEFAULT NULL,
+  `department` varchar(50) DEFAULT NULL,
+  `province` varchar(50) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `weixin` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `headimg` varchar(255) DEFAULT NULL,
+  `openid` varchar(255) DEFAULT NULL,
+  `myattention` varchar(255) DEFAULT NULL,
+  `myfocus` varchar(255) DEFAULT NULL,
+  `createtime` int(11) DEFAULT NULL,
+  `companyAddress` varchar(255) DEFAULT NULL,
+  `lat` decimal(18,10) DEFAULT '0.0000000000',
+  `lng` decimal(18,10) DEFAULT '0.0000000000',
+  `status` tinyint(1) DEFAULT NULL COMMENT '0表示已审核，1表示未审核，2表示禁用',
+  `qianming` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_music` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) DEFAULT NULL,
+  `musicName` varchar(255) DEFAULT NULL,
+  `musicSinger` varchar(255) DEFAULT NULL,
+  `musicImg` varchar(255) DEFAULT NULL,
+  `musicUrl` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_mycollect` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL,
+  `cid` int(10) NOT NULL,
+  `from_user` varchar(255) NOT NULL,
+  `collect_mid` int(10) NOT NULL,
+  `collect_cid` int(10) NOT NULL,
+  `collect_from_user` varchar(255) NOT NULL,
+  `createtime` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_photo` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL COMMENT '会员表id',
+  `cid` int(10) NOT NULL COMMENT '名片表id',
+  `from_user` varchar(255) NOT NULL,
+  `title` varchar(255) DEFAULT NULL COMMENT '栏目名称',
+  `icon` varchar(255) DEFAULT NULL COMMENT '栏目图标',
+  `thumb` text COMMENT '图片',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_presence` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL,
+  `cid` int(10) NOT NULL,
+  `from_user` varchar(255) DEFAULT NULL,
+  `img` text,
+  `content` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_reply` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rid` int(10) unsigned NOT NULL,
+  `weid` int(10) unsigned NOT NULL,
+  `tpl` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(20) NOT NULL COMMENT '活动标题',
+  `description` longtext NOT NULL COMMENT '活动介绍',
+  `thumb` varchar(200) DEFAULT '',
+  `isshow` tinyint(1) DEFAULT '0',
+  `bj` varchar(100) NOT NULL COMMENT '名片图片',
+  `viewnum` int(11) DEFAULT '0',
+  `createtime` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_sysset` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `weid` int(11) DEFAULT '0',
+  `guanzhuUrl` varchar(255) DEFAULT '1' COMMENT '引导关注',
+  `copyright` varchar(255) DEFAULT '' COMMENT '版权',
+  `cnzz` varchar(800) DEFAULT '' COMMENT '第三方统计',
+  `appid` varchar(255) DEFAULT '',
+  `isoauth` int(2) unsigned NOT NULL DEFAULT '1',
+  `appsecret` varchar(255) DEFAULT '',
+  `appid_share` varchar(255) DEFAULT '',
+  `appsecret_share` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `indx_weid` (`weid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `ims_amouse_weicard_zan` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weid` int(10) NOT NULL,
+  `mid` int(10) NOT NULL,
+  `cid` int(10) NOT NULL,
+  `from_user` varchar(255) NOT NULL,
+  `zan_mid` int(10) NOT NULL,
+  `zan_cid` int(10) NOT NULL,
+  `zan_from_user` varchar(255) NOT NULL,
+  `createtime` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+]]></install>
+<uninstall><![CDATA[
+DROP TABLE IF EXISTS `ims_amouse_weicard_industry`;
+DROP TABLE IF EXISTS `ims_amouse_weicard_sysset`;]]></uninstall>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
+</manifest>

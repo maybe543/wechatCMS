@@ -1,0 +1,31 @@
+{template 'common/header-base'}
+<div class="container" ng-controller="topController">
+  <div class="row">
+    <div class="col">
+      <div class="box">
+        <div class="box-content">
+          <div class="kanjia-toplist" infinite-scroll="topreddit.nextPage()" infinite-scroll-disabled="topreddit.busy" infinite-scroll-distance="0">
+            <a class="item clearfix" ng-repeat="item in topreddit.items" href='{{item.href}}'>
+              <div class="number" ng-bind="item.number"></div>
+              <div class="image">
+                <img ng-src="{{item.headimgurl}}" alt=" "/>
+              </div>
+              <div class="nickname" ng-bind="item.nickname"></div>
+              <div class="price text-right">¥&nbsp;{{item.price}}</div>
+            </a>
+          </div>
+          <div class="loading text-center" ng-show="topreddit.load">
+            <img src="{MODULE_URL}images/loading.gif"/>
+            正在加载中…
+          </div>
+          <div class="last text-center" ng-show="topreddit.last">没有更多内容了</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var KANJIA_TOP_URL = "{php echo $this->createMobileUrl('topajax')}";
+var KANJIA_ID = "{$_GPC['id']}";
+</script>
+{template 'common/footer-base'}

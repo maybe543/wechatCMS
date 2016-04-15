@@ -1,0 +1,12 @@
+{template 'common/header'}
+<style>
+	.quan_list{background:url(../addons/kasen_zhekou/template/mobile/images/app_bg.png) repeat-y; height:auto; width:100%; padding:0; margin:0;}
+	.quan_list li{height:auto;padding:0; margin:0; width:100%}
+	img{height:auto;padding:0; margin:0; width:100%;}
+</style>
+<img src="{php echo tomedia($sets['img'])}" />
+<ul class="quan_list">
+	{loop $clist $row}
+	<li><a href="{$row[link]}"><img src="{php echo tomedia($row['images'])}" /></a></li>
+	{/loop}
+</ul>

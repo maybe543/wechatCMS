@@ -1,0 +1,137 @@
+{template 'common/header'}
+{php $_item=1;}
+{template 'menu'}
+<style type="text/css">
+.tdalbum > div {padding: 8px;}
+</style>
+<div class="main w98auto">
+    <div class="main cf custom-menu">
+        <div class="mod">
+            <div class="main-bd main-page">
+                <h2 class="title">【货品库存列表】{php echo value($goods,'title')}</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+
+                <div id="albumtemp" style="display: none;">
+                    <a href="javascript:;" onclick="addatt()">[+]</a>
+                    <a href="javascript:;" onclick="delatt(this)">[-]</a>
+
+                    {loop $goods['selectattr'] $name $list}
+                    {$name}
+                    <select idid="val_" class="form-control wi">
+                        <option value="">请选择...</option>
+                        {loop $list $listp}
+                        <option value="{$listp['val']}">{$listp['val']}</option>
+                        {/loop}
+                    </select>
+                    {/loop}
+                    库存 <input type="text" idid="stock_" size="10" class="form-control wi">
+                </div>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{$urlarr['now']}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td class="tdalbum">
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100">&nbsp;</td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="保存"> &nbsp;
+                                        <a class="button primary" href="{php echo urido('goodslist')}">取消</a>
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="sortsdata" type="text/plain" style="display:none;">{php echo value($goods,'goods_sorts')}</script>
+<script id="areasdata" type="text/plain" style="display:none;">{php echo value($goods,'goods_areas')}</script>
+
+<script type="text/javascript">
+
+    //添加
+    function addatt(atttemp) {
+        var eve = $("#albumtemp");
+        var _js = (!atttemp)?[]:(!atttemp.stocklist)?[]:atttemp.stocklist;
+        for(var i=0; i<_js.length; i++){
+            var m = Math.round(Math.random() * 10000);
+            $intemp = $('<div id="album">'+eve.html()+'</div>');
+            $intemp.find("input").each(function(){
+                $(this).attr("name",$(this).attr("idid")+m)
+            });
+            $intemp.find("select").each(function(){
+                $(this).attr("name",$(this).attr("idid")+m+"[]")
+            });
+            //
+            var _jv = _js[i].val, _vv = "";
+            for(var j=0; j<_jv.length; j++){
+                $intemp.find("select").eq(j).val(_jv[j]);
+                _vv+= _jv[j];
+            }
+            $intemp.find("input").val(atttemp.stock[_vv]?atttemp.stock[_vv]:_js[i].stock);
+            $(".tdalbum").append($intemp);
+        }
+        if (_js.length == 0){
+            var m = Math.round(Math.random() * 10000);
+            $intemp = $('<div id="album">'+eve.html()+'</div>');
+            $intemp.find("input").each(function(){
+                $(this).attr("name",$(this).attr("idid")+m)
+            });
+            $intemp.find("select").each(function(){
+                $(this).attr("name",$(this).attr("idid")+m+"[]")
+            });
+            $(".tdalbum").append($intemp);
+        }
+    }
+    //删除
+    function delatt(obj) {
+        if ($(obj).parents('.tdalbum').find("div#album").length <= 1) {
+            $(obj).parent().find("select").val('');
+            $(obj).parent().find("input").val('');
+        }else{
+            $(obj).parent().remove();
+        }
+    }
+    //
+    $(document).ready(function() {
+        addatt(eval({php echo json_encode($goods['selectattrstock'])}));
+        //保存数据事件
+        $('#saveform').submit(function() {
+            //
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        window.location.reload();
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

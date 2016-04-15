@@ -1,0 +1,117 @@
+{php include $_template->template('header')}
+<link href="http://a1.jmstatic.com/91f179567fa39f33/common.css" rel="stylesheet" type="text/css"/>
+<link href="http://a5.jmstatic.com/1bea7cf6230e9af5/ui.css" rel="stylesheet" type="text/css"/>
+<link href="http://a1.jmstatic.com/5ab60ad284bc262c/deals_new.css" rel="stylesheet" type="text/css"/>
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/jmtouch.css?v={TIMESTAMP}"  media="screen" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/deal_details.css?v={TIMESTAMP}" media="screen"  charset="utf-8" />
+
+
+<style>
+  .slideout-menu {position:fixed; left:0; top:0; bottom:0; right:0; z-index:0; width:256px; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+  .slideout-panel {position:relative; z-index:1;}
+  .slideout-open,
+  .slideout-open body, .slideout-open .slideout-panel {overflow:hidden;}
+  .slideout-open .slideout-menu {display:block;}
+  .panel {background-color:#fff; }
+  /*.menu {background-image:linear-gradient(145deg, #1D1F20, #404348; } */
+  .menu {background-color: #1D1F20; }
+  .menu a {color:#fff; }
+  .menu a:hover {text-decoration:underline; }
+  .menu-header {border-bottom:1px solid #2a2d2f; padding:20px; background-size:32px; background-color:#222;}
+  .menu-header-title {font-weight:400; letter-spacing:0.5px; margin:0; }
+  .menu-section {margin:25px 0; }
+  .menu-section-title {text-transform:uppercase; color:#85888d; font-weight:200; font-size:13px; letter-spacing:1px; padding:0 20px; margin:0;}
+  .menu-section-list {padding:0; margin:10px 0; list-style:none;}
+  .menu-section-list a {display:block; padding:10px 20px;}
+  .panel {min-height:100%;}
+  /** Header */
+  .panel-header {margin:120px auto 55px;}
+  .title {font-size:3.2em; line-height:1em; margin:0 0 15px; color:#4B5; font-weight:400;}
+  /** Footer*/
+  .panel-footer {margin:10px auto 20px;}
+  .panel-footer p {padding-bottom:20px;}
+  .heart {font-style:normal; font-weight:500; color:#c0392b; text-decoration:none;}
+</style>
+
+  <nav id="menu" class="menu">
+      <a href="https://github.com/mango/slideout" target="_blank">
+        <header class="menu-header">
+          <span class="menu-header-title">Tests</span>
+        </header>
+      </a>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+     
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+     
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+     
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Docs</h3>
+        <ul class="menu-section-list">
+          <li><a href="https://github.com/mango/slideout#installation" target="_blank">Installation</a></li>
+          <li><a href="https://github.com/mango/slideout#usage" target="_blank">Usage</a></li>
+          <li><a href="https://github.com/mango/slideout#api" target="_blank">API</a></li>
+          <li><a href="https://github.com/mango/slideout#npm-scripts" target="_blank">npm-scripts</a></li>
+        </ul>
+      </section>
+    </nav>
+
+{php include $_template->template('footer')}

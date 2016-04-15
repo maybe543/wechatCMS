@@ -1,0 +1,136 @@
+{template 'common/header-base'}
+<div ng-controller="detailController">
+  <!-- 砍价情况 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="kanjia-status clearfix">
+          <div class="pull-left">
+            <span>已有</span>
+            <span class="number">{{kanjia.obj.number_join}}</span>
+            <span>人正在热抢(还剩:</span>
+            <span>{{kanjia.obj.product_inventory-kanjia.obj.product_sold}}</span>
+            <span>)</span>
+          </div>
+          <div class="pull-right">
+            <div class="rule" ng-click="kanjia.showNotice()">参与须知</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 参与须知 -->
+  <div class="kanjia-notice-box" ng-show="kanjia.shownotice">
+    <div class="kanjia-notice-title"> <strong>参与须知</strong>
+      <div class="kanjia-notice-close" ng-click="kanjia.HideNotice()">×</div>
+    </div>
+    <div class="kanjia-notice-content">
+      <div ng-bind-html="kanjia.obj.notice"></div>
+    </div>
+  </div>
+  <!-- 砍价介绍 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-content">
+            <div class="kanjia-list">
+              <div class="item" href='javascript:;'>
+                <div class="image">
+                  <img ng-src="{{kanjia.obj.cover}}" alt=" "/>
+                  <div class="time">活动结束：<timer end-time="kanjia.obj.endtime * 1000">{{days}}天{{hours}}时{{minutes}}分{{seconds}}秒</timer></div>
+                </div>
+                <div class="name">{{kanjia.obj.title}}</div>
+                <div class="attr">
+                  <div class="price">
+                    <span class="text">原价：</span> <del><span class="number">¥&nbsp;{{kanjia.obj.product_price}}</span></del>
+                  </div>
+                  <div class="pricelow">
+                    <span class="text">底价：</span>
+                    <span class="number">¥&nbsp;{{kanjia.obj.product_pricelow}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 砍价按钮 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-content">
+            <div class="kanjia-btns-box">
+              <div>
+                <a class="btn btn-disabled" href="{{kanjia.obj.kanjia_href}}" ng-if="kanjia.obj.kanjia_status == 'kanjia_starttime'">砍价未开始</a>
+                <a class="btn btn-disabled" href="{{kanjia.obj.kanjia_href}}" ng-if="kanjia.obj.kanjia_status == 'kanjia_endtime'">砍价已结束</a>
+                <a class="btn btn-kanjia" href="{{kanjia.obj.kanjia_href}}" ng-if="kanjia.obj.kanjia_status == 'fans_empty'">请先登录</a>
+                <a class="btn btn-kanjia" href="{{kanjia.obj.kanjia_href}}" ng-if="kanjia.obj.kanjia_status == 'record_empty'">自砍一刀</a>
+                <a class="btn btn-kanjia" href="{{kanjia.obj.kanjia_href}}" ng-if="kanjia.obj.kanjia_status == 'record_have'">我的砍价</a>
+              </div>
+              <div>
+                <a class="btn btn-follow" href="{{kanjia.obj.follow_url}}">一键关注{$_W["account"]["name"]}</a>
+              </div>
+            </div>
+            <div class="text-center kanjia-tel">
+              联系方式：
+              <span class="tel">{{kanjia.obj.tel}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 产品图文介绍 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-header text-center">
+            <div class="title">产品详情</div>
+          </div>
+          <div class="box-content">
+            <div class="kanjia-product_detail" ng-bind-html="kanjia.obj.product_detail"></div>
+            <div class="kanjia-btns-box">
+              <a class="btn btn-kanjia" href="{{kanjia.obj.product_url}}">更多详情</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="top">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="top-nav">
+          <li class="item">
+            <a href="{$_W["siteroot"]}app/{php echo $this->createMobileUrl("list");}">商城首页</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">排行榜</a>
+          </li>
+		  <li class="item">
+            <a href="{{kanjia.obj.kanjia_href}}">我的订单</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">关注我们</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<style media="screen">
+body{
+  padding-bottom: 4.4rem;
+}
+</style>
+<script type="text/javascript">
+var KANJIA_DETAIL_URL = "{php echo $this->createMobileUrl('detailajax', array('id'=>$_GPC['id']))}";
+</script>
+{template 'common/footer-base'}

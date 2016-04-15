@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>升级完成</title>
+    <!-- Bootstrap -->
+     <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css" media="screen, projection">
+     <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/alert.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+{template 'navbar'}
+<style>
+	a.c-to-manage{display:inline-block;width: 100%;height: 100%;text-decoration: none;color: #000;}
+	#load-more{  margin: 20px auto;width: 30%;height: 40px;border-radius: 5px;background: green;text-align: center;line-height: 40px;font-size: 20px;color: #fff;cursor: pointer;margin-bottom: 50px;}
+	.deal-btn{height:80px;float:right;line-height:80px;position: absolute;right: 5px;}
+	.btn-upgrade{background:#00D13D;color:#FFFFFF;}
+	.btn-upgraded{background: transparent;color: #777}
+	.sty-1{margin-right:-15px;margin-left:-15px;}
+	.sty-2{float:left;height:80px;}
+	.sty-3{height:80px;float:left;margin-left:10px;}
+	.sty-4{text-align:left;font-size:13px;height:20px;margin-top:8px;}
+	.sty-5{text-align:left;font-size:13px;height:20px;}
+	.sty-6{text-align:left;font-size:13px;height:20px;}
+</style>
+<div class="row clearfix">
+	<div class="col-md-12">
+		<div style="margin-right:-15px;margin-left:-15px;">
+		<div class="deal-info" data-type="daishengji">
+			<a class="c-to-manage" href="{php echo $this->createMobileUrl('waitup')}">待升级</a>
+		</div>
+		<div class="deal-info" data-type="yishengji" style="border-bottom: 2px solid red;color:red;">
+			<a class="c-to-manage" href="javascript:;"><font color="red">已升级</font></a>
+		</div>
+		</div>
+	</div>
+</div>
+<div class="row clearfix">
+	<div class="col-md-12">
+		<div class="hdiv-common" style="height:55px;text-align:center;">
+			<form method="POST" role="form" action="{php echo $this->createMobileUrl('upok')}" id="search-post">
+				<input type="text" name="apply_uid" value="{$_GPC['apply_uid']}" placeholder="&nbsp;&nbsp;请输入用户编号" style="width:65%;margin:0 auto;margin-top:10px;height:40px;background:#FFFFFF;border:1px solid #cdcdcd;text-align:center;font-size:16px;">
+				&nbsp;&nbsp;
+				<button class="btn btn-default"><img src="../addons/xkd_fkz/template/mobile/image/search.png" style="height:35px;margin-top:-2px;" ></button>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="data-list-reg">
+{loop $list $approval}
+<div class="row clearfix">
+	<div class="col-xs-12" style="background:#ECF3FA;position:relative;">
+		<div class="thumbnail hdiv-common sty-1">
+			<div class="center-common sty-2">
+				<img src="{$approval['avatar']}" alt="头像" class="img-circle" width="60px" height="60px;" style="margin-top:10px;">
+			</div>
+			<div class="center-common sty-3">
+				<div class="sty-4">用户编号： &nbsp;{$approval['uid']}</div>
+				<div class="sty-5">升级基金：￥{$approval['packet']}</div>
+				<div class="sty-6">微信账号：{$approval['wechat']}</div>
+			</div>
+			<div class="center-common deal-btn">
+				<button type="button" class="btn bold-common btn-upgraded">已升级</button>
+			</div>
+		</div>
+	</div>
+</div>
+{/loop}
+</div>
+</div>
+<footer class="footer">
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+</footer>
+</body>
+</html>

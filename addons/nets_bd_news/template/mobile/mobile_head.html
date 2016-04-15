@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{$pagetitle}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta content="telephone=no" name="format-detection">
+<link rel="stylesheet" type="text/css" href="../addons/nets_bd_news/template/style/css/fund_main.css">
+<link rel="stylesheet" type="text/css" href="../addons/nets_bd_news/template/style/css/licai_main.css">
+<link rel="stylesheet" type="text/css" href="../addons/nets_bd_news/template/style/css/bill_selloff_main.css">
+<!-- 验证是否关注过官方号 BEGIN -->
+<style>
+.follow_topbar {height:34px; width:100%; background:rgba(0,0,0,0.8); position:fixed; top:0px; left:0px; z-index:9999999;}
+.follow_topbar .headimg {height:32px; padding-left:6px; float:left;}
+.follow_topbar .headimg img {height:32px;}
+.follow_topbar .info {height:14px; padding:0px 0px;font-size:14px;border:none;}
+.follow_topbar .info .i {height:14px; line-height:14px; color:#ccc; font-size:13px;border:none;  padding-top:10px;}
+.follow_topbar .info {float:left; margin-left:10px;}
+.follow_topbar span {color:#ff6600}
+.follow_topbar .sub {height:24px; width:auto; background:#32cd32; padding:0px 10px; margin:5px 8px 5px 0px; float:right; font-size:12px; color:#fff; line-height:26px; border-radius:3px;}
+.follow_topbar .sub1 {height:24px; width:auto; padding:0px 0px; margin:5px 8px 0px 0px; float:right; font-size:12px; color:#FFFFFF; line-height:26px; border-radius:3px; }
+</style>
+<?php
+//会员信息
+$uid=$_GPC["hxs_uid"];
+$ishowfollow=false;
+$isfollow=0;
+if(!empty($uid) && $uid!=0){
+	$check_follow_sql="SELECT follow FROM ims_mc_mapping_fans WHERE uid=:uid";
+	$isfollow=pdo_fetchcolumn($check_follow_sql,array("uid"=>$uid));
+	if($isfollow==0){
+		$ishowfollow=true;
+	}
+}else{
+	$ishowfollow=true;
+}
+if($_W['container']!="wechat"){
+	$ishowfollow=false;
+}
+//查询条件
+$condition = ' uniacid=:uniacid';
+$pars=array();
+$pars['uniacid']=$_W['uniacid'];
+$sql="select * from ".tablename('netsbd_set')." where ".$condition;
+$set=pdo_fetch($sql,$pars);
+?>
+{if $ishowfollow}
+<div class="follow_topbar" style="margin-top:auto;" id="top_ad">
+	<div class="headimg"><img src="/attachment/{$set['follow_ico']}"></div>
+	<div class="info">
+	<div class="i" style="margin-top:4px;">{$set['follow_title']}</div></div>
+	<div class="sub1" onclick="document.getElementById('top_ad').style.display='none';"><img width="20" src="../addons/nets_bd_news/template/style/images/close.png"/></div>
+	<div class="sub" onclick="location.href='{$set['follow_url']}'">立即关注</div>
+</div>
+{/if}
+<!-- 验证是否关注过官方号 END -->
+</head>
+<body>

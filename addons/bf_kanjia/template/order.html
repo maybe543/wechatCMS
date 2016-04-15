@@ -1,0 +1,231 @@
+{template 'common/header'}
+<script type="text/javascript">
+  require(['bootstrap'], function($) {
+    $('.btn').hover(function() {
+      $(this).tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
+    });
+  });
+</script>
+<ul class="nav nav-tabs">
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'list'));}">砍价列表</a>
+  </li>
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'post'));}">添加砍价</a>
+  </li>
+  <li>
+    <a href="{php echo $this->createWebUrl('manager', array('op'=>'weidian'));}">微店模式添加砍价</a>
+  </li>
+  <li {if $op == "list"}class="active"{/if}>
+    <a href="{php echo $this->createWebUrl('order', array('id'=>$kid));}">砍价订单</a>
+  </li>
+  {if $op == "detail"}
+  <li class="active">
+    <a href="javascript:;">砍价详情</a>
+  </li>
+  {/if}
+</ul>
+{template 'basic'}
+{if $op == "list"}
+<div class="main">
+  <div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+      <form action="" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+          <label class="col-sm-2 col-md-2 control-label">
+            订单号
+          </label>
+          <div class="col-sm-4 col-md-5">
+            <input class="form-control" type="text" name="uniontid" value="{$_GPC['uniontid']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-4 col-md-5 col-sm-offset-2 col-md-offset-2">
+            <input type="hidden" name="c" value="{$_GPC['c']}" />
+            <input type="hidden" name="a" value="{$_GPC['a']}" />
+            <input type="hidden" name="do" value="{$_GPC['do']}" />
+            <input type="hidden" name="m" value="{$_GPC['m']}" />
+            <input type="hidden" name="id" value="{$_GPC['id']}" />
+            <input type="hidden" name="token" value="{$_W['token']}"/>
+            <button type="submit" name="submit" value="1" class="btn btn-info">搜索</button>
+            <button type="submit" name="outexcel" value="1" class="btn btn-default">导出全部订单</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center" width="60">序号</th>
+              <th class="text-center">支付单号</th>
+              <th class="text-center">收货人</th>
+              <th class="text-center">联系方式</th>
+              <th class="text-center">订单金额</th>
+              <th class="text-center">订单状态</th>
+              <th class="text-center">下单时间</th>
+              <th class="text-right">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loop $orderlist $key $item}
+            <tr>
+              <td class="text-center" width="60">{php echo ++$key;}</td>
+              <td class="text-center">{$item['uniontid']}</td>
+              <td class="text-center">{$item['name']}</td>
+              <td class="text-center">{$item['tel']}</td>
+              <td class="text-center">¥&nbsp;{$item['price']}</td>
+              <td class="text-center"><label class="label label-info">{$ORDER_STTUS[$item["status"]]}</label></td>
+              <td class="text-center">{php echo date("Y-m-d H:i:s", $item['createtime'])}</td>
+              <td class="text-right">
+                <a href="{php echo url('mc/notice/tpl', array('id'=>$item['fans']['fanid']));}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" data-original-title="人工客服">
+                  <i class="fa fa-weixin"></i>
+                </a>
+                <a class="btn btn-default btn-sm" href="{php echo $this->createWebUrl('order', array('op'=>'detail','id'=>$item['id']))}">查看订单详情</a>
+              </td>
+            </tr>
+            {/loop} {if empty($orderlist)}
+            <tr>
+              <td colspan="5">没有相关的内容</td>
+            </tr>
+            {/if}
+          </tbody>
+        </table>
+        {$pager}
+      </div>
+    </div>
+  </div>
+</div>
+{elseif $op == "detail"}
+<form id="form" class="form-horizontal" method="post" action="">
+  <div class="main">
+    <div class="panel panel-default">
+      <div class="panel-heading">订单</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 text-right">订单编号：</label>
+          <div class="col-sm-10">
+            <div>{$order["uniontid"]}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 text-right">会员编号：</label>
+          <div class="col-sm-4">
+            <div>{$order["uid"]}</div>
+          </div>
+          <label class="col-sm-2 text-right">粉丝编号：</label>
+          <div class="col-sm-4">
+            <div>{$order["openid"]}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 text-right">收货人：</label>
+          <div class="col-sm-4">
+            <div>{$order["name"]}</div>
+          </div>
+          <label class="col-sm-2 text-right">联系方式：</label>
+          <div class="col-sm-4">
+            <div>{$order["tel"]}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 text-right">收货地址：</label>
+          <div class="col-sm-10">
+            <div>{$order["address"]}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 text-right">订单金额：</label>
+          <div class="col-sm-4">
+            <div>¥&nbsp;{php echo floatval($order["price"]);}</div>
+          </div>
+          <label class="col-sm-2 text-right">订单状态：</label>
+          <div class="col-sm-4">
+            <div><label class="label label-info">{$ORDER_STTUS[$order["status"]]}</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 text-right">备注：</label>
+          <div class="col-sm-10">
+            <div>{$order["remark"]}</div>
+          </div>
+        </div>
+        {if $order["status"] > 1}
+        <div class="form-group">
+          <label class="col-sm-2 text-right">物流公司：</label>
+          <div class="col-sm-4">
+            <div>{$order["expressname"]}</div>
+          </div>
+          <label class="col-sm-2 text-right">物流单号：</label>
+          <div class="col-sm-4">
+            <div>{$order["expresscode"]}</div>
+          </div>
+        </div>
+        {/if}
+      </div>
+    </div>
+    {if $order["status"] == 1}
+    <div class="panel panel-default">
+      <div class="panel-heading">发货</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-12 text-left">物流公司：</label>
+          <div class="col-sm-12">
+            <select name="expressname" class="form-control">
+             <option value="">选择物流公司</option>
+             <option value="顺丰速运">顺丰速运</option>
+             <option value="申通快递">申通快递</option>
+             <option value="韵达快运">韵达快运</option>
+             <option value="天天快递">天天快递</option>
+             <option value="圆通速递">圆通速递</option>
+             <option value="中通速递">中通速递</option>
+             <option value="百世汇通">百世汇通</option>
+             <option value="EMS快递">EMS快递</option>
+             <option value="宅急送">宅急送</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-12 text-left">物流单号：</label>
+          <div class="col-sm-12">
+            <input class="form-control" name="expresscode" type="text" value="" placeholder="物流单号">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <input type="hidden" name="c" value="{$_GPC['c']}" />
+            <input type="hidden" name="a" value="{$_GPC['a']}" />
+            <input type="hidden" name="do" value="{$_GPC['do']}" />
+            <input type="hidden" name="op" value="{$_GPC['op']}" />
+            <input type="hidden" name="token" value="{$_W['token']}" />
+            <input type="hidden" name="id" value="{$order['id']}" />
+            <button name="submit" type="submit" value="1" class="btn btn-primary">确定发货</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {/if}
+  </div>
+</form>
+<script type="text/javascript">
+require(["jquery", "util"], function($, util){
+  $("#form").on("submit", function(){
+    var _ = $(this);
+    if(!confirm('确定发货吗?')) return false;
+    if(_.find("[name=expressname]").val() == ""){
+      util.message("亲，您忘记选物流公司了~", "", "error"); return false;
+    }
+    if(_.find("[name=expresscode]").val() == ""){
+      util.message("亲，您忘记写物流单号了~", "", "error"); return false;
+    }
+  });
+});
+</script>
+{/if}
+{template 'common/footer'}

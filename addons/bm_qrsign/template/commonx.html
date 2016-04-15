@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"{if $initNG} ng-app{/if}>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+<link type="text/css" rel="stylesheet" href="../addons/bm_qrsign/template/img/common.css?v={TIMESTAMP}" />
+<script type="text/javascript" src="../addons/bm_qrsign/template/img/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="../addons/bm_qrsign/template/img/common.js?v={TIMESTAMP}"></script>
+</head>
+<body onLoad="doLoad();">
+
+<style type="text/css">
+{if $reply['background']}
+body {background-image:url({$_W['attachurl']}{$reply['background']}); background-repeat: no-repeat; background-size: cover;}
+{/if}
+{if $reply['logo']}
+.topbox {background:url('{$_W['attachurl']}{$reply['logo']}') no-repeat left center; max-height: 140px;}
+{else}
+.topbox {background:url('../addons/bm_qrsign/template/img/top.png') no-repeat left -20px;}
+{/if}
+</style>

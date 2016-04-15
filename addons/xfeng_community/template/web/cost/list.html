@@ -1,0 +1,35 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li {if $op == 'list'}class="active"{/if}><a href="{php echo $this->createWebUrl('cost', array('op' => 'list'))}">费用列表</a></li>
+    <li><a href="{php echo $this->createWebUrl('cost', array('op' => 'add'))}">费用导入</a></li>
+</ul>
+    <div class="panel panel-default" style="margin-top: 10px;">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover" style="width:100%;z-index:-10;" cellspacing="0" cellpadding="0">
+                <thead class="navbar-inner">
+                <tr>
+                    <th class="col-lg-2">小区名称</th>
+                    <th class="col-lg-2">费用时间</th>
+                    <th class="col-lg-2">导入时间</th>
+                    <th class="col-lg-3">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $item}
+                <tr>
+                    <td>{$item['city']}{$item['dist']}{$item['title']}</td>
+                    <td>{$item['costtime']}</td>
+                    <td>{php echo date('Y-m-d',$item['createtime'])}</td>
+                    <td>
+                        <a href="{php echo $this->createWebUrl('cost',array('op' => 'detail','id' => $item['id'],'regionid' => $item['regionid']))}" title="详情" data-toggle="tooltip" data-placement="top" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-search"></i>查看</a>
+                        <a onclick="return confirm('此操作不可恢复，确认吗？'); return false;" href="{php echo $this->createWebUrl('cost',array('op' => 'delete','id' => $item['id']))}" title="删除" data-toggle="tooltip" data-placement="top" class="btn btn-default btn-sm"><i class="fa fa-times"></i>删除</a>
+                        <a href="{php echo $this->createWebUrl('cost',array('op' => 'order','id' => $item['id']))}" title="订单管理" data-toggle="tooltip" data-placement="top" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-th-list"></i>订单管理</a>
+                    </td>
+                </tr>
+                {/loop}
+            </tbody>
+        </table>
+            {$pager}
+        </div>
+    </div>
+{template 'common/footer'}

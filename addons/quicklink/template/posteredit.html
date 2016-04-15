@@ -1,0 +1,172 @@
+<h4>海报的样式及生成提示设置:</h4>
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label">海报底图</label>
+	<div class="col-sm-9 col-xs-12">
+		{php echo tpl_form_field_multi_image('bgimages',$item['bgimages'])}
+    <span class="help-block">图片格式必须为jpg，大小建议为：530像素 * 800像素，每张图片大小建议控制在200KB以内。可以一次上传多张海报，不同用户可以看到不同内容（随机）。</span>
+	</div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('海报品质', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('text', 'qrquality', $item['qrquality']); }
+    <span class="help-block">值必须填1~100之间的一个数字，越高品质越好，越低生成越快。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('二维码', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <div class="input-group">
+      <span for="qrleft" class="input-group-addon">左边距</span>
+      <input type="text" class="form-control" placeholder="" name="qrleft" value="{$item['qrleft']}">
+      <span class="input-group-addon">px</span>
+    </div>
+    <div class="input-group">
+      <span for="qrtop" class="input-group-addon">上边距</span>
+      <input type="text" class="form-control" placeholder="" name="qrtop" value="{$item['qrtop']}">
+      <span class="input-group-addon">px</span>
+    </div>
+    <div class="input-group">
+      <span for="qrwidth" class="input-group-addon">宽度</span>
+      <input type="text" class="form-control" placeholder="" name="qrwidth" value="{$item['qrwidth']}">
+      <span class="input-group-addon">px</span>
+    </div>
+    <div class="input-group">
+      <span for="qrheight" class="input-group-addon">高度</span>
+      <input type="text" class="form-control" placeholder="" name="qrheight" value="{$item['qrheight']}">
+      <span class="input-group-addon">px</span>
+  </div>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('头像', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <div class="row">
+      <label for="avatarenable" class="control-label" style="margin-right:3px;">显示头像</label>
+      <input type="checkbox" name="avatarenable" value="1" {if $item['avatarenable']} checked{/if} />
+    </div>
+
+    <div class="row" id="display_avatar_group">
+      <div class="input-group">
+        <span for="avatarleft" class="input-group-addon">左边距</span>
+        <input type="text" class="form-control" placeholder="" name="avatarleft" value="{$item['avatarleft']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+      <div class="input-group">
+        <span for="avatartop" class="input-group-addon">上边距</span>
+        <input type="text" class="form-control" placeholder="" name="avatartop" value="{$item['avatartop']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+      <div class="input-group">
+        <span for="avatarwidth" class="input-group-addon">宽度</span>
+        <input type="text" class="form-control" placeholder="" name="avatarwidth" value="{$item['avatarwidth']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+      <div class="input-group">
+        <span for="avatarheight" class="input-group-addon">高度</span>
+        <input type="text" class="form-control" placeholder="" name="avatarheight" value="{$item['avatarheight']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('姓名', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <div class="row">
+      <label for="nameenable" class="control-label" style="margin-right:3px;">显示姓名</label>
+      <input type="checkbox" name="nameenable" value="1" {if $item['nameenable']} checked{/if} />
+    </div>
+    <div class="row" id="display_name_group">
+      <div class="input-group">
+        <span for="nameleft" class="input-group-addon">左边距</span>
+        <input type="text" class="form-control" placeholder="" name="nameleft" value="{$item['nameleft']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+      <div class="input-group">
+        <span for="nametop" class="input-group-addon">上边距</span>
+        <input type="text" class="form-control" placeholder="" name="nametop" value="{$item['nametop']}" />
+        <span class="input-group-addon">px</span>
+      </div>
+      <div class="input-group">
+        <span for="namesize" class="input-group-addon">字体大小</span>
+        <input type="text" class="form-control" placeholder="" name="namesize" value="{$item['namesize']}" />
+        <span class="input-group-addon">pt</span>
+      </div>
+
+      <div class="input-group">
+        <span id="namecolor_sample" for="namecolor" class="input-group-addon" style="margin-right:15px;color:{$item['namecolor']}">文字颜色</span>
+        <div>
+          {php echo tpl_form_field_color('namecolor', $item['namecolor']);}
+        </div>
+      </div>
+
+      <!--div class="input-group">
+        <span id="namecolor_sample" for="namecolor" class="input-group-addon" style="margin-right:15px;color:{$item['namecolor']}">颜色</span>
+        <input type="text" class="form-control" style="min-width:60px" placeholder="" name="namecolor" value="{$item['namecolor']}">
+        <i class="icon-question-sign" id="enable-minimode-helper" title="必须为6位颜色值，如紫罗兰#EE82EE，粉红#FFC0CB， 靛青#4B0082，水绿色#00FFFF，黑色#000000，白色#FFFFFF"></i>
+      </div-->
+
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('奖励详情(填入数字)', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <div class="input-group">
+      <span for="newbie_credit" class="input-group-addon">首次关注积分</span>
+      <input type="text" class="form-control" placeholder="" name="newbie_credit" value="{$item['newbie_credit']}">
+      <span class="input-group-addon">分</span>
+    </div>
+    <div class="input-group">
+      <span for="click_credit" class="input-group-addon">推广奖励积分</span>
+      <input type="text" class="form-control" placeholder="" name="click_credit" value="{$item['click_credit']}">
+      <span class="input-group-addon">分</span>
+    </div>
+    <div class="input-group">
+      <span for="sub_click_credit" class="input-group-addon">奖励上线积分</span>
+      <input type="text" class="form-control" placeholder="" name="sub_click_credit" value="{$item['sub_click_credit']}">
+      <span class="input-group-addon">分</span>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('首次生成图片文字提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <textarea row="4" type="text" class="form-control" placeholder="" name="genqr_info1">{$item['genqr_info1']}</textarea>
+    <span class="help-block">因为首次获取二维码需要的时间较久，所以可以在这里提示用户等待若干秒。不希望推送本条文字，可以不填写。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('首次次生成图片, 即将生成好文字提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <textarea row="4" type="text" class="form-control" placeholder="" name="genqr_info2">{$item['genqr_info2']}</textarea>
+    <span class="help-block">因为首次获取二维码需要的时间较久，在生成途中再次提示一下用户，避免用户没有耐心等待。不希望推送本条文字，可以不填写。</span>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('生成缓存图片, 文字提示', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    <th></th>
+    <td>
+      <textarea row="4" type="text" class="form-control" placeholder="" name="genqr_info3">{$item['genqr_info3']}</textarea>
+      <span class="help-block">用户经过首次生成图片之后，图片会被缓存起来，再次获取速度较快，直接提示用户正在生成即可。不希望推送本条文字，可以不填写。</span>
+    </div>
+  </div>
+
+    <script>
+      $(function() {
+        $("input[name='namecolor']").bind('input propertychange', function() {
+          $("#namecolor_sample").css('color', $(this).val());
+        });
+      });
+    </script>

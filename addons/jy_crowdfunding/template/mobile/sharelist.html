@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}打赏活动{else}{$item['aname']}{/if}</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    {if empty($item['sharelist_color'])}
+    background: #a60003;
+    {else}
+    background: {$item['sharelist_color']};
+    {/if}
+}
+.bodybox {
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 640px;
+    {if empty($item['sharelist_color'])}
+    background: #a60003;
+    {else}
+    background: {$item['sharelist_color']};
+    {/if}
+
+}
+.bodybox>img{width: 100%;margin-bottom: 5%}
+.bodybox>div{
+    padding: 0;
+    width: 95%;
+    overflow: hidden;
+    *zoom:1;
+    color: #fff;
+    margin-left: 2%;
+}
+.leftDiv{
+    float: left;
+    width: 20%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.centerDiv{float: left;
+    padding: 11% 0;
+    width: 52%;
+    white-space: nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis; 
+}
+.rightDiv{float: right;
+    padding: 11% 0;
+}
+.date{
+    width: 20%;
+    text-align: center;
+}
+.line{
+    height: 20px;
+    width: 1px;
+    background: #fff;
+    margin: 0 auto;
+}
+.headImg{
+    width: 70%;
+    border-radius: 50%;
+    margin-bottom: 0;
+}
+span{color: #f7f400;}
+</style>
+</head>
+<body>
+    <div class="bodybox">
+        {if empty($item['sharelist'])}
+        <img src="../addons/jy_crowdfunding/images/pageAdd_bg.jpg"/>
+        {else}
+        <img src="{$_W['attachurl']}{$item['sharelist']}"/>
+        {/if}
+        
+        {if !empty($log)}
+        {php $i=1;}
+        {php $date='';}
+        
+        {loop $log $item}
+        <div>
+            {if $date!=date('n月j日',$item['createtime'])}
+            <div class="date">{php echo date('n月j日',$item['createtime']);}</div>
+            {php $date=date('n月j日',$item['createtime']);}
+            {/if}
+            <div class="leftDiv">
+                <div class="line"></div>
+                {if empty($item['avatar'])}
+                <img class="headImg" src="../addons/jy_crowdfunding/images/head.jpg"/>
+                {else}
+                <img class="headImg" src="{$_W['attach_url']}{$item['avatar']}"/>
+                {/if}
+                {if $i!=$num}
+                <div class="line"></div>
+                {/if}
+            </div>
+            <div class="centerDiv">{$item['nickname']}</div>
+            <div class="rightDiv">打赏<span>{$item['budget']}</span>元</div>
+        
+            {php $i++}
+        </div>
+        {/loop}
+        {/if}
+        
+    </div>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','hideOptionMenu',]
+    });
+
+    wx.ready(function () {
+        wx.hideOptionMenu();
+
+    });
+    </script>
+
+</body>
+</html>

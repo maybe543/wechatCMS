@@ -1,0 +1,15 @@
+<style>
+  .myoder .myoder-detail {
+    height:90px !important;
+  }
+  .kill-price {}
+</style>
+
+<div class="kill-price">
+  {if $item['paytype'] != 3}
+  {if $item['status'] == 0 and $goods['istime'] == 1}
+  <a href="{php echo murl('entry/module/share', array('from_user'=>$_W['fans']['from_user'], 'm'=>'quickshare', 'goodsid'=>$goods['id'], 'orderid' => $item['id'], 'weid'=>$_W['weid']))}" class="btn btn-info btn-sm">好友砍价</a>
+  {/if}
+  {/if}
+</div>
+

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>排号操作 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        header.top .back{width:auto}
+        .form-control{display:block;width:96%;height:30px;padding:6px 2%;font-size:20px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);margin-bottom:10px}
+        .form-btn{display:block;text-align:center;width:96%;height:58px;padding:6px 2%;font-size:32px;line-height:58px;color:#fff;background-image:none;border:1px solid #018bb9;border-radius:4px;background-color:#09c;cursor:pointer;margin:10px auto;}
+        .mb-dti{margin:5px auto 20px}
+        .mb-dti .c-list li.nob{border-bottom: 1px #ccc dashed;}
+        .mb-dti .c-list li.nob a{color: #428bca;}
+        .mb-dti .c-list li span.cz{display:block;text-align:center;font-weight:bold;line-height:30px;}
+        .orderbut{margin-top:10px;text-align:center;height:auto;line-height:40px}
+        .orderbut .button{display:inline;white-space:nowrap;font-size:14px;-webkit-border-radius:4px;border-radius:4px;padding:9px 10px;margin:0 3px}
+        .orderbut .button.button.easy{background-color:#6171c5;border-color:#5864a5;background-image:none}
+        .orderbut .button.button.green{background-color:#04be02;border-color: #039f02;background-image:none}
+        .cancelorder .textarea textarea{border:0;height:60px;font-size:16px;resize:none}
+        .userorders{padding:0 10px 8px}
+        .userorders ul{max-width:720px;margin:0 auto 10px}
+        .ordersinfo{max-width:720px;margin:0 auto}
+        a.button:visited{text-decoration:none;color:#fff}
+        .lastprint{font-size:10px;color:#888}
+        #scanQRCode{display:none;}
+        .userorders ul li .tit {position: relative;}
+        .userorders ul li .tit .r-status {position: absolute;right: 12px;top: 0}
+        .userorders ul li .tit .r-statusr {position: absolute;right: 12px;top: 0}
+        .btn-success {color: #fff;background-color: #5cb85c;border-color: #4cae4c;}
+        .btn-info {color: #fff;background-color: #5bc0de;border-color: #46b8da;}
+        .btn-warning {color: #fff;background-color: #f0ad4e;border-color: #eea236;}
+        .userorders ul.tobenext {border: 1px solid #1F15B5;background: #C2F7AC;max-width: 700px;padding: 0 10px;}
+        .userorders ul.tobenext #ordern_0 {margin-bottom: -16px;background: #ff0000;}
+        .userorders ul.tobenext #ordern_0 .tit {background: #C2F7AC;color:#3c763d;}
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+</head>
+<body>
+{php $is_num = $this->doMobileAjaxtobe(1);}
+
+<header class="top">
+    <h1>排号列表</h1>
+    <div class="right-s">
+        <a class="right-user" href="{php echo urwdo('user')}"></a>
+        <a class="right-home" href="{php echo urwdo('index')}"></a>
+    </div>
+</header>
+
+<div class="userorders" id="orderslist">
+    <div class="ordersinfo">
+        <div class="o-a">
+            <div class="o-a-2">
+                <div class="form-btn btn-success" onclick="submit(this)" data-next="0">点击叫号</div>
+            </div>
+        </div>
+
+        <div class="orderbut" style="margin:5px 0 8px;">
+            <a id="is_num0" href="{php echo urwdo(0)}&ordertype=0" class="button{php echo isto($ordertype,'0',' easy')}">正常({$is_num['num0']})</a>
+            <a id="is_num1" href="{php echo urwdo(0)}&ordertype=1" class="button{php echo isto($ordertype,'1',' easy')}">已使用({$is_num['num1']})</a>
+            <a href="{php echo urwdo(0)}" class="button{php echo isto($ordertype,'',' easy')}">不限</a>
+        </div>
+        <div id="is_time" style="margin:5px auto 8px;text-align:center">
+            {$is_num['time']}
+        </div>
+    </div>
+
+    {if $tobenext}
+    <ul class="tobenext">
+        <li id="ordern_0">
+            <div class="tit">
+                即将到号
+            </div>
+        </li>
+        {loop $tobenext $list}
+        <li id="ordern_{$list['id']}">
+            <div class="tit">
+                排号：{$list['num']}
+                ，{php echo get_html($list['username'],6)}(UID:{$list['userid']})
+                <p class="r-statusr">{php echo str_replace(array(0,1,99),array('正常','已使用','取消'),$list['status'])}</p>
+            </div>
+        </li>
+        {/loop}
+    </ul>
+    {/if}
+
+    <ul class="lists">
+        {php $listdata = cate::db('数据表:tobe,显示数目:20,分页显示:1,排序:`num` DESC', $wheresql)}
+        {php $lists = $listdata['lists']}
+        {loop $lists $list}
+        <li id="order_{$list['id']}">
+            <div class="tit">
+                {$list['_n']}、排号：{$list['num']}
+                ，{php echo get_html($list['username'],6)}(UID:{$list['userid']})
+                <p class="r-status">{php echo str_replace(array(0,1,99),array('正常','已使用','取消'),$list['status'])}</p>
+            </div>
+        </li>
+        {/loop}
+        {if !$lists}
+        <li>
+            <div class="nodeals">您目前还没有任何排号喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    function submit(obj) {
+        var tthis = $(obj);
+        if (tthis.attr("data-next") == "3") {
+            $.alert("请稍等...");
+            window.location.reload();
+        }
+        if (tthis.attr("data-next") == "1") {
+            tthis.text("点击叫号").attr("data-next", 0);
+            return false;
+        }
+        if (tthis.attr("data-next") == "0") {
+            tthis.text("准备叫号,点击取消").attr("data-next", 1);
+            setTimeout(function(){
+                if (tthis.attr("data-next") == "1") {
+                    tthis.text("正在发送叫号...").attr("data-next", 2);
+                    $.ajax({
+                        type: "GET",
+                        url: "{php echo urwdo('tobelist')}",
+                        dataType: "json",
+                        success: function (msg) {
+                            if (msg.success == "1"){
+                                tthis.text("发送呼叫成功").attr("data-next", 3).removeClass("btn-success").addClass("btn-info");
+                            }else{
+                                tthis.text(msg.message).attr("data-next", 3).removeClass("btn-success").addClass("btn-warning");
+                                if (msg.messagealert) {
+                                    alert(msg.messagealert);
+                                }
+                            }
+                        },
+                        error: function (msg) {
+                            tthis.text("呼叫错误").attr("data-next", 3).removeClass("btn-success").addClass("btn-warning");
+                        }
+                    });
+                }
+            }, 1500);
+        }
+    }
+    function _mordernotice() {
+        $.ajax({
+            type: "GET",
+            url: "{php echo urwdo('ajaxtobe')}",
+            dataType: "json",
+            success: function (data) {
+                if (data.success == "1"){
+                    $("#is_num0").text("正常("+data.num0+")");
+                    $("#is_num1").text("已使用("+data.num1+")");
+                    $("#is_time").text(data.time);
+                }
+                setTimeout(function(){_mordernotice()}, 5000);
+            },
+            error: function (data) {
+                setTimeout(function(){_mordernotice()}, 5000);
+            }
+        });
+    }
+    $(document).ready(function() {
+        //
+        setTimeout(function(){_mordernotice()}, 3000);
+        //
+        $('img.lazy').lazyload({effect: 'fadeIn'});
+        //
+        $("p.r-status").each(function(){
+            if ($(this).text() == "正常") {
+                $(this).css({
+                    color:"#ff0000"
+                });
+                /*$(this).parents(".tit").css({
+                    borderBottom: "1px solid #FF0000"
+                });*/
+            }
+        });
+    });
+    //
+    $("header h1").each(function(){
+        if ($(this).text() == "排号列表") {
+            $(this).text("排号列表 (总计{php echo intval($listdata['pageinfo']['total_rows'])})");
+        }
+    });
+    window._loadlist = true;
+    window._loadpage = {php echo intval($listdata['pageinfo']['now_page'])};
+    $(window).scroll(function () {
+        if (window._loadlist){
+            if ($(window).scrollTop() + 200 >= $(document).height() - $(window).height()) {
+                window._loadlist  = false;
+                if (window._loadpage >= {php echo intval($listdata['pageinfo']['total_page'])}) return;
+                $("#divLoading").show();
+                var url = "{php echo urwdo(0)}&page=" + parseInt(window._loadpage + 1);
+                $("<div>").load(url + ' #orderslist ul.lists > *', function() {
+                    $intemp = $($(this).html());
+                    $intemp.find('img.lazy').lazyload({effect: 'fadeIn'});
+                    $('#orderslist ul.lists').append($intemp);
+                    $("#divLoading").hide();
+                    window._loadpage++;
+                    if (window._loadpage <= {php echo intval($listdata['pageinfo']['total_page'])}){
+                        window._loadlist  = true;
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

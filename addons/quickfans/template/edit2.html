@@ -1,0 +1,244 @@
+{template 'common/header'}
+
+{template 'tabs'}
+{template 'common-config'}
+{if $op == 'post'}
+<style>
+  .nameblock { margin: 0px auto; }
+  .s1 {margin: 0px; padding: 0px; border: 0px; color: rgb(68, 68, 68); font-family: 微软雅黑; font-size: 13px; line-height: 24px; white-space: normal;}
+  .s2{margin: 0px; padding: 0px; border: 1px solid rgb(0, 187, 236); text-align: center;}
+  .s3{margin: 1em auto; padding: 0px; border: 0.1em solid rgb(0, 187, 236); width: 12em; height: 12em; border-radius: 6em;}
+  .s31{margin-right: 1em;margin-left:10em;}
+  .s4{margin: 0.4em auto; padding: 0px; border: 0px; display: table; width: 11em; height: 11em; border-radius: 5.5em; max-height: 11em; background-color: rgb(0, 187, 236);}
+  .s5{margin: 1em; padding: 0em; border: 0px; display: table-cell; vertical-align: middle; font-size: 1.5em; line-height: 1.2em; color: white; max-height: 11em;}
+  .s5 img {width:7em;}
+  .s6{margin:0px; padding: 0.5em 1em; border: 0px; display: inline-block; color: white; font-size: 1em; line-height: 1.5em; border-radius: 1em; white-space: nowrap; max-width: 100%; background-color: rgb(0, 187, 236);width:100px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  .s61{margin: 0em -10em 2em; padding: 0.5em 1em; border: 0px; display: inline-block; color: red; font-size: 1em; line-height: 1.5em; border-radius: 1em; white-space: nowrap; max-width: 100%; background-color:auto;width:1em; white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .s61:hover {background-color:auto; color:red;}
+
+  .s7{ margin: 0px; padding: 1em; border-width: 0px 1px 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgb(0, 187, 236); border-bottom-color: rgb(0, 187, 236); border-left-color: rgb(0, 187, 236); color: rgb(0, 0, 0); text-align: center; font-size: 1em; line-height: 1.4em;}
+  .s8{ margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;}
+  .s8 > span{ margin-right: 10px;}
+  .s8 > span:last-child{ margin-left:10px;}
+  .s9{ margin: 0px; padding: 0px; border: 0px;}
+  .s10{ color:red; }
+  .s11{margin: 0px; padding: 15px 25px; border-width: 0px 0px 0px 10px; border-left-style: solid; border-left-color: rgb(0, 187, 236); color: rgb(68, 68, 68); font-family: 微软雅黑; line-height: 24px; white-space: normal; max-width: 100%; word-wrap: break-word; top: 0px; font-size: 14px; vertical-align: baseline; background-color: rgb(239, 239, 239);}
+  .s12{margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;}
+</style>
+
+
+<div class="main">
+  <div style="padding:15px;">
+
+    <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+      {php echo FormTpl::getWebControl('hidden', 'id', $item['id'])}
+      {php echo FormTpl::getWebControl('hidden', 'token', $_W['token'])}
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <td>
+              <section class="s1">
+              <section class="s2">
+
+              <section class="s3">
+              <section class="s4">
+              <section class="s5">
+              <img class="img-circle" src="{$item['avatar']}"/>
+              </section>
+              </section>
+              </section>
+              <section class="nameblock">
+              <a href="{php echo $this->createWebUrl('Center', array('op'=>'post', 'from_user'=>$item['from_user']))}">
+                <section class="s6">
+                {if !empty($item['follow'])}<span class="icon-user gold-level{$item['vip']}"></span>{/if}
+                {if empty($item['nickname'])}路人甲{else}{$item['nickname']}{/if}
+                </section>
+              </a>
+              </section>
+              {if $_W['isfounder']}
+              <a onclick="return '我确认' == prompt('确认要一键消失，请输入：我确认\n\n本功能主要用于调试。用户数据将从本站彻底消失，且不可恢复。开始调试之前，需要用户取消对本公众号的关注，然后重新关注。')" href="{php echo $this->createWebUrl('Disappear', array('op'=>'remove', 'from_user'=>$item['from_user']))}">
+                <section class="s61">
+                <i class="icon-remove" title="一键消失"></i>
+                </section>
+              </a>
+              {/if}
+              </section>
+
+              <section class="s7">
+              <p class="s8">
+              <span>
+                系统编号:{$item['uid']} OpenID: {$item['from_user']}[<a title="最近活跃时间{php echo date('m-d H:i:s', $item['createtime'])}"href="javascript:void()" onclick="$('#modal-talktouser').modal()" style="color:black"><span class="text-warning fa fa-comments"></span></a>], {if $item['follow']}已关注{else}未关注{/if}, 最近活跃时间{php echo date('m-d H:i:s', $item['createtime'])}
+              </span>
+              <span>
+                <a href="{php echo url('site/entry/spread', array('op'=>'user', 'from_user'=>$item['from_user'], 'm'=>'quicklink', 'weid'=>$_W['weid']))}">推广记录</a>
+              </span>
+              <span>
+                上线: {if empty($leader['from_user'])}{$leader['nickname']}{else}<a href='{php echo $this->createWebUrl('Center', array('from_user'=>$leader['from_user'], 'op'=>'post'))}'>{$leader['nickname']}</a>{/if}
+                {if !empty($leader['from_user'])}[<a href="javascript:void()" onclick="$('#modal-unfollowuplevel').modal()" style="color:black" title="删除上线"><span class="text-primary fa fa-times-circle"></span></a>]{/if}
+                {if 1 or $_W['isfounder']}
+                [<a href="javascript:void()" onclick="$('#modal-changefollowuplevel').modal()" style="color:black" title="修改上线"><span class="text-primary fa fa-random"></span></a>]
+                {/if}
+
+
+              </span>
+              </p>
+              </section>
+
+              <section class="s7">
+              <p class="s8">
+              <span>
+                VIP级别： {php echo FormTpl::getWebControl('option', 'vip', $item['vip'], array(0,1,2,3,4,5,6,7,8,9,10), 2)}&nbsp;
+              </span>
+              <span>
+                积分：{php echo FormTpl::getWebControl('number', 'credit1', $item['credit1'], 1, 2)}&nbsp;
+              </span>
+              <span>
+                余额：{php echo FormTpl::getWebControl('number', 'credit2', $item['credit2'], 0.01, 2)}元&nbsp;
+              </span>
+
+              <span>
+                &nbsp;&nbsp;&nbsp;
+                {php echo FormTpl::getWebControl('submit', 'submit', '直接修改提交', 2)}&nbsp;
+              </span>
+              </p>
+              </section>
+              </section>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <td>
+
+              <blockquote class="s11">
+                <p class="s12">
+                积分：{php echo FormTpl::getWebControl('number', 'addcredit1', '10', 1, 2)}&nbsp;
+                {php echo FormTpl::getWebControl('submit', 'addcredit1-submit', '+增加积分', 2)}
+
+                </p>
+              </blockquote>
+
+              <blockquote class="s11">
+                <p class="s12">
+                积分：{php echo FormTpl::getWebControl('number', 'subcredit1', '10', 1, 2)}&nbsp;
+                {php echo FormTpl::getWebControl('submit', 'subcredit1-submit', '-减少积分', 2)}
+                </p>
+              </blockquote>
+
+            </td>
+            <td>
+
+              <blockquote class="s11">
+                <p class="s12">
+                余额：{php echo FormTpl::getWebControl('number', 'addcredit2', '10', 0.01, 2)}&nbsp;
+                {php echo FormTpl::getWebControl('submit', 'addcredit2-submit', '+增加余额', 2)}
+                </p>
+              </blockquote>
+
+              <blockquote class="s11">
+                <p class="s12">
+                余额：{php echo FormTpl::getWebControl('number', 'subcredit2', '10', 0.01, 2)}&nbsp;
+                {php echo FormTpl::getWebControl('submit', 'subcredit2-submit', '-减少余额', 2)}
+                </p>
+              </blockquote>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <div id="modal-changefollowuplevel" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>修改{$item['nickname']}和{$leader['nickname']}的上下级关系[请谨慎操作]</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="changefollowuplevelval" class="control-label">将{$item['nickname']}的上线修改为(填写新上线的OpenID): </label>
+              <input id="changefollowuplevelval" type="text" name="new_leader" value="{$leader['from_user']}" class="form-control" />
+              <label class="control-label">请点执行按钮</label>
+              <input type="hidden" name="old_leader" value="{$leader['from_user']}" />
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary form-control" name="changefollowuplevel" value="yes">执行</button>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id="modal-unfollowuplevel" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header"><button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>取消{$item['nickname']}和{$leader['nickname']}的上下级关系[请谨慎操作]</h4>
+            </div>
+
+            <div class="modal-body">
+              <label class="control-label">强制{$leader['nickname']}不再担任{$item['nickname']}的上线
+                <input type="hidden" name="old_leader" value="{$leader['from_user']}" />，请点执行按钮.
+              </label>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name="unfollowuplevel" value="yes">执行</button>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="modal-talktouser" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+              <h4>发送客服消息给用户</h4>
+            </div>
+
+            <div class="modal-body">
+              <label class="control-label">发送给</label>
+              <input class="form-control" type="text" name="talktowho" value="{$item['from_user']}" />
+              <label class="control-label">客服消息</label>
+              <textarea style="height:150px;" class="form-control" name="talktouser_msg" cols="70" autocomplete="off"></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name="talktouser" value="yes">发送</button>
+              <a class="btn btn-info" href="#" onclick="window.open('{php echo $this->createWebUrl('center', array('op'=>'post', 'from_user'=>$item['from_user']))}#MsgHistory', 'go', 'width=700, height=400, scrollbars=yes, alwaysraised=yes,left=200,top=200');return false;" >对话记录</a>
+              <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">取消发送</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+  </form>
+
+  {template 'allgoods'}
+  {template 'msghistory'}
+  {template 'credit'}
+	</div>
+</div>
+
+
+{/if}
+{template 'common/footer'}

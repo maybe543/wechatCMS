@@ -1,0 +1,14 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+	<li {if $operation == 'display-log'}class="active"{/if}><a href="{php echo $this->createWebUrl('share', array('op' => 'display-log'));}">点击记录</a></li>
+</ul>
+
+
+{if $operation == 'display-log'}
+  {template 'share-log'}
+{/if}
+
+
+
+{template 'common/footer'}

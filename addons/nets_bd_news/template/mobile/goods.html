@@ -1,0 +1,71 @@
+﻿<?php$pagetitle="商品列表";?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">礼品商城</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+	{template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<div class="ui-pulldown-refresh">
+  <div style="bottom:0px;"><i></i><span>下拉刷新</span></div>
+</div>
+
+
+
+<section class="f-main-box"></section>
+<section class="f-products-box f-products-box-new">
+{loop $goods $g}
+<section class="box bond-box scroll-ajax-anim" style="opacity: 1;">
+      <div class="bond-top">
+        <div class="title-line" onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=goodsdetail&m=nets_bd_news&id={$g['id']}'"> <span class="name">{$g['title']}<i></i></span> <span class="type">立即兑换</span> </div>
+        <ul class="info">
+          <li onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&do=goodsdetail&m=nets_bd_news&id={$g['id']}'">
+            <img src="/attachment/{$g['thumb']}" width="80%" alt="">
+          </li>
+          <li>
+            <p class="positive">{$g['credit']} <i>元</i></p>
+            <p>兑换价</p>
+			<p>结束时间：<?php echo date("Y-m-d",$g['endtime']);?></p>
+          </li>
+        </ul>
+      </div>
+</section>
+{/loop}
+<!--底部菜单[[-->
+<section class="detail-bottommenu" id="UIDropMenu">
+  <ul class="detail-bottommenu-list">
+    <li class="detail-bottommenu-share"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=news&m=nets_bd_news"> <i class="hover"></i>
+      <p>资讯</p>
+      </a> </li>
+    <li class="detail-bottommenu-care"> <a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=money&m=nets_bd_news"> <i></i>
+      <p>抢钱</p>
+      </a> </li>
+    <!--<li class="detail-bottommenu-support"> <a href="javascript:void(0)">
+      <p>立即支持</p>
+      </a> </li>-->
+    <!--<li class="detail-bottommenu-support detail-bottommenu-hover">
+        	<a href="#">
+            	<p>立即支持</p>
+            </a>
+        </li>-->
+  </ul>
+</section>
+<script>
+	var uniacid="{$_W['uniacid']}";
+	var page="{$pindex}";
+	var total_page="{$total_page}";
+	var append_divid="content";
+	var cid=0;
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+{template 'common'}
+{template 'common_share'}
+</body>
+</html>

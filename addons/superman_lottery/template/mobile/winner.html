@@ -1,0 +1,54 @@
+{template 'common/header'}
+<style>
+	.img-circle {
+		width: 32px;
+		height: 32px;
+		overflow: hidden;
+		border: 1px rgba(255,255,255,0.2) solid;
+	}
+	.img-circle {
+		border-radius: 50%;
+	}
+	.img-circle img {
+		width: 32px;
+	}
+	.nickname {
+		line-height: 32px;
+		margin-left: 2px;
+	}
+</style>
+<table class="table">
+	<thead>
+		<tr>
+			<th style="width: 29%;">会员</th>
+			<th>奖品</th>
+			<th style="width: 41%;">抽奖时间</th>
+		</tr>
+	</thead>
+	<tbody>
+		{loop $list $item}
+		<tr>
+			<td>
+				<div class="clearfix">
+					<div class="pull-left">
+						<div class="img-circle">
+							<img src="{php echo tomedia($item['avatar'])}" onerror="this.src='resource/images/heading.jpg'">
+						</div>
+					</div>
+					<div class="pull-left nickname">
+						{$item['nickname']}
+					</div>
+				</div>
+			</td>
+			<td>
+				{$item['prize']}
+			</td>
+			<td>
+				{php echo date('Y-m-d H:i', $item['dateline'])}
+			</td>
+		</tr>
+		{/loop}
+	</tbody>
+</table>
+<div class="text-center">{$pager}</div>
+{template 'common/footer'}

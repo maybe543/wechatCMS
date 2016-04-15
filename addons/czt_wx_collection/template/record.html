@@ -1,0 +1,83 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+  <li class="active">
+  <a href="{php echo $this->createWebUrl('record', array())}">收款记录</a>
+  </li>
+</ul>
+
+<div class="main">
+  <div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+      <form action="./index.php" method="get" class="form-horizontal" role="form" id="form1">
+        <input type="hidden" name="c" value="site" />
+        <input type="hidden" name="a" value="entry" />
+        <input type="hidden" name="m" value="czt_wx_collection" />
+        <input type="hidden" name="do" value="record" />
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">订单号</label>
+          <div class="col-sm-8 col-lg-9 col-xs-12">
+            <input class="form-control" name="tid" id="" type="text" value="{$_GPC['tid']}" placeholder="">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">时间</label>
+          <div class="col-sm-4 col-xs-12">
+            {php echo tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d', $starttime),'endtime'=>date('Y-m-d', $endtime)));}
+          </div>
+          <div class="col-sm-4 col-xs-12">
+            <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+            <!-- <button name="export" value="export" class="btn btn-default"><i class="fa fa-download"></i> 导出数据</button>
+            <button type="button" class="btn btn-default">总记录数：</button> -->
+          </div>
+        </div>
+        <div class="form-group">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body table-responsive">
+      <table class="table table-hover">
+        <thead class="navbar-inner">
+        <tr>
+          <th style="width:90px;">时间</th>
+          <th style="width:80px;">订单号</th>
+          <th style="width:70px">昵称</th>
+          <th style="width:200px;">openid</th>
+          <th style="width:40px;">金额</th>
+          <th style="width:50px;">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        {loop $list $item}
+        <tr>
+          <td>{php echo date('Y-m-d H:i:s', $item['create_time'])}</td>
+          <td>{$item['tid']}</td>
+          <td>{$item['nickname']}</td>
+          <td>{$item['openid']}</td>
+          <td>{$item['fee']} 元</td>
+          <td>
+            <span class="label label-{php echo $item['status']?'success':'danger';}">{php echo $item['status']?'成功':'失败';}</span>
+        </tr>
+        {/loop}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{$pager}
+
+
+<script>
+  require(['bootstrap'],function($){
+    $('.btn').hover(function(){
+      $(this).tooltip('show');
+    },function(){
+      $(this).tooltip('hide');
+    });
+  });
+</script>
+{template 'common/footer'}

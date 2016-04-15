@@ -1,0 +1,121 @@
+{template 'common/header'}
+<style>
+.col-xs-12 col-sm-3 col-md-2{width:16%;min-width:768px;}
+</style>
+<div class="main">
+
+
+    <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">模板消息设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单支付成功</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="succ_templateid" class="form-control" value="{$settings['succ_templateid']}" />
+                    </div>
+					<div class="col-xs-12 col-sm-4">【IT/互联网-订单支付成功-TM00015】</div>
+                </div>
+        
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">积分赠送通知</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="addjf_templateid" class="form-control" value="{$settings['addjf_templateid']}" />
+                    </div>
+					<div class="col-xs-12 col-sm-4">【IT/互联网-积分赠送通知-OPENTM205972812】</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员通知</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="gl_templateid" class="form-control" value="{$settings['gl_templateid']}" />
+                    </div>
+					<div class="col-xs-12 col-sm-4">【IT/互联网-订单支付提醒-OPENTM207602233】</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">管理员openid</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="gl_openid" class="form-control" value="{$settings['gl_openid']}" />
+                    </div>
+					<div class="col-xs-12 col-sm-4">【到粉丝营销的粉丝详情中查找粉丝编号】</div>
+                </div>
+            </div>
+        </div>
+
+
+ <div class="panel panel-default">
+            <div class="panel-heading">基本设置</div>
+            <div class="panel-body">
+            	
+            	<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">标题</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="title" class="form-control"  value="{$settings['title']}" />
+                    </div>
+					
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">温馨提示</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<!--<input type="text" name="info" class="form-control"  value="{$settings['info']}" />-->
+                    <textarea name="info" style="width: 515px; height: 200px;"> {$settings['info']} </textarea>
+                    </div>
+					
+                </div>
+                
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">首页logo</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('logo',$settings['logo']);}
+					</div>
+				</div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付后活动跳转网址</label>
+                    <div class="col-xs-12 col-sm-5">
+                    	<input type="text" name="sitegame" class="form-control"  value="{$settings['sitegame']}" />
+                    </div>
+					
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">积分比例(1元:积分)</label>
+                 <div class="col-xs-12 col-sm-5">
+                    	<input type="number" name="jfbl" class="form-control" min=1 max=100000 value="{$settings['jfbl']}" />
+                    </div>
+					<!-- <div class="col-xs-12 col-sm-4">数字</div> --> 
+                </div>
+                
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">扫码支付二维码</label>
+					<div class="col-sm-8">
+						<img src="http://qr.liantu.com/api.php?text={$fu}" />
+					</div>
+				</div>
+                
+            
+     
+            </div>
+        </div>
+
+      
+
+        <div class="form-group col-sm-12">
+
+
+            <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+
+
+            <input type="hidden" name="token" value="{$_W['token']}" />
+
+
+        </div>
+
+
+    </form>
+
+
+</div>
+{template 'common/footer'}

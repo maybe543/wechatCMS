@@ -1,0 +1,84 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li {if $op=='list' }class="active" {/if}><a href="{php echo $this->createWebUrl('cost', array('op' => 'list'))}">费用列表</a></li>
+    <li {if $op=='order' }class="active" {/if}><a href="#">订单管理</a></li>
+</ul>
+<div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+        <form action="" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 control-label">手机号码</label>
+                <div class="col-sm-8 col-md-8 col-lg-4 col-xs-6">
+                    <input class="form-control" name="mobile" id="" type="text" value="{$_GPC['mobile']}" placeholder="请输入查询手机号码">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 control-label">姓名</label>
+                <div class="col-sm-8 col-md-8 col-lg-4 col-xs-12">
+                    <input class="form-control" name="realname" id="" type="text" value="{$_GPC['realname']}" placeholder="请输入查询姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 control-label"></label>
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                    <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default" style="margin-top: 10px;">
+    <div class="panel-body table-responsive">
+        <table class="table table-hover" style="width:100%;z-index:-10;" cellspacing="0" cellpadding="0">
+            <thead class="navbar-inner">
+                <tr>
+                    <th class="col-lg-3">订单编号</th>
+                    <th class="col-lg-1">姓名</th>
+                    <th class="col-lg-2">电话</th>
+                    <th class="col-lg-2">费用</th>
+                    <th class="col-lg-2">状态</th>
+                    <th class="col-lg-2">下单时间</th>
+                    <th class="col-lg-3">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $item}
+                <tr>
+                    <td>{$item['ordersn']}</td>
+                    <td>{$item['username']}</td>
+                    <td>{$item['mobile']}</td>
+                    <td>{$item['price']}元</td>
+                    <td>{if $item['status'] == 0}<span class="label label-danger">待付款</span>{/if} {if $item['status'] == 1}<span class="label label-info">已付款</span>{/if}</td>
+                    <td>{php echo date('Y-m-d',$item['createtime'])}</td>
+                    <td>
+                        <a href="JavaScript:;" data="{$item['id']}" class="btn btn-primary btn-sm" ><i class="fa fa-trash-o text-sg" ></i> 删除 </a>
+                    </td>
+                </tr>
+                {/loop}
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    $(".btn").bind("click", function() {
+        var id = $(this).attr('data');
+        var url = "{php echo $this->createWebUrl('cost',array('op' => 'del'),true)}";
+        $.post(url, {
+                id: id
+            },
+            function(msg) {
+                if (msg.status == 1) {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 100);
+                };
+
+            },
+            'json');
+    });
+});
+</script>
+{template 'common/footer'}

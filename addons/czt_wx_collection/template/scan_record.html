@@ -1,0 +1,162 @@
+{template 'common/header'}
+
+<ul class="nav nav-tabs">
+  <li class="active">
+  <a href="{php echo $this->createWebUrl('record', array())}">收款记录</a>
+  </li>
+</ul>
+
+<div class="main">
+  <div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+      <form action="./index.php" method="get" class="form-horizontal" role="form" id="form1">
+        <input type="hidden" name="c" value="site" />
+        <input type="hidden" name="a" value="entry" />
+        <input type="hidden" name="m" value="czt_wx_collection" />
+        <input type="hidden" name="do" value="scan_record" />
+        <div class="form-group">
+          <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">订单号</label>
+          <div class="col-sm-7 col-lg-7 col-xs-7">
+            <input class="form-control" name="tid" id="" type="text" value="{$_GPC['tid']}" placeholder="">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">状态</label>
+          <div class="col-sm-7 col-lg-7 col-xs-7">
+            <select name="status" class="form-control">
+              <option value="">不限</option>
+              <option value="1" {if $_GPC['status'] === '1'} selected="selected" {/if}>成功</option>
+              <option value="0" {if $_GPC['status'] === '0'} selected="selected" {/if}>失败</option>
+              <option value="2" {if $_GPC['status'] === '2'} selected="selected" {/if}>待支付</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">扫码类型</label>
+          <div class="col-sm-7 col-lg-7 col-xs-7">
+            <select name="scan_type" class="form-control">
+              <option value="">不限</option>
+              <option value="1" {if $_GPC['scan_type'] === '1'} selected="selected" {/if}>类型1</option>
+              <option value="2" {if $_GPC['scan_type'] === '2'} selected="selected" {/if}>类型2</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">收款门店</label>
+          <div class="col-sm-7 col-lg-7 col-xs-7">
+            <select name="scan_class" class="form-control">
+              <option value="">不限</option>
+              {loop $scan_class $v}
+              <option value="{$v['id']}" {if $_GPC['scan_class'] === $v['id']} selected="selected" {/if}>{$v['name']}</option>
+              {/loop}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">时间</label>
+          <div class="col-sm-4 col-xs-12">
+            {php echo tpl_form_field_daterange('time', array('starttime'=>date('Y-m-d', $starttime),'endtime'=>date('Y-m-d', $endtime)));}
+          </div>
+          <div class="col-sm-4 col-xs-12">
+            <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+            <!-- <button name="export" value="export" class="btn btn-default"><i class="fa fa-download"></i> 导出数据</button> --><!--
+            <button type="button" class="btn btn-default">总记录数：</button> -->
+          </div>
+        </div>
+        <div class="form-group">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body table-responsive">
+      <table class="table table-hover">
+        <thead class="navbar-inner">
+        <tr>
+          <th width="15%">时间</th>
+          <th width="13%">订单号</th>
+          <th width="15%">昵称</th>
+          <th width="15%">openid/uid</th>
+          <th width="8%">收款门店</th>
+          <th width="8%">扫码类型</th>
+          <th width="10%">支付类型</th>
+          <th width="10%">金额</th>
+          <th width="7%">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        {loop $list $item}
+        <tr>
+          <td>{php echo date('Y-m-d H:i:s', $item['create_time'])}</td>
+          <td>{$item['tid']}</td>
+          <td>{$item['nickname']}</td>
+          <td>{$item['openid']}</td>
+          <td>{$item['class_name']}</td>
+          <td>
+          <?php
+          if ($item['scan_type']==1) {
+            echo '类型1';
+          }elseif ($item['scan_type']==2) {
+            echo '类型2';
+          }
+           ?>
+          </td>
+          <td>
+          <?php
+          switch ($item['type']) {
+            case 'wechat':
+                echo '微信支付';
+              break;
+            case 'alipay':
+              echo '支付宝支付';
+              break;
+            case 'unionpay':
+              echo '银联支付';
+              break;
+            case 'baifubao':
+              echo '百度钱包支付';
+              break;
+            case 'credit':
+              echo '余额支付';
+              break;
+            default:
+              break;
+          }
+          ?>
+          </td>
+          <td>{$item['fee']} 元</td>
+          <td>
+          <?php
+          switch ($item['status']) {
+            case 1:
+              echo '<span class="label label-success">成功</span>';
+              break;
+            case 2:
+              echo '<span class="label label-default">待支付</span>';
+              break;
+            case 0:
+              echo '<span class="label label-danger">失败</span>';
+              break;
+          }
+          ?>
+        </tr>
+        {/loop}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{$pager}
+
+
+<script>
+  require(['bootstrap'],function($){
+    $('.btn').hover(function(){
+      $(this).tooltip('show');
+    },function(){
+      $(this).tooltip('hide');
+    });
+  });
+</script>
+{template 'common/footer'}

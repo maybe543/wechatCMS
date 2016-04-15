@@ -1,0 +1,115 @@
+{template 'common/header'}
+{php $_item=7;}
+{php $_itemp=1;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}广告位</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100"><span>广告位名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>显示数量</span></td>
+                                <td>
+                                    <input name="num" type="text" class="form-control" id="num" value="{php echo value($content,'num')}" placeholder="请输入默认显示广告数量">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>读取方式</span></td>
+                                <td class="form-reg">
+                                    <select name="rand" id="rand" class="form-control wi">
+                                        <option value="随机">随机读取</option>
+                                        <option value="最后添加">按最后添加</option>
+                                        <option value="最先添加">按最先添加</option>
+                                    </select>
+                                    {if value($content)}
+                                    <script>$("#rand").val('{php echo value($content,'rand')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告位宽度</span></td>
+                                <td>
+                                    <input name="width" type="text" class="form-control" id="width" value="{php echo value($content,'width')}" placeholder="请填写整数，填0或留空不限制">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告位高度</span></td>
+                                <td>
+                                    <input name="height" type="text" class="form-control" id="height" value="{php echo value($content,'height')}" placeholder="请填写整数，填0或留空不限制">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告位模板</span></td>
+                                <td>
+                                    <textarea name="template" id="template" class="form-control" style="height:120px">{php echo value($content,'template')}{if !$content}<table cellpadding="0" cellspacing="0">
+    &#123;loop $ads $ad}
+       <tr><td>&#123;$ad}</td></tr>
+    &#123;/loop}
+</table>{/if}</textarea>
+                                    <div style="margin-top:5px; text-align:right">
+                                        <span class="button" onclick="$('textarea#template').css('height',$('#template').outerHeight()+200)">+</span>
+                                        <span class="button" onclick="$('textarea#template').css('height',$('#template').outerHeight()-200)">-</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('adposition')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('adposition')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+{template 'common/footer'}

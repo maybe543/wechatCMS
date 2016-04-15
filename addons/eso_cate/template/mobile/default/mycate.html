@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的餐厅</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=no" />
+    <link rel="stylesheet" href="{NOW_PATH}css/common.css" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.imgAutoSize.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #ebfffc;
+        }
+        .cate-item {
+            position: relative;
+            margin: 10px 20px;
+            height: 130px;
+            border-radius: 3px;
+            border: 1px solid #428bca;
+            background-color: #ffffff;
+        }
+        .cate-left {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 106px;
+            height: 106px;
+            overflow: hidden;
+            background-color: #AAAAAA;
+        }
+        .cate-right {
+            position: absolute;
+            top: 12px;
+            left: 130px;
+            width: 450px;
+            height: 106px;
+            overflow: hidden;
+        }
+        .cate-item-tit {
+            position: absolute;
+            top: 0;
+            left: 2px;
+            font-size: 1.3rem;
+        }
+        .cate-item-status {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        .cate-item-status span {
+            border-radius: 3px;
+            padding: 3px 6px;
+            color: #ffffff;
+            border: 1px solid #428bca;
+            background-color: #428bca;
+        }
+        .cate-item-status span.stop {
+            color: #ff0000;
+            border: 1px solid #a9cab4;
+            background-color: #a9cab4;
+        }
+        .cate-item-desc {
+            color: #8a8a8a;
+            position: absolute;
+            top: 35px;
+            left: 6px;
+            height: 53px;
+            overflow: hidden;
+        }
+        .cate-item-distance {
+            position: absolute;
+            top: 90px;
+            right: 5px;
+            height: 70px;
+            overflow: hidden;
+        }
+
+        #footer {
+            margin: 20px 20px 10px;
+            padding: 8px 0;
+            font-size: 11px;
+            text-align: center;
+            color: #bdbdbd;
+            background-color: #333
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="content">
+    <div id="content-list">
+        {loop $lists $list}
+        <div class="cate-item" id="cate-item" data-href="{php echo url('entry', array('m'=>$this->module['name'],'do'=>'index','rid'=>$list['rid']))}">
+            <div class="cate-left">
+                <img src="{php echo toimage($list['thumb'])}">
+            </div>
+            <div class="cate-right">
+                <div class="cate-item-tit">{$list['title']}</div>
+                <div class="cate-item-status">{$list['status_cn']}</div>
+                <div class="cate-item-desc">{$list['description']}</div>
+                <div class="cate-item-distance" id="distance" data-dist="-1"
+                     data-lng="{$list['tmplmsg']['catemap']['lng']}"
+                     data-lat="{$list['tmplmsg']['catemap']['lat']}">距离：获取中...</div>
+            </div>
+        </div>
+        {/loop}
+    </div>
+    {template TEMPLET.'bottom'}
+</div>
+
+<input name="list1SortOrder" type="hidden" />
+<script type="text/javascript">
+    $(function(){
+        $("div.cate-item").click(function(){
+            window.location.href = $(this).attr("data-href");
+        });
+        $('div.cate-left').imgAutoSize();
+    });
+    var shareData = {
+        "imgUrl" : $("img:eq(0)").attr("src"),
+        "link" : "{php echo get_url()}",
+        "title" : "我的餐厅",
+        "desc" : "点击查看我附近的餐厅"
+    };
+    var jssdkconfig = {JSONJSSDKCONFIG} || {};
+</script>
+<script type="text/javascript">
+    if (typeof(shareData) != "undefined") {
+        if (typeof(wx) != "undefined") wx = null;
+        $.getScript("http://res.wx.qq.com/open/js/jweixin-1.0.0.js", function(){
+            if (shareData.imgUrl && (shareData.imgUrl.substring(0,1) == '.' || shareData.imgUrl.substring(0,1) == '#')) {
+                if ($(shareData.imgUrl).find("img:eq(0)").attr("src")) {
+                    shareData.imgUrl = $(shareData.imgUrl).find("img:eq(0)").attr("src");
+                }
+            }
+            if (!shareData.link) {
+                shareData.link = document.URL;
+            }
+            if (!shareData.title) {
+                shareData.title = $("title:eq(0)").text();
+            }
+            if (!shareData.desc) {
+                shareData.desc = $("body").text();
+            }
+            if (shareData.desc && (shareData.desc.substring(0,1) == '.' || shareData.desc.substring(0,1) == '#')) {
+                if ($(shareData.desc).text()) {
+                    shareData.desc = $(shareData.desc).text().replace(/^\s+|\s+$/g,"");
+                }
+            }
+            // 是否启用调试
+            jssdkconfig.debug = false;
+            //
+            jssdkconfig.jsApiList = [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo'
+            ];
+            wx.config(jssdkconfig);
+            wx.ready(function () {
+                wx.onMenuShareAppMessage(shareData);
+                wx.onMenuShareTimeline(shareData);
+                wx.onMenuShareQQ(shareData);
+                wx.onMenuShareWeibo(shareData);
+                wx.getLocation({
+                    success: function (res) {
+                        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                        $("div#distance").each(function(){
+                            var ts = $(this), issort = true;
+                            $.getJSON(
+                                "{$urid}&a1="+latitude+"&a2="+longitude+"&b1="+ts.attr("data-lat")+"&b2="+ts.attr("data-lng"),
+                                function(data){
+                                    ts.attr("data-dist", data.dist);
+                                    ts.text(data.dist_cn);
+                                    //
+                                    $("div#distance").each(function(){
+                                        if ($(this).attr("data-dist") == "-1") {
+                                            issort = false;
+                                        }
+                                    });
+                                    if (issort) {
+                                        var div = $('div#cate-item').toArray().sort(function(a,b){
+                                            return parseInt($(a).find("#distance").attr("data-dist")) - parseInt($(b).find("#distance").attr("data-dist"))
+                                        });
+                                        $(div).appendTo('#content-list');
+                                    }
+                                });
+                        });
+                    },
+                    cancel: function(res) {
+                        $("div#distance").text("您拒绝授权获取地理位置");
+                        //alert('您拒绝授权获取地理位置');
+                    }
+                });
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

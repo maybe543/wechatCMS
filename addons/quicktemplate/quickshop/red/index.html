@@ -1,0 +1,42 @@
+{php include $_template->template('header')}
+    <!--content-->
+    <div class="content">
+        <!--商品详情-->
+        <div class="goods-detail">
+          {$item['content']}
+        </div>
+        <!--商品详情 end-->
+    </div>
+    <!--content end--> 
+   <!--footer-->
+
+   <?php
+   $sellerName = empty($this->module['config']['sellername']) ?
+   '东家' : $this->module['config']['sellername'];
+   ?>
+
+  {if !empty($fans) and !empty($fans['wechat_avatar']) and ($fans['follow']==1)}
+    <footer id="cover-footer">
+      <img src="{$fans['wechat_avatar']}" class="be-seller-avatar">
+    {if empty($fans['vip'])}
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-text">{$fans['nickname']}<br>你还不是{$sellerName}，请购买成为{$sellerName}</a>
+    {else}
+    <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-text">{$fans['nickname']}<br>你已经是{$sellerName}，请直接购买</a>
+    {/if}
+      <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['id']))}" class="be-seller-btn">立即购买</a>
+    </footer>
+  {elseif !empty($share_fans) and !empty($share_fans['wechat_avatar'])}
+    <footer id="cover-footer">
+      <img src="{$share_fans['wechat_avatar']}" class="be-seller-avatar">
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-text">来自好友<b color="green">{$share_fans['nickname']}</b>的推荐<br>立即关注就有机会成为{$sellerName}</a>
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-btn">立即关注</a>
+    </footer>
+  {else}
+    <footer id="cover-footer">
+    <img src="{php echo $_W['siteroot'] . 'source/modules/quickshop/icon.jpg' }"  class="be-seller-avatar">
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-text">请先关注我们<br>立即关注就有机会成为{$sellerName}</a>
+      <a href="{php echo $this->module['config']['followurl']}" class="be-seller-btn">立即关注</a>
+    </footer>
+  {/if}
+    <!--footer end-->
+{php include $_template->template('footer')}

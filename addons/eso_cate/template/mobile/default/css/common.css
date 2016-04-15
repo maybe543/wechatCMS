@@ -1,0 +1,204 @@
+﻿@charset "utf-8";
+/* 0. FONT-FACE
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+
+/* 1. RESET
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+/* common */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0; padding:0; outline:none}
+html,body{-webkit-text-size-adjust:none}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display:block}
+figure{margin:0}
+body, button, input, select, textarea{font:400 0.75em/1.5 latolight, Arial, Helvetica, sans-serif}
+h1, h2, h3, h4, h5, h6{font-size:100%}
+address, cite, dfn, em, var{font-style:normal}
+code, kbd, pre, samp{font-family:courier new,courier,monospace}
+small{font-size:12px}
+ul, ol{list-style:none}
+a{text-decoration:none; blr:expression(this.onFocus=this.blur()); outline:none} /*虚线框 IE: blr:expression(this.onFocus=this.blur()); FF: outline: none */
+a:hover{text-decoration:none}
+sup{vertical-align:text-top}
+sub{vertical-align:text-bottom}
+legend{color:#000}
+fieldset, img{border:0}
+button, input, select, textarea{font-size:100%}
+table{border-collapse:collapse; border-spacing:0}
+textarea{resize:none}
+
+/* clearfix */
+.clear{clear:both}
+.clearfix:after{content: "."; display: block; height: 0; clear: both; visibility: hidden}
+.clearfix{zoom:1}
+
+/* 2. DEFAULT ELEMENT STYLES
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+/*------ 2.1 BODY ------*/
+body{background-color: #ffffff}
+
+/*------ 2.2 LINK STYLES ------*/
+
+/*------ 2.3 BOTTON STYLES ------*/
+.btn{overflow:hidden; display:block; cursor:pointer; border:none; background-repeat:no-repeat; background-position:0 0; text-indent:-9999px}
+.btn_start{width:266px; height:103px; background-image:url(../images/btn_start.png)}
+.btn_rule{width:178px; height:53px; background-image:url(../images/btn_rule.png)}
+.btn_close{width:62px; height:62px; background-image:url(../images/btn_close.png)}
+.btn_getPhoto{width:349px; height:87px; background-image:url(../images/btn_getPhoto.png)}
+.btn_back{width:72px; height:72px; background-image:url(../images/btn_back.png)}
+.btn_share{width:298px; height:87px; background-image:url(../images/btn_share.png)}
+.btn_collect{width:220px; height:40px; background-image:url(../images/btn_collect.png)}
+.btn_complete{width:72px; height:72px; background-image:url(../images/btn_complete.png)}
+.btn_complete2{width:198px; height:70px; background-image:url(../images/btn_complete2.png)}
+.btn_get{width:177px; height:49px; background-image:url(../images/btn_get.png)}
+.btn_activate{width:143px; height:33px; background-image:url(../images/btn_activate.png)}
+
+/*------ 2.4 BACKGROUND STYLES ------*/
+
+/*------ 2.5 WORD STYLES ------*/
+
+/*------ 2.6 ICON STYLES ------*/
+.icon{overflow:hidden; display:block; border:none; background-repeat:no-repeat; background-position:0 0; text-indent:-9999px}
+.icon_arrow{width:16px; height:29px; background-image:url(../images/icon_arrow.png)}
+.icon_arrow2{width:19px; height:19px; background-image:url(../images/icon_arrow2.png)}
+.icon_kiss{width:116px; height:82px; background-image:url(../images/icon_kiss.png)}
+
+/*------ 2.7 WORD COLOR STYLES ------*/
+
+/*------ 2.8 WIDTH STYLES ------*/
+
+/*------ 2.9 FORM STYLES ------*/
+
+/*------ 2.10 SKIN STYLES ------*/
+
+/*------ 2.11 ANIMATION STYLES ------*/
+@keyframes cartoon{ from { left:0 } to { left:5px } }
+@-ms-keyframes cartoon{ from { left:0 } to { left:5px } }
+@-moz-keyframes cartoon{ from { left:0 } to { left:5px } }
+@-webkit-keyframes cartoon{ from { left:0 } to { left:5px } }
+@-o-keyframes cartoon{ from { left:0 } to { left:5px } }
+
+@keyframes cartoon2{ from { left:190px } to { left:195px } }
+@-ms-keyframes cartoon2{ from { left:190px } to { left:195px } }
+@-moz-keyframes cartoon2{ from { left:190px } to { left:195px } }
+@-webkit-keyframes cartoon2{ from { left:190px } to { left:195px } }
+@-o-keyframes cartoon2{ from { left:190px } to { left:195px } }
+
+@keyframes cartoon3{ from { opacity:1 } to { opacity:0 } }
+@-ms-keyframes cartoon3{ from { opacity:1 } to { opacity:0 } }
+@-moz-keyframes cartoon3{ from { opacity:1 } to { opacity:0 } }
+@-webkit-keyframes cartoon3{ from { left:0 } to { opacity:0 } }
+@-o-keyframes cartoon3{ from { opacity:1 } to { opacity:0 } }
+
+/* 3. BASE
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+/*------ 3.1 HEADER STYLES ------*/
+header{position:fixed; top:90px; width:100%; height:115px; z-index:1000}
+
+/*------ 3.2 CONTENT STYLES ------*/
+#content{position:relative; overflow:hidden; width:100%; max-width:640px; margin:0 auto}
+section{width:100%; height:1011px}
+
+/* 3.2.1 ARTICLE STYLES */
+article{overflow:hidden; position:relative; margin:0 200px}
+
+/* 3.2.2 ASIDE STYLES */
+aside{position:relative}
+
+/*------ 3.3 FOOTER STYLES ------*/
+footer{position:relative; z-index:2000; width:1024px; margin:0 auto; padding:40px 0 30px; color:#979797; font:400 38px/50px latoregular; text-align:center}
+
+
+/*------ 3.4 POPUP STYLES ------*/
+.popup{display:none; position:absolute; left:0; top:0; z-index:9999; width:100%; height:100%; opacity:0}
+.popupBg{position:absolute; left:0; top:0; z-index:100; width:100%; height:100%; background-color:#000; opacity:0}
+.popupBox{display:none; position:absolute; width:100%; height:100%; left:0; top:0; z-index:200}
+.popupBox .btn_close{position:absolute; right:25px; top:41px; z-index:999}
+.popupBox .dialogue{position:absolute; left:0; top:279px; width:640px; height:283px; background:url(../images/bg_popup.png) no-repeat 0 0}
+
+
+.pBox{display:none; position:absolute; width:100%; height:100%; left:0; top:0;}
+.pBox .btn_close{position:absolute; right:25px; top:41px;}
+.pBox .dialogue{position:absolute; left:0; top:279px; width:640px; height:283px; background:url(../images/bg_popup.png) no-repeat 0 0}
+
+
+#getPhoto p{position:absolute; left:150px; top:469px; width:441px; height:306px; background:url(../images/words_rule.png) no-repeat 0 0; text-indent:-9999px}
+#getPhoto .btn_getPhoto{position:absolute; left:146px; top:338px}
+#fileupload{display:block; position:absolute; left:0; top:0; z-index:3; cursor:pointer; width:100%; height:100%; opacity:0.01}
+
+#getKiss p{position:absolute; left:95px; top:327px; width:454px; height:208px; background:url(../images/getKiss.png) no-repeat 0 0; text-indent:-9999px}
+
+#oneKiss p{position:absolute; left:95px; top:327px; width:454px; height:208px; background:url(../images/oneKiss.png) no-repeat 0 0; text-indent:-9999px}
+
+#rule dl{position:absolute; left:55px; top:367px; width:525px; height:445px; background:url(../images/rule.png) no-repeat 0 0; text-indent:-9999px}
+
+#shareKiss p:nth-child(1){width:640px; height:376px; background:url(../images/shareKiss.png) no-repeat 0 0; text-indent:-9999px}
+#shareKiss p:nth-child(2){width:640px; height:146px; margin-top:110px; background:url(../images/shareKiss2.png?t=2) no-repeat 0 0; text-indent:-9999px}
+
+#activatePanel dl{padding:120px 0 0}
+#activatePanel dt{width:324px; height:41px; margin:0 auto; padding:0 10px; border:none; border-radius:7px; background:#fff url(../images/bg_activate.png) no-repeat center 0; color:#434343; font-size:24px; line-height:41px}
+#activatePanel dd{color:#434343; font-size:15px; line-height:56px; text-align:center}
+#activatePanel em{color:#C8000A}
+#activatePanel .btn{margin:0 auto}
+
+#errorPanel p, #errorPanel2 p{padding-top:140px; color:#434343; font-size:30px; line-height:50px; text-align:center}
+
+/*------ 3.5 PARALLAX STYLES ------*/
+
+
+/* 4. PAGE
+-----------------------------------------------------------------------------------------------
+===============================================================================================*/
+/*------ 4.1 INDEX ------*/
+.index{/*background:url(../images/bg_index.jpg) no-repeat center 0*/}
+.index p{position:absolute; left:0; top:247px; width:640px; height:590px; background:url(../images/words_index.png) no-repeat center 0; text-indent:-9999px}
+.index div{position:absolute; left:145px; top:817px; width:360px; height:83px; ; /*background:url(../images/icon_kiss2.png) no-repeat right 0*/}
+.logo_event{position:absolute; left:12px; top:0}
+.logo_yhd{position:absolute; right:16px; top:0}
+.title1{position:absolute; left:0; top:95px}
+.btn_start{position:absolute; left:0; top:0; animation:cartoon 0.3s linear infinite; animation-direction:alternate; -ms-animation:cartoon 0.3s linear infinite; -ms-animation-direction:alternate; -moz-animation:cartoon 0.3s linear infinite; -moz-animation-direction:alternate; -webkit-animation:cartoon 0.3s linear infinite; -webkit-animation-direction:alternate; -o-animation:cartoon 0.3s linear infinite; -o-animation-direction:alternate}
+.btn_rule{position:absolute; left:219px; top:934px}
+
+/*------ 4.2 FILLTER ------*/
+.fillter{display:none}
+.fillter p{width:640px; height:86px; background:url(../images/words_fillter.png) no-repeat center 0; text-indent:-9999px}
+.fillter_box{overflow:hidden; position:relative; width:640px; height:823px; background-color:#C8000A}
+.btn_back{position:absolute; left:36px; top:41px; z-index:20}
+.btn_complete{display:none; position:absolute; right:36px; top:41px; z-index:20}
+.btn_complete2{margin:0 auto}
+.fillter_img{position:absolute; left:0; top:0; z-index:9}
+.fill_dash {position:absolute; left:0; top:0; z-index:8}
+#control{width:640px; height:823px; position:absolute; left:0; top:0; z-index:10}
+#piccanvas{width:640px; height:823px; position:absolute; left:0; top:0;}
+#loadwarp{width:100%; height:100%; position:absolute; left:0; top:0; z-index:13; background:#1e1e1e; display:none;}
+
+/*------ 4.3 UPLOAD SUCCESS ------*/
+.upload_succ{display:none}
+.upload_succ p{width:640px; height:26px; background:url(../images/words_upload.png) no-repeat center 0; text-indent:-9999px}
+.succ_imgbox{overflow:hidden; position:relative; width:640px; height:823px; background-color:#C8000A}
+.succ_imgbox img{display:block; width:640px; height:823px; background: url(../images/loading.gif) no-repeat center center;}
+#loadingpop{width:100%; height:100%; position:absolute; z-index:3; left:0; top:0; background-color:#C8000A}
+.btn_share{margin:32px auto 14px}
+
+/*------ 4.3 KISS ------*/
+.kiss{text-align:center}
+.kiss em{}
+.kiss span{ font-size:48px}
+#photo{overflow:hidden; position:relative; width:640px; height:823px; margin-bottom:10px; background-color:#C8000A}
+#photo .icon{position:absolute; left:0; top:0}
+#kissPanel{position:absolute; left:0; top:0; z-index:100; width:640px; height:823px}
+.friend{display:none}
+.friend p{background:url(../images/bg_kiss.png) no-repeat right center; color:#fff; font-size:30px; line-height:50px}
+.friend .btn{position:relative; margin:10px auto 0; opacity:1; animation:cartoon3 0.3s linear infinite; animation-direction:alternate; -ms-animation:cartoon3 0.3s linear infinite; -ms-animation-direction:alternate; -moz-animation:cartoon3 0.3s linear infinite; -moz-animation-direction:alternate; -webkit-animation:cartoon3 0.3s linear infinite; -webkit-animation-direction:alternate; -o-animation:cartoon3 0.3s linear infinite; -o-animation-direction:alternate}
+.friend .btn div{position:absolute; left:0; top:0; width:220px; height:40px; background:url(../images/btn_collect_word.png) no-repeat 0 0; animation:cartoon3 0.3s linear infinite; animation-direction:alternate; -ms-animation:cartoon3 0.3s linear infinite; -ms-animation-direction:alternate; -moz-animation:cartoon3 0.3s linear infinite; -moz-animation-direction:alternate; -webkit-animation:cartoon3 0.3s linear infinite; -webkit-animation-direction:alternate; -o-animation:cartoon3 0.3s linear infinite; -o-animation-direction:alternate}
+.friend .icon_arrow2{position:absolute; left:190px; top:10px; animation:cartoon2 0.3s linear infinite; animation-direction:alternate; -ms-animation:cartoon2 0.3s linear infinite; -ms-animation-direction:alternate; -moz-animation:cartoon2 0.3s linear infinite; -moz-animation-direction:alternate; -webkit-animation:cartoon2 0.3s linear infinite; -webkit-animation-direction:alternate; -o-animation:cartoon2 0.3s linear infinite; -o-animation-direction:alternate}
+.self{display:none; padding-top:8px}
+.self p{display:inline-block; height:66px; padding-right:104px; background:url(../images/bg_kiss.png) no-repeat right center; color:#fff; font-size:30px; line-height:66px}
+.self p:nth-child(2){display:none; padding:0; background:none}
+.self dl{display:none; margin-top:26px}
+.self dd{float:left; width:215px; height:49px; color:#fff; font-size:30px; line-height:49px; text-align:right}
+.self dd.fix{text-align:left}
+.self dt{float:left; padding:0 13px}
+

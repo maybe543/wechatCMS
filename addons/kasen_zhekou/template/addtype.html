@@ -1,0 +1,25 @@
+{template 'common/header'}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">添加优惠券类型</div>
+  <div class="panel-body">
+    <p>输入优惠券类型，简介，代码</p>
+  </div>
+  <form action="" method="post" style='width:50%;padding:15px;'>
+  <div class="form-group">
+    <label for="exampleInputEmail1">类型名称</label>
+    <input name='title' type='text' class="form-control" rows="20" />
+	<label for="exampleInputEmail1">简介</label>
+    <input name='desc' type='text' class="form-control" rows="40" />
+	<label for="exampleInputEmail1">代码</label>
+    <input name='code' type='text' class="form-control" rows="20" />
+	<label for="exampleInputEmail1">图片</label>
+    {php echo tpl_form_field_image('images');}
+	<label for="exampleInputEmail1">链接公众号文章</label>
+    <input name='link' type='text' class="form-control" rows="20" />
+  </div>
+  <input name="token" type="hidden" value="{$_W['token']}" />
+  <input type="submit" name="submit" value="添加" />
+</form>
+</div>	
+{template 'common/footer'}

@@ -1,0 +1,255 @@
+{template 'common/header'}
+{php $_item=5;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                        <select id="keytype" class="form-control" style="margin-top:10px;">
+                            <option value="wxname">评论昵称</option>
+                            <option value="userid">会员UID</option>
+                            <option value="goodstitle">评论商品</option>
+                            <option value="content">评论内容</option>
+                        </select>
+                        <script>{if $_GPC['keytype']}$('#keytype').val('{$_GPC['keytype']}');{/if}</script>
+                        <select id="recon" class="form-control" style="margin-top:10px;">
+                            <option value="">不限</option>
+                            <option value="1">已回复</option>
+                            <option value="2">未回复</option>
+                        </select>
+                        <script>{if $_GPC['recon']}$('#recon').val('{$_GPC['recon']}');{/if}</script>
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="90"><label><input type="checkbox" class="check" onclick="all_y();"/>会员UID</label></th>
+                    <th width="150" title="会员评论时昵称">评论昵称</th>
+                    <th width="200">评论商品</th>
+                    <th>评论内容</th>
+                    <th width="60">评级</th>
+                    <th width="160">评论时间</th>
+                    <th width="130">IP地址</th>
+                    <th width="70">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr data-id="{$list['id']}">
+                    <td><label><input type="checkbox" class="check" name="y_id[]" id="y_id" value="{$list['id']}"/>{$list['userid']}</label></td>
+                    <td><a href="{php echo urido('member')}&keyval={$list['userid']}&keytype=userid">{$list['wxname']}</a>{if $list['anony']}(匿){/if}</td>
+                    <td class="lt" id="ti" d-title="{$list['goodstitle']}">
+                        <a href="{php echo urido('goodslist')}&keyval={$list['goodsid']}&keytype=id">{php echo get_html($list['goodstitle'],12)}</a>
+                    </td>
+                    <td class="lt" id="comm" d-com="{$list['content']}" d-re="{$list['recon']}">
+                        {php echo get_html($list['content'],12)} {if $list['recon']}<em>[已回]</em>{/if}
+                    </td>
+                    <td>{$list['score']}</td>
+                    <td>
+                        {php echo date('Y-d-m H:i:s',$list['indate'])}
+                    </td>
+                    <td>{$list['inip']}</td>
+                    <td>
+                        <a class="normal-link" href="javascript:;" onclick="_recon(this);">回复</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="8" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {else}
+                <tr>
+                    <td colspan="8">
+                        <select id='puttype' class="form-control" style="float:left;width:auto;">
+                            <option value="delete">删除评论</option>
+                        </select>
+                        <div class="btn btn-primary" style="margin-left:5px;" onclick="_del();">确定</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+
+<script type="text/javascript">
+    window.y_id = false;
+    function all_y(){
+        if (window.y_id){
+            window.y_id = false;
+            $("input#y_id").prop("checked",false);
+        }else{
+            window.y_id = true;
+            $("input#y_id").prop("checked",true);
+        }
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        var keytype = $('#keytype').val();
+        var recon = $('#recon').val();
+        if (keytype == ''){
+            alert("请选择搜索类型"); $('#keytype').focus(); return;
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval)+"&keytype="+keytype+"&recon="+recon;
+    }
+    function _recon(obj) {
+        var eve = $(obj).parents("tr");
+        var _txt = eve.find("#comm").text().replace(/\[已回\]/g,'');
+        var _resend = art.dialog({
+            lock: true,
+            opacity: '.3',
+            title: '回复:' + _txt,
+            content: '<div id="recondiv">' +
+                    '<textarea id="_retext" class="form-control" placeholder="请输入回复内容" style="width:350px;height:130px;">'+
+                    eve.find("#comm").attr("d-re")+'</textarea></div>',
+            button: [{
+                name: '提交',
+                callback: function () {
+                    $.alert('正在提交...', 0);
+                    $.ajax({
+                        type: "POST",
+                        url: "{php echo urido('resend')}",
+                        dataType: "json",
+                        data: "id="+eve.attr("data-id")+"&retext="+$("#_retext").val(),
+                        success: function (msg) {
+                            $.alert(0);
+                            if (msg != null && msg.success != null && msg.success) {
+                                eve.find("#comm").attr("d-re", $("#_retext").val());
+                                if ($("#_retext").val()){
+                                    _txt+= "<em>[已回]</em>";
+                                }
+                                eve.find("#comm").html(_txt);
+                                _resend.close();
+                            }
+                            $.alert(msg.message);
+                        },
+                        error: function (msg) {
+                            $.alert("网络错误！");
+                        }
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function _del()
+    {
+        var s = '';
+        $("input#y_id").each(function(){
+            if ($(this).is(':checked')){
+                s+= $(this).val()+",";
+            }
+        });
+        if (s == "") {
+            $.alert("请选择要删除的评论！");
+            return true;
+        }
+        art.dialog({
+            lock: true,
+            opacity: '.3',
+            content: '确定要删除这些评论并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "{php echo urido('redel')}",
+                        data: "id=" + s,
+                        dataType: "json",
+                        success: function (msg) {
+                            $.alert(msg.message);
+                            if (msg.success == "1"){
+                                window.location.reload();
+                            }
+                        },
+                        error: function (msg) {
+                            $.alert("操作错误！");
+                        }
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    $(document).ready(function() {
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+        var x = 10;
+        var y = 20;
+        $("td#comm").mouseover(function(e){
+            var _text = $(this).attr("d-com");
+            var _re = $(this).attr("d-re");
+            if (_re) _re = "<br/>商家回复："+_re;
+            if (!_text && !_re) return;
+            var tooltip = "<div id='text-tooltip'>评论内容："+_text+_re+"</div>"; //创建 div 元素
+            $("body").append(tooltip); //把它追加到文档中
+            $("#text-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            }).show("fast");   //设置x坐标和y坐标，并且显示
+        }).mouseout(function(){
+            $("#text-tooltip").remove();  //移除
+        }).mousemove(function(e){
+            $("#text-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            });
+        });
+        $("td#ti").mouseover(function(e){
+            var _text = $(this).attr("d-title");
+            if (!_text) return;
+            var tooltip = "<div id='text-tooltip'>"+_text+"</div>"; //创建 div 元素
+            $("body").append(tooltip); //把它追加到文档中
+            $("#text-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            }).show("fast");   //设置x坐标和y坐标，并且显示
+        }).mouseout(function(){
+            $("#text-tooltip").remove();  //移除
+        }).mousemove(function(e){
+            $("#text-tooltip").css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+            });
+        });
+
+    });
+</script>
+
+{template 'common/footer'}

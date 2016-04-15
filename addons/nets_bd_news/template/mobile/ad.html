@@ -1,0 +1,144 @@
+<?php$pagetitle="发布广告"?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">发布广告</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="box bond-box">
+<form action="" method="post" class="form-horizontal form" onsubmit="return checkprice();" enctype="multipart/form-data" id="form1">
+  <div class="bond-top">
+    <div class="title-line"> <span class="name">发布广告</span> </div>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:left;font-size:14px;">广告标题 
+		</p>
+	  </li>
+    </ul>
+    <ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:center;font-size:14px;"><input type="text" id="ad_title" name="ad_title" style="border:solid 1px #CCCCCC;-webkit-box-flex: 1;border-radius: 5px;padding:5px;width:100%;" />
+			<input type="hidden" id="cash" value="{$members['credit2']}"/>
+		</p>
+	  </li>
+    </ul>
+	
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:left;font-size:14px;">广告图片 
+		</p>
+	  </li>
+    </ul>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:center;font-size:14px;"><input type="file" id="adpicture" name="adpicture" style="border:solid 1px #CCCCCC;-webkit-box-flex: 1;border-radius: 5px;padding:5px;width:100%;" />
+		</p>
+	  </li>
+    </ul>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:left;font-size:14px;">广告URL 
+			
+		</p>
+        
+	  </li>
+    </ul>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:center;font-size:14px;">
+		<input type="text" id="adurl" name="adurl" style="border:solid 1px #CCCCCC;-webkit-box-flex: 1;border-radius: 5px;padding:5px;width:100%;" />
+			
+		</p>
+        
+	  </li>
+    </ul>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:left;font-size:14px;">投放价格 &nbsp;
+			
+		</p>
+	  </li>
+    </ul>
+	<ul class="info  info2" style="margin:5px;">
+      <li> 
+        <p  style="text-align:left;font-size:14px;">
+			<select id="adprice"  name="adprice"  style="border:solid 1px #CCCCCC;-webkit-box-flex: 1;border-radius: 5px;padding:5px;width:100%;">
+				{loop $adprice $p}
+					<option value="{$p['click_price']}">{$p['click_price']}</option>
+				{/loop}
+			</select>
+			<input type="hidden" id="cash" value="{$members['credit2']}"/>
+			<input type="hidden" id="post" name="post"  value="1"/>
+		</p>
+	  </li>
+    </ul>
+  </div>
+  <div class="bond-top">
+  <input  type="submit" name="submit" style="border:1px solid #228fff;background:#228fff;-webkit-box-flex: 1;border-radius: 5px;color:#fff;font-size:20px;width:100%!important;padding:5px;" value="立即发布" />
+  </div>
+  </form>
+</section>
+{loop $adlist $a}
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line">创建时间 <span class="name"><?php echo date("Y-m-d h:m:s",$a["createtime"])?></span> 
+		
+	</div>
+    <ul class="info  info2">
+	{if !empty($a['picture'])}
+      <li> 
+		<a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p class="positive">
+			<img src="/attachment/adpicture/{$a['picture']}"/>
+			
+		</p>
+        </a> 
+	  </li>
+	  {/if}
+      <li> 
+        <p class="positive" style="font-size:14px;color:#333!important;">
+		 {$a['title']} 
+		</p>
+		<p>点击价格 &nbsp;{$a["click_price"]} 元, {if $a["state"]==1}正常{else}无效{/if}</p>
+        </li>
+		
+    </ul>
+	<div class="title-line">
+	<form action="" method="post" onsubmit="return confirm('确定要删除此广告吗？');" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+	<input type="hidden" id="del" name="del"  value="{$a['id']}"/>
+	<input  type="submit" name="submit" style="border:1px solid #EEC900;background:#EEC900;-webkit-box-flex: 1;border-radius: 5px;color:#fff;font-size:20px;width:100%!important;padding:5px;" value="删除" />
+	</form>
+	</div>
+  </div>
+</section>
+{/loop}
+{template 'common'}
+ <script>
+	var uniacid="{$_W['uniacid']}";
+	var sourceid="{$news['id']}";
+	var showtab="{$_GPC['mygame']}";
+	if(showtab==1){
+		headTabClick('game','mygame');
+	}
+	function checkprice(){
+		var cash=document.getElementById("cash").value;
+		var adprice=document.getElementById("adprice").value;
+		if(parseFloat(cash)<parseFloat(adprice)){
+			alert("账户余额不足");
+			return false;
+		}
+		return true;
+	}
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+{template 'common_share'}
+</body>
+</html>

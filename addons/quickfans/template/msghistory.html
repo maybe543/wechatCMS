@@ -1,0 +1,28 @@
+<div class="panel panel-info" id='MsgHistory'>
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      客服聊天记录 {if empty($msgHistory)}<a href="javascript:void()" onclick="alert('如果没有看到聊天记录，请先安装\'数据统计\'模块并开启历史消息记录。安装后，您和客户的聊天将被记录。');" style="color:black"><span class="icon-question-sign"></span></a>{/if}
+    </h3>
+  </div>
+  <div class="panel-body">
+    {loop $msgHistory $msg}
+    {if $msg['type'] == 'custom'}
+    <p style="color:black;">[{php echo date('Y-m-d H:i:s', $msg['createtime'])}] 管理员：{$msg['message']}</p>
+    {else}
+      {php $msg['message'] = iunserializer($msg['message']); }
+      {if is_array($msg['message'])}
+        <p>[{php echo date('Y-m-d H:i:s', $msg['createtime'])}] {$item['nickname']}：[{$msg['message']['source']}] {$msg['message']['content']}</p>
+      {else}
+        <p style="color:gray;">[{php echo date('Y-m-d H:i:s', $msg['createtime'])}] 关键字：{$msg['message']}</p>
+      {/if}
+    {/if}
+
+    {/loop}
+    {if empty($msg)}
+    <p style="color:inherit;">
+    还没有TA的聊天记录。
+    </p>
+    {/if}
+  </div>
+</div>
+

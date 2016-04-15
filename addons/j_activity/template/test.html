@@ -1,0 +1,148 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+  <li {if $operation == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('joiner',array('id'=>$rid))}">管理参与者</a></li>
+  {if $operation == 'msg'}<li class="active"><a href="#">消息发送记录</a></li>{/if}
+</ul>
+<script>
+require(['bootstrap'],function($){
+	$('.btn,.tips').hover(function(){
+		$(this).tooltip('show');
+	},function(){
+		$(this).tooltip('hide');
+	});
+});
+</script>
+<style>
+.tl span{color:#999;}
+.category td a{ margin-bottom:5px;}
+.grade{color:#999;}
+.jtable{display:table; width:100%;}
+.jrow{display:table-row;}
+.jcell{display:table-cell; vertical-align:middle;}
+.jcell-1{ width:10%}
+.jcell-2{ width:20%}
+.jcell-3{ width:30%}
+.jcell-4{ width:40%}
+.jcell-5{ width:50%}
+.jcell-6{ width:60%}
+.jcell-7{ width:70%}
+.jcell-8{ width:80%}
+.jcell-9{ width:90%}
+.infobody div{line-height:24px;}
+.border{ border-bottom:#CCC 1px solid; padding:5px}
+.viewimg{ cursor:pointer}
+.jtablestyle{overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal}
+
+</style>
+<div class="main"> 
+  <div class="category">
+    <form action="" method="post" onsubmit="return formcheck(this)">
+      <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:60px">#</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">头像</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:150px">昵称</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">姓名</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:50px">性别</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:130px">电话</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:130px">报名时间</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;width:90px">状态</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">详情</th>
+                <th style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal;text-align:right">操作</th>
+              </tr>
+            </thead>
+            {php $i=1;}
+            {loop $list $row}
+            {php $p=json_decode($row['parama'],true);}
+            <tr >
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{php echo $i}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal"><img src="{$row['avatar']}" width="80" style="max-height:80px;"/></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal"><a href="./index.php?c=mc&a=member&do=post&uid={php echo $profile['uid']}" title='{php echo $nickname}' data-toggle="tooltip" data-placement="bottom" class="tips">{php echo $row['nickname']? $row['nickname'] : $row['realname'];}</a></td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{$row['realname']}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{if $row['gender']==1}<span class="label label-danger">先生</span>{else}<span class="label label-success">女士</span>{/if}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{$row['mobile']}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">{php echo date("m-d H:i",$row['createtime'])}</td>
+              <td style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              {if $row['status']==-1}<span class="label label-default">落选</span>{elseif $row['status']==0}{elseif $row['status']==1}<span class="label label-default">待审核</span>{else}<span class="label label-success">入选</span>{/if}<br />
+              {if $row['attend']==1}<div><span class="label label-success">{php echo date("m-d H:i",$row['endtime'])}</span></div><span class="label label-warning">已签到</span>{else}<span class="label label-default">未签到</span>{/if}
+              </td>
+              <td  style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              {php foreach($parama as $index=>$rew){}
+              <div><span class="grade">{php echo $index}:</span> {if $rew==1}{php echo $p[$index]}{else}<img src="{php echo $p[$index]}" width="40" height="40" class="viewimg"/>{/if}</div>
+              {php }}
+              <div><span class="grade">签到回调内容:</span>{$row['reloadmsg']}</div>
+              <div><span class="grade">备注内容:</span>{$row['remark']}</div>
+              </td>
+              <td style="text-align:right"  style="overflow:visible; word-break:break-all; text-overflow:visible;white-space:normal">
+              <div><a href="javascript:sendmessage('{$row['from_user']}')" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="bottom" title="发送通知"><i class="fa fa-comment-o"></i></a>&nbsp;
+              <a href="{php echo $this->createWebUrl('joiner', array('op' => 'msg', 'uid' => $row['id'],'id' => $rid))}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="bottom" title="发送记录"><i class="fa fa-bars"></i></a></div>
+              <a href="{php echo $this->createWebUrl('joiner', array('op' => 'in', 'uid' => $row['id'],'id' => $rid))}" onclick="return confirm('确认让其入选本次活动吗？');return false;" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="入选"><i class="fa fa-thumbs-o-up"></i></a>&nbsp;
+              <a href="{php echo $this->createWebUrl('joiner', array('op' => 'out', 'uid' => $row['id'],'id' => $rid))}" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="落选"><i class="fa fa-thumbs-o-down"></i></a>&nbsp;
+              <a href="javascript:markSign({$row['id']})" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="编辑"><i class="fa fa-edit"></i></a>&nbsp;
+              <a href="{php echo $this->createWebUrl('joiner', array('op' => 'delete', 'uid' => $row['id'],'id' => $rid))}" onclick="return confirm('确认删除吗，删除后，客户可以重新报名？');return false;" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="删除,重新报名"><i class="fa fa-times"></i></a></td>
+            </tr>
+            {php $i++}
+            {/loop}
+              
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--发送消息-->
+
+<!--编辑框-->
+<div class="modal fade" id="sendmessage" tabindex="-1" role="dialog" aria-hidden="true">
+<form action=""  class="form-horizontal form">
+<input type="hidden" name="openid" value="" />
+<input type="hidden" name="msgtpye" value="text" />
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><span class="pull-right"><button type="button" class="btn btn-default btn-block" data-dismiss="modal"><i class="fa fa-times"></i></button></span>信息通知</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group">
+          <div class="col-sm-12 col-xs-12">
+          	<div style="border:1px solid #CCC; padding:15px; height:300px; overflow-y:scroll"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 col-xs-2">消息类型</div>
+          <div class="col-sm-10 col-xs-10">文本</div>
+        </div>
+      	<div class="form-group">
+          <div class="col-sm-2 col-xs-2">发送消息</div>
+          <div class="col-sm-10 col-xs-10"><textarea name="content" rows="3" class="form-control"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info btn-block" onclick="sendToMessage()">发送</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+<script language="javascript">
+function sendmessage(opid){
+	$("input[name='openid']").val(opid);
+	$("#sendmessage").modal();
+}
+function sendToMessage(){
+	var openid=$("input[name='openid']").val();
+	var msgtpye=$("input[name='msgtpye']").val();
+	var content=$("textarea[name='content']").val();
+	$.get("{php echo $this->createWebUrl('test',array('op'=>'sendmessage'))}",{
+		"openid":openid,
+		"msgtpye":msgtpye,
+		"content":content,
+	},function(data){
+		alert(data)
+	});
+}
+</script>
+{template 'common/footer'} 

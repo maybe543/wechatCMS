@@ -1,0 +1,109 @@
+<script type="text/javascript" src="{JS_PATH}jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.form.js"></script>
+<script type="text/javascript" src="{JS_PATH}jquery.colorpicker-title.js"></script>
+<script type="text/javascript" src="{JS_PATH}artdialog/artDialog.js?skin=default"></script>
+<script type="text/javascript" src="{JS_PATH}datepicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="{CSS_PATH}default.css" />
+
+<div class="breadcrumb">
+    <div class="items" id="vipitems">
+        <div style="float:right;" id="is_ajaxorder"></div>
+        <span class="description">当前位置：</span>
+        <a href="{php echo urido('manage')}">餐厅管理</a>
+        {if $this->reply}
+            <span class="navblank">&gt;</span>
+            <a href="{php echo urido('index')}">{php echo $this->reply['title']}</a>
+        {/if}
+    </div>
+</div>
+
+<div class="vipmenu w98auto" id="vipmenu" style="margin-bottom:20px;">
+    <a href="{php echo urido('index')}">统计概况</a>
+    <a href="{php echo urido('goodslist')}">商品管理</a>
+    <div>
+        <a href="{php echo urido('goodslist')}">商品列表</a>
+        <a href="{php echo urido('goodsadd')}">添加商品</a>
+        <a href="{php echo urido('goodstrash')}">商品回收站</a>
+    </div>
+    <a href="{php echo urido('goodssort')}">商品分类</a>
+    <div>
+        <a href="{php echo urido('goodssortadd')}">添加分类</a>
+    </div>
+    <a href="{php echo urido('goodsarea')}">区域管理</a>
+    <div>
+        <a href="{php echo urido('goodsareaadd')}">添加区域</a>
+    </div>
+    <a href="javascript:void(0);">订单排号</a>
+    <div>
+        <a href="{php echo urido('orderlist')}">订单管理</a>
+        <a href="{php echo urido('tobelist')}">排号管理</a>
+    </div>
+    <a href="{php echo urido('comment')}">用户评论</a>
+    <a href="{php echo urido('member')}">会员管理</a>
+    <a href="{php echo urido('ads')}">广告管理</a>
+    <div>
+        <a href="{php echo urido('ads')}">广告列表</a>
+        <a href="{php echo urido('adposition')}">广告位置</a>
+    </div>
+    <a href="javascript:void(0);" style="cursor:default;">餐厅设置</a>
+    <div>
+        <a href="{php echo url('platform/reply/post',array('m'=>'eso_cate','rid'=>$_GPC['rid']));}">餐厅配置</a>
+        <a href="{php echo urido('payment')}">支付方式</a>
+        <a href="{php echo urido('delivery')}">配送方式</a>
+        <a href="{php echo urido('address')}">配送地址</a>
+        <a href="{php echo urido('card')}">卡券功能</a>
+        <a href="{php echo urido('feiyin')}">无线打印机</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    {if isset($_item)}
+        var eve = $('#vipmenu').children("a").eq({$_item});
+        eve.addClass('active');
+        $('#vipitems').append('<span class="navblank">&gt;</span>');
+        $('#vipitems').append('<a href="' + eve.attr('href') + '">' + eve.text() + '</a>');
+        {if isset($_itemp)}
+            if (eve.next().is("div")){
+                var evep = eve.next().children("a").eq({$_itemp});
+                evep.addClass('active');
+                $('#vipitems').append('<span class="navblank">&gt;</span>');
+                $('#vipitems').append('<a href="' + evep.attr('href') + '">' + evep.text() + '</a>');
+            }
+        {/if}
+    {/if}
+    //
+    $('#vipmenu a').mousemove(function () {
+        if ($(this).next().is("div")){
+            $(this).next().show();
+            $(this).next().css("left", $(this).position().left)
+        }
+    }).mouseout(function () {
+        if ($(this).next().is("div")){
+            $(this).next().hide();
+        }
+    });
+    $('#vipmenu div').mousemove(function () {
+        $(this).show();
+    }).mouseout(function () {
+        $(this).hide();
+    });
+    function _wordernotice() {
+        $.ajax({
+        type: "GET",
+        url: "{php echo urido('ajaxorder')}",
+        dataType: "json",
+        success: function (data) {
+            if (data.success == "1"){
+                $("#is_ajaxorder").html("<a style='color:#F00' href='{php echo urido('orderlist')}&keyval=&keytype=title&ordertype=%E5%B7%B2%E4%BB%98%E6%AC%BE'>已付款("+data.p_num+")</a>，<a style='color:#F00' href='{php echo urido('orderlist')}&keyval=&keytype=title&ordertype=%E7%AD%89%E5%BE%85%E5%95%86%E5%AE%B6%E7%A1%AE%E8%AE%A4'>待确认("+data.q_num+")</a>，<a style='color:#F00' href='{php echo urido('tobelist')}&ordertype=0'>排号("+data.n_num+")</a>，" + data.time);
+                }
+                setTimeout(function(){_wordernotice()}, 5000);
+            },
+            error: function (data) {
+                setTimeout(function(){_wordernotice()}, 5000);
+            }
+        });
+    }
+    $(document).ready(function() {setTimeout(function(){_wordernotice()}, 100);});
+</script>
+

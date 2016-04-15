@@ -1,0 +1,307 @@
+<script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		基本参数设置
+	</div>
+	<div class="panel-body">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">手机端中奖名单</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				{if $rid}
+				<a target="_blank" href="{$_W['siteroot']}./app/{php echo $this->createMobileUrl('winner', array('rid' => $rid))}">{php echo $this->createMobileUrl('winner', array('rid' => $rid))}</a>
+				<span class="help-block"></span>
+				{else}
+				<span class="help-block">规则添加完成后，显示访问链接</span>
+				{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">是否可以重复中奖</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<label class="checkbox-inline">
+					<input type="radio" name="base[repeat_win]" value="1" {if $base['repeat_win']}checked{/if}> 是
+				</label>
+				<label class="checkbox-inline">
+					<input type="radio" name="base[repeat_win]" value="0" {if !$base['repeat_win']}checked{/if}> 否
+				</label>
+				<span class="help-block">开启可以重复中奖后，可以多次中奖，否则，在本活动中只能中奖一次</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">总抽奖次数</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<div class="input-group col-sm-6">
+					<input type="text" class="form-control" name="base[play_total]" value="{$base['play_total']}" />
+					<span class="input-group-addon">次</span>
+				</div>
+				<span class="help-block">超过总抽奖次数后，将无法继续参与抽奖活动，一般情况下总抽奖次数大于每天抽奖次数</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">每天抽奖次数</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<div class="input-group col-sm-6">
+					<input type="text" class="form-control" name="base[play_today_total]" value="{$base['play_today_total']}" />
+					<span class="input-group-addon">次/天</span>
+				</div>
+				<span class="help-block">超过每天抽奖次数后，将无法继续参与抽奖活动，一般情况下每天抽奖次数小于总抽奖次数</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动时间</label>
+			<div class="col-sm-9">
+				{php echo tpl_form_field_daterange('base[activity_time]', $base['activity_time'], true);}
+				<span class="help-block">抽奖活动的开始和结束时间，活动未开始和已结束时，将发送活动时间提醒信息</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">关键字发送间隔</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<div class="input-group col-sm-6">
+					<input type="text" class="form-control" name="base[interval_time]" value="{$base['interval_time']}" />
+					<span class="input-group-addon">秒</span>
+				</div>
+				<span class="help-block">防止机器人刷奖，可有效控制发送关键字频率，设置为0时则不限制</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">领奖规则链接</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<input type="text" class="form-control" name="base[rule_url]" value="{$base['rule_url']}" />
+				<span class="help-block">自定义领奖规则链接，不填写则默认为空，例如：http://www.baidu.com</span>
+			</div>
+		</div>
+		<div class="alert alert-info">
+			<span id="super_var_wrap" class="help-block">
+				<h4>提示语变量</h4>
+				<strong>{##抽奖次数##}</strong> 表示总抽奖次数 <a data-content="{##抽奖次数##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##今天抽奖次数##}</strong> 表示今天抽奖次数 <a data-content="{##今天抽奖次数##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##奖品等级##}</strong> 表示奖品等级 <a data-content="{##奖品等级##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##奖品名称##}</strong> 表示奖品名称 <a data-content="{##奖品名称##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##时间##}</strong> 表示本次抽奖时间 <a data-content="{##时间##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##领奖链接##}</strong> 表示领奖链接可填写领奖姓名、手机信息 <a data-content="{##领奖链接##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##规则链接##}</strong> 表示领奖规则链接 <a data-content="{##规则链接##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##消耗积分##}</strong> 表示抽奖消耗扣减的积分，积分数大于0时变量有效 <a data-content="{##消耗积分##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##总积分##}</strong> 表示会员账号的总积分 <a data-content="{##总积分##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+				<strong>{##中奖名单链接##}</strong> 表示前台中奖名单页面 <a data-content="{##中奖名单链接##}" href="javascript:;" title="点击复制">点击复制</a><br/>
+			</span>
+			<script>
+				require(['jquery', 'util'], function($, u){
+					$('#super_var_wrap a').each(function(){
+						var t = this;
+						u.clip(t, $(t).attr('data-content'));
+					});
+				});
+			</script>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">中奖提示语</label>
+			<div class="col-sm-9">
+				<textarea rows="5" class="form-control" name="base[winning_msg]">{$base['winning_msg']}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">未中奖提示语</label>
+			<div class="col-sm-9">
+				<textarea rows="5" class="form-control" name="base[nowin_msg]">{$base['nowin_msg']}</textarea>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		积分参数设置
+	</div>
+	<div class="panel-body">
+		<div class="alert alert-info">设置积分类型和积分数参数后，每次抽奖扣除的积分数</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">积分类型</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<select class="form-control" name="credit[type]" >
+					{loop $credits $key $item}
+					<option value="{$key}" {if $credit['type']==$key}selected{/if} {if !$item['title']}disabled{/if}>{if $item['title']}{$item['title']}{else}未设置{/if}（{$key}）</option>
+					{/loop}
+				</select>
+				<span class="help-block"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-2 col-md-2 control-label">积分数</label>
+			<div class="col-sm-6 col-md-8 col-xs-12">
+				<div class="input-group">
+					<input type="text" class="form-control" name="credit[value]" value="{php echo $credit['value']}" />
+					<div class="input-group-addon">{php echo $credits[$credit['type']]['title']}</div>
+				</div>
+				<span class="help-block">积分数大于0时，每次抽奖将扣除相应积分，如果积分不够扣除，将无法参与抽奖</span>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.del_item_link {
+		color: #f00;
+	}
+</style>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		奖品参数设置
+	</div>
+	<div class="panel-body">
+		<div class="alert alert-danger">
+			<p><strong>等级：</strong>选填</p>
+			<p><strong>名称：</strong>必填</p>
+			<p><strong>总数量：</strong>必填，本奖品的总数量，活动初始化时填写</p>
+			<p><strong>剩余数量：</strong>必填，不填写默认为0，当剩余数量为0时，粉丝将无法抽中该奖品，剩余数量随粉丝抽中奖品自动减少</p>
+			<p><strong>中奖概率：</strong>必填，可填写小数，数值越小中奖概率越低，例如：100%为抽奖必中，1%为百分之一次抽中，0.1%为千分之一次抽中</p>
+			<p><strong>加入抽奖：</strong>必选，选择奖品是否加入抽奖列表，不选择时（显示OFF），该奖品将忽略中奖概率设置，任何人都无法抽中该奖品</p>
+		</div>
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th width="25"></th>
+				<th>等级</th>
+				<th>名称(<span style="color: #f00">*</span>)</th>
+				<th>总数量(<span style="color: #f00">*</span>)</th>
+				<th>剩余数量(<span style="color: #f00">*</span>)</th>
+				<th>中奖概率(<span style="color: #f00">*</span>)</th>
+				<th>
+					<a class="tip" href="javascript:;" data-toggle="tooltip" title="选择奖品是否加入抽奖列表，不选择时，该奖品将忽略中奖概率设置，保证任何人都无法抽中">加入抽奖</a>
+				</th>
+				<th width="50">操作</th>
+			</tr>
+			</thead>
+			<tbody id="list_wrap">
+			{loop $prizes $row}
+			<tr>
+				<td>
+					<a href="javascript:;" class="fa fa-move" title="按住鼠标左键，拖动调整顺序">
+						<i class="fa fa-arrows"></i>
+					</a>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<input name="prizes[id][]" type="hidden" class="form-control" value="{$row['id']}"/>
+							<input name="prizes[title][]" type="text" class="form-control" value="{$row['title']}"/>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<input name="prizes[name][]" type="text" class="form-control" value="{$row['name']}"/>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<div class="input-group">
+								<input name="prizes[total][]" type="text" class="form-control" value="{$row['total']}"/>
+								<div class="input-group-addon">个</div>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<div class="input-group">
+								<input name="prizes[remain_total][]" type="text" class="form-control" value="{$row['remain_total']}"/>
+								<div class="input-group-addon">个</div>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<div class="input-group">
+								<input name="prizes[probability][]" type="text" class="form-control" value="{$row['probability']}"/>
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="form-group" style="margin-bottom: 0">
+						<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+							<input class="isdisplay" type="checkbox" data-id="{$row['id']}" name="prizes[join_play][]" {if $row['join_play']}checked{/if}/>
+						</div>
+					</div>
+				</td>
+				<td>
+					<a href="javascript:;" class="del_item_link tip" data-toggle="tooltip" onclick="delItem(this)" title="删除" data-id="{$row['id']}">
+						<i class='fa fa-remove'></i>
+					</a>
+				</td>
+			</tr>
+			{/loop}
+			</tbody>
+			<tbody>
+			<tr>
+				<td colspan="8">
+					<button type="button" class="btn btn-warning" id="add_item_link" title="添加">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+					</button>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	require(['jquery', 'util', 'bootstrap', 'bootstrap.switch'], function($, u){
+		$('#list_wrap').sortable({handle: '.fa-move'});
+
+		$('#add_item_link').click(function(){
+			$.ajax({
+				'url': "{php echo wurl('site/entry/prize', array('m' => 'superman_lottery', 'act' => 'create', 'rid' => $rid))}",
+				success:function(response) {
+					$('#list_wrap').append(response);
+					load_bootstrap_switch();
+				}
+			});
+		});
+
+		window.delItem = function(obj) {
+			var id = $(obj).attr('data-id');
+			if (!id) {	//new
+				$(obj).parent().parent().remove();
+				return;
+			}
+			$.ajax({
+				'url': "{php echo wurl('site/entry/prize', array('m' => 'superman_lottery', 'act' => 'delete'))}"+'&id='+id,
+				success:function(response) {
+					if (response == 'success') {
+						$(obj).parent().parent().remove();
+					} else {
+						u.message(response, '', 'error');
+					}
+				}
+			});
+		};
+
+		$('.tip').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+
+		var load_bootstrap_switch = function() {
+			$('.isdisplay').bootstrapSwitch();
+			$(':checkbox').on('switchChange.bootstrapSwitch', function(e, state){
+				$this = $(this);
+				var id = $this.attr('data-id');
+				var value = this.checked ? 1 : 0;
+				$.post("{php echo $this->createWebUrl('rule')}", {set_join_play: 'yes', id: id, value: value}, function(resp){
+					if(resp != 'success') {
+						u.message('操作失败, 请稍后重试.')
+					}
+				});
+			});
+		};
+		load_bootstrap_switch();
+	});
+</script>

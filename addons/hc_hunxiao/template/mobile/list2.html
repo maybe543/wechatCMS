@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+    <title>商品列表</title>
+    <link href="../addons/hc_hunxiao/style/css/bootstrap.css" rel="stylesheet" />
+    <link href="../addons/hc_hunxiao/style/css/common.css" rel="stylesheet" />
+    <link href="../addons/hc_hunxiao/style/css/pages.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/mall.css">
+    <link rel="stylesheet" type="text/css" href="../addons/hc_hunxiao/style/css/PreFoot.css">
+    <link href="../addons/hc_hunxiao/style/css/scroll.css" rel="stylesheet">
+	<script src="../addons/hc_hunxiao/style/js/jquery-1.8.0.min.js" type="text/javascript"></script>
+	<script language="javascript" src="../addons/hc_hunxiao/style/js/scroll.js" type="text/javascript"></script>
+	<script src="../addons/hc_hunxiao/style/js/PreFoot.js"></script>
+</head>
+<body> 
+    <!--products list-->
+     <div class="h30" id="h30" style="display: none; height:30px"></div>
+    <section class="pro-list container-fluid pro-two"><!--单个商品显示样式pro-one 两个商品显示样式pro-two-->
+      <div class="row" id="goods">
+        {loop $list $item}
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+           <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}" class="pic"><img class="" src="{$_W['attachurl']}{$item['thumb']}"></a>
+           <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}" class="name">{$item['title']}</a>
+          <div class="price-buy clear">
+            <p class="price">￥{$item['marketprice']}<del>{if intval($item['productprice']>0)}市场价:￥{$item['productprice']}{else}<br/>{/if}</del></p>
+            <a class="btn btn-red" href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">立即购买</a>
+          </div>
+        </div>
+      {/loop}
+	  </div>
+	  {if $psize>=$total}
+		<div style="text-align:center;color:gray;">没有更多数据了</div>
+		<input type="hidden" id="psize" value="0" />
+		<input type="hidden" id="flag" value="0" />
+	  {else}
+		<div id="loadmore" onclick="loadMore($('#goods'));" style="text-align:center;color:gray;">加载更多...</div>
+		<input type="hidden" id="psize" value="0" />
+		<input type="hidden" id="flag" value="0" />
+	  {/if}
+    </section>
+    <section class="main_title" style="display: none" id="top2">
+
+        <h2 id="topname"></h2>
+        <a href="index.html" data-type="back" class="go-back" id="backurl"><span class="icons fa fa-angle-left" data-icon=""><</span></a>
+
+    </section>
+   <div class="h50"></div>     
+   <div class="fixed bottom">
+
+<dl class="sub-nav nav-b5">
+      <dd class="active">
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('index')}"><i class="icon-nav-bag"></i>逛街</a></div>
+    </dd>
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('listCategory')}"><i class="icon-nav-search"></i>搜索</a></div>
+    </dd>
+    <dd>
+        <div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('mycart')}"><i class="icon-nav-card"></i>购物车</a></div>
+    </dd>
+	<dd>
+		<div class="nav-b5-relative"><a href="{php echo $this->createMobileUrl('fansindex')}"><i class="icon-nav-heart"></i>个人中心</a></div>
+	</dd>
+</dl>     
+</div> 
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}	
+<script>
+wx.config({
+	debug: false,   
+	appId: '<?php echo $signPackage["appId"];?>',
+	timestamp: '<?php echo $signPackage["timestamp"];?>',
+	nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+	signature: '<?php echo $signPackage["signature"];?>',
+	jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+});
+
+wx.ready(function () {
+	var shareData = {
+		title: "{$rule['title']}",
+		desc: "{$rule['description']}",
+		link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index',array('mid'=>$id))}",
+		imgUrl: "{$_W['attachurl']}{$rule['picture']}",
+		trigger: function (res) {},
+		complete: function (res) {},
+		success: function (res) {
+		},
+		cancel: function (res) {
+		},
+		fail: function (res) {}
+	};
+	wx.onMenuShareAppMessage(shareData);
+	wx.onMenuShareQQ(shareData);
+	wx.onMenuShareWeibo(shareData);
+	wx.onMenuShareTimeline(shareData);
+});
+
+$(window).scroll(function(){
+	var flag = $('#flag').val();
+	var psize = $('#psize').val();
+	if(flag == psize){
+		var scrollTop = $(this).scrollTop();
+	　　var scrollHeight = $(document).height();
+	　　var windowHeight = $(this).height();
+	　　if(scrollTop + windowHeight >= scrollHeight-80){
+			$('#flag').val(-1);
+			loadMore($('#goods'));
+		}
+　　}
+});
+
+window.onload = function(){
+	$('#psize').val(0);
+	$('#flag').val(0);
+}
+function loadMore(goods){
+	var psize = parseInt($('#psize').val());
+	var psize1 = parseInt({$psize});
+	if(psize1+psize >= {$total}){
+		return;
+	}
+	$.post("{php echo $this->createMobileUrl('list2', array('op'=>'loadmore', 'condition'=>$condition))}",{psize:psize},function(d){
+		if(d.goods!=0){
+			var html = '';
+			for(i in d.goods){
+				var productprice = '';
+				if(d.goods[i]['productprice'] != '' && d.goods[i]['productprice'] != 0){
+					productprice = "<del>市场价:￥"+d.goods[i]['productprice']+"</del>";
+				} else {
+					productprice = '<del><br/></del>';
+				}
+				html = html + "<div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'><a href='"+d.goods[i]['url']+"' class='pic' ><img src='{$_W['attachurl']}"+d.goods[i]['thumb']+"'></a><a href='"+d.goods[i]['url']+"' class='name'>"+d.goods[i]['title']+"</a><div class='price-buy clear'><p class='price'>￥"+d.goods[i]['marketprice']+productprice+"</p><a class='btn btn-red' href='"+d.goods[i]['url']+"'>立即购买</a></div></div>";
+			}
+			$('#psize').val(d.psize);
+			$('#flag').val(d.psize);
+			goods.append(html);
+			if(d.psize+psize1 >= {$total}){
+				document.getElementById('loadmore').innerHTML = '没有更多数据了';
+			}
+		} else {
+			$('#psize').val(d.psize);
+			$('#flag').val(d.psize);
+			alert('没有更多数据了');
+		}
+	},"json");
+}
+</script>
+</body>
+</html>

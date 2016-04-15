@@ -1,0 +1,184 @@
+{template 'common/header'}
+
+<script>
+    require(['jquery', 'util'], function($, u) {
+        $(function(){
+        	
+        
+        	 {if !empty($settings['model'])}
+        	   $(".model1").show();
+        	   $(".model0").hide();
+        	 {else}
+     	       $(".model1").hide();
+        	   $(".model0").show();
+            {/if}
+        	
+            $('#theform').submit(function(){
+                var message = '';
+                if($.trim($(':text[name=bg]').val()) == '') {
+                    message += '必须输入海报背景';
+                }
+      
+                if(message) {
+                    u.message(message);
+                    return false;
+                }
+                return true;
+            });
+        });
+    });
+</script>
+
+<div class="clearfix">
+   <div class="panel-heading">
+       海报设置：
+   </div>
+   <form class="form-horizontal" name="theform" action="" method="post">
+            <div class="panel-body">
+            
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码模式</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <label class="radio-inline"><input type="radio" onclick="sendtypeshow(false)" name="model" value="0"
+                         {if empty($settings['model'])} checked="checked" {/if}>海报模式(默认)</label>
+	         			<label class="radio-inline"><input type="radio" name="model" value="1" 
+	         			onclick="sendtypeshow(true)"  {if !empty($settings['model'])}  checked="checked" {/if}>logo嵌入</label>
+	         			  <span class="help-block">海报模式是二维码嵌入到海报中，logo嵌入模式是公众号logo嵌入到二维码里面</span>
+                    </div>
+                </div>
+                
+                
+                
+                   <div class="form-group model1" >
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">内嵌logo设置</label>
+
+                  <div class="col-sm-9 col-xs-12">
+
+                        <div class="input-group">
+
+                            <div class="input-group-addon">logo宽</div>
+
+                            <input type="text" class="form-control" placeholder="" name="logowidth" value="{$settings['logowidth']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">logo高</div>
+
+                            <input type="text" class="form-control" placeholder="" name="logoheight" value="{$settings['logoheight']}">
+
+                            <div class="input-group-addon">px</div>
+                            
+                            <div class="input-group-addon">二维码宽</div>
+
+                            <input type="text" class="form-control" placeholder="" name="logoqrwidth" value="{$settings['logoqrwidth']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">二维码高</div>
+
+                            <input type="text" class="form-control" placeholder="" name="logoqrheight" value="{$settings['logoqrheight']}">
+
+                            <div class="input-group-addon">px</div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                
+              
+                
+
+                <div class="form-group model0">
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span> 二维码海报背景图</label>
+<div class="col-sm-9 col-xs-12">
+{php echo tpl_form_field_image('bg', $settings['bg'],'../addons/group_qrcode/template/style/images/bg.jpg');}
+
+                         <div class="help-block">图片必须从本地上传，
+                         ；图片格式必须为jpg，大小建议为：530像素 * 800像素，图片大小建议控制在200KB以内
+                         
+                         </div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="form-group model0">
+
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">二维码</label>
+
+                  <div class="col-sm-9 col-xs-12">
+
+                        <div class="input-group">
+
+                            <div class="input-group-addon">左边距</div>
+
+                            <input type="text" class="form-control" placeholder="" name="qrleft" value="{$settings['qrleft']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">上边距</div>
+
+                            <input type="text" class="form-control" placeholder="" name="qrtop" value="{$settings['qrtop']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">宽度</div>
+
+                            <input type="text" class="form-control" placeholder="" name="qrwidth" value="{$settings['qrwidth']}">
+
+                            <div class="input-group-addon">px</div>
+
+                            <div class="input-group-addon">高度</div>
+
+                            <input type="text" class="form-control" placeholder="" name="qrheight" value="{$settings['qrheight']}">
+
+                            <div class="input-group-addon">px</div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                         
+
+            <div class="form-group col-sm-12">
+
+
+            <input type="hidden" name="op" value="post" />
+
+                <input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+
+                <input type="hidden" name="token" value="{$_W['token']}" />
+
+            </div>
+
+
+
+
+
+      </form>  
+
+    </div> 
+ <script>
+function sendtypeshow(sf){
+	if (sf){
+	  $(".model1").show();
+	  $(".model0").hide();
+	} else {
+	  $(".model0").show();
+	  $(".model1").hide();
+	}
+	
+}
+</script> 
+         
+
+{template 'common/footer'}

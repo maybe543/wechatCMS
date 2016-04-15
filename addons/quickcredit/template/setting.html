@@ -1,0 +1,38 @@
+{template 'common/header'}
+<div class="main">
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+
+    {template 'install-menu'}
+    <div class="panel panel-default">
+      <div class="panel-heading">兑换说明设置</div>
+      <div class="panel-body">
+
+        <div class="form-group">
+          {php echo FormTpl::label2('兑换说明<br>(显示在兑换页面顶端)', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+          <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+            <textarea name="description" class="form-control richtext-clone" cols="70" rows="8">{$settings['description']}</textarea>
+            <br>
+            全屏编辑效果更好噢。小工具:
+            <a href="http://wxedit.yead.net/" target="_blank" title="新窗口打开">易点微信编辑器</a> &nbsp;
+            <a href="http://www.135editor.com/" target="_blank" title="新窗口打开">135微信编辑器</a> &nbsp;(利用第三方编辑器，获得更好显示效果)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <?php
+          echo FormTpl::label('');
+          echo FormTpl::getWebControl('submit', 'submit', '提交');
+          echo FormTpl::getWebControl('hidden', 'token', $_W['token']);
+          ?>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script language='javascript'>
+	require(['jquery', 'util'], function($, u){
+		$(function(){ $('.richtext-clone').each( function() { u.editor(this); }); });
+	});
+</script>
+
+{template 'common/footer'}

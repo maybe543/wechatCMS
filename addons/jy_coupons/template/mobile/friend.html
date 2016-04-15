@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{if empty($item['aname'])}大家来领券{else}{$item['aname']}{/if}</title>
+    <style>
+        @media screen and (max-width:320px) {
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                background: #000;
+            }
+            #bodybox {
+                position: relative;
+                margin: 0 auto;
+                height: 100%;
+                {if empty($item['friend_bg'])}
+                background: url(../addons/jy_coupons/images/page2_bg.jpg) no-repeat;
+                {else}
+                background: url({$_W['attachurl']}{$item['friend_bg']}) no-repeat;
+                {/if}
+                background-size: 100%;
+                overflow: hidden;
+                max-width: 640px;
+            }
+        }
+        @media screen and (min-width:321px) {
+            html,body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background: #000
+            }
+            #bodybox {
+                position: relative;
+                margin: 0 auto;
+                height: 100%;
+                {if empty($item['friend_bg'])}
+                background: url(../addons/jy_coupons/images/page2_bg.jpg) no-repeat;
+                {else}
+                background: url({$_W['attachurl']}{$item['friend_bg']}) no-repeat;
+                {/if}
+                background-size: 100% 100%;
+                overflow: hidden;
+                max-width: 640px;
+            }
+        }
+        @media screen and (min-width: 321px) and (max-width: 374px) {
+        }
+        @media screen and (min-width: 375px) and (max-width: 413px) {
+        }
+        @media screen and (min-width: 414px) {
+        }
+        .logo{width: 20%;position: absolute;left: 5%;top: 9%;border-radius: 50%}
+        .page3_txt{position: absolute;width: 43%;left: 27%;top: 11%}
+        .juan22{
+            width: 66%;
+            position: absolute;
+            left: 17%;
+            top: 24%;
+            opacity: 0;
+            animation: opacity-animation 1s linear 0s;
+            -moz-animation: opacity-animation 1s linear 0s;     /* Firefox */
+            -webkit-animation: opacity-animation 1s linear 0s;     /* Safari 和 Chrome */
+            -o-animation: opacity-animation 1s linear 0s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+        }
+        .content11{
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #00a4e2;
+            position: absolute;
+            top: 52%;opacity: 0;
+            animation: opacity-animation 1s linear 0s;
+            -moz-animation: opacity-animation 1s linear 0s;     /* Firefox */
+            -webkit-animation: opacity-animation 1s linear 0s;     /* Safari 和 Chrome */
+            -o-animation: opacity-animation 1s linear 0s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+        }
+        .juan{position: absolute;width: 70%;left: 15%;top: 28%;opacity: 0;text-align: center;
+            padding: 3% 0;color: #00a4e2;
+            animation: opacity-animation 1s linear 0s;
+            -moz-animation: opacity-animation 1s linear 0s;     /* Firefox */
+            -webkit-animation: opacity-animation 1s linear 0s;     /* Safari 和 Chrome */
+            -o-animation: opacity-animation 1s linear 0s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;}
+        label{position: absolute;right: 15%;top: 57%;color: #00a4e2;opacity: 0;
+            animation: opacity-animation 1s linear 0s;
+            -moz-animation: opacity-animation 1s linear 0s;     /* Firefox */
+            -webkit-animation: opacity-animation 1s linear 0s;     /* Safari 和 Chrome */
+            -o-animation: opacity-animation 1s linear 0s;     /* Opera */
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;}
+
+        .content1{width: 95%;text-align: center;font-size: 14px;margin-top: 5%}
+        .btn{width: 30%;position: absolute;left: 35%;top: 62%;height: 40px;line-height: 40px;text-align: center;
+            background-color: #00a4e2;color: #fff;border-radius: 3px;opacity: 0;}
+        .btn2{width: 30%;position: absolute;left: 35%;top: 72%;height: 40px;line-height: 40px;text-align: center;
+            background-color: #00a4e2;color: #fff;border-radius: 3px;opacity: 0;}
+        @keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-moz-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-webkit-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        @-o-keyframes opacity-animation {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+        #showDiv{padding-bottom:5%;width: 80%;display: none;position: fixed;left: 10%;top: 23%;border: 1px solid #00a4e2;border-radius:10px;background: #fff;z-index: 10}
+        .title{font-size: 22px;margin-bottom: 5%}
+        .content{margin-top: 3%;width: 85%;margin-left: 25%;text-align: left}
+        .showimage{width: 70%;margin-left: 15%;margin-top: 3%}
+        .duima{width: 60%;margin: 5% auto;background-color: #00a4e2;color: #fff;text-align: center;
+        padding: 5%;border-radius: 5px}
+        a:link{color: inherit}
+        a:visited{color: inherit}
+        .opacityY{animation:opacity-animation 1s linear 1s;-moz-animation:opacity-animation 1s linear 1s;-webkit-animation:opacity-animation 1s linear 1s;-o-animation:opacity-animation 1s linear 1s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}.rotateZZ{-moz-animation:rotateZ-animation 2s linear infinite;-webkit-animation:rotateZ-animation 2s linear infinite;-o-animation:rotateZ-animation 2s linear infinite;animation:rotateZ-animation 2s linear infinite;-webkit-animation-fill-mode:forwards}@keyframes rotateZ-animation{0%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}20%{-ms-transform:rotateZ(10deg);-moz-transform:rotateZ(10deg);-webkit-transform:rotateZ(10deg);-o-transform:rotateZ(10deg);transform:rotateZ(10deg)}60%{-ms-transform:rotateZ(-10deg);-moz-transform:rotateZ(-10deg);-webkit-transform:rotateZ(-10deg);-o-transform:rotateZ(-10deg);transform:rotateZ(-10deg)}80%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}100%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}}@-moz-keyframes rotateZ-animation{0%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}20%{-ms-transform:rotateZ(10deg);-moz-transform:rotateZ(10deg);-webkit-transform:rotateZ(10deg);-o-transform:rotateZ(10deg);transform:rotateZ(10deg)}60%{-ms-transform:rotateZ(-10deg);-moz-transform:rotateZ(-10deg);-webkit-transform:rotateZ(-10deg);-o-transform:rotateZ(-10deg);transform:rotateZ(-10deg)}80%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}100%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}}@-webkit-keyframes rotateZ-animation{0%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}20%{-ms-transform:rotateZ(10deg);-moz-transform:rotateZ(10deg);-webkit-transform:rotateZ(10deg);-o-transform:rotateZ(10deg);transform:rotateZ(10deg)}60%{-ms-transform:rotateZ(-10deg);-moz-transform:rotateZ(-10deg);-webkit-transform:rotateZ(-10deg);-o-transform:rotateZ(-10deg);transform:rotateZ(-10deg)}80%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}100%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}}@-o-keyframes rotateZ-animation{0%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}20%{-ms-transform:rotateZ(10deg);-moz-transform:rotateZ(10deg);-webkit-transform:rotateZ(10deg);-o-transform:rotateZ(10deg);transform:rotateZ(10deg)}60%{-ms-transform:rotateZ(-10deg);-moz-transform:rotateZ(-10deg);-webkit-transform:rotateZ(-10deg);-o-transform:rotateZ(-10deg);transform:rotateZ(-10deg)}80%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}100%{-ms-transform:rotateZ(0deg);-moz-transform:rotateZ(0deg);-webkit-transform:rotateZ(0deg);-o-transform:rotateZ(0deg);transform:rotateZ(0deg)}}</style>
+</head>
+<body>
+<div id="bodybox">
+    {if !empty($member_temp['avatar'])}
+      <img class="logo" src="{$member_temp['avatar']}"/>
+    {else}
+      <img class="logo" src="../addons/jy_coupons/images/head.png"/>
+    {/if}
+    
+    {if !empty($coupons_logo)}
+    <img class="page3_txt" src="{$_W['attachurl']}{$coupons_logo}"/>
+    {else}
+    <img class="page3_txt" src="../addons/jy_coupons/images/page3_txt.png"/>
+    {/if}
+    {if !empty($coupons_pic)}
+    <img class="juan22" src="{$_W['attachurl']}{$coupons_pic}"/>
+    {else}
+    <img class="juan22" src="../addons/jy_coupons/images/juan22.png"/>
+    {/if}
+    <div class="content11">兑换时请在微信卡包內找到此卡卷</div>
+    <a href="{php echo $this->CreateMobileUrl('rule')}"><label>兑换条件</label></a>
+   {if !empty($user_log) && $user_log['status']==1}
+    <div class="btn" id="btn" >立即兑换</div>
+    {else}
+    <div class="btn" id="btn" >已兑换</div>
+    {/if}
+    <div class="btn2" id="btn2"><a href="{php echo $this->CreateMobileUrl('index')}" style="text-decoration:none;">我也要送</a></div>
+
+</div>
+
+<script>
+    window.onload = function(){
+        var width = document.documentElement.clientWidth;
+        if(width <= 320){
+            var height = 1138 * (width / 720);
+            document.getElementById("bodybox").style.height = Math.floor(height) + 'px';
+        }
+        var btn = document.getElementById("btn");
+        var btn2 = document.getElementById("btn2");
+
+        addClass(btn,"opacityY");
+        setTimeout(function(){
+            btn.style.opacity = 1;
+            removeClass(btn,"opacityY");
+            addClass(btn,"rotateZZ");
+        },2000);
+
+        addClass(btn2,"opacityY");
+    }
+    function hasClass( elements,cName ){   
+        return !!elements.className.match( new RegExp( "(\\s|^)" + cName + "(\\s|$)") );  
+    }; 
+    function addClass( elements,cName ){   
+        if( !hasClass( elements,cName ) ){   
+            elements.className += " " + cName;   
+        };   
+    };
+    function removeClass( elements,cName ){   
+        if( hasClass( elements,cName ) ){   
+            elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" ), " " ); 
+        };   
+    };
+</script>
+<script src="http://libs.baidu.com/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+{php $signPackage=$_W['account']['jssdkconfig'];}   
+<script>
+
+var appid = '{$_W['account']['jssdkconfig']['appId']}';
+var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+wx.config({
+    debug: false,   
+    appId: appid,
+    timestamp: timestamp,
+    nonceStr: nonceStr,
+    signature: signature,
+    jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','addCard','openCard','chooseCard',]
+});
+
+wx.ready(function () {
+    var shareData = {
+        {if empty($item['sharetitle'])}
+        title: "大家来领券",
+        {else}
+        title: "{$item['sharetitle']}",
+        {/if}
+        {if empty($item['desc'])}
+        desc: "大家来领券",
+        {else}
+        desc: "{$item['desc']}",
+        {/if}
+        link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('friend',array('member_id'=>$uid))}",
+        {if !empty($item['sharelogo'])}
+        imgUrl: "{$item['sharelogo']}",
+        {else}
+        imgUrl: "{$_W['siteroot']}addons/jy_coupons/icon.jpg",
+        {/if}
+        trigger: function (res) {},
+        complete: function (res) {},
+        success: function (res) {
+            
+            },
+        cancel: function (res) {
+           
+        },
+        fail: function (res) {}
+    };
+    wx.onMenuShareTimeline(shareData);
+    wx.onMenuShareAppMessage(shareData);
+    wx.onMenuShareQQ(shareData);
+    wx.onMenuShareWeibo(shareData);
+
+    {if empty($user_log)}
+    document.querySelector('#btn').onclick = function () {
+        wx.addCard({
+          cardList: [
+            {
+              cardId: "{$cardid}",
+              cardExt: '{"timestamp":"{$timestamp}","signature":"{$signature}"}'
+            }
+          ],
+          success: function (res) {
+              $.ajax({
+                  type: "POST",
+                  url: "{php echo $this->createMobileurl('friend',array('op'=>'add','member_id'=>$member_id))}",
+                  data: {},
+                  dataType: "text",
+                  
+                  success: function (d) {
+                      if (d == "1") {
+                      }else {
+                      
+                      }
+                  },
+                  
+                  error: function (xml, text, thrown) {
+                      TopBox.alert("出错啦!");
+                  }
+              });
+            
+          }
+        });
+    };
+    {/if}
+
+});
+</script>
+</body>
+</html>

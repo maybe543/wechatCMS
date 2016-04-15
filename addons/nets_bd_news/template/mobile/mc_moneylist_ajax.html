@@ -1,0 +1,10 @@
+
+{loop $moneylist $m}
+    <li>
+      <div class="left"><?php  echo date("Y-m-d",$m["createtime"]); ?>&nbsp;&nbsp;&nbsp;
+	  <?php  $arr=explode("^",$m["remark"]); if(sizeof($arr)>1){$title=$arr[4];}else{$title=$arr[0];} ?>
+	  {$title}</div>
+      <a href="javascript:void(0);" class="toFundHistoryList" id="monthGrowthRate">
+      <div class="right negative"><?php echo $m["num"]?> </div>
+      </a> </li>
+	{/loop}

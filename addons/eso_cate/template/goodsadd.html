@@ -1,0 +1,587 @@
+{template 'common/header'}
+{php $_item=1;}
+{php $_itemp=1;}
+{template 'menu'}
+<div class="main w98auto">
+
+<div class="main cf custom-menu">
+<div class="mod">
+<div class="main-bd main-page">
+<h2 class="title">{$subtitle}商品</h2>
+<div class="clearfix"></div>
+<hr/>
+
+
+<div class="vipmenu tabmenu" id="topmenu">
+    <a href="javascript:;">基本信息</a>
+    <a href="javascript:;">商品属性</a>
+    <a href="javascript:;">商品相册</a>
+    {if $feiyinlists}
+    <a href="javascript:;">无线打印</a>
+    {/if}
+</div>
+
+
+<div class="mod mod-rounded mod-bordered w98auto">
+<form action="{php echo get_url();}"  method="post" id="saveform" class="form-services">
+<table class="table table-form tabtable" id="tabtable">
+    <tbody>
+    <tr>
+        <td width="100"><span>商品标题</span></td>
+        <td>
+            <input name="title" type="text" class="form-control" id="title" value="{php echo value($goods,'title')}"
+                   style="width:60%;display:inline">
+            <img src="{IMG_PATH}colour.png" onclick="colorpicker(this);"/>
+            <input type="hidden" id="title_color" name="title_color" value="{php echo value($goods,'title_color')}"/>
+        </td>
+        <script type="text/javascript">$("input#title").css("color", $("input#title_color").val());</script>
+    </tr>
+    <tr>
+        <td><span>商品货号</span></td>
+        <td>
+            <input name="sn" type="text" class="form-control-small" id="sn" value="{php echo value($goods,'sn')}"
+            {if value($goods,'sn')} disabled="disabled"{else} placeholder="留空自动生成" {/if}>
+        </td>
+    </tr>
+    <tr>
+        <td><span>上架推荐</span></td>
+        <td class="check">
+            <label><input type="checkbox" class="check" id="is_on_sale" name="is_on_sale"{php echo che(value($goods,'is_on_sale'),'1')}>上架</label>
+            <label><input type="checkbox" class="check" id="is_best" name="is_best"{php echo che(value($goods,'is_best'),'1')}>精品</label>
+            <label><input type="checkbox" class="check" id="is_new" name="is_new"{php echo che(value($goods,'is_new'),'1')}>新品</label>
+            <label><input type="checkbox" class="check" id="is_hot" name="is_hot"{php echo che(value($goods,'is_hot'),'1')}>热销</label>
+            <span style="padding:0 20px 0 15px;color:#AAA;">|</span>
+            推荐排序
+            <input name="inorder" type="text"
+                   class="form-control-small" id="inorder" value="{php echo value($goods,'inorder')}">
+        </td>
+    </tr>
+    <tr>
+        <td><span>所属分类</span></td>
+        <td>
+                                    <span id="sorttemp">
+                                        <select name="sort_id" id="sort_id" class="form-control wi">
+                                            <option value="0">请选择...</option>
+                                            {loop $sortlists $list}
+                                            <option value="{$list['id']}">{php echo value($list,'_tree|spacer')} {$list['title']}</option>
+                                            {/loop}
+                                            {if !$sortlists}
+                                            <option value="0">=请先添加分类=</option>
+                                            {/if}
+                                        </select>
+                                    </span>
+            <span id="iconsadd_sort" class="iconsadd" onclick="addsort();"></span>
+            {if value($goods,'sort_id')}
+            <script>$("#sort_id").val('{php echo value($goods,'sort_id')}');</script>
+            {/if}
+        </td>
+    </tr>
+    <tr>
+        <td><span>所属区域</span></td>
+        <td>
+                                    <span id="areatemp">
+                                        <select name="area_id" id="area_id" class="form-control wi">
+                                            <option value="0">请选择...</option>
+                                            {loop $arealists $list}
+                                            <option value="{$list['id']}">{php echo value($list,'_tree|spacer')} {$list['title']}</option>
+                                            {/loop}
+                                            {if !$arealists}
+                                            <option value="0">=请先添加区域=</option>
+                                            {/if}
+                                        </select>
+                                    </span>
+            <span id="iconsadd_area" class="iconsadd" onclick="addarea();"></span>
+            {if value($goods,'area_id')}
+            <script>$("#area_id").val('{php echo value($goods,'area_id')}');</script>
+            {/if}
+        </td>
+    </tr>
+    <tr>
+        <td><span>商品价格</span></td>
+        <td>
+            商城价格 <input name="shop_price" type="text"
+                        class="form-control-small" id="shop_price" value="{php echo value($goods,'shop_price')}">
+            市场价格 <input name="market_price" type="text"
+                        class="form-control-small" id="market_price" value="{php echo value($goods,'market_price')}">
+        </td>
+    </tr>
+    <tr>
+        <td><span>库存相关</span></td>
+        <td>
+            库存剩余 <input name="number" type="text"
+                        class="form-control-small" id="number" value="{php echo value($goods,'number')}">
+            库存单位 <input name="unit" type="text"
+                        class="form-control-small" id="unit" value="{php echo value($goods,'unit')}" placeholder="留空默认：{php echo $this->cate_unit()}">
+        </td>
+    </tr>
+    <tr>
+        <td><span>简单描述</span></td>
+        <td>
+            <textarea class="form-control" name="descriptions" id="descriptions" style="height:60px;">{php echo value($goods,'descriptions')}</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td><span>详细描述</span></td>
+        <td class="form-uetext">
+            <textarea class="form-control richtext" id="content" name="content"
+                      style="width:90%; height:250px;">{php echo value($goods,'content')}</textarea>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="table table-form tabtable goodsattr" id="tabtable">
+    <tbody>
+    <tr>
+        <th style="width:250px"></th>
+        <th style="text-align:right">
+            <a class="button" href="javascript:;" onclick="addattr();">+添加属性类别</a>
+        </th>
+    </tr>
+    </tbody>
+
+    <tbody id="tempattr" style="display: none;">
+    <tr>
+        <td class="type" style="vertical-align:top;">
+            属性类别：<input type="text" class="form-control-type" idid="setting_type">
+        </td>
+        <td id="attrval" data-i="0">
+            <div class="attrdiv">
+                属性名称：<input type="text" idid="setting_name">
+                属性值：<input type="text" idid="setting_val">
+                增价：<input type="text" class="small" idid="setting_price">
+                <label>默认：<input type="checkbox" idid="setting_default" onclick="addattrl(this);"></label>
+                <span style="display:none;">库存：<input type="text" class="small" idid="setting_number"></span>
+                <span class="attraddp" id="addattrp" onclick="addattrp(this);">+添加项</span>
+                <span class="attraddv" id="addattrv" onclick="addattrv(this);" title="添加同级项"></span>
+                <span class="attraddd" id="addattrd" onclick="addattrd(this);"></span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+
+    <tbody id="goodsattr" class="attrlist">
+    {php echo value($goods,'setting|attrtext')}
+    </tbody>
+</table>
+<table class="table table-form tabtable" id="tabtable">
+    <tbody>
+    <tr>
+        <td class="tdalbum">
+            <div class="control-group js_scene_style js_pics">
+                <div class="controls">
+                    <div class="span12" style="margin:10px;text-align:right">
+                        <a href="javascript:void(0)" class="button" onclick="addImg(this);"><i class="icon-plus"></i>添加图片</a>
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>图片地址</th>
+                            <th>描述</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {loop $goodsalbum $list}
+                        <tr class="copy_rows">
+                            <td>
+                                <div id="map_image_uploads" style="width:330px;max-width:100%">
+                                    {php echo tpl_form_field_image('img_url['.$list['id'].']', $list['img_url']);}
+                                </div>
+                            </td>
+                            <td><textarea type="text" name="img_desc[{$list['id']}]" class="form-control">{$list['img_desc']}</textarea></td>
+                            <td><input type="text" name="img_inorder[{$list['id']}]" class="form-control" value="{$list['inorder']}"></td>
+                            <td><a href="javascript:;" class="del">删除</a></td>
+                        </tr>
+                        {/loop}
+                        {if !$goodsalbum}
+                        <tr class="copy_rows">
+                            <td>
+                                <div id="map_image_uploads" style="width:330px;max-width:100%;">
+                                    {php echo tpl_form_field_image('img_url[]', '');}
+                                </div>
+                            </td>
+                            <td><textarea type="text" name="img_desc[]" class="form-control"></textarea></td>
+                            <td><input type="text" name="img_inorder[]" class="form-control" value="0"></td>
+                            <td><a href="javascript:;" onclick="delImg(this)">删除</a></td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+{if $feiyinlists}
+<table class="table table-form tabtable" id="tabtable">
+    <thead>
+    <tr>
+        <th style="width:30%"></th>
+        <th> </th>
+        <th style="width:10%"> </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="3" align="right">
+            <a class="button" href="javascript:;" onclick="addfeiyin();">+添加无线打印</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" align="left">
+            <label><input type="radio" class="check" id="payprint1" name="payprint"{php echo che(value($goods,'payprint'),'1')}>下单成功打印</label>　
+            <label><input type="radio" class="check" id="payprint2" name="payprint"{php echo che(value($goods,'payprint'),'2')}>付款成功打印</label>
+        </td>
+    </tr>
+    <tr id="trautoconfirm">
+        <td colspan="3" align="left">
+            <input type="checkbox" class="check" id="autoconfirm" name="autoconfirm"{php echo che(value($goods,'autoconfirm'),'1')}>
+            <label for="autoconfirm">打印成功后自动确认订单并微信通知用户</label>
+            <span style="color:#AAAAAA;padding-left:10px;">【注明：非在线付款的订单需要确认的，勾选此项可在成功打印后自动确认订单并微信通知用户】</span>
+        </td>
+    </tr>
+    <tr id="trautosend">
+        <td colspan="3" align="left">
+            <input type="checkbox" class="check" id="autosend" name="autosend"{php echo che(value($goods,'autosend'),'1')}>
+            <label for="autosend">打印成功后订单自动标记为已发货</label>
+            <span style="color:#AAAAAA;padding-left:10px;">【注明：非在线付款的订单需要勾选“打印成功后自动确认”此项才生效】</span>
+        </td>
+    </tr>
+    </tbody>
+
+    <tbody id="tempfeiyin" style="display: none;">
+    <tr>
+        <td class="type" valign="top">
+            <span>选择打印机：</span>
+            <select idid="feiyin_id" class="form-control wi">
+                <option value="0">请选择...</option>
+                {loop $feiyinlists $list}
+                <option value="{$list['id']}">{$list['title']}{$list['status_cn']}</option>
+                {/loop}
+                {if !$feiyinlists}
+                <option value="0">=请先添加打印=</option>
+                {/if}
+            </select>
+        </td>
+        <td id="feiyinval" data-i="0" valign="top">
+            <span>打印内容：</span>
+            <textarea class="form-control" idid="feiyin_content" style="height:60px;" placeholder="留空则自动打印商品标题；可使用换行分割。"></textarea>
+        </td>
+        <td><a href="javascript:;" onclick="delFeiyin(this)">删除</a></td>
+    </tr>
+    </tbody>
+
+    <tbody id="goodsfeiyin" class="feiyinlist">
+    {php echo value($goods,'setting|feiyintext')}
+    </tbody>
+
+    <tbody>
+    <tr>
+        <td colspan="3" align="left">
+            <input type="checkbox" class="check" id="validthis" name="validthis" value="1">
+            <label for="validthis">勾选此页应用到所有上架商品</label>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+
+{/if}
+<table class="table table-form">
+    <tbody>
+    <tr>
+        <td width="100">&nbsp;</td>
+        <td>
+            <div class="control-submit">
+                <input class="button" type="submit" value="{$subtitle}"> &nbsp;
+                <a class="button primary" href="{php echo urido('goodslist')}">取消</a>
+                <input type="hidden" name="dosubmit" value="1">
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<script id="sortsdata" type="text/plain" style="display:none;">{php echo value($goods,'goods_sorts')}</script>
+<script id="areasdata" type="text/plain" style="display:none;">{php echo value($goods,'goods_areas')}</script>
+<script type="text/javascript">
+//添加扩展分类
+function addsort(id) {
+    var m = Math.round(Math.random() * 10000);
+    $intemp = $('<span>'+$("#sorttemp").html()+'</span>');
+    $intemp.find("select").attr("name", "sorts_id_"+m);
+    $intemp.find("option:eq(0)").after("<option value='del'>=删除此项=</option>");
+    $intemp.find("select").change(function(){ if ($(this).val()=="del") { $(this).parent().remove(); } });
+    if (id){
+        $intemp.find("select").val(id);
+    }
+    $("#iconsadd_sort").before($intemp);
+}
+//添加扩展区域
+function addarea(id) {
+    var m = Math.round(Math.random() * 10000);
+    $intemp = $('<span>'+$("#areatemp").html()+'</span>');
+    $intemp.find("select").attr("name", "areas_id_"+m);
+    $intemp.find("option:eq(0)").after("<option value='del'>=删除此项=</option>");
+    $intemp.find("select").change(function(){ if ($(this).val()=="del") { $(this).parent().remove(); } });
+    if (id){
+        $intemp.find("select").val(id);
+    }
+    $("#iconsadd_area").before($intemp);
+}
+//添加图片
+function addImg(obj) {
+    var eve = $(obj);
+    $intemp = $('<tr class="copy_rows">'+$("tr.copy_rows").eq(0).html()+'</tr>');
+    $intemp.parents("tr").find("img").attr("src","");
+    $intemp.parents("tr").find("input").val("");
+    eve.parent().next().find("tbody").append($intemp);
+}
+//删除图片
+function delImg(obj) {
+    var eve = $(obj);
+    if (eve.parents("tbody").find("tr.copy_rows").length <= 1){
+        eve.parents("tr.copy_rows").find("img").attr("src","");
+        eve.parents("tr.copy_rows").find("input").val("");
+    }else{
+        eve.parents("tr.copy_rows").remove();
+    }
+}
+//删除打印机
+function delFeiyin(obj) {
+    var eve = $(obj);
+    if (eve.parents("#goodsfeiyin").find("tr").length <= 1){
+        $("#goodsfeiyin").html('<tr id="noattr-feiyin"><td colspan="3" align="center">无</td></tr>');
+    }
+    eve.parents("tr").remove();
+}
+//添加类别
+function addattr() {
+    $("#noattr").hide();
+    var m = Math.round(Math.random() * 10000);
+    $intemp = $($("#tempattr").html());
+    $intemp.find("input").each(function(){
+        $(this).attr("id",$(this).attr("idid") + "_" + m);
+        $(this).attr("name",$(this).attr("idid") + "_" + m);
+    });
+    $intemp.find("#attrval").find("input").each(function(){
+        $(this).attr("id", $(this).attr("id") + "_0");
+        $(this).attr("name", $(this).attr("id"));
+    });
+    $intemp.attr("data-attri", m);
+    $intemp.find("input[idid=setting_price]").attr("readonly", true).css("background-color", "#eeeeee");
+    $intemp.find("input[idid=setting_number]").attr("readonly", true).css("background-color", "#eeeeee");
+    $("#goodsattr").append($intemp);
+}
+//删除项
+function addattrd(obj){
+    var eve = $(obj);
+    if (eve.parent().parent().find("div").length <= 1){
+        eve.parents("tr").remove();
+    }else{
+        var ev1 = eve.parent().find("input[idid=setting_name]");
+        var ev2 = eve.parent().prev().find("input[idid=setting_name]");
+        var ev3 = eve.parent().prev().find("#addattrp");
+        var ev4 = eve.parent().next().find("input[idid=setting_name]");
+        var ev5 = eve.parent().prev().find("input[idid=setting_price]");
+        var ev6 = eve.parent().prev().find("input[idid=setting_number]");
+        var ev7 = eve.parent().prev().find("#addattrd");
+        var ev8 = eve.parent().prev().find("label");
+        if (ev4.attr("readonly") != "readonly" || ev2.val() != ev4.val()){
+            if (ev1.attr("readonly") == "readonly" && ev2.attr("readonly") == "readonly" && ev1.val() == ev2.val() && ev3.length > 0) {
+                ev2.attr("readonly", false).css("color", "#333333");
+                ev5.attr("readonly", true).css("background-color", "#eeeeee");
+                ev6.attr("readonly", true).css("background-color", "#eeeeee");
+                ev7.show();
+                ev8.hide();
+            }
+        }
+        if (parseInt(eve.parent().css("margin-top")) == 0 && parseInt(eve.parent().next("div").css("margin-top")) != 0){
+            eve.parent().next("div").css({
+                "margin-top":"5px",
+                "padding-top":"5px",
+                "border-top":"1px solid #cccccc"
+            });
+        }
+        eve.parent().remove();
+    }
+}
+//添加项
+function addattrp(obj){
+    var eve = $(obj);
+    var dar = eve.parent().parent().parent().attr("data-attri");
+    var dai = parseInt(eve.parent().parent().attr("data-i")) + 1;
+    eve.parent().parent().attr("data-i", dai);
+    $intemp = $($("#tempattr").find("#attrval").html());
+    $intemp.find("input").each(function(){
+        $(this).attr("id", $(this).attr("idid") + "_" + dar + "_" + dai);
+        $(this).attr("name", $(this).attr("idid") + "_" + dar + "_" + dai);
+    });
+    $intemp.css({
+        "margin-top":"5px",
+        "padding-top":"5px",
+        "border-top":"1px solid #cccccc"
+    });
+    $intemp.find("input[idid=setting_price]").attr("readonly", true).css("background-color", "#eeeeee");
+    $intemp.find("input[idid=setting_number]").attr("readonly", true).css("background-color", "#eeeeee");
+    eve.parents("#attrval").append($intemp);
+}
+//添加值
+function addattrv(obj){
+    var eve = $(obj);
+    var dar = eve.parent().parent().parent().attr("data-attri");
+    var dai = parseInt(eve.parent().parent().attr("data-i")) + 1;
+    var dav = eve.parent().find("input[idid=setting_name]").val();
+    if (dav == "") {
+        $.alert("请输入属性名称！");
+        eve.parent().find("input[idid=setting_name]").focus();
+        return;
+    }
+    eve.parent().parent().attr("data-i", dai);
+    $intemp = $($("#tempattr").find("#attrval").html());
+    $intemp.find("input").each(function(){
+        $(this).attr("id", $(this).attr("idid") + "_" + dar + "_" + dai);
+        $(this).attr("name", $(this).attr("idid") + "_" + dar + "_" + dai);
+    });
+    var setting_name = eve.parent().find("input[idid=setting_name]").val();
+    $intemp.find("input[idid=setting_name]").val(setting_name);
+    $intemp.find("input[idid=setting_name]").attr("readonly", true);
+    $intemp.find("input[idid=setting_name]").css("color", "#999999");
+    $intemp.find("#addattrv").remove();
+    $intemp.find("#addattrp").remove();
+    $intemp.find("label").show().find("input[idid=setting_default]").val(setting_name);
+    eve.parent().find("input[idid=setting_name]").attr("readonly", true);
+    eve.parent().find("input[idid=setting_name]").css("color", "#999999");
+    eve.parent().find("input[idid=setting_price]").attr("readonly", false).css("background-color", "#ffffff");
+    eve.parent().find("input[idid=setting_number]").attr("readonly", false).css("background-color", "#ffffff");
+    eve.parent().find("label").show().find("input[idid=setting_default]").val(setting_name);
+    eve.parent().find("#addattrd").hide();
+    eve.parent().after($intemp);
+}
+//点击默认
+function addattrl(obj){
+    var tthis = $(obj);
+    var eve = tthis.parents("#attrval");
+    if (tthis.prop("checked")) {
+        eve.find("input[value="+tthis.val()+"]").prop("checked", false);
+        tthis.prop("checked", true);
+    }
+}
+//添加打印
+function addfeiyin(){
+    $("#noattr-feiyin").hide();
+    var m = Math.round(Math.random() * 10000);
+    $intemp = $($("#tempfeiyin").html());
+    $intemp.find("select,textarea").each(function(){
+        $(this).attr("id",$(this).attr("idid") + "_" + m);
+        $(this).attr("name",$(this).attr("idid") + "_" + m);
+    });
+    $intemp.attr("data-feiyini", m);
+    $("#goodsfeiyin").append($intemp);
+}
+$(document).ready(function() {
+    if ($("#goodsattr").text().replace(/(^\s*)|(\s*$)/g, "") == ""){
+        $("#goodsattr").html('<tr id="noattr"><td colspan="2" align="center">无</td></tr>');
+    }
+    if ($("#goodsfeiyin").text().replace(/(^\s*)|(\s*$)/g, "") == ""){
+        $("#goodsfeiyin").html('<tr id="noattr-feiyin"><td colspan="3" align="center">无</td></tr>');
+    }
+    //选择打印项触发
+    $("#payprint1").click(function(){
+        $("#trautoconfirm").find("label").text('打印成功后自动确认订单并微信通知用户');
+        $("#trautoconfirm").find("span").text('【注明：非在线付款的订单需要确认的，勾选此项可在成功打印后自动确认订单并微信通知用户】');
+        $("#trautosend").find("span").text('【注明：非在线付款的订单需要勾选“打印成功后自动确认”此项才生效】');
+    });
+    $("#payprint2").click(function(){
+        $("#trautoconfirm").find("label").text('打印成功后微信通知用户');
+        $("#trautoconfirm").find("span").text('【注明：用户主动发消息给公众号(含发送信息、点击定义菜单、订阅事件、支付成功事件等)48小时内有效】');
+        $("#trautosend").find("span").text('');
+    });
+    if ($("#payprint2").is(":checked")) {
+        $("#payprint2").click();
+    }
+    //初始化扩展分类
+    if ($("#sortsdata").html()){
+        var _sortsjson = eval($("#sortsdata").html());
+        for(var i=0; i<_sortsjson.length; i++){
+            addsort(_sortsjson[i].sort_id);
+        }
+    }
+    //初始化扩展区域
+    if ($("#areasdata").html()){
+        var _areasjson = eval($("#areasdata").html());
+        for(var i=0; i<_areasjson.length; i++){
+            addarea(_areasjson[i].area_id);
+        }
+    }
+    //初始化TAB
+    $("#topmenu a").each(function(index){
+        $(this).attr("d-index", index);
+        $(this).click(function(){
+            $("#topmenu a").removeClass("active");
+            $(this).addClass("active");
+            $("table#tabtable").hide().eq($(this).attr("d-index")).show();
+        });
+    });
+    $("#topmenu a:eq(0)").click();
+    //保存数据事件
+    $('#saveform').submit(function() {
+        //判断属性输入空
+        var _break = false;
+        $("#goodsattr").find("input[idid=setting_type]").each(function(){
+            if ($(this).val() == ""){
+                $.alert('商品属性【属性类别】不能为空');
+                $("#topmenu a:eq(1)").click();
+                $(this).focus(); _break = true; return false;
+            }
+        });
+        if (_break) return false;
+        $("#goodsattr").find("input[idid=setting_name]").each(function(){
+            if ($(this).val() == ""){
+                $.alert('商品属性【属性名称】不能为空');
+                $("#topmenu a:eq(1)").click();
+                $(this).focus(); _break = true; return false;
+            }
+        });
+        if (_break) return false;
+        //
+        $.alert('正在保存...', 0);
+        /*$(this).ajaxSubmit({
+            dataType : 'json',
+            success : function (data) {
+                $.alert(0);
+                if (data != null && data.success != null && data.success) {
+                    $.showModal(data.message, "{php echo urido('goodsadd')}&id=" + data.id);
+                } else {
+                    $.showModal(data.message);
+                }
+            },
+            error : function () {
+                $.alert(0);
+                $.inModal("保存失败！");
+            }
+        });
+        return false;*/
+    });
+
+    {if  $this->reply['printmode']}
+        $("td#feiyinval").find("span").append('<label style="color:#f00">（当前<a href="{php echo url('platform/reply/post',array('m'=>'eso_cate','rid'=>$_GPC['rid']));}">订单模式</a>不支持自定义打印，默认打印商品标题）</label>');
+        $("td#feiyinval").find("textarea").val('').attr('readonly','readonly').attr('disabled','readonly');
+    {/if}
+});
+//
+require(['jquery', 'util'], function($, u){
+    $(function(){
+        u.editor($('.richtext')[0]);
+    });
+});
+</script>
+{template 'common/footer'}

@@ -1,0 +1,66 @@
+{template 'common/header'}
+<div class="main">
+{php load()->func('tpl');}
+
+<div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+        <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+            
+         <div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">会员</label>
+				<div class="col-sm-8 col-lg-9 col-xs-12">
+					<input class="form-control" name="keyword" type="text" value="{$_GPC['keyword']}" placeholder="可查询会员名/姓名/手机号">
+				</div>
+			</div> 
+            <div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+					<div class="col-sm-7 col-lg-9 col-xs-12">
+					<button type="submit" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+					</div>
+				</div>
+			<div class="form-group">
+			</div>
+        </form>
+    </div>
+</div>
+	<div class="panel panel-default">
+    <div class="panel-heading">
+        会员充值/消费记录
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:50px;">编号</th>
+                    <th style="width:100px;">会员名</th>
+					<th style="width:80px;">真实姓名</th>
+                    <th style="width:80px;">手机号</th>
+                    <th style="width:80px;">金额</th>
+                    <th style="width:100px;">时间</th>
+                    <th style="width:120px;">备注</th>
+               
+                </tr>
+				<tbody>
+				{loop $record $r}
+				<tr>
+                    <th>{$r["id"]}</th>
+                    <th>{$r["nickname"]}</th>
+					<th>{$r["realname"]}</th>
+                    <th>{$r["mobile"]}</th>
+                    <th>{$r["num"]}</th>
+                    <th>{$r["createtime"]}</th>
+                    <th>{$r["remark"]}</th>
+               
+                </tr>
+				{/loop}
+				</tbody>
+            </thead>
+            <tbody>
+                            </tbody>
+        </table>
+		{$pager}
+            </div>
+</div>
+</div>
+{template 'common/footer'}

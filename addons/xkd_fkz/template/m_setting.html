@@ -1,0 +1,33 @@
+{template 'common/header'}
+<form method="post">
+    <div class="form-group">
+        <label>互粉互赚改名</label>
+        <input class="form-control" name="setting[fkz_name]" value="{$setting['fkz_name']}">
+        <div class="help-block">建议4个字</div>
+    </div>
+
+
+    <div class="form-group">
+        <label>互粉朋友圈开关</label>
+        <div>
+            <label>
+                开启
+                <input {if $setting['adv_open']}checked{/if} type="radio" name="setting[adv_open]" value="1">
+            </label>
+            |
+            <label>
+                关闭
+                <input {if !$setting['adv_open']}checked{/if}  type="radio" name="setting[adv_open]" value="0">
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>互粉朋友圈顶部封面</label>
+        <div class="help-block">建议大小 500x270</div>
+        {php echo tpl_form_field_image('setting[adv_headimg]', $setting['adv_headimg']);}
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">保存</button>
+    </div>
+</form>
+{template 'common/footer'}

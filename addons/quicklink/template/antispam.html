@@ -1,0 +1,32 @@
+<h4>参与门槛设置[可选]</h4>
+
+<div class="form-group">
+  <label class="col-xs-12 col-sm-3 col-md-2 control-label">说明</label>
+  <div class="col-sm-9 col-xs-12">
+    <span class="help-block">
+      为了激发大家形成购买，设定参与门槛。只有VIP等级达到一定的程度才允许获得该二维码。对于这一类二维码可以适当给予更高的积分奖励。
+      同时，本设置还有一个作用：防刷分工会。一般刷粉者是不会参与购买的，VIP等级也升不上去。
+    </span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  <label class="col-xs-12 col-sm-3 col-md-2 control-label">VIP等级门槛</label>
+  <div class="col-sm-9 col-xs-12">
+    <div class="input-group">
+      <span for="vip_limit" class="input-group-addon">VIP等级必须达到</span>
+      {php echo FormTpl::getWebControl2('option', 'vip_limit', $item['vip_limit'], array('0'=>'VIP0', '1'=>'VIP1', '2'=>'VIP2', '3'=>'VIP3', '4'=>'VIP4', '5'=>'VIP5', '6'=>'VIP6', '7'=>'VIP7', '8'=>'VIP8', '9'=>'VIP9'))}
+      <span class="input-group-addon">后方可获得该海报</span>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-xs-12 col-sm-3 col-md-2 control-label">等级不足时提示</label>
+  <div class="col-sm-9 col-xs-12">
+    {php echo FormTpl::getWebControl2('textarea', 'genqr_vip_limit_info', $item['genqr_vip_limit_info'])}
+    <span class="help-block">刚关注微信号的用户，VIP等级默认为VIP0，购买商品完成支付后，VIP等级自动变为VIP1</span>
+  </div>
+</div>
+

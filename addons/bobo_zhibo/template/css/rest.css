@@ -1,0 +1,88 @@
+@charset "utf-8";
+/* 2013317001 phoebe*/
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em,  img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b,  i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0 auto;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+body {
+	line-height: 1;
+	font-family:"Microsoft Yahei";
+}
+ol, ul {
+	list-style: none;
+}
+.clearfix:after{
+	content:"";
+	display:block;
+	height:0;
+	clear:both;
+	visibility:hidden;
+	font-size:0;
+}
+.clearfix {}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.fl{
+	float:left;
+}
+.fr{
+	float:right
+}
+
+/* Resetting HTML5! */
+section, article, aside, header, footer, nav, dialog, figure { display:block; }
+
+/*te xiao css*/
+.W_arrow{
+	display: inline-block;
+	width: 7px;
+	height: 4px;
+	_height: 5px;
+	overflow: hidden;
+	font-size: 12px;
+	line-height: 12px;
+}
+.W_arrow em{
+	display: inline-block;
+	font-family: "SimSun";
+	font-style: normal;
+	margin: -7px 0 0 -2px;
+}

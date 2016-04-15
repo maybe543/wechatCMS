@@ -1,0 +1,116 @@
+{template 'common/header'}
+<style>
+body{background:#d2e6e9; padding-bottom:63px; font-family:Helvetica, Arial, sans-serif;}
+a{color:#666666;}a:hover{color:#3ebacc;}
+.profile-box{padding:10px 0; background:transparent url('resource/images/home-bg.jpg') no-repeat; background-size:100% 100%;}
+.form-header{clear:both;height:20px;line-height:15px;margin-left:15px; margin-top:20px;border-left:5px solid #000000;padding:5px;font-weight:bold;postion:relative;}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{color: #3ebacc;}
+.btn.btn-primary{background: #56c6d6; color: #FFF; border: 0;}
+@media screen and (max-width: 767px) {.tpl-calendar div,.tpl-district-container div{margin-bottom:10px;} .empty{display:none;}}
+.btn-group-top-box{padding:10px 0; border-bottom:1px solid #a5d7de;}
+.btn-group-top{margin:0 auto; overflow:hidden; width:200px; display:block;}
+.btn-group-top .btn{width:100px; -webkit-box-shadow:none; box-shadow:none; border-color:#5ac5d4; color:#5ac5d4; background:#d1e5e9;}
+.btn-group-top .btn:hover{color:#FFF; background:#addbe1;}
+.btn-group-top .btn.active{color:#FFF; background:#5ac5d4;}
+
+.j_list_v,.j_list_v li{ list-style:none; margin:0; padding:0;}
+.j_list_v{background:#FFF;}
+.j_list_v li{ border-bottom:#a5d7de 1px solid;}
+.j_list_v li a{display:block;}
+.j_list_v li a div[class^="col-"]{ margin:0; padding:0;}
+.j_list_v li a div[class^="col-"]:first-child{ padding-right:10px;}
+.j_list_v li a div[class^="col-"] p{ display:table-cell; height:80px; vertical-align:middle; }
+.j_list_v li a div[class^="col-"]:last-child p{ text-align:right; width:100%;}
+.j_list_v li a:active{ background:#DDD;}
+.j_list_v li div img{ width:100%;}
+.j_list_v li a{ display:block;padding:10px; text-decoration:none;}
+.j_list_v li h2{ font-weight:bold; font-size:14px; margin:0 0 5px 0; line-height:20px; text-align:left;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.j_list_v li small{ display:block; padding:0; color:#999;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.j_list_v li small span{color:#666;}
+
+</style>
+<script>
+require(['bootstrap'], function($){
+	$(function(){
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			if($(e.target).attr('href') == '#tab2') {
+				$('#tab2').addClass('fadeInRight');
+				$('.more').addClass('active');
+				$('.basic').removeClass('active');
+			} else {
+				$('#tab1').addClass('fadeInLeft');
+				$('.more').removeClass('active');
+				$('.basic').addClass('active');
+			}
+		});
+	});
+});
+</script> 
+{template 'common/toolbar'}
+<div class="profile">
+  <div class="tabbable">
+    <div class="btn-group-top-box">
+      <div class="btn-group btn-group-top"> <a href="#tab1" data-toggle="tab" class="btn btn-default basic active">已报名</a> <a href="#tab2" data-toggle="tab" class="btn btn-default more">已入选</a> </div>
+    </div>
+    <div class="profile-box">
+    <form class="tab-content clearfix" action="{url 'mc/profile'}" method="post" enctype="multipart/form-data">
+      <div class="tab-pane active animated" id="tab1">
+        <ul class="j_list_v">
+          {loop $act_all $rows}
+          <li><a href="./index.php?i={$_W['uniacid']}&c=entry&m=j_activity&do=view&id={$rows['id']}&wxref=mp.weixin.qq.com#wechat_redirect">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                  <p><img src="{$_W['attachurl']}{$rows['picture']}" /></p>
+                </div>
+                <div class="col-xs-7 col-sm-7 col-md-7">
+                  <h2> {if $rows['usertype']==0} <span class="label label-info">普</span> {elseif $rows['usertype']==1} <span class="label label-danger">摄</span> {/if} {$rows['title']}</h2>
+                  <small>报名：{php echo date('Y-m-d',$rows['joinstarttime'])} 至 {php echo date('m-d',$rows['joinendtime'])}</small> <small>活动：{php echo date('Y-m-d',$rows['starttime'])} 至 {php echo date('m-d',$rows['endtime'])}</small> <small>介绍：{$rows['description']}</small> </div>
+                <div class="col-xs-2 col-sm-2 col-md-2">
+                  <p>
+                    {if $rows['status']==-1}
+                    <span class="label label-default">没选上</span>
+                    {elseif $rows['status']==1}
+                    <span class="label label-info">审核中</span>
+                    {elseif $rows['status']>1}
+                    <span class="label label-success">入选</span>
+                    {/if}
+                    </p>
+                </div>
+              </div>
+            </div>
+            </a></li>
+          {/loop}
+        </ul>
+      </div>
+      <div class="tab-pane animated" id="tab2">
+      	<ul class="j_list_v">
+          {loop $act_all $rows}
+          {if $rows['status']>1}
+          <li><a href="./index.php?i={$_W['uniacid']}&c=entry&m=j_activity&do=view&id={$rows['id']}&wxref=mp.weixin.qq.com#wechat_redirect">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                  <p><img src="{$_W['attachurl']}{$rows['picture']}" /></p>
+                </div>
+                <div class="col-xs-7 col-sm-7 col-md-7">
+                  <h2> {if $rows['usertype']==0} <span class="label label-info">普</span> {elseif $rows['usertype']==1} <span class="label label-danger">摄</span> {/if} {$rows['title']}</h2>
+                  <small>报名：{php echo date('Y-m-d',$rows['joinstarttime'])} 至 {php echo date('m-d',$rows['joinendtime'])}</small> <small>活动：{php echo date('Y-m-d',$rows['starttime'])} 至 {php echo date('m-d',$rows['endtime'])}</small> <small>介绍：{$rows['description']}</small> </div>
+                <div class="col-xs-2 col-sm-2 col-md-2">
+                  <p>
+                    <span class="label label-success">入选</span>
+                    </p>
+                </div>
+              </div>
+            </div>
+            </a></li>
+            {/if}
+          {/loop}
+        </ul>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{template 'mc/footer'}
+{template 'common/footer'} 

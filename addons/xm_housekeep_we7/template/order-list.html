@@ -1,0 +1,102 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('Order', array('name'=>'xm_housekeep_we7'));}">订单列表</a></li>
+    
+</ul>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            订单列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr class="active">
+                    	<td>序号</td>
+						<td>订单人</td>
+						<td>手机号码</td>
+                        <td>服务项目</td>
+						<td>服务时间</td>
+                        <td>地址</td>
+						<td>备注</td>
+						<td>订单状态</td>
+						<td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+					{php $n=0;}
+                	{loop $list $val}
+					{php $n+=1;}
+                	<tr>
+						<td>
+						{$val[orderformid]}
+						</td>
+						<td>
+							{php echo $this->getnickname($val[openid])}
+                        </td>
+						<td>
+							{php echo $this->getSj($val[openid])}
+                        </td>
+                    	<td>
+                        	{php echo $this->gettypename($val[typeid])}
+                        </td>
+                        <td>
+							{$val[ftime]}
+                        </td>
+						<td>
+							{$val[address]}
+                        </td>
+						<td>
+							{if $val[mark] == ''}
+								无备注
+							{else}
+								{$val[mark]}
+							{/if}
+                        </td>
+						<td>
+							{php echo $this->getstate($val[state])}
+                        </td>
+						
+                        <td style="overflow:visible;">
+                        	<div class="btn-group btn-group-sm">
+							{if in_array('5', $power)}
+								{if $val[state] == 0}
+                                <a class="btn btn-default" href="{php echo $this->createWebUrl('paidan',array('orderid'=>$val['orderformid'],'name'=>'xm_housekeep'));}"><i class="fa fa-edit"></i> 派单</a>
+								{/if}
+							{/if}
+							{if in_array('6', $power)}
+								{if $val[state] == 1}
+								<a class="btn btn-default" href="{php echo $this->createWebUrl('finish',array('orderid'=>$val['orderformid'],'name'=>'xm_housekeep'));}"><i class="fa fa-edit"></i> 完工</a>
+								{/if}
+							{/if}
+							{if in_array('7', $power)}
+								{if $val[state] == 2}
+								<a class="btn btn-default" href="{php echo $this->createWebUrl('show',array('orderid'=>$val['orderformid'],'name'=>'xm_housekeep'));}"><i class="fa fa-edit"></i>已完工</a>
+								{/if}
+							{/if}	
+                                <!--
+								<a class="btn btn-default" href="{php echo $this->createWebUrl('staffdelete', array('id'=>$val['id'],'name'=>'xm_housekeep'))}" onClick="confirm('确认删除改员工信息?');"><i class="fa fa-remove"></i> 删除</a>    
+								-->
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+        
+        <!--<div class="panel-footer">
+           
+        </div>-->
+        
+    </div>
+</div>
+
+
+{template 'common/footer'}

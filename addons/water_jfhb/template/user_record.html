@@ -1,0 +1,101 @@
+{template 'common/header'}
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery-ui-1.10.3.min.js"></script>
+
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('Usermanage',array('op'=>'display'));}">用户信息</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('Gzrk',array('op'=>'display'));}">用户红包记录</a></li>
+	<li><a href="{php echo $this->createWebUrl('qrcode',array('op'=>'display'));}">海报管理</a></li>
+</ul>
+{if $op== 'display'}
+<div class="main">
+	<div class="panel panel-info">
+</div>
+<button  type="button" class="btn btn-default" onclick="delete_all()"> 删除所有红包记录</button>
+<button  type="button" class="btn btn-default" onclick="add()"> 添加红包记录</button>
+<style>
+.label{cursor:pointer;}
+</style>
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+                 	<th style="width:10%;">获得的金额</th>
+					<th style="width:10%">来源类型</th>
+					<th style="width:20%;">时间</th>
+                    <th style="width:20%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>	
+					<td>{$item['money']}</td>	
+					<td>{if $item['ori_type']==0}关注获得
+						{elseif $item['ori_type']==1}邀请关注获得
+						{else}其他{/if}</td>
+					<td title="{php echo date('Y-m-d H:i:s', $item['createtime'])}">{php echo date('Y-m-d H:i:s', $item['createtime'])}  </td>
+				<td>  <a href="{php echo $this->createWebUrl('Gzrk', array('op' => 'delete', 'id' => $item['id']))}" onclick="return confirm('确认删除信息吗？');return false;">删除</a>
+					<a href="{php echo $this->createWebUrl('Gzrk', array('op' => 'post', 'id' => $item['id']))}">修改</a>
+				</td>				
+				</tr>
+				{/loop}
+			</tbody>
+		
+		</table>
+		{$pager}
+	</div>
+	</div>
+</div>
+
+{elseif $op == 'post'}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        红包修改
+    </div>
+    <div class="panel-body">
+	<form action="" method="post" class="form-horizontal" role="form" id="form1">
+
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">获得的金额：</label>
+
+            <div class="col-sm-9 col-xs-12">
+                <input type="text" id="title" class="form-control span7"
+                       placeholder="" name="money" value="{$item['money']}">
+            </div>
+        </div>
+		
+
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">来源类型：</label>
+
+            <div class="col-sm-9 col-xs-12">
+                <select name="ori_type">  
+ 				 	<option value="0">关注获得</option>  
+  					<option value="1">邀请关注获得</option> 
+  					<option value="2">其他</option> 
+				</select>
+            </div>
+        </div>
+		
+		<div class="form-group">
+				<div class="col-sm-8">
+					<input type="submit" name="submit" value="提交" class="btn btn-primary">
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</div>		
+		</div>
+		</form>
+    </div>
+</div>
+{/if}
+<script type="text/javascript">
+
+function delete_all(){
+location.href ="{php echo $this->createWebUrl('Gzrk', array('op' => 'delete_all'))}";
+}
+function add(){
+location.href ="{php echo $this->createWebUrl('Gzrk', array('op' => 'post'))}";
+}
+</script>
+{template 'common/footer'}

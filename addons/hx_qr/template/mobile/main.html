@@ -1,0 +1,55 @@
+{php $bootstrap_type = 3;}
+{template 'header'}
+<link href="{$_W['siteroot']}addons/hx_qr/template/style/css/style.css?v={TIMESTAMP}" rel="stylesheet" type="text/css">
+<body id="card" class="mode_webapp">
+<div class="cardexplain" >
+<div class="cardcenter">
+	<div class="card">
+		<img src="{$_W['siteroot']}addons/hx_qr/template/style/img/card_bg08.png" class="cardbg" />
+		<div class="avater">
+			<img class="img-rounded" src="{php echo tomedia($log['avater'])}" style="width: 50px;">
+		</div>
+		<a href="{$_W['siteroot']}app/index.php?c=mc&a=home&i={$_W['uniacid']}&wxref=mp.weixin.qq.com#wechat_redirect">
+		<div class="info">
+			<div style="color:#000;font-size:18px;">{$log['nickname']}</div>
+			<div style="color:#000;font-size:14px;">余额:{$credit['credit2']}</div>
+		</div>
+		</a>
+	</div>
+	<p class="explain">
+		{if !empty($apply)}<span><i class="fa fa-volume-up"></i> {$apply['realname']}刚刚兑换了红包，大家加油哦！</span>{/if}
+	</p>
+</div>
+<div style="text-align:center;margin-top:7px;margin-bottom:7px;">
+	<a href="{php echo $this->createMobileUrl('apply')}"><button class="btn btn-success btn-lg" type="submit" style="width:90%;">我要红包！</button></a>
+</div>
+
+
+
+	<div class="jifen-box">
+		<ul class="zongjifen">
+			<li>				
+				<div class="fengexian">
+					<p>余额</p>
+					<span>{$credit['credit2']}</span>
+				</div>
+			</li>
+			<li>
+				<div class="fengexian">
+					<p>直接连接</p>
+					<span>{$log['first_level']}人</span>
+				</div>
+			</li>
+			<li>
+				<p>间接连接</p>
+				<span>{$log['secend_level']}人</span>
+			</li>
+		</ul>
+		<div class="clr"></div>
+	</div>
+</div>
+{php $from_user_info = mc_fetch($log['sub_openid']);}
+<div style="text-align:center;">你的邀请人是：{if !empty($from_user_info['nickname'])}{$from_user_info['nickname']}{else}{$_W['account']['name']}{/if}</div>
+{template 'footerbar'}
+<br />
+{template 'footer'}

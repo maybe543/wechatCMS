@@ -1,0 +1,125 @@
+{template 'common/header'}
+{php $_item=7;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}广告</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100"><span>广告名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告位置</span></td>
+                                <td class="form-reg">
+                                    <select name="positionid" id="positionid" class="form-control wi">
+                                        {loop $adposition $list}
+                                        <option value="{$list['id']}">{$list['title']}</option>
+                                        {/loop}
+                                        {if !$adposition}
+                                        <option value="0">=请先添加广告位置=</option>
+                                        {/if}
+                                    </select>
+                                    {if value($content)}
+                                    <script>$("#positionid").val('{php echo value($content,'positionid')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>启用状态</span></td>
+                                <td class="form-reg">
+                                    <select name="status" id="status" class="form-control wi">
+                                        <option value="启用">启用</option>
+                                        <option value="停用">停用</option>
+                                    </select>
+                                    {if value($content)}
+                                    <script>$("#status").val('{php echo value($content,'status')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告图片</span></td>
+                                <td>
+                                    <div class="form-input-upbox">
+                                        {php echo tpl_form_field_image("img", value($content,'img'))}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>广告链接</span></td>
+                                <td>
+                                    <input name="link" type="text" class="form-control" id="link" value="{php echo value($content,'link')}" placeholder="&#27169;&#32;&#22359;&#32;&#30001;&#32;&#25240;&#32;&#32764;&#32;&#22825;&#32;&#20351;&#32;&#36164;&#32;&#28304;&#32;&#31038;&#32;&#21306;&#32;&#25552;&#32;&#20379;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>开始日期</span></td>
+                                <td>
+                                    <input name="starttime" type="text" class="form-control" id="starttime" value="{if value($content,'starttime')}{php echo date('Y-m-d',value($content,'starttime'))}{/if}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="清空或填写0表示不限制">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><span>结束日期</span></td>
+                                <td>
+                                    <input name="endtime" type="text" class="form-control" id="endtime" value="{if value($content,'endtime')}{php echo date('Y-m-d',value($content,'endtime'))}{/if}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="&#27169;&#32;&#22359;&#32;&#30001;&#32;&#25240;&#32;&#32764;&#32;&#22825;&#32;&#20351;&#32;&#36164;&#32;&#28304;&#32;&#31038;&#32;&#21306;&#32;&#25552;&#32;&#20379;">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('ads')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('ads')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

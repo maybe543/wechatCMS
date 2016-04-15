@@ -1,0 +1,26 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">商城订单记录</h3>
+  </div>
+  <div class="panel-body">
+    {php $has_goods = false;}
+    {loop $allgoods $goods}
+    {php $has_goods = true;}
+    <p style="color: inherit;">
+    <span style="margin-left:10px">于{php echo date('Y-m-d H:i:s', $goods['createtime'])}</span>
+    <span style="margin-left:10px">产生<a href='{php echo url('site/entry/order', array('id'=>$goods['orderid'], 'm'=>'quickshop', 'weid'=>$_W['weid'], 'op'=>'detail'))}'>订单{$goods['ordersn']}</a></span>
+
+    <span style="margin-left:10px">包含<a href='{php echo url('site/entry/goods', array('id'=>$goods['goodsid'], 'm'=>'quickshop', 'weid'=>$_W['weid'], 'op'=>'post'))}'>商品ID{$goods['goodsid']}</a>的商品</span>
+    <span style="margin-left:10px"> 单价{$goods['price']}元 * 数量{$goods['total']}</span>
+    <span style="margin-left:10px"> 订单状态: {php echo $_order->getOrderStatusName($goods['status'])}</span>
+    </p>
+    {/loop}
+    {if false == $has_goods}
+    <p style="color: inherit;">
+    还没有TA的购买记录。
+    </p>
+    {/if}
+
+  </div>
+</div>
+

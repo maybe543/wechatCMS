@@ -1,0 +1,64 @@
+{template 'common/header'}
+<div class="main">
+<ul class="nav nav-tabs">
+	<li class="active"><a href="{php echo $this->createWebUrl('list');}">商家列表</a></li>
+	<li><a href="{php echo $this->createWebUrl('create');}">添加商家</a></li>
+</ul>
+	<div class="panel panel-info">
+		<div class="panel-heading">筛选</div>
+		<div class="panel-body">
+			<form action="./index.php" method="post" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site">
+			<input type="hidden" name="a" value="entry">
+			<input type="hidden" name="do" value="List">
+			<input type="hidden" name="m" value="fwei_nearshop" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">商家名称</label>
+				<div class="col-sm-4">
+					<input class="form-control" name="keys" id="" type="text" value="{$_GPC['keys']}">
+				</div>				
+			</div>
+			<div class="form_group">
+				<input name="token" type="hidden" value="{$_W['token']}" />
+				<input type="submit" class="btn btn-primary" name="submit" value="提交" />
+			</div>
+			</form>
+		</div>
+	</div>
+	
+	<div style="padding:15px;">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:20px;" class="row-first">选择</th>
+					<th align="center" style="width:20px;text-align:center;">ID</th>						
+                    <th align="center" style="width:100px;text-align:center;">商家名称</th>
+					<th align="center" style="width:40px;text-align:center;">电话</th>
+					<th align="center" style="width:80px;text-align:center;">QQ</th>
+					<th align="center" style="width:60px;text-align:center;">地区</th>
+					<th align="center" style="width:40px;text-align:center;">详细地址</th>
+					<th style="width:80px;text-align:center;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $row}
+					<tr>
+						<td class="row-first"><input type="checkbox" name="select[]" value="{$row['id']}" /></td>				
+						<td>{$row['id']}</td>
+                        <td>{$row['title']}</td>
+						<td>{$row['phone']}</td>
+						<td>{$row['qq']}</td>
+						<td>{$row['province']}-{$row['city']}-{$row['dist']}</td>
+						<td>{$row['address']}</td>
+						<td>
+							<a href="{php echo $this->createWebUrl('create', array('id'=>$row['id']));}" >详情</a> | 
+                        	<a href="{php echo $this->createWebUrl('Delete', array('id'=>$row['id']));}" onclick="return confirm('删除记录后不可恢复,确定要删除吗?')" >删除</a>
+                        </td>
+					</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+{template 'common/footer'}

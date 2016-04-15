@@ -1,0 +1,24 @@
+{template 'common/header'}
+<link type="text/css" rel="stylesheet" href="../addons/fwei_nearshop/template/images/style.css">
+<div id="page_order">
+	{loop $list $row}
+    <section>
+        <article>
+            <span><img src="{$_W['attachurl']}{$row['thumb']}" width="80" /></span>
+            <h1>{$row['title']}</h1>
+            <p>{$row['province']}-{$row['city']}-{$row['dist']} - {$row['address']}</p>
+        </article>
+        <ul>
+            <li><a class="order" href="tel:{$row['phone']}">预订</a></li>
+            <li><a class="gps" href="{if $config['ditu']=='soso'}
+                http://apis.map.qq.com/uri/v1/marker?marker=coord:{$row['soso_lat']},{$row['soso_lng']};title:{$row['title']};addr:{$row['address']}&referer=myapp
+                {else}
+                http://api.map.baidu.com/marker?location={$row['lat']},{$row['lng']}&title={$row['title']}&content={$row['content']}&output=html
+                {/if}">导航</a></li>
+            <li><a class="reality" href="{php echo $this->createMobileUrl('detail', array('id'=>$row['id']))}">详情</a></li>
+        </ul>
+    </section>
+    {/loop}
+    
+</div>
+{template 'common/footer'}

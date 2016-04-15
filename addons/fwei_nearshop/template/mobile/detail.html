@@ -1,0 +1,58 @@
+{template 'common/header'}
+<style type="text/css">
+    body{background: #e4e7ed;}
+    .irows{
+        border-top: 1px solid #ffffff;
+        border-bottom: 1px solid #c6c6c6;
+        background: #e4e7ed;
+        line-height: 40px;
+    }
+</style>
+<div class="container">
+        <div class="row">
+            <img src="{$_W['attachurl']}{$item['thumb']}" style="width:100%;" />
+        </div>
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">商家名称</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                <strong>{$item['title']}</strong>
+            </div>
+        </div>
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">所属行业</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                {$item['industry1']} - {$item['industry2']}
+            </div>
+        </div>
+        
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">联系电话</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                <a href="tel:{$item['phone']}">{$item['phone']}</a>
+            </div>
+        </div>
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                <a href="###">{$item['qq']}</a>
+            </div>
+        </div>
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">联系地址</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                {$item['province']}-{$item['city']}-{$item['dist']} - {$item['address']} 
+                <p><a href="{if $config['ditu']=='soso'}
+                http://apis.map.qq.com/uri/v1/marker?marker=coord:{$item['soso_lat']},{$item['soso_lng']};title:{$item['title']};addr:{$item['address']}&referer=myapp
+                {else}
+                http://api.map.baidu.com/marker?location={$item['lat']},{$item['lng']}&title={$item['title']}&content={$item['content']}&output=html
+                {/if}" class="btn btn-primary" role="button">一键导航</a></p>
+            </div>
+        </div>
+        <div class="row irows">
+            <label class="col-xs-3 col-sm-3 col-md-2 control-label">商家介绍</label>
+            <div class="col-xs-9 col-sm-9 col-md-10">
+                {$item['content']}
+            </div>
+        </div>
+</div>
+{template 'common/footer'}

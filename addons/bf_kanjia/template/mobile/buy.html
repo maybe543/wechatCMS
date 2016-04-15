@@ -1,0 +1,90 @@
+{template 'common/header-base'}
+<!-- 收货地址 -->
+<div ng-controller="buyController">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="kanjia-address" ng-click="weixinAddress()">
+          <div class="text-center">选择收货地址</div>
+        </div>
+        <div class="box" ng-show="showAddress">
+          <div class="box-content">
+            <div class="kanjia-address-info">
+              <div class="clearfix">
+                <div class="pull-left name">
+                  收货人：
+                  <span>{{address.name}}</span>
+                </div>
+                <div class="pull-right tel">
+                  <span>{{address.telnumber}}</span>
+                </div>
+              </div>
+              <div class="address">
+                收货地址：
+                <span>{{address.address}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="kanjia-hr"/>
+  <!-- 砍价介绍 -->
+  <div ng-controller="detailController">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="box">
+            <div class="box-content">
+              <div ng-controller="recordController">
+                <div class="buy-info">
+                  <div class="name">商家：{$_W["account"]["name"]}</div>
+                  <hr class="kanjia-hr"/>
+                  <div class="product">
+                    <div class="image">
+                      <img ng-src="{{kanjia.obj.product_image}}" alt=" "/>
+                    </div>
+                    <div class="name">{{kanjia.obj.product_name}}</div>
+                    <div class="price">
+                      <div>
+                        ¥&nbsp;{{record.obj.price}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="remark">
+                    <textarea class="textarea" placeholder="给我们留言……" ng-model="remark"></textarea>
+                  </div>
+                  <div class="total clearfix">
+                    <div class="pull-left">合计</div>
+                    <div class="pull-right number">
+                      ¥
+                      <span>{{record.obj.price}}</span>
+                    </div>
+                  </div>
+                  <div class="kanjia-btns-box">
+                    <div>
+                      <a class="btn btn-follow" href="javascript:;" ng-click="WechatPay(record.obj.id, remark)">微信安全支付</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pay-fixed" ng-show="pay">正在处理…</div>
+</div>
+<script type="text/javascript">
+var KANJIA_DETAIL_URL = "{php echo $this->createMobileUrl('detailajax', array('id'=>$record['kid']))}";
+var KANJIA_MY_URL = "{php echo $this->createMobileUrl('myajax', array('id'=>$_GPC['id']))}";
+var KANJIA_UNIFIEDORDER_URL = "{php echo $this->createMobileUrl('unifiedorder')}";
+var KANJIA_URL = "{php echo $this->createMobileUrl('my', array('id'=>$record['id']))}";
+var KANJIA_ORDER_SAVE_URL = "{php echo $this->createMobileUrl('ordersave')}"
+var KANJIA_RECORD_ID = "{$record['id']}";
+var ADDRESS_TOKEN = {php echo json_encode($address_token)} || {};
+var PAY_CONFIG = {php echo json_encode($pay_config)} || {};
+</script>
+{template 'common/footer-base'}

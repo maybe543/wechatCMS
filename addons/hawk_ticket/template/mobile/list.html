@@ -1,0 +1,33 @@
+{template 'header'}
+<link href="../addons/hawk_ticket/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    body{padding-bottom: 50px;}
+    .media-list{margin-top: 20px;}
+    strong{color:red;}
+    h5{color:#000000;}
+    .media{border-bottom:0.5px solid #d0d0d0;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hawk_ticket/images/style.css?{TIMESTAMP}">
+<div class="head">
+    <span class="title">热点活动</span>
+</div>
+<ul class="media-list">
+    {loop $ds $d}
+    <li class="media">
+        <div class="media-left">
+            <a href="{php echo $this->createMobileUrl('detail',array('id'=>$d['id']))}">
+                <img  class="media-object" width="70" height="100" src="{if empty($d['shareimg'])}../addons/hawk_ticket/images/ticket.png{else}{php echo tomedia($d['shareimg']);}{/if}" alt="...">
+            </a>
+        </div>
+        <div class="media-body">
+            <a href="{php echo $this->createMobileUrl('detail',array('id'=>$d['id']))}"><h5 class="media-heading">{$d['title']}</h5></a>
+            <p>{php echo date('Y年m月d日',$d['starttime'])}-{php echo date('d日',$d['endtime'])}</p>
+            <p>{$d['place']}</p>
+            <p>剩余:<strong>{$d['remain']}</strong>张票｜票价:{$d['fee']}元/张</p>
+        </div>
+    </li>
+    {/loop}
+</ul>
+{$pager}
+{template 'footbar'}
+{template 'footer'}

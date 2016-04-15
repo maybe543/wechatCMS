@@ -1,0 +1,163 @@
+{template 'common/header'}
+<style>
+  .s1 {margin: 0px; padding: 0px; border: 0px; color: rgb(68, 68, 68); font-family: 微软雅黑; font-size: 13px; line-height: 24px; white-space: normal;}
+  .s2{margin: 0px; padding: 0px; border: 1px solid rgb(0, 187, 236); text-align: center;}
+  .s3{margin: 1em auto; padding: 0px; border: 0.1em solid rgb(0, 187, 236); width: 12em; height: 12em; border-radius: 6em;}
+  .s4{margin: 0.4em auto; padding: 0px; border: 0px; display: table; width: 11em; height: 11em; border-radius: 5.5em; max-height: 11em; background-color: rgb(0, 187, 236);}
+  .s5{margin: 1em; padding: 0em; border: 0px; display: table-cell; vertical-align: middle; font-size: 1.5em; line-height: 1.2em; color: white; max-height: 11em;}
+  .s5 img {width:11em;}
+  .s6{margin: 1em 1em 2em; padding: 0.5em 1em; border: 0px; display: inline-block; color: white; font-size: 1em; line-height: 1.5em; border-radius: 1em; white-space: nowrap; max-width: 100%; background-color: rgb(0, 187, 236);
+  width:100px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .s7{ margin: 0px; padding: 1em; border-width: 0px 1px 1px; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-right-color: rgb(0, 187, 236); border-bottom-color: rgb(0, 187, 236); border-left-color: rgb(0, 187, 236); color: rgb(0, 0, 0); text-align: center; font-size: 1em; line-height: 1.4em;}
+  .s8{ margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;}
+  .s8 > span{ margin-right: 10px;}
+  .s8 > span:last-child{ margin-left:10px;}
+  .s9{ margin: 0px; padding: 0px; border: 0px;}
+  .s10{ color:red; }
+  .s11{margin: 0px; padding: 15px 25px; border-width: 0px 0px 0px 10px; border-left-style: solid; border-left-color: rgb(0, 187, 236); color: rgb(68, 68, 68); font-family: 微软雅黑; line-height: 24px; white-space: normal; max-width: 100%; word-wrap: break-word; top: 0px; font-size: 14px; vertical-align: baseline; background-color: rgb(239, 239, 239);}
+  .s12{margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;}
+</style>
+
+
+<div class="main">
+	<div style="padding:15px;">
+
+    <h4>销售额统计</h4>
+		<table class="table table-hover">
+			<tbody>
+				<tr>
+          <td>
+
+    <blockquote class="s11">
+      <p class="s12">
+      今日待支付订单金额：{$ToPay1}元
+        </p>
+    </blockquote>
+
+    <blockquote class="s11">
+      <p class="s12">
+      今日待发货订单金额：{$ToDeliever1}元
+        </p>
+    </blockquote>
+
+    <blockquote class="s11">
+      <p class="s12">
+      今日销售额：{$Pay1}元
+      </p>
+    </blockquote>
+
+      </td>
+      <td>
+
+    <blockquote class="s11">
+      <p class="s12">
+      2日(含今日)销售额：{$Pay2}元
+      </p>
+    </blockquote>
+
+
+    <blockquote class="s11">
+      <p class="s12">
+      7日(含今日)销售额：{$Pay7}元
+      </p>
+    </blockquote>
+
+    <blockquote class="s11">
+      <p class="s12">
+      30日(含今日)销售额：{$Pay30}元
+      </p>
+    </blockquote>
+      </td>
+
+				</tr>
+			</tbody>
+    </table>
+
+	</div>
+</div>
+<!-- ---------------- 用户关注 ---------------- -->
+<div class="main">
+	<div style="padding:15px;">
+    <h4>粉丝数据</h4>
+		<table class="table table-hover">
+			<tbody>
+				<tr>
+          <td>
+
+    <blockquote class="s11">
+      <p class="s12">
+      今日活跃：{$UserDay1}
+      </p>
+      <p class="s12">
+      2日活跃(含今日)：{$UserDay2}
+      </p>
+      <p class="s12">
+      3日活跃(含今日)：{$UserDay3}
+      </p>
+      <p class="s12">
+      7日活跃(含今日)：{$UserDay7}
+      </p>
+      <p class="s12">
+      30日活跃(含今日)：{$UserDay30}
+      </p>
+    </blockquote>
+
+        </td>
+
+          <td>
+
+    <blockquote class="s11">
+      <p class="s12">
+      今日掉粉：{$UserFallDay1}
+      </p>
+      <p class="s12">
+      2日掉粉(含今日)：{$UserFallDay2}
+      </p>
+      <p class="s12">
+      3日掉粉(含今日)：{$UserFallDay3}
+      </p>
+      <p class="s12">
+      7日掉粉(含今日)：{$UserFallDay7}
+      </p>
+      <p class="s12">
+      30日掉粉(含今日)：{$UserFallDay30}
+      </p>
+    </blockquote>
+
+        </td>
+				</tr>
+			</tbody>
+    </table>
+
+	</div>
+</div>
+
+
+<!-- -------------------商品点击率--------------- -->
+<div class="main">
+	<div style="padding:15px;">
+    <h4>商品点击率</h4>
+		<table class="table table-hover">
+			<tbody>
+				<tr>
+          <td>
+
+    <blockquote class="s11">
+      {loop $viewcounts $c}
+      <p class="s12">
+      点击率：{$c['viewcount']} - {$c['title']}
+      </p>
+      {/loop}
+    </blockquote>
+
+        </td>
+				</tr>
+			</tbody>
+    </table>
+
+	</div>
+</div>
+
+
+{template 'common/footer'}

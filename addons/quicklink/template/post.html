@@ -1,0 +1,72 @@
+<script type="text/javascript" src="./resource/script/jquery-ui-1.10.3.min.js"></script>
+<style type='text/css'>
+    .tab-pane { padding:20px 0 20px 0;}
+</style>
+
+<div class="main">
+  <form action="{php echo $this->createWebUrl('Spread')}" method="post" onsubmit="return shareHandler.doAdd(this)" class="form-horizontal form" enctype="multipart/form-data">
+    <h4>&nbsp;</h4>
+    <ul class="nav nav-tabs" id="myTab">
+      <li class="active"><a href="#tab_msg">扫码响应内容</a></li>
+      <li><a href="#tab_basic">二维码海报</a></li>
+      <li><a href="#tab_msg_dist">提醒上线</a></li>
+      <li><a href="#tab_spam">参与门槛</a></li>
+    </ul>
+    <div class="tab-content">
+      <!------------------- 消息提醒 ---------------------->
+      <div class="tab-pane active" id="tab_msg">{template 'messagenotify'}</div>
+      <!------------------- 消息提醒 END ---------------------->
+
+      <!------------------- 海报设置 ---------------------->
+      <div class="tab-pane" id="tab_basic">{template 'posteredit'}</div>
+      <!------------------- 海报设置 END ---------------------->
+
+      <!------------------- 消息提醒 ---------------------->
+      <div class="tab-pane" id="tab_msg_dist">{template 'messagedistnotify'}</div>
+      <!------------------- 消息提醒 END ---------------------->
+
+
+      <!------------------- 参与门槛---------------------->
+      <div class="tab-pane" id="tab_spam">{template 'antispam'}</div>
+      <!------------------- 参与门槛 END ---------------------->
+    </div>
+
+    <table class="tb">
+          <tr>
+            <th></th>
+            <td>
+              <input name="submit" type="submit" value="提交" class="btn btn-primary span3">
+              <input type="hidden" name="token" value="{$_W['token']}" />
+              <input type="hidden" name="channel" value="{$item['channel']}" />
+              <input type="hidden" name="op" value="post" />
+            </td>
+          </tr>
+        </table>
+
+
+	</form>
+</div>
+
+<script type="text/javascript">
+$(function () {
+  $('#myTab a').click(function (e) {
+    e.preventDefault();//阻止a链接的跳转行为
+    $(this).tab('show');//显示当前选中的链接及关联的content
+  })
+});
+
+
+var shareHandler = {
+  'doAdd' : function(form) {
+    var parent = $(form);
+    if ($('#title', parent).val() == '') {
+      message('请输入标题！', '', 'error');
+      return false;
+    }
+    return true;
+  },
+};
+
+</script>
+
+

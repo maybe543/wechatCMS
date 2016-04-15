@@ -1,0 +1,59 @@
+{template 'header'}
+<style type='text/css'>
+    .sel { background:#e9342a; color:#fff;}
+    .nosel { background:#fff;color:#000}
+    red{color:red;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hawk_ticket/images/style.css?{TIMESTAMP}">
+<div class="head">
+    <a href="javascript:history.back();" class="bn pull-left"><i class="fa fa-angle-left"></i></a>
+    <span class="title">我的核销记录</span>
+</div>
+
+{if count($ds)<=0}
+<div class="myoder img-rounded" style='text-align:center;color:#aaa;padding:30px;'>
+    您暂时没有任何记录!
+</div>
+{/if}
+<div style='margin-bottom:40px;'>
+    {loop $ds $item}
+    <div class="myoder img-rounded">
+        <div class="myoder-hd">
+            <span class="pull-left">票据编号：{$item['orderid']}</span>
+		<span class="pull-right">验票时间:{php echo date('Y-m-d H:i', $item['createtime'])}
+		</span>
+        </div>
+        <div class="myoder-detail">
+            <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['actid']))}">
+                <img src="{if empty($item['actinfo']['shareimg'])}../addons/hawk_ticket/images/ticket.png{else}{php echo tomedia($item['actinfo']['shareimg']);}{/if}" width="160" />
+            </a>
+            <div class="pull-left">
+                <div class="name"><a href="{php echo $this->createMobileUrl('detail', array('id' => $item['actid']))}">{$item['actinfo']['proname']}</a></div>
+                <div class="price">
+                    <span class="pull-left">{$item['actinfo']['fee']} 元/张</span>
+                </div>
+            </div>
+        </div>
+        <div class="myoder-detail">
+            <img src="{$item['meminfo']['avatar']}" width="160" />
+            <div class="pull-left">
+                <div class="name">昵称:{$item['meminfo']['nickname']}&nbsp;&nbsp;&nbsp;&nbsp;{if !empty($item['meminfo']['realname'])}姓名:{$item['meminfo']['realname']}{/if}</div>
+                <div class="price">
+                    <span>{if !empty($item['meminfo']['mobile'])}{$item['meminfo']['mobile']}{/if}</span>
+                </div>
+            </div>
+        </div>
+        {if !empty($item['scanname'])}
+        <div class="myoder-total">
+            <span>
+                核销人：<span class="false">
+                    {$item['scanname']}
+                    </span>
+            </span>
+        </div>
+        {/if}
+    </div>
+    {/loop}</div>
+{$pager}
+{template 'footer'}
+{template 'footbar'}

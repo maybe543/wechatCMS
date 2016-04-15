@@ -1,0 +1,88 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('member', array('op' => 'list'));}">管理</a></li>
+</ul>
+<div class="panel panel-info">
+    <div class="panel-heading">筛选</div>
+    <div class="panel-body">
+        <form action="" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 control-label">业主姓名</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                    <input type="text" name="realname" value="{$_GPC['realname']}" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 control-label">业主手机</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                    <input type="text" name="mobile" value="{$_GPC['mobile']}" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                <div class="col-sm-7 col-lg-9 col-xs-12">
+                    <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                    <button type="submit" name="export" value="1" class="btn btn-primary">导出 Excel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div style="padding:15px;">
+    <table class="table table-hover">
+        <thead class="navbar-inner">
+            <tr>
+                <th style="width:80px;">姓名</th>
+                <th style="width:130px;">手机</th>
+                <!-- <th style="width:50px;">类型</th> -->
+                <th style="width:200px;">地址</th>
+                <th style="width:150px;">所属小区</th>
+                <th style="width:150px;">注册时间</th>
+                <th style="width:120px;">状态(点击修改)</th>
+                <th style="min-width:100px; width:30%;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {loop $list $item}
+            <tr>
+                <td>{$item['realname']}</td>
+                <td>{$item['mobile']}</td>
+                
+                <!-- <td>{if $item['type'] == 1}业主{elseif $item['type'] == 2}租客{elseif $item['type'] == 3}游客{elseif $item['type'] == 4}游客{/if}</td> -->
+                <td>{$item['address']}</td>
+                <td>{$item['city']}{$item['dist']}{$item['title']}</td>
+                <td>{php echo date('Y-m-d H:i',$item['createtime'])}</td>
+                <td>
+                    <label data='{$item['status']}' class='label  label-default {if $item['status']==1}label-info{/if}' onclick="verify(this,{$item['id']},'status')">{if $item['status']==1}通过{else}禁止{/if}</label>
+                </td>
+                <td>
+                    <a href="{php echo $this->createWebUrl('member', array('op'=>'add', 'id' => $item['id']));}" class="btn btn-default btn-sm"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top"></i>查看</a>
+                    <a href="{php echo $this->createWebUrl('member', array('op'=>'delete', 'id' => $item['id']));}" class="btn btn-default btn-sm"><i class="fa fa-times"></i>删除</a>
+                </td>
+            </tr>
+            {/loop}
+        </tbody>
+    </table>
+    {$pager}
+</div>
+<script type="text/javascript">
+function verify(obj, id, type) {
+    $(obj).html($(obj).html() + "...");
+    $.post("{php echo $this->createWebUrl('member',array('op' => 'verify'))}", {
+        id: id,
+        type: type,
+        data: obj.getAttribute("data")
+    }, function(d) {
+        $(obj).html($(obj).html().replace("...", ""));
+        if (type == 'status') {
+            $(obj).html(d.data == '1' ? '通过' : '禁止');
+        }
+        $(obj).attr("data", d.data);
+        if (d.result == 1) {
+            $(obj).toggleClass("label-info");
+        }
+    }, "json");
+}
+</script>
+{template 'common/footer'}

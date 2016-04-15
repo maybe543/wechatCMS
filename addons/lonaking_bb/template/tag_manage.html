@@ -1,0 +1,50 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('tagManage');}">标签管理</a></li>
+		<a href="{php echo $this->createWebUrl('tagEdit');}" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> 添加标签</a>
+	</ul>
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th width="10%">编号</th>						
+	                    <th width="20%">名称</th>
+						<th width="30%">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{php $index= ($page_index-1)*$page_size +1}
+					{loop $data $tag}
+						<tr>
+							<td data-id="{$tag['id']}">{php echo $index++}</td>
+							<td>{$tag['tag']}</td>
+							<td>
+	                        	<a href="{php echo $this->createWebUrl('tagEdit',array('id'=>$tag['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+	                        	<a href="javascript:void(0);" url="{php echo $this->createWebUrl('deleteTag',array('id'=>$tag['id']));}"  class="btn btn-danger btn-sm remove-tag"><i class="glyphicon glyphicon-trash"> 删除</i></a>
+	                        </td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('.remove-tag').on('click',function(){
+			btn = $(this);
+			var url = btn.attr('url');
+			$.post(url, function(result){
+				var json = eval('('+result+')');
+				if(json.status == 200){
+					btn.parent().parent().remove();
+				}else{
+					alert(json.message);
+				}
+			});
+		});
+	});
+</script>
+{template 'common/footer'}

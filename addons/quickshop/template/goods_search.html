@@ -1,0 +1,36 @@
+<form action="" method="get">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">搜索</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-2 col-sm-2 col-xs-12">
+          {php echo FormTpl::getWebControl2('option', 'status', isset($_GPC['status'])?$_GPC['status'] : 1, array('1'=>'上架', '0'=>'下架'))}
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-12">
+          <select class="form-control" style="margin-right:15px;" name="cate_1" onchange="fetchChildCategory(this.options[this.selectedIndex].value)">
+            <option value="0">请选择一级分类</option>
+            {loop $category $row}
+            {if $row['parentid'] == 0}
+            <option value="{$row['id']}" {if $row['id'] == $_GPC['cate_1']} selected="selected"{/if}>{$row['name']}</option>
+            {/if}
+            {/loop}
+          </select>
+        </div>
+        <div class="col-lg-6 col-sm-5 col-xs-12">
+        {php echo FormTpl::getWebControl2('text', 'keyword', $_GPC['keyword']) }
+        </div>
+        <div class="col-lg-2 col-sm-2 col-xs-12">
+        {php echo FormTpl::getWebControl2('submit', 'submit', '搜索') }
+        </div>
+        {php echo FormTpl::getWebControl2('hidden', 'token', $_W['token'])}
+        {php echo FormTpl::getWebControl2('hidden', 'op', $operation)}
+        {php echo FormTpl::getWebControl2('hidden', 'c', 'site')}
+        {php echo FormTpl::getWebControl2('hidden', 'a', 'entry')}
+        {php echo FormTpl::getWebControl2('hidden', 'm', 'quickshop')}
+        {php echo FormTpl::getWebControl2('hidden', 'do', 'goods')}
+      </div>
+    </div>
+  </div>
+</form>

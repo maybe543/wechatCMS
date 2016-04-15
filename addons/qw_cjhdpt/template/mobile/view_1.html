@@ -1,0 +1,441 @@
+{template 'header'}
+<link type="text/css" rel="stylesheet" href="../addons/qw_cjhdpt/image/bootstrap-toggle.min.css">
+<script type="text/javascript" src="../addons/qw_cjhdpt/image/bootstrap-toggle.min.js"></script>
+<style>
+body{background:#FFF;}
+.fixed_first{margin-top:76px; height:1px;}
+.jgrade{color:#999;}
+.jred{color:#F09}
+.panel-body img{ max-width:100%;}
+.panel-body h1,h2,h3{ font-size:18px; font-weight:bolder}
+.j_user_list ul ,.j_user_list ul li{ margin:0; padding:0; list-style:none;}
+.j_user_list ul li{ padding:5px 0;}
+.pr10{ padding-right:10px;}
+.content{padding:10px; overflow-y:scroll;}
+.content img{max-width:100%;}
+.rule_box .jrow div{ font-size:14px; padding:0 5px}
+
+</style>
+<Div class="header">
+  <div class="box">
+    <div class="boxsize-2"><A href="{php echo $this->createMobileUrl('list')}"><i class="fa fa-angle-left"></i></A></div>
+    <div class="boxsize-8">{$item['title']}</div>
+    <div class="boxsize-2"><A href="{php echo $this->createMobileUrl('append',array('id'=>$item['id']))}">&nbsp;</A></div>
+  </div>
+  <div class="box headermenu">
+    <div class="boxsize-4 active2"><A href="javascript:selectTag(0)">{if $item['status']==2}花絮{else}介绍{/if}</A></div>
+    <div class="boxsize-4"><A href="javascript:selectTag(1)">规则</A></div>
+    <div class="boxsize-4"><A href="javascript:selectTag(2)">我的</A></div>
+  </div>
+</Div>
+<div class="fixed_first">&nbsp;</div>
+<div class="content">
+  <div class="infobox">
+    {if $item['status']==2}
+    <div>{$item['content']}</div>
+    {/if}
+    {$item['info']}
+  </div>
+  <div class="infobox rule_box hide">
+        <div class="jtable">
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">报名时间</div>
+            <div class="jcell-7 lh30 "> {php echo date('Y.m.d H:i',$item['joinstarttime'])} - {php echo date('m.d H:i',$item['joinendtime'])}</div>
+          </div>
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">活动时间</div>
+            <div class="jcell-7 lh30 "> {php echo date('Y.m.d H:i',$item['starttime'])} - {php echo date('m.d H:i',$item['endtime'])}</div>
+          </div>
+          {if $item['address']}
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">活动地点</div>
+            <div class="jcell-7 lh30 "> {$item['address']}</div>
+          </div>
+          {/if}
+          {if $item['latitude']}
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">地图导航</div>
+            <div class="jcell-7 lh30 ">
+              <button type="button" onclick="showLocation()" class="btn btn-info btn-sm"><i class="fa fa-map-marker"></i> 打开地图</button>
+            </div>
+          </div>
+          {/if}
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">参与费用</div>
+            <div class="jcell-7 lh30 "> {if floatval($item['charge'])==0}<span class="label label-info">免费</span>{else}<span class="label label-danger">￥ {$item['charge']} 元/人</span>{/if}</div>
+          </div>
+          {if $item['organizer']}
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">活动商家</div>
+            <div class="jcell-7 lh30 "> {$item['organizer']}</div>
+          </div>
+          {/if}
+          <div class="jrow">
+            <div class="jcell-3 lh30 jgrade text-right ">报名人数</div>
+            <div class="jcell-7 lh30 "> {php echo count($newjoinerList)} {if $item['applicants']} / {$item['applicants']}{/if} 人</div>
+          </div>
+        </div>
+    {$item['rule']} </div>
+  <div class="infobox rule_box hide"> 
+  {if $member}
+    {php $p=json_decode($member['parama'],true);}
+    <div class="jtable">
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">真实姓名</div>
+        <div class="jcell-7 lh30 "> {$member['realname']} </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">昵称</div>
+        <div class="jcell-7 lh30 "> {$member['nickname']} </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right" >手机</div>
+        <div class="jcell-7 lh30 "> {$member['mobile']} </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">性别</div>
+        <div class="jcell-7 lh30 "> {if $member['gender']==2}女士{elseif $member['gender']==1}先生{else}未知{/if} </div>
+      </div>
+      <div class="jrow"> {php $isjoin=$member['status']}
+        <div class="jcell-3 lh30 jgrade text-right">报名状态</div>
+        <div class="jcell-7 lh30 "> {if $isjoin<0} <span class="label label-default">未入选</span> {elseif $isjoin==1} <span class="label label-info">审核中</span> {elseif $isjoin==2} <span class="label label-warning">恭喜您，成功入选</span> {/if} </div>
+      </div>
+      {if $item['charge']>0 && $cfg['is_pay']}
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">其他</div>
+        <div class="jcell-7 lh30 "> {if !$item['paystatus']} <span class="label label-danger">本活动需支付￥{$item['charge']}元方能参与</span> {else} <span class="label label-success">已支付</span> {/if} </div>
+      </div>
+      {/if}
+      {if $member['attend']}
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">签到</div>
+        <div class="jcell-7 lh30 "> <span class="div label-warning">已签到 {php echo date("m-d H:i",$member['endtime'])}</span> </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">备注</div>
+        <div class="jcell-7 lh30 "> {$member['reloadmsg']} </div>
+      </div>
+      {/if}
+      {php foreach($parama as $index=>$val){ }
+      <div class="jrow">
+        <div class="jcell-3 lh30 jgrade text-right">{php echo $index}</div>
+        <div class="jcell-7 lh30 "> {if $val==1}
+          {php echo $p[$index]}
+          {else} <img src="{php echo $p[$index]}" width="80" onerror="this.src='./resource/images/nopic-small.jpg'"/> {/if} </div>
+      </div>
+      {php }} </div>
+    {else}
+    <div class="alert alert-warning alert-dismissible text-center"> 你还没有报名哦~ </div>
+    {/if}
+    {if $newjoinerList}
+    <div class="jpanel_box" style="margin:10px">
+      <div class="jpanel_box_head">最新参与名单(已有<strong>{php echo count($newjoinerList)}</strong>人报名成功)</div>
+      <div class="jpanel_box_body j_user_list"> {if $item['applicants']}
+        <div style="text-align:center; padding:10px">剩余名额: <b style="color:#F03; font-family:Arial; font-size:large">{php echo $item['applicants']-$joincount}</b> 人</div>
+        {/if}
+        <ul>
+          {php $i=0}
+          {loop $newjoinerList $row}
+          {if $i<10}
+          <li><span class="pull-right">{php echo date("m-d G:i:s",$row['createtime'])}</span><span>{php echo mb_substr($row['nickname'],0,1,'utf-8')."**"}&nbsp;&nbsp;&nbsp;&nbsp;{php echo substr($row['mobile'],0,3)."****".substr($row['mobile'],-4,4)}</span></li>
+          {/if}
+          {php $i++}
+          {/loop}
+        </ul>
+      </div>
+    </div>
+    {/if} </div>
+  {if empty($footer_off)}
+  <div class="text-center footer" style="margin:10px 0; padding-bottom:60px; width:100%; text-align:center; word-break:break-all;"> {if !empty($_W['page']['footer'])}
+    {$_W['page']['footer']}
+    {else} <a href="#"> </a> {/if}
+    &nbsp;&nbsp;{$_W['setting']['copyright']['statcode']} </div>
+  {/if} </div>
+<div class="footermenu text-center" style="padding-bottom:5px; height:auto;">
+  <div style="padding:5px 10px 0 10px;"> {if $item['status']==2} <a href="#" class="btn btn-info btn-block" disabled>活动已结束</a> {/if}
+    {if $item['status']==-1} <a href="#" class="btn btn-info btn-block" disabled>已停止报名</a> {/if}
+    {if $item['status']==0} <a href="#" class="btn btn-info btn-block" disabled>报名时间：{php echo date('Y.m.d',$item['joinstarttime'])} 至 {php echo date('m.d',$item['joinendtime'])}</a> {/if}
+    
+    {if $item['status']==1}
+    {if $member}
+    {if $member['status']<0} <a href="#" class="btn btn-info btn-block" disabled>不通过</a> {elseif $member['status']==1}
+    {if $item['charge']>0 && $cfg['is_pay']}
+    <form action="{php echo url('mc/cash/wechat');}" method="post" id="payfrom">
+      <input type="hidden" name="params" value="{php echo base64_encode(json_encode($params));}" />
+      <button class="btn btn-warning btn-block btn-lg" disabled="disabled" type="submit" id="wBtn" value="wechat">系统加载中...</button>
+    </form>
+    {else} <a href="#" class="btn btn-info btn-block" disabled>审核中</a> {/if}
+    {elseif $member['status']>1} <a href="#" class="btn btn-success btn-block" disabled>成功入选</a> {/if}
+    {else} <a href="javascript:show_joinbox(1)" class="btn btn-warning btn-block">马上报名</a> {/if}
+    {/if} </div>
+</div>
+<!--6666-->
+<div class="jreg_masker hide"></div>
+<div class="jreg_box hide" id="reg_box">
+  <div class="jreg_box_head"><a href="javascript:show_joinbox(0);" class="pull-right"><i class="fa fa-remove"></i></a><b>资料登记</b></div>
+  <div class="jreg_box_body" style="padding-bottom:20px">
+    <div class="jtable">
+      <div class="jrow">
+        <div class="jcell-3 lh30 text-right">真实姓名&nbsp;&nbsp;</div>
+        <div class="jcell-7 lh30">
+          <input type="text" name="realname" class="jreg_box_input" value="{$profile['realname']}" placeholder="请输入真实姓名" />
+        </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 text-right">电话号码&nbsp;&nbsp;</div>
+        <div class="jcell-7 lh30">
+          <input type="tel" name="mobile" class="jreg_box_input" value="{$profile['mobile']}" placeholder="请输入电话号码" />
+        </div>
+      </div>
+      <div class="jrow">
+        <div class="jcell-3 lh30 text-right">性别&nbsp;&nbsp;</div>
+        <div class="jcell-7 lh30">
+          <input type="checkbox" name="gender" value="2" data-toggle="toggle" data-on="女士" data-off="先生" {if $profile['gender']==2}checked="checked"{/if}>
+        </div>
+      </div>
+      {php echo $parmaTemp} </div>
+  </div>
+  <div class="jreg_box_foot"><a href="javascript:checkmyFrom()" class="btn btn-block btn-success lh30">提交报名资料</a></div>
+</div>
+<div class="hide jalert_box" id="notfollow">
+  <div class="jalert_box_head"><b>系统提示</b></div>
+  <div class="jalert_box_body" style="padding:20px 10px; font-size:16px; line-height:30px;">亲，您还没有关注我们哦~<br />
+    活动只对本公众号粉丝开放哦~<br />
+    如果您已经是我们的粉丝，<br />
+    请在公众号发送“<b style="color:#F00">{php echo $keyword}</b>”进入哦</div>
+  <div class="jalert_box_foot"><a href="{php echo $_W['account']['subscribeurl']}" class="btn btn-block btn-warning lh30">确定</a></div>
+</div>
+<script language="javascript">
+function selectTag(n){
+	if($(".headermenu div[class^='boxsize']").eq(n).hasClass("active2"))return;
+	$(".headermenu .active2").removeClass("active2");
+	$(".headermenu div[class^='boxsize']").eq(n).addClass('active2');
+	$(".content .infobox").addClass('hide');
+	$(".content .infobox").eq(n).removeClass("hide");
+}
+var user_realname="{$profile['realname']}";
+var user_mobile="{$profile['mobile']}";
+var user_nickname="{php echo $nickname}";
+var user_avatar="{php echo $avatar}";
+
+var user_from_user="{php echo $from_user}";
+var user_openid_oath="{php echo $openid_oath}";
+var needtopay=parseFloat("{$item['charge']}");
+var payable=parseInt("{php echo $cfg['is_pay']}");
+$(document).ready(function(e) {
+	$('jreg_box').css("top",$(document).height());
+	//alert(user_nickname+","+user_avatar);
+});
+function show_joinbox(n){
+	var isfollow=parseInt("{$_W['fans']['follow']}");
+	if($(".jreg_masker").size()==0){
+		$(document.body).append("<div class='jreg_masker hide'></div>");
+	}
+	if(!isfollow){
+		var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+		$(".jreg_box").css({
+			'transition':'1ms',
+			'-webkit-transition':'scale(0.1)',
+			'transform':'scale(0.1)',
+		});
+		$(".jreg_masker").removeClass("hide").height($(document).height());
+		$(".jalert_box").css('top',_h);
+		$(".jalert_box").css({
+			'transition':'300ms',
+			'-webkit-transition':'scale(0.9)',
+			'transform':'scale(0.9)',
+		});
+		$(window).scroll (function(){
+			var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+			$(".jalert_box").css('top',_h);
+		});
+		return;
+	}
+	
+	if(n==0){
+		$(".jreg_box").css({
+			'transition':'300ms',
+			'-webkit-transition':'scale(0.01)',
+			'transform':'scale(0.01)',
+		});
+		setTimeout(function(){
+			$(".jreg_box").addClass("hide");
+			$(".jreg_masker").addClass("hide");
+		},400);
+	}else{
+		$(".jreg_box").css({
+			'transition':'1ms',
+			'-webkit-transition':'scale(0.1)',
+			'transform':'scale(0.1)',
+		});
+		var _h=($(window).height() - $('.jreg_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+		$(".jreg_masker").removeClass("hide").height($(document).height());
+		$(".jreg_box").css('top',_h);
+		$(".jreg_box").css({
+			'transition':'300ms',
+			'-webkit-transition':'scale(0.9)',
+			'transform':'scale(0.9)',
+		});
+		$(window).scroll (function(){
+			var _h=($(window).height() - $('.jreg_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+			$(".jreg_box").css('top',_h);
+		});
+	}
+}
+
+function checkmyFrom() {
+	var rname=$('input[name="realname"]').val();
+	var mobile=$('input[name="mobile"]').val();
+	var gender=$('input[name="gender"]:checked').val()==2 ? 2 : 1;
+	
+	if(rname.length<2){
+		$('j').Jetsum.alert({content:'请用中文填写您的姓名'});
+		return false;
+	}
+	var reg = /^[\u4e00-\u9fa5]+$/i;
+	if(!reg.test(rname)){
+		$('j').Jetsum.alert({content:'请用中文填写您的姓名'});
+		return false;
+	}
+	if(mobile.length!=11 || isNaN(mobile)){
+		$('j').Jetsum.alert({content:'请正确填写您的电话号码'});
+		return false;
+	}
+	var paramkey=[];
+	var paramval=[];
+	$("input[name^='parama-']").each(function(index, element) {
+		paramkey.push($(this).attr('key'));
+		paramval.push($(this).val());
+	});
+	if(!confirm("资料无误，确认提交？"))return
+	$('j').Jetsum.loadbox({do:true,});
+	$.post("{php echo $this->createMobileUrl('ajaxget',array('op'=>'submitreg'))}",{
+		'id':"{$item['id']}",
+		'realname':rname,
+		'mobile':mobile,
+		'gender':gender,
+		'nickname':user_nickname,
+		'avatar':user_avatar,
+		'from_user':user_from_user,
+		'openid':user_openid_oath,
+		'paramkey':paramkey.join("|#jetsum#|"),
+		'paramval':paramval.join("|#jetsum#|"),
+	},function(data){
+		$('j').Jetsum.loadbox({do:false,});
+		if(data.success){
+			$("#notfollow .jalert_box_body").html(data.msg);
+			if(needtopay && payable){
+				$("#notfollow .jalert_box_foot").html('<a href="javascript:location.reload();" class="btn btn-block btn-warning lh30">确定</a');
+			}else{
+				$("#notfollow .jalert_box_foot").html('<a href="'+data.url+'" class="btn btn-block btn-warning lh30">确定</a');
+			}
+			//var _w=($(window).width()-$("#notfollow").width())/2;
+			var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+			$(".jreg_box").css({
+				'transition':'1ms',
+				'-webkit-transition':'scale(0.1)',
+				'transform':'scale(0.1)',
+			});
+			$(".jreg_box").hide();
+			
+			$(".jreg_masker").removeClass("hide").height($(document).height());
+			$(".jalert_box").css('top',_h);
+			$(".jalert_box").css({
+				'transition':'300ms',
+				'-webkit-transition':'scale(0.9)',
+				'transform':'scale(0.9)',
+			});
+			$(window).scroll (function(){
+				var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+				$(".jalert_box").css('top',_h);
+			});
+		}
+	},'json');
+}
+{if $item['latitude']}
+function showLocation(){
+	wx.openLocation({
+		latitude: {$item['latitude']}, // 纬度，浮点数，范围为90 ~ -90
+		longitude: {$item['longitude']}, // 经度，浮点数，范围为180 ~ -180。
+		name: '', // 位置名
+		address: '', // 地址详情说明
+		scale: 26, // 地图缩放级别,整形值,范围从1~28。默认为最大
+		infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+	});
+}
+{/if}
+var images = {
+  localId: [],
+  serverId: []
+};
+function uploadWimg(obj){
+	wx.chooseImage({
+		success: function (res) {
+			images.localId = res.localIds;
+			if (images.localId.length == 0) return;
+			var i = 0, length = 1;
+			images.serverId = [];
+			alert("图片选定数量"+images.localId.length);
+			wx.uploadImage({
+				localId: images.localId[0],
+				success: function (res) {
+					images.serverId.push(res.serverId);
+					imgServerid=res.serverId;
+					$.get("./index.php?c=entry&m=qw_cjhdpt&do=ajaxupload&i={$_W['uniacid']}",{media_id:imgServerid},function(data){
+						//alert("上传成功");
+						if(data=="0"){
+							alert("图片上传失败哦");
+							return;
+						}
+						$("input[name='parama-key["+obj+"]']").val(data);
+						$("button[key='"+obj+"']").text('更换图片');
+						if($(".uploadimg[op='"+obj+"']").size()>0)$(".uploadimg[op='"+obj+"']").remove();
+						$("input[name='parama-key["+obj+"]']").after("<p class='uploadimg' op='"+obj+"'><img src='"+data+"' height='60' /></p>");
+					})
+				},
+				fail: function (res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		}
+	});
+}
+//-------------------------//
+wx.ready(function () {
+	if($('#wBtn').size()>0){
+		$('#wBtn').removeAttr('disabled');
+		$('#wBtn').html("支付活动费用￥{$item['charge']}元");
+	}
+	
+	var menulistoption=['menuItem:share:qq','menuItem:openWithQQBrowser','menuItem:copyUrl','menuItem:openWithSafari','menuItem:originPage','menuItem:share:QZone','menuItem:share:weiboApp'];
+	wx.hideMenuItems({
+		menuList: menulistoption
+    });
+	sharedata = {
+		title: "{if $member} 我参加了《{$item['title']}》，一起来吧{else}{$item['title']}{/if}",
+		desc: "{$item['description']}",
+		link: "{$_W['siteurl']}",
+		imgUrl:"{$_W['attachurl']}{$item['clientpic']}",
+		success: function(){
+			//location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+	};
+	wx.onMenuShareTimeline({
+		title: sharedata.title,
+		link: sharedata.link,
+		imgUrl: sharedata.imgUrl,
+		success: function (res) {
+		  //location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+    });
+	wx.onMenuShareAppMessage({
+		title: sharedata.title, // 分享标题
+		desc: sharedata.desc, // 分享描述
+		link: sharedata.link, // 分享链接
+		imgUrl: sharedata.imgUrl, // 分享图标
+	});
+	
+});
+</script>
+</div>
+</body></html>

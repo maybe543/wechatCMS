@@ -1,0 +1,72 @@
+{php include $_template->template('header')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>我的订单</h1>
+    </header>
+    <!--header end-->
+	  <!--footer-->
+      {php include $_template->template('footerbar')}
+	  <!--footer end-->
+    <!--content-->
+    <div class="content">
+      {loop $list $item}
+        <!--订单item-->
+        <div class="orderList">
+        	<span class="orderList_icon_bg"></span>
+            <div class="orderItem">
+            	<!--订单信息-->
+            	<div class="orderItem_t">
+                <p>订单编号<span>{$item['ordersn']}</span></p>
+                <p>下单时间<span>{php echo date('Y-m-d H:i', $item['createtime'])}</span></p>
+              </div>
+            	<!--订单信息 end-->
+                <!--订单列表-->
+                <ul>
+                  {loop $item['goods'] $goods}
+                    <li>
+                        <div class="orderItem_c">
+                            <a href="{php echo $this->createMobileUrl('detail', array('id' => $goods['id']))}">
+                                <img src="{$_W['attachurl']}{$goods['thumb']}">
+                                <dl>
+                                  <dt>{$goods['title']}</dt>
+                                  <dd>单价：<span>{$goods['marketprice']}元{if $goods['unit']} / {$goods['unit']}{/if}</span></dd>
+                                  <dd>数量：<span>{$goods['ordertotal']} {if $goods['unit']} {$goods['unit']}{/if}</span></dd>
+                                </dl>
+                            </a>
+                        </div>
+                    </li>
+                    {/loop}
+                </ul>
+                <!--订单列表 end-->
+                <div class="my_order_amount">
+                  <p><span>总额：<em>￥{$item['price']}元</em></span></p>
+                  <p><span>状态：<em>{php echo $_order->getOrderStatusName($item['status'])}</em></span></p>
+                    <ul>
+                      {if $item['dispatchprice'] > 0}
+                      <li>含运费:<span>{$item['dispatchprice']}元</span></li>
+                      {/if}
+                      {if $item['status'] == Order::$ORDER_NEW}
+                      <li><a href="{php echo $this->createMobileUrl('pay', array('orderid' => $item['id']))}">付款</a></li>
+                      {elseif $item['status'] == Order::$ORDER_PAYED}
+                      <li><a href="javascript:alert('已经提醒卖家,谢谢您的耐心等待')">提醒卖家发货</a></li>
+                      {elseif $item['status'] == Order::$ORDER_DELIVERED}
+                      <!--li><a href="{php echo $this->createMobileUrl('logistics', array('orderid' => $item['id']))}">查物流</a></li-->
+                      <li><a target="_blank" href="http://m.kuaidi100.com/index_all.html?type={php echo trim($item['express'])}&postid={$item['expresssn']}&callback={php echo $_W['siteroot'] . $this->createMobileUrl('MyOrder')}">查物流</a></li>
+                      <li><a onclick="return confirm('7天内遇到质量问题可以申请退还。确认收货？'); return false;" href="{php echo $this->createMobileUrl('MyOrder', array('op'=>'confirm', 'orderid'=>$item['id']))}">确认收货</a></li>
+                      {elseif $item['status'] == Order::$ORDER_RECEIVED}
+                      <li><a href="javascript:alert('请将您的问题通过微信发送给我们')">售后</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CONFIRMED}
+                      <li><a href="javascript:void()">已完成</a></li>
+                      {elseif $item['status'] == Order::$ORDER_CANCEL}
+                      <li><a href="javascript:void()">已取消</a></li>
+                      {/if}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--订单item end-->
+        {/loop}
+    </div>
+    <!--content end-->
+{php include $_template->template('footer')}

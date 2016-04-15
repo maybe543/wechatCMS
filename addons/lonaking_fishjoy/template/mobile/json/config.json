@@ -1,0 +1,29 @@
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "array": [],
+        "bottomTip": "棒棒哒！",
+        "content": null,
+        "createTime": "2015-08-21 11:09:41",
+        "description": "",
+        "endTime": "2015-12-31 11:06:31",
+        "gameTime": 10,
+        "localTime": "2015-10-29",
+        "merchantName": "很高兴遇见你总店",
+        "param_awardBg": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/5881df1d6f954c95a595c27ff0c66bdc_jpg",
+        "param_awardImg": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/012ab9ec06f149708bc56d7ab49e8c0e_png",
+        "param_bg1Img": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/93f65eac88d1429fbf4853ee12430f99_jpg",
+        "param_gamebgImg": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/45d01fcc56554cb1b0bbe6e5d044af57_jpg",
+        "param_infoImg": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/5be0d5cf51074b77b461fc3f31fc86cc_png",
+        "param_logo": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/7043fc1bf69b45eeb8188e3c582f7234_png",
+        "param_share_content": "很高兴遇见你捕鱼达人",
+        "param_share_img": "http://liveapp.1paiclub.com/rest/file/load/479/10/2015-08-21/b6c308e955a240fda7294f76d1df8b26_png",
+        "param_share_title": "很高兴遇见你捕鱼达人",
+        "status": 5,
+        "title": "很高兴遇见你捕鱼达人",
+        "token": "38eb3786-913e-46a3-9855-3390677b43c4",
+        "totalNumber": null,
+        "playTimePrivilege":10
+    }
+}

@@ -1,0 +1,25 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+        <img class="img-circle" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>招募族员</h3>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-xs-12 col-md-12">
+        <img src="{php echo $this->createMobileUrl('qr',array('raw'=>$url))}" width="280" height="280">
+    </div>
+</div>
+<p><strong>邀请朋友扫一扫加入，即可成为你的家族成员，族员参于活动您将获得家族成员一定的奖励，同时你也会获得族员下级的奖励，双倍奖励哦。</strong></p>
+<h4>推广链接(订阅号推广或图文推送)</h4>
+<p style="margin-bottom:50px;">{$surl}</p>
+{template 'footbar'}
+{template 'footer'}

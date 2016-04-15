@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}打赏活动{else}{$item['aname']}{/if}</title>
+<style>
+html,body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #a60003;
+}
+#bodybox {
+    position: relative;
+    margin: 0 auto;
+    height: 100%;
+    {if empty($item['pay_done'])}
+    background: url(../addons/jy_crowdfunding/images/page8_bg.jpg) no-repeat;
+    {else}
+    background: url({$_W['attachurl']}{$item['pay_done']}) ;
+    {/if}
+    background-size: 100% 100%;
+    overflow: hidden;
+    max-width: 640px;
+}
+.head-image {
+    width: 20%;
+    position: absolute;
+    bottom: 42%;
+    left: 3%;
+}
+.input-class {
+    background: none;
+    border: 1px solid rgb(215,199,173);
+    border-radius: 5px;
+    width: 60%;
+    line-height: 28px;
+    font-size: 1em;
+    color: rgb(215,199,173);
+    text-align: center;
+    position: absolute;
+    bottom: 45%;
+    left: 30%;
+}
+.page8-name {
+    color: #fff0d1;
+    width: 26%;
+    text-align: center;
+    white-space: nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    position: absolute;
+    bottom: 37%;
+}
+.page8-btn1 {
+    width: 38%;
+    position: absolute;
+    left: 10%;
+    bottom: 3%;
+}
+.page8-btn2 {
+    width: 38%;
+    position: absolute;
+    right: 10%;
+    bottom: 3%;
+}
+img{vertical-align:middle;}
+.page8-text2 {
+    width: 100%;
+    margin-top: 7%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+    position: absolute;
+    bottom: 29%;
+}
+.page8-text3 {
+    width: 100%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+    position: absolute;
+    bottom: 23.5%;
+}
+.page8-text3 span{color: #ffde00;}
+.page8-text4 {
+    width: 100%;
+    text-align: center;
+    color: #fff0d1;
+    font-size: 1.2em;
+    position: absolute;
+    bottom: 18%;
+}
+.dashangBtn {
+    position: absolute;
+    right: 4%;
+    top: 2%;
+    width: 25%;
+}
+</style>
+</head>
+<body>
+    <div id="bodybox">
+        <a href="{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('sharelist',array('member_id'=>$huodong['id']))}"><img class="dashangBtn" src="../addons/jy_crowdfunding/images/dashangBtn.png"/></a>
+
+        {if empty($user['avatar'])}
+        <img class="head-image" src="../addons/jy_crowdfunding/images/head.jpg"/>
+        {else}
+        <img class="head-image" src="{$_W['attach_url']}{$user['avatar']}"/>
+        {/if}
+        <input class="input-class" type="text" placeholder="我想{$huodong['destination']}" disabled />
+        <div class="page8-name">{$user['nickname']}</div>
+
+        <div class="page8-text2">已打赏金额：{$done}元</div>
+
+        <div class="page8-text3">目前已有<span>{$num}</span>人打赏</div>
+
+        <div class="page8-text4">据目标金额还有{$left}元</div>
+
+        <img class="page8-btn1" src="../addons/jy_crowdfunding/images/jxdashang.png" onclick="pay()" />
+        <img class="page8-btn2" src="../addons/jy_crowdfunding/images/wofaqi.png" onclick="huodong()"/>
+        
+    </div>
+
+    <script>
+    function pay() {
+        window.location.href = "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('pay',array('member_id'=>$huodong['id']))}";
+    }
+    function huodong() {
+        window.location.href = "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('huodong')}";
+    }
+    </script>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            {if empty($title)}
+            title: "赐我打赏吧",
+            {else}
+            title: "{$title}",
+            {/if}
+            {if empty($desc)}
+            desc: "发起打赏活动吧",
+            {else}
+            desc: "{$desc}",
+            {/if}
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('friend',array('member_id'=>$huodong['id']))}",
+            {if !empty($user['avatar'])}
+            imgUrl: "{$user['avatar']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_crowdfunding/images/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+                
+                },
+            cancel: function (res) {
+               
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

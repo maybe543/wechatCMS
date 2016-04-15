@@ -1,0 +1,251 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('ActivityManage');}">活动管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('QuestionManage');}">问题管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('ClassManage');}">问题类型</a></li>
+		<li><a href="{php echo $this->createWebUrl('TeamManage');}">战队管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('AdManage');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+	</ul>
+	<form class="form-horizontal form" id="setting-form" action=""
+		method="post">
+		<div class="panel panel-default">
+			<div class="panel-heading">活动编辑</div>
+			<div class="panel-body">
+				<!-- id-->
+				<div class="form-group hide">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">id</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[id]"
+							value="{$data['id']}" />
+							<span class="help-block">id,隐藏</span>
+					</div>
+				</div>
+				<!-- name-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">活动名称</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[name]"
+							value="{$data['name']}" required/>
+							<span class="help-block">任务名称，建议20个字以内</span>
+					</div>
+				</div>
+				<!-- 活动类型-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">活动类型</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="data[activity_type]" value="1" {if $data['activity_type'] == '1'}checked="checked"{/if} />单人模式(可求助)
+						</label>
+						<label class="radio-inline">
+							<input type="radio" data-toggle="tooltip" title="团队模式暂未开放，敬请期待" name="data[activity_type]" value="2" {if $data['activity_type'] == '2'}checked="checked"{/if} disabled/>团队模式(暂未开放)
+						</label>
+						<span class="help-block">活动类型选择</span>
+					</div>
+				</div>
+				<!-- 图片-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[pic]', $data['pic'])}
+						<span class="help-block">活动主题大图 300*200 比例大小即可</span>
+					</div>
+				</div>
+				<!-- pver time -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">开始时间</label>
+					<div class="col-sm-8">
+						<input type="date" class="form-control"
+							   name="data[start_time]" value="{$data['start_time']}" /> <span
+							class="help-block">活动开始时间</span>
+					</div>
+				</div>
+				<!-- pver time -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">结束时间</label>
+					<div class="col-sm-8">
+						<input type="date" class="form-control"
+							   name="data[end_time]" value="{$data['end_time']}" /> <span
+							class="help-block">活动结束时间</span>
+					</div>
+				</div>
+				<!-- 剩余积分-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">活动剩余积分</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[score]"
+							   value="{$data['score']}" required/>
+						<span class="help-block">当积分赠送完后，将停止赠送积分</span>
+					</div>
+				</div>
+				<!-- 游戏次数限制-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">游戏次数限制</label>
+					<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">
+						<div class="input-group form-group">
+							<input type="number" class="form-control" name="data[play_limit]"
+								   value="{$data['play_limit']}" required/>
+							<span class="input-group-addon">次</span>
+						</div>
+						<span class="help-block">限制每人游戏多少次，默认1次/天</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<label class="radio-inline">
+							<input type="radio" data-toggle="tooltip" title="同一个微信用户一个活动每天允许的游戏次数" name="data[limit_type]" value="1" {if $data['limit_type'] == '1'}checked="checked"{/if} />每天
+						</label>
+						<label class="radio-inline">
+							<input type="radio" data-toggle="tooltip" title="同一个对同一个活动只允许参与活动次数" name="data[limit_type]" value="2" {if $data['limit_type'] == '2'}checked="checked"{/if} />每次活动
+						</label>
+					</div>
+				</div>
+				<!-- 随机题目数量 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">随机题目数量</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[random_count]" value="{$data['random_count']}">
+						<span class="help-block">默认为题目总数，当活动选择了题目的时候，这里的设置才会生效</span>
+					</div>
+				</div>
+				<!-- 帮助次数限制-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">帮助次数限制</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[help_limit]"
+							   value="{$data['help_limit']}"/>
+						<span class="help-block">每人仅限帮助同一微信用户、同一活动求助的次数</span>
+					</div>
+				</div>
+				<!-- 限制游戏时间-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">活动时间限制</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[limit_seconds]"
+							   value="{$data['limit_seconds']}"/>
+						<span class="help-block">限制游戏时间，单位秒，为0则不限制，当用户参与活动超过此时间，则会自动停止游戏并记分</span>
+					</div>
+				</div>
+				<!-- 礼品详情-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则/介绍</label>
+					<div class="col-sm-8">
+						{php echo tpl_ueditor('data[rule]', $data['rule']);}
+					</div>
+				</div>
+				<!-- 广告 -->
+				{if $task['ads']}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">广告选择</label>
+					<div class="col-sm-9">
+						{loop $task['ads'] $ad}
+							<label class="radio-inline">
+								<input type="checkbox" name="ad[]" value="{$ad['id']}" {if $ad['checked']}checked="true"{/if}> {$ad['title']}
+							</label>
+						{/loop}
+						<span class="help-block">选择广告后将会在分享的任务页面展示广告,如果不选择则不展示</span>
+					</div>
+				</div>
+				{/if}
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">主页设置</div>
+			<div class="panel-body">
+
+				<!-- 虚拟人气-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">虚拟人气</label>
+					<div class="col-sm-8">
+						<input type="number" class="form-control" name="data[virtual_times]"
+							   value="{$data['virtual_times']}" required/>
+						<span class="help-block">这里可以手动控制，是为增加虚拟人气</span>
+					</div>
+				</div>
+
+				<!-- 版权设置-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">版权信息</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="data[copyright]"
+							   value="{$data['copyright']}" required/>
+						<span class="help-block">版权描述</span>
+					</div>
+				</div>
+				<!-- 广告 -->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">logo</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[logo_pic]', $data['logo_pic'])}
+						<span class="help-block">尺寸参考:10:3（该logo展示在页面右上角）可以不设置</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">主题大图</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[theme_pic]', $data['theme_pic'])}
+						<span class="help-block">尺寸参考:1:!（该图片展示在页面正中央）可以不设置</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">背景图</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[bg_pic]', $data['bg_pic'])}
+						<span class="help-block">尺寸参考:3:4（您可以只设置背景图片即可）</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">成绩页设置</div>
+			<div class="panel-body">
+				<!-- 得分提示-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">得分提示</label>
+					<div class="col-sm-8">
+						<textarea class="form-control" style="height:80px;"  name="data[analyse_message]" value="{$data['analyse_message']}" cols="60">{$data['analyse_message']}</textarea>
+						<span class="help-block">请复制下面的案例修改,中括号中为得分区间，中括号后面的句子代表用户成绩分析</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">得分提示案例</label>
+					<div class="col-sm-8">
+						<textarea class="form-control" style="height:80px;" cols="60" disabled>[10000000,-101]您好，先生，您身在北京却不知道北京这么多好玩的地方，您应该好好修修北京学分了
+[-100,0]一看就知道您非常了解北京
+[1,100]看来您对北京了解不够深入，您需要花时间去了解了解了
+[101,200]我去，你竟然就这点内涵吗？什么都不懂的二缺</textarea>
+						<span class="help-block">这个是案例～设置这个无效，请一定原模原样复制后，按照规则修改</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-danger">
+			<div class="panel-heading">微信分享设置</div>
+			<div class="panel-body">
+				<!-- sharelogo-->
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享logo</label>
+					<div class="col-sm-8">
+						{php echo tpl_form_field_image('data[share_logo]', $data['share_logo'])}
+						<span class="help-block">这个logo是用户分享到朋友圈显示的logo，请务必设置的好看一点</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /网页内容设置 -->
+		<div class="form-group col-sm-12">
+			<input name="token" type="hidden" value="{$_W['token']}" />
+			<input type="submit" class="btn btn-primary col-lg-1" name="submit"
+				value="提交" />
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>
+{template 'common/footer'}

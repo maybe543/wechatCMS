@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=2.0" />
+    <title>微信安全{$keyname}</title>
+    <script type="text/javascript">
+
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    {$content},
+                    function(res){
+                        WeixinJSBridge.log(res.err_msg);
+                        //alert(res.err_msg);
+                        if (res.err_msg == "system:access_denied"){
+                            document.getElementById("contermsg").innerText = "{$keyname}失败:access_denied";
+                            setTimeout(function(){window.history.go(-1);}, 2000);
+                        }else if (res.err_msg == "get_brand_wcpay_request:cancel"){
+                            document.getElementById("contermsg").innerText = "取消{$keyname}，正在返回...";
+                            setTimeout(function(){window.history.go(-1);}, 2000);
+                        }else if (res.err_msg == "get_brand_wcpay_request:fail"){
+                            document.getElementById("contermsg").innerText = "{$keyname}失败，正在返回...";
+                            setTimeout(function(){window.history.go(-1);}, 2000);
+                        }else if (res.err_msg == "get_brand_wcpay_request:ok"){
+                            document.getElementById("contermsg").innerText = "{$keyname}成功，正在跳转...";
+                            window.location.href = "{$backurl}";
+                        }else{
+                            document.getElementById("contermsg").innerText = "操作完成，正在跳转...";
+                            window.location.href = "{$backurl}";
+                        }
+                    }
+            );
+        }
+
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+
+        window.onload = function() {
+            callpay();
+        };
+    </script>
+</head>
+<body style="background:#f6f6f6;">
+
+<div style="text-align:center; margin-top:50px;" id="contermsg">正在打开微信安全{$keyname}</div>
+
+</body>
+</html>

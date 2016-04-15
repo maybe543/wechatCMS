@@ -1,0 +1,21 @@
+<form action="{php echo $this->createWebUrl('Request')}" method="post" role="form">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">搜索兑换请求</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-10 col-sm-9 col-xs-12">
+          {php echo FormTpl::getWebControl2('text', 'keyword', $_GPC['keyword']); }
+          <span class="help-block">支持根据手机、姓名、或收货地址进行搜索</span>
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-12">
+        {php echo FormTpl::getWebControl2('submit', 'submit', '搜索') }
+        {php echo FormTpl::getWebControl2('hidden', 'token', $_W['token'])}
+        {php echo FormTpl::getWebControl2('hidden', 'operation', $operation)}
+        {php echo FormTpl::getWebControl2('hidden', 'search', $search)}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

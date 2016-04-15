@@ -1,0 +1,52 @@
+{php include $_template->template('header')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascript:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+      <a href="{php echo $this->createMobileUrl('MyCart', array('op'=>'clear'))}" class="header_data_icon header_delete_btn icon-trash">清空</a>
+        <h1>购物车</h1>
+    </header>
+    <!--header end-->
+    <!--content-->
+    <div class="content">
+        <!--购物车列表-->
+        <div class="cartList">
+        	<span class="cartList_icon_bg"></span>
+            <div class="cartItem">
+                <ul>
+                  {if count($list) <= 0}
+                  <li><a href="{php echo $this->createMobileUrl('List')}">
+                    <div class="cartItem_t"><span>购物车还是空的，快去选货吧！</span><em class="icon-circle-arrow-right icon-2x"></em></div></a>
+                  </li>
+                  {else}
+                    {loop $list $item}
+                    <li>
+                    <div class="cartItem_t"><span>￥{$item['goods']['marketprice']}元{if !empty($goods['unit'])} / {$goods['unit']}{/if}</span><a href="{php echo $this->createMobileUrl('MyCart', array('op'=>'remove', 'id'=>$item['id']))}"><em class="icon-remove-sign icon-2x"></em></a></div>
+                        <div class="cartItem_c">
+                            <a href="{php echo $this->createMobileUrl('Detail', array('id'=>$item['goods']['id']))}">
+                                <img src="{$_W['attachurl']}{$item['goods']['thumb']}" />
+                                <dl>
+                                    <dt>{$item['goods']['title']}</dt>
+                                    <dd>数量：<span>{$item['total']}{$goods['unit']}</span></dd>
+                                </dl>
+                            </a>
+                        </div>
+                    </li>
+                    {/loop}
+                  {/if}
+                </ul>
+                {if count($list) > 0}
+                <div class="order_amount">
+                  <span>合计：<em>￥{$totalprice}元</em></span>
+                  <a href="{php echo $this->createMobileUrl('confirm')}">结算</a>
+                </div>
+                {else}
+                <div class="order_amount"></div>
+                {/if}
+            </div>
+        </div>
+        <!--购物车列表 end-->
+    </div>
+    <!--content end-->
+
+{php include $_template->template('footerbar')}
+{php include $_template->template('footer')}

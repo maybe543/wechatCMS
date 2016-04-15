@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">    
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<title>服务员工</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+</head>
+<body>
+
+<div id="page0" class="c-gra1 ub ub-ver">
+	{if $staff_id == 0}
+		<div class="tx-c">无员工数据</div>
+	{else}
+	<!--<form class="form-horizontal ub ub-f1 ub-ver" id="form1" action="javascript:;" method="post">-->
+        <div class="ub-f1 ub ub-ver">
+            <div class="ub ub-ver ub-ac ub-pc" style="height:10em">
+				{if $this->getAvatarA($item[openid]) == ''}
+					 <div class="uc-a1 c-org ub-img1 uba2 b-wh" style="height:5em; width:5em; background-image:url({MODULE_URL}/template/mobile/images/avatar.jpg)"></div>
+				{else}
+					<div class="uc-a1 c-org ub-img1 uba2 b-wh" style="height:5em; width:5em; background-image:url({php echo $this->getAvatarA($item[openid])})"></div>
+				{/if}
+				
+                <!--<div class=" umar-t1">{php echo $this->getnickname($item[openid])}</div>-->
+                <div class=" umar-t1">{$item[name]}</div>
+            </div>
+            
+            <ul class="ubt ubb b-bla01 umar-t1 userlist">
+                <li class="ub c-wh ub-ac">
+                    <i class="iconfont icon-dianhua ulev2 umar-r umar-l1 t-blu2"></i>
+                    <a href="tel:{$item[mobile]}" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                        <span class="">手机号码：</span>
+                        <div class="ub-f1">{$item[mobile]}</div>
+                        <i class="iconfont icon-xiangyou ulev1 t-gra"></i>
+                    </a>
+                </li>
+                <li class="ub c-wh ub-ac">
+                    <i class="iconfont icon-jifen ulev2 umar-r umar-l1 t-blu2"></i>
+                    <a href="#" class="ub-f1 ub uinn5 ubb b-bla01 ub-ac ub-pc">
+                        <span class="">用户评分：</span>
+                        <div class="ub-f1">{php echo $this->getXing($item[id])} 颗星</div>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="uinn5 ubb b-bla01">最新用户评论</div>
+			{php echo $this->getComment5($item[id])}
+            <!--
+			<div class="uinn5 ubb b-bla01 ub ub-ac">
+            	<div class="umar-r">
+                	<div class="uc-a50 c-org ub-img1 " style="height:3em; width:3em; background-image:url({php echo $this->getAvatarA($item[openid])})"></div>
+                </div>
+                <div class="ub-f1">
+                	<div class="ulev-2 t-gra">2015-06-30 12:12:12</div>
+                    <div class="ulev-1">评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容</div>
+                </div>
+            </div>
+			-->
+            <div class="uinn8 c-wh  ubt ubb b-bla01">
+                <!--<div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">员工姓名：</div>
+                    {$item[name]}
+                </div>
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">手机号码：</div>
+                    {$item[mobile]}
+                </div>
+				<div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">综合得分：</div>
+                    {php echo $this->getXing($item[id])}星
+                </div>
+				
+				<div class="uinn ub ub-ac">    
+                </div>
+				
+				<div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">精选评论：</div>
+                </div>-->
+				
+            </div>
+        </div>
+    <!--</form>-->
+	{/if}
+    <div class="umar-t1" style="height:3em"></div>
+	{template 'footer'}
+</div>
+
+<!--<script type="text/javascript" src="js/zepto1.3.min.js"></script>-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<!--<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/jquery_min.js"></script>-->
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+</body>
+</html>

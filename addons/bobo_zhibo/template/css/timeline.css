@@ -1,0 +1,126 @@
+@charset "utf-8";
+/*
+	2014-5-5
+	图文直播详情页
+ */
+.noview{ background:url(images/noview.png) #dddddd no-repeat center center;}
+body { background-color: #f3f3f3; font: normal 12px "Microsoft YaHei"; }
+.bwhite { background-color: #FFF; }
+.mb10 { margin-bottom: 10px; }
+.w660 { width: 660px; }
+.w300 { width: 300px; }
+/*头部*/
+.t-header { padding: 2px; }
+.t-header h1 { height: 52px; font-size: 24px; color: #323232; line-height: 52px; text-indent: 21px; }
+/*概况*/
+.introtit,
+.timelinetit { height: 40px; }
+.introtit .lt,
+.timelinetit .lt { width: 4px; height: 40px; background: url(images/intro.png) no-repeat; display: block; float: left; }
+.introtit .txt { width: 952px; height: 40px; font-size: 20px; color: #8c4f01; text-indent: 16px; line-height: 40px; background: url(images/intro.png) 0 -40px repeat-x; float: left; text-shadow: 0px 0px 3px #FFFFFF; font-weight: normal; }
+.introtit .split,
+.timelinetit .split { width: 22px; height: 40px; background: url(images/intro-split.png) no-repeat; margin-left: 8px; float: left; display: block; }
+.introtit .rt,
+.timelinetit .rt { width: 4px; height: 40px; background: url(images/intro.png) 0 -80px no-repeat; display: block; float: left; }
+.introtxt { width: 642px; height: 136px; overflow: hidden; font-size: 14px; padding: 15px 10px; line-height: 18px; float: left; }
+.introtxt p { margin: 10px 0; }
+/*直播*/
+.timelinetit .txt { width: 652px; height: 40px; font-size: 20px; color: #ffffff; text-indent: 16px; line-height: 40px; background: url(images/intro.png) 0 -40px repeat-x; float: left; text-shadow: 0px 0px 3px #8c4f01; font-weight: normal; }
+/*直播结束，直播进行中*/
+.airing { color: #8c4f01; text-indent: 16px; line-height: 40px; text-shadow: 0px 0px 3px #FFFFFF; font-weight: normal; }
+.timelinetit .order { width: 50px; height: 31px; margin: 6px 0 0 10px; padding-left: 36px; display: block; background: url(images/timelintbt.png); font-size: 14px; color: #323232; line-height: 30px; float: left; text-align: left; text-shadow: none; text-indent: 0; }
+.timelinetit .curr { background: url(images/timelintbt.png) 0 -31px no-repeat; color: #ff0000; }
+/*时间轴块*/
+.tbox { padding: 20px 0; background-color: #ececec }
+.timebox { border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; margin-top: -36px; background: url(images/timelinebg.gif) repeat-y 90px 0; }
+.timebox dl { margin-top: 30px; float: left; display: none; }
+.timebox dl dt,
+.toverbox dt { width: 64px; height: 45px; padding-left: 14px; text-align: center; }
+.timebox .time { font-size: 18px; font-weight: bold; color: #ff0000; line-height: 18px; margin-bottom: 10px; }
+.timebox .date { color: #646464; }
+.timebox dl dd { width: 550px; margin-left: 8px; padding-left: 24px; background: url(images/timelinedom.png) no-repeat; }
+.toverbox dd { width: 542px; padding: 13px 0 0 32px; background: url(images/clock.png) no-repeat; }
+.timebox dl dt,
+.timebox dl dd,
+.toverbox dt,
+.toverbox dd { float: left; }
+.timebox .point { width: 18px; height: 20px; background: url(images/timelinebox.png) no-repeat; display: block; float: left; z-index: 2; position: relative; }
+.toverbox .point { width: 18px; height: 18px; background: url(images/timelinesubbox.png) no-repeat; display: block; float: left; z-index: 2; position: relative; }
+.timebox .subbox { width: 500px; padding: 5px; box-shadow: 0px 1px 3px #787878; float: left; }
+.toverbox .subbox { width: 500px; height: 46px; padding: 5px; box-shadow: 0px 1px 3px #787878; line-height: 46px; background: #ffeab5; float: left; }
+.over { width: 10px; height: 10px; display: block; background: url(images/timelineover.png) no-repeat; float: left; margin: 4px 10px; }
+.subbox .txt { font-family: "宋体"; color: #333333; line-height: 18px; margin: 15px 0 10px 0; }
+.overtit { width: 79px; display: inline; float: left; }
+.overtime { width: 332px; display: inline; float: left; }
+/*加载更多*/
+.loadmore { width: 140px; height: 36px; background: #ffc80e; font-size: 16px; color: #ffffff; border: 1px solid #ff9c00; display: block; line-height: 36px; text-align: center; border-radius: 5px; margin: 10px auto; }
+.loadmore:hover { background: #ff9d00; color: #ffffff; }
+/*往期直播*/
+.prev { width: 975px; margin-bottom: 30px; }
+.prevtit { height: 56px; font-size: 24px; line-height: 56px; color: #323232; }
+.prevbox { width: 308px; position: relative; margin-right: 15px; float: left; }
+.prevbox dt { width: 308px; border: 1px solid #323232; }
+.prevbox dd { position: absolute; left: 0; bottom: 0; line-height: 40px; background: #000; opacity: 0.8; }
+.prevbox dd a { width: 310px; height: 40px; color: #FFF; overflow: hidden; text-align: center; display: block; }
+.clear { clear: both; }
+
+/*
+	2014-5-5
+	图文直播列表页
+*/
+.logo{ width:100%; height:70px; line-height:70px; border-bottom:3px solid #969696; margin:20px 0 0 0;}
+.logo a{ width:251px; height:70px; background:url(images/logo.png) no-repeat left center; display:block; float:left;}
+.itemlist{ width:978px; padding-bottom:20px;}
+.itemlist li{ width:269px; padding:18px; margin:20px 18px 0 0; border:1px solid #abaaaa; float:left; background:#FFFFFF;}
+.itemlist li .tit{ font-size:16px; color:#434343; margin-bottom:30px;height:42px;}
+.itemlist li .txt{ width:269px; height:54px; line-height:18px; margin:10px 0; color:#434343; overflow:hidden;}
+.itembot span{ height:18px; display:inline-block;line-height:18px;}
+.itemlist .share,.itemlist .state{ width:18px; height:18px; display:block; margin-right:6px; float:left;}
+.itemlist .share{ background:url(images/list-ico.png) no-repeat; cursor:pointer;}
+.itemlist .state{ background:url(images/list-ico.png) no-repeat -18px 0; margin-right:2px;}
+.sharebox .bdshare-button-style0-16 a, .bdshare-button-style0-16 .bds_more{margin: 1px 6px 0 0;}
+.footer{ border-top:1px solid #666;}
+
+
+
+/*
+    2014-5-23 add
+    添加评论模块
+*/
+.ping-box{ padding:20px 19px 0 19px;}
+.pingall a{ font-size:14px; font-weight:bold; height:31px; line-height:31px; color:#1160a7; display:block;}
+.pingtit{ font-size:18px; margin-right:20px;}
+.pinglogin a{ line-height:18px; font-weight:bold; color:#1160a7;}
+.ping-box .sub-bt{ width:75px; height:24px; color:#FFF; background:#4b87d7; display:block; border-radius:3px; line-height:24px; text-align:center;}
+.ping-box .sub-bt:hover{ background:#69a1ec;}
+.ping-box textarea{ width:255px; height:95px; resize:none; margin:8px 0; line-height:18px;}
+.pinglun{ padding:23px 20px; border-bottom:1px solid #c8c8c8;}
+.pinglun dt{ height:26px; font-size:12px; color:#797979; line-height:26px; margin-bottom:10px;}
+.pinglun dt img{ float:left; margin-right:10px;}
+.pinglun dd{ font-size:14px; color:#313131; font-weight:bold; line-height:18px; padding:0 4px;}
+.pingmore{ width:243px; height:40px; background:#aaaaaa; color:#FFF; line-height:40px; text-align:center; border-radius:4px; display:block; margin:30px auto;
+cursor:pointer;}
+.pingmore:hover{ background:#b4b4b4; color:#fff;}
+
+/*
+    2014-5-23 add end
+*/
+
+
+
+/*
+    2014-7-29 add
+    显示自动刷新
+*/
+.timeOut{float:right; margin-right:30px;text-indent:0; width:30px; text-align:center; position:relative; z-index:99;}
+.timeOutBox{display:block; cursor:pointer; width:28px; height:28px; font-size:14px; text-shadow:none; color:#999; line-height:28px; margin-top:6px; border:1px solid #ccc; background:#f5f5f5;border-radius:6px;}
+.timeList{background:#f5f5f5; border-radius:0 0 6px 6px; overflow:hidden; display:none;  width:28px; position:absolute; z-index:999; top:32px; left:0px;border:1px solid #ccc; border-top:0;}
+.timeList li{font-size:14px; cursor:pointer; overflow:hidden; width:28px; text-align:center; color:#999; line-height:32px; text-shadow:none; }
+.timeList li:hover{color:#ff9b00;}
+.dialogbox{display:none;background:rgba(0,0,0,0.3); filter:alpha(opacity=30);filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30); position: fixed; top: 0; left: 0; z-index:999;_position:absolute; }
+.imagesBox{display:none; border:5px #fff solid; position:absolute; z-index:9999; top:50%; left:50%;}
+.subbox img{cursor:pointer;}
+.ib1 span{position:absolute; right:0;top:0; z-index:9999; display:block; backface-visibility:#fff; padding:0 0 5px 5px; font-size:14px; color:#666; cursor:pointer;}
+/*
+    2014-7-29 add end
+*/

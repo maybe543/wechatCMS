@@ -1,0 +1,92 @@
+{template 'header'}
+<link type="text/css" rel="stylesheet" href="{RES_CSS}base.css" />
+<link type="text/css" rel="stylesheet" href="{RES_CSS}style.css?v=203" />
+<script type="text/javascript" src="{RES_JS}script.js"></script>
+<title>积分提现</title>
+<section class="stay">
+        <section class="order_content">
+            <section class="order_item">
+		<aside>我的余额：{$fans['credit2']}元</aside>
+					{if $my_goods_list}
+					<section class="button">
+					<a href="{php echo $this->createMobileUrl('MyRequest')}">查看历史提现记录</a>
+					</section>
+					{/if}
+			</section>
+        </section>
+
+        {if !empty($this->module['config']['description'])}
+        <section class="stay_content">
+        <section class="stay_box" style="padding:auto;margin:auto;padding-top:7px">
+        <center>
+          {php echo htmlspecialchars_decode($this->module['config']['description'])}
+        </center>
+        </section>
+        </section>
+        {/if}
+
+       {if count($goods_list)<=0 }
+        <section class="stay_content">
+        <section class="stay_box">
+        <p style="line-height:60px;height:60px;padding:10px;">本时间段没有开放提现</p>
+        </section>
+        </section>
+        {/if}
+
+    	<!--content-->
+        <section class="stay_content">
+			{loop $goods_list $item}
+        	<!--box-->
+            <section class="stay_box">
+			<aside class="stay_title">{$item['title']}</aside>
+                <article class="stay_main">
+                    <p class="stay_banner"><img src="{php echo strpos($item['logo'], 'http://') === FALSE ? $_W['attachurl'] . $item['logo'] : $item['logo']}" /></p>
+			        <!--item-->
+                    <section class="stay_item">
+                        <section class="stay_item_l fl">
+                            <section class="stay_lump">
+                                <span class="stay_lump_l">剩余数量：</span>
+                                <p class="stay_lump_r"><span> {$item['amount']}份</span></p>
+                            </section>
+                        </section>
+                        <!--section class="stay_item_r fl">
+                            <section class="stay_lump">
+                                <span class="stay_lump_l">价值：</span>
+                                <p class="stay_lump_r"><span>{$item['cost']}元</span></p>
+                            </section>
+                        </section-->
+                    </section>
+		    <section class="stay_item">
+                        <section class="fl">
+                            <section class="stay_lump">
+                                <span class="stay_lump_l">截止日期：</span>
+                                <p class="stay_lump_r"><span>{$item['deadline']}</span></p>
+                            </section>
+                        </section>
+ 		    </section>
+                    <!--item end-->
+	                <!--item-->
+                    <section class="stay_content">
+						{php echo htmlspecialchars_decode($item['content'])}
+					</section>
+          <!--item end-->
+					<!--btn-->
+					<section class="button">
+					{if $fans['credit2'] < $item['cost'] }
+					<a class="gray" href="#" onclick="alert('余额不足')">取现(消耗余额积分{$item['cost']}元)</a>
+					{elseif $fans['vip'] < $item['vip_require'] }
+          <a class="gray" href="#" onclick="alert('您的VIP级别不够，无法参与本项取现，试试其它的吧。')">取现(需达到VIP{$item['vip_require']}级)</a>
+					{else}
+          <a href="{php echo $this->createMobileUrl('fillinfo', array('goods_id' => $item['goods_id']))}">
+            取现{if $item['userchangecost']==1}({$item['cost']}元起兑){else}(消耗余额积分{$item['cost']}元){/if}</a>
+					{/if}
+					</section>
+                    <!--btn end-->
+                </article>
+            </section>
+            <!--box end-->
+			{/loop}
+        </section>
+        <!--content end-->
+    </section>
+{template 'footer'}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+<title>积分兑换</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../addons/hc_hunxiao/style/css/style.css"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+<meta name="mobileOptimized" content="width" />
+<meta name="handheldFriendly" content="true" />
+<meta http-equiv="Cache-Control" content="max-age=0" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<body>
+	<section class="main animated fadeInDown">
+		<div class="main-box">
+			<div class="commission-detail">
+				<h6>积分记录</h6>
+				{if empty($creditlog)}
+				暂无
+				{else}
+				<p>
+					<span class="commission-time1">时间</span>
+					<span class="commission-event1">商品</span>
+					<span class="commission-money1">积分</span>
+					<span class="commission-total1">数量</span>
+				</p>
+				<p>
+					{loop $creditlog $v}
+						<span class="commission-time1">{php echo date('Y-m-d', $v['createtime'])}</span>
+						<span class="commission-event1">{if $v['flag']==0}签到积分{else}{php echo hehe($good[$v['goodsid']], 7)}{/if}</span>
+						<span class="commission-money1">{$v['credit']}</span>
+						<span class="commission-total1">{$v['total']}</span>
+					{/loop}
+				</p>
+				<p>
+					<span class="commission-time1">兑换数值</span>
+					<span class="commission-event1"><input type="text" id="credit" value="" placeholder="积分:佣金={$rule['conversion']}:1" style="border-radius:3px; width:80%; height:65%;"/></span>
+					<span class="commission-money1">{$fcredit}</span>
+					<span class="commission-total1">--</span>
+				</p>
+				{/if}
+			</div>
+			{$pager}
+			<br/>
+			{if !empty($creditlog)}
+				<input type="submit" onclick="back();"  value="返回" class="btn btn-primary" style="width:48%;"/>
+				<input type="submit" onclick="apply();" value="兑换" class="btn btn-primary" style="width:48%;"/>
+			{/if}
+		</div>
+	</section>
+<footer class="foot"><a>&copy; {$_W['account']['name']}</a></footer>
+<script src="../addons/hc_hunxiao/style/js/jquery.js"></script>
+<script type="text/javascript">
+	function apply(){
+		if({$profile['flag']}==0){
+			alert('您还不是推广人，无法兑换!');
+			return false;
+		}
+		var credit = document.getElementById("credit").value;
+		if(!parseInt(credit) || parseInt(credit)<=0){
+			alert('请输入大于0的数字！');
+			return false;
+		}
+		if(parseInt(credit) > {$fcredit}){
+			alert('兑换上限不能超过'+{$fcredit});
+			return false;
+		}
+		if(!confirm('确认兑换吗？')){
+			return false;
+		}
+		$.ajax({
+			type: "POST",
+			url: "{php echo $this->createMobileurl('creditapply', array('op'=>'applyed'), true)}&credit="+parseInt(credit),
+			dataType: "text",
+			success: function (d) {
+				if(d==1){
+					alert('兑换成功！');
+					location.href = "{php echo $this->createMobileUrl('commission')}";
+				}
+				if(d==-1){
+					alert('您还不是推广人，无法兑换!');
+				}
+				if(d==-2){
+					alert('兑换错误！');
+				}
+				if(d==-3){
+					alert('兑换错误！');
+				}
+				if(d==-3){
+					alert('需要关注该公众号才能签到哦！');
+					location.href = '{$rule['gzurl']}';
+				}
+			},
+			
+			error: function (xml, text, thrown){
+				alert("出错啦!");
+			}
+		});
+	}
+	
+	function back(){
+		history.go(-1);
+	}
+</script>
+</body>
+</html>

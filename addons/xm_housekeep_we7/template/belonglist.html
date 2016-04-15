@@ -1,0 +1,61 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo  $this->createWebUrl('User', array('name'=>'xm_housekeep_we7'));}">用户列表</a></li>
+	<li  class="active"><a href="">员工客户详情</a></li>
+</ul>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr class="active">
+                        <td>头像</td>
+						<td>昵称</td>
+						<td>真实姓名</td>
+                        <td>手机号码</td>
+						<td>所属员工</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	{loop $list $val}
+                	<tr>
+                        <td>
+							<span class="thumb-sm ">
+								<img src="{php echo $this->getAvatar($val[openid])}" style="width:40px; height:40px;">
+                            </span>
+                        </td>
+						<td>
+							<p class="form-control-static">{php echo $this->getnickname($val[openid])}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{php echo $this->getRealname($val[openid])}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{php echo $this->getSj($val[openid])}</p>
+                        </td>
+				
+                        <td style="overflow:visible;">
+                        	<div class="btn-group btn-group-sm">
+								{php echo $this->getFlag($val[fromopenid])}
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+        
+    </div>
+</div>
+
+
+{template 'common/footer'}

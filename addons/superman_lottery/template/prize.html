@@ -1,0 +1,64 @@
+<tr>
+	<td>
+		<a href="javascript:;" class="fa fa-move" title="按住鼠标左键，拖动调整顺序">
+			<i class="fa fa-arrows"></i>
+		</a>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<input name="prizes[id][]" type="hidden" class="form-control" value="{$new_id}"/>
+				<input name="prizes[title][]" type="text" class="form-control" placeholder=""/>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<input name="prizes[name][]" type="text" class="form-control" placeholder=""/>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<div class="input-group">
+					<input name="prizes[total][]" type="text" class="form-control" value="0"/>
+					<div class="input-group-addon">个</div>
+				</div>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<div class="input-group">
+					<input name="prizes[remain_total][]" type="text" class="form-control" value="0"/>
+					<div class="input-group-addon">个</div>
+				</div>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<div class="input-group">
+					<input name="prizes[probability][]" type="text" class="form-control" placeholder=""/>
+					<div class="input-group-addon">%</div>
+				</div>
+			</div>
+		</div>
+	</td>
+	<td>
+		<div class="form-group" style="margin-bottom: 0">
+			<div class="col-sm-8 col-xs-12" style="padding-left: 0">
+				<input class="isdisplay" data-id="{$new_id}" type="checkbox" name="prizes[join_play][]" checked/>
+			</div>
+		</div>
+	</td>
+	<td>
+		<a href="javascript:;" class="del_item_link" data-toggle="tooltip" onclick="delItem(this)" title="删除" data-id="{$new_id}">
+			<i class='fa fa-remove'></i>
+		</a>
+	</td>
+</tr>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta content="telephone=no" name="format-detection" />
+<meta content="email=no" name="format-detection" />
+<meta content="" name="pgv" />
+<title>{$systeminfo['shopname']}--价目表</title>
+<meta content="authenticity_token" name="csrf-param" />
+<script src="../addons/water_super/template/js_self/jiamu.js"></script>
+<link href="../addons/water_super/template/css_self/jiamu.css" media="screen" rel="stylesheet" />
+</head>
+<body style="background:#fafafa">
+<div id="container">
+<div class="shechipin-index">
+	<ul class="tab_nav" id="tab">
+	<li><span>轻薄服饰<div>￥38</div></span></li>
+	<li><span>西装外套<div>￥78</div></span></li>
+	<li><span>冬装旗袍<div>￥118</div></span></li>
+	<li><span>家纺清洗<div>￥38起</div></span></li>
+	</ul>
+<div id="center">
+	<div class="center_img">
+		<img alt="Qingbo c" class="border2S" src="../addons/water_super/template/images_self/qingbo_c.png" />
+	</div>
+	<div class="center_img">
+		<img alt="Xifu c2" class="border2S" src="../addons/water_super/template/images_self/xifu_c2.png" />
+	</div>
+	<div class="center_img">
+		<img alt="Dongzhuang c2" class="border2S" src="../addons/water_super/template/images_self/dongzhuang_c2.png" />
+	</div>
+	<div class="center_img">
+		<img alt="Jiafang c2" class="border2S" src="../addons/water_super/template/images_self/jiafang_c2.png" />
+	</div>
+</div>
+<div class="bottom-text">
+	<img alt="Gaoduan text2" class="no-border" src="../addons/water_super/template/images_self/gaoduan_text2.png" />
+</div>
+	<img alt="Jiben tel" class="borderR" src="../addons/water_super/template/images_self/jiben_tel.png" style="margin-bottom:10px;" />
+</div>
+<script type="text/javascript">$(function(){
+　　$(".tab_nav li").first().addClass("on").siblings().removeClass("on");
+  　　$("#center > .center_img").first().show().siblings().hide();
+  　　$(".tab_nav li").click(function(){
+　　  var index = $(".tab_nav li").index(this);
+  　　$(this).addClass("on").siblings().removeClass("on");
+  　　$("#center > .center_img").eq(index).show().siblings().hide();
+　　});
+});</script>
+</div>
+</body>
+</html>

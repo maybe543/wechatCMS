@@ -1,0 +1,336 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+img{
+    vertical-align: top;
+    border: none;
+}
+body,html{
+    max-width: 640px;
+    margin: 0 auto;
+    /*width: 100%;*/
+    /*height: 100%;*/
+
+}
+@font-face {
+   /* font-family: 'Helvetica';
+    src:url('http://qiye.dejiplaza.com/font/font2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;*/
+
+}
+
+.main{
+
+    /*background: url("../images/bg.png") no-repeat;*/
+    /*background-size: 100% 100%;*/
+    overflow: hidden;
+    margin: 0 auto;
+	padding-bottom: 10px;
+}
+.main #title{
+    display: inline-block;
+    font-size: 2rem;
+    text-align: center;
+    margin: 60px 0 20px 0;
+    width: 100%;
+	font-family:"Helvetica";
+	opacity: .9;
+}
+.main #img{
+    margin: 0 10px 15px 10px;
+}
+.main #img img{
+    max-width: 100%;
+}
+.main .whiteFont p{
+    text-align: center;
+    font-size: .8rem;
+    margin-bottom: 5px;
+}
+.main .whiteFont span{
+    font-weight: bold;
+}
+.main .smallFont{
+    margin: 15px 50px 0 50px;
+}
+.main .smallFont2 {
+margin: 15px 20px 30px 20px;
+background:rgba(255,255,255,0.2);
+		padding:10px;
+}
+.main .smallFont2 p{
+
+	font: 18px/36px "Helvetica";
+	
+}
+.main .smallFont img{
+    max-width: 100%;
+}
+.table{
+	background:#fff;
+	border-radius:10px;
+	color:#555;
+	font-family:"Helvetica"
+}
+.table th{
+	background: linear-gradient(rgba(226,156,39,0.8),#E29C27); /* 标准的语法（必须放在最后） */
+	height:40px;
+	color:#fff;
+	font:bold 18px '微软雅黑';
+	text-shadow:1px 1px 2px #000;
+}
+.fontrule{
+	color:#E29C27;
+	font:bold 20px '微软雅黑';
+	text-shadow:1px 1px 2px #E29C27;
+}
+.table td{
+	border-bottom:1px solid #E29C27;
+	border-right:1px solid #999;
+}
+.table th:first-child{
+	border-radius:10px 0 0;
+}
+.table th:last-child{
+	border-radius:0 10px 0 0 ;
+}
+.table th,.table td{
+	width:25%;
+	text-align:center;
+	padding:5px 0;
+}
+
+.table tr:nth-of-type(2n){
+	background:rgba(0,0,0,0.1);
+}
+.main .line{
+    padding: 0 10px;
+    height:10px;
+    background: url("../images/v_15.png");
+    background-size: 100% 100%;
+    /*overflow: hidden;*/
+    position: relative;
+    margin: 30px 0 20px 0;
+}
+.main .line img{
+    max-width: 100%;
+    margin: 2px 0;
+}
+.main .line i{
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/v_21.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 50%;
+    margin-left: -12.5px;
+    top: 50%;
+    margin-top: -12.5px;
+}
+.main #index #box{
+    margin: 40px 20px;
+}
+.main #index #box .row{
+    display: -webkit-box;
+    display: box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+}
+.main #index #box .row div.card{
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+    position: relative;
+}
+.main #index #box .row div.photo-box{
+    -webkit-transition: all .5s;
+    transition: all .5s;
+    /* width: 65px;
+    height: 100px; */
+	width: 100%;
+	height: 166px;
+    background: url("../images/fpic.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+.main #index #box .row div.photo{
+    width: 100%;
+	height: 166px;
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: 0;
+    top: 0;
+	left: 0;
+}
+.main #index #box .row div.photo img{
+    width: 80%;
+	position: absolute;
+	z-index: 0;
+	top: 10%;
+	left: 10%;
+	border-radius:10%
+}
+.main #index #box .row div.photo p{
+position: absolute;
+z-index: 0;
+bottom: 10%;
+left: 16%;
+font-family:Helvetica;
+text-align: center;
+	color:#F9EB3C;
+	font-size:1.5rem;
+	line-height:3rem;
+}
+.main #footer #logo{
+    margin: 10px 0;
+    text-align: center;
+}
+.main #footer #logo img{
+    width: 30px;
+}
+#sureBox,#form{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+    z-index: 1000;
+}
+#sureBox #sureInBox{
+    margin: 100px 40px;
+    background-color: #ffffff;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+	opacity: .8;
+}
+#sureBox #sureInBox p{
+color:#7939A9;
+}
+#sureBox #sureInBox #head{
+    background-color: #7939A9;
+    height: 30px;
+}
+#sureBox #sureInBox #head i{
+    display: block;
+    font-style: normal;
+    color: #ffffff;
+    font-size: 1.6rem;
+    float: right;
+    margin-right: 10px;
+}
+#sureBox #sureInBox p{
+    padding: 15px 10px;
+}
+#sureBox #sureInBox #btn{
+    border-top: 1px solid #ccc;
+    padding: 5px;
+}
+#sureBox #sureInBox #btn input{
+    -webkit-appearance: none;
+    padding: 8px 0;
+    width: 45%;
+    border: none;
+    color: #ffffff;
+    background-color: #7939A9;
+}
+#sureBox #sureInBox #btn input#ok{
+    float: left;
+}
+#sureBox #sureInBox #btn input#no{
+    float: right;
+}
+#form #head{
+    background-color: #7939A9;
+    height: 30px;
+}
+#form #head i{
+    display: block;
+    font-style: normal;
+    color: #ffffff;
+    font-size: 1.6rem;
+    float: right;
+    margin-right: 10px;
+}
+#form #formBox{
+    margin: 100px 40px;
+    background-color: #ffffff;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+	color:#7939A9;
+	opacity: .9;
+}
+#form #formBox label{
+    display: block;
+    font-size: .9rem;
+
+}
+#form #formBox div.inp{
+    padding: 5px 10px;
+}
+#form #formBox div.inp input[type="text"]{
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: rgba(173, 170, 170, 0.54);;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    margin-top: 5px;
+}
+#form #formBox div.inp input[type="submit"]{
+    width: 100%;
+    border: none;
+    background-color:#7939A9;
+    color: #ffffff;
+    padding: 8px 0;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+#aniamteBox{
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 100;
+}
+#aniamteBox img{
+	width: 100%;
+	height: 100%;
+}
+#a1{
+    background: url("../images/g1.png") no-repeat;
+    background-size: 100% 100%;
+}
+#a2{
+    background: url("../images/g2.png") no-repeat;
+    background-size: 100% 100%;
+}
+#a3{
+    background: url("../images/g3.png") no-repeat;
+    background-size: 100% 100%;
+}
+#a4{
+    background: url("../images/g4.png") no-repeat;
+    background-size: 100% 100%;
+}
+#a5{
+    background: url("../images/g5.png") no-repeat;
+    background-size: 100% 100%;
+}
+#a6{
+    background: url("../images/g6.png") no-repeat;
+    background-size: 100% 100%;
+}
+.hide{
+    display: none;
+}
+.show{
+    display: block;
+}

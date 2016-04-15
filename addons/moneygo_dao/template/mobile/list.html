@@ -1,0 +1,151 @@
+
+{template 'common/header'}
+<link href="../addons/moneygo_dao/template/css/comm.css" rel="stylesheet" type="text/css">
+<link href="../addons/moneygo_dao/template/css/goods.css" rel="stylesheet" type="text/css">
+<link href="../addons/moneygo_dao/template/css/index.css" rel="stylesheet" type="text/css">
+<link  rel="stylesheet"  href="../addons/moneygo_dao/template/css/css.css">
+
+<?php
+	
+	
+		global $_W,$_GPC;
+		$moid = $_GPC['moid'];
+		$cid = $_GPC['cid'];
+	
+	?>
+
+<div style="/*margin-top:44px;*/">
+    <header class="g-header" style="/*position:fixed;top:0px;left:0px;*/width:100%;z-index:9999;">
+        <a href="javascript:;" onclick="$('.g-header .order').toggleClass('hide');" style="color:white;" class="bn pull-left"><i class="fa fa-reorder" style="padding:5px;font-size:20px;"></i></a>
+        <h2>全部商品</h2>
+        <ul class="unstyled order hide" id="divGoodsNav">
+
+
+                <li id="0"><a href="{php echo $this->createMobileurl('list')}">全部商品</a></li>
+                {loop $moshi $v}
+                <li {if $moid== $v['shuzi']} style="background-color: #F03048;color:white;"{/if} ><a
+                    href="{php echo $this->createMobileurl('list',array('moid'=>$v['shuzi']))}"><i class="fa fa-arrow-circle-right"></i> {$v['shuzi']}元专区</a></dd>
+                {/loop}
+
+                {loop $cate $vo}
+                <li {if $cid== $vo['id']} style="background-color: #F03048;color:white;"{/if}><a
+                    href="{php echo $this->createMobileurl('list',array('cid'=>$vo['id']))}"><i class="fa fa-arrow-circle-right"></i> {$vo['name']}</a></dd>
+                {/loop}
+
+    </ul>
+    </header>
+    <div class="goodsNav" style="padding:10px 0;">
+
+        <section  class="cont" style="border:none;">
+            <div  id="oneIndexGiftList"  class="prize_list">
+                {loop $goodses $goodsid $goods}
+                <dl  id="one_1"  name="indexGiftItem"  class="prize"  gid="1"  sno="71">
+                    <dt  class="pri_img" style="height:9rem;">
+                        <a  href="{php echo $this->createMobileUrl('details', array('id' => $goods['id']))}"  title="(第{$goods['periods']}期){$goods['title']}"><img  src="{$_W['attachurl']}{$goods['picarr']}" alt="(第{$goods['periods']}期){$goods['title']}"></a>
+                    </dt>
+                    <dd  class="pri_info" style="height:5.6rem;">
+                        <h3  class="pri_tit1" style="height:auto;"> <a  href="{php echo $this->createMobileUrl('details', array('id' => $goods['id']))}"  title="(第{$goods['periods']}期){$goods['title']}">(第{$goods['periods']}期){$goods['title']}</a></h3>
+                        <a href="{php echo $this->createMobileUrl('details', array('id' => $goods['id']))}"><img src="../addons/moneygo_dao/template/image/btn.png" style="float: right;width: 35px;height: 35px; margin-top: -10px;" /></a>
+                        <div  class="bar" style="width:75%;">
+                            <div  style="width:{$goods['scale']}%;"  class="bar_in"></div>
+                        </div>
+                        <p  class="total" style="width:80%;">共:{$goods['zongrenshu']}份<span  class="remain_num pull-right">剩:<span  class="fc">{$goods['shengyurenshu']}</span>份</span></p>
+
+                    </dd>
+                </dl>
+                {/loop}
+            </div>
+        </section>
+    </div>
+
+</div>
+<div style="clear: both;height:60px;"></div>
+<style type="text/css">
+    .footer {
+        clear: both;
+        width: 100%;
+        background: none repeat scroll 0% 0% #4E4E4E;
+        border-top: 1px solid #DDD;
+        height: 48px;
+        position: fixed;
+        bottom: 0px;
+        z-index: 100;
+    }
+    * {
+        outline: 0px none;
+    }
+    ul {
+        list-style: outside none none;
+    }
+    li,  ul {
+        margin: 0px;
+        padding: 0px;
+    }
+    .footer a {
+        width: 20%;
+        height: 50px;
+        padding-top: 3px;
+        text-align: center;
+        float: left;
+        display: block;
+        color: #fff;
+        font-size: 12px;
+    }
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+    .footer li.f_personal a.hover i {
+        width: 20px;
+        height: 22px;
+        background-position: 0px -175px;
+        position: relative;
+        top: 3px;
+        margin-bottom: 4px;
+    }
+    .footer a i {
+        display: block;
+        background: url('../addons/moneygo_dao/template/image/f_set.png') repeat scroll 0% 0% / 28px auto transparent;
+        margin: 0px auto 1px;
+    }
+    address, em, i, cite, s {
+        font-style: normal;
+    }
+    .footer li a.active { background-color: #F03048;}
+    .footer li.f_whole i {
+        width: 23px;
+        height: 25px;
+        background-position: 0px -78px;
+        position: relative;
+        top: 1px;
+    }
+    .footer li.f_sd i {
+        width: 23px;
+        height: 25px;
+        background-position: -5px -127px;
+        position: relative;
+        top: 1px;
+    }
+    .footer li.f_all i {
+        width: 23px;
+        height: 25px;
+        background-position: 0 100px;
+        position: relative;
+        top: 1px;
+    }
+    .footer li.f_home i {
+        width: 27px;
+        height: 25px;
+        background-position: 0px -25px;
+    }
+</style>
+<!-- 底部导航 -->
+<div class="footer" style="bottom: 0px;">
+    <ul>
+        <li class="f_home"><a href="{php echo $this->createMobileUrl('index')}" title="首页"><i></i>首页</a></li>
+        <li class="f_all"><a href="{php echo $this->createMobileUrl('list')}" class="active" title="全部商品"><i></i>全部商品</a></li>
+        <li class="f_whole"><a href="{php echo $this->createMobileUrl('introduction')}" title="规则介绍"><i></i>规则介绍</a></li>
+        <li class="f_sd"><a href="{php echo $this->createMobileUrl('show')}" title="幸运晒单"><i></i>幸运晒单</a></li>
+        <li class="f_personal"><a href="{php echo $this->createMobileUrl('profile')}" class="hover" title="个人中心"><i></i>个人中心</a></li>
+    </ul>
+</div>

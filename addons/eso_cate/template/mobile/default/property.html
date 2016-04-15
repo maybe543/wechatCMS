@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的资产 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body>
+
+
+
+<header class="top">
+    <h1>我的资产</h1>
+    {if value($_GET, "ona") == "no"}
+    <a class="back" href="{php echo urwdo('user')}">返回</a>
+    {else}
+    <a class="back" href="javascript:history.back(-1);">返回</a>
+    {/if}
+</header>
+
+
+<div class="property-box">
+    <p>
+        账户余额：￥{$credit2}
+        <em onclick="_charge();">充值</em>
+        <em onclick="$('#_bill').addClass('show');">我的账单</em>
+    </p>
+    <p>本店累计消费：￥{$user['money']}</p>
+</div>
+
+
+
+<div class="selectattrval" id="_bill">
+    <header>
+        <h1>我的账单</h1>
+        <a class="back" href="javascript:$('#_bill').removeClass('show');">返回</a>
+    </header>
+    <section class="property_bill">
+        <div id="billlist">
+            <div class="pagecon"><div class="dataing">数据加载中...</div></div>
+            <div class="pagebut">
+                <button id="prevpage" onclick="_userbill(this);">上一页</button>
+                <span id="textpage">0/0</span>
+                <button id="nextpage" onclick="_userbill(this);">下一页</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    function _charge() {
+        window.location.href = '{php echo url('entry',array('m'=>'recharge','do'=>'pay'))}';
+    }
+    window.bpage = 0;
+    function _userbill(obj) {
+        if (!$(obj).is(".c-on") && obj) return;
+        if ($(obj).attr("id") == 'prevpage'){
+            window.bpage--;
+        }else{
+            window.bpage++;
+        }
+        //
+        $.getJSON("{php echo urwdo('userbill')}&page="+window.bpage, function(json){
+            var eve = $("#billlist");
+            if (json.prev) {
+                eve.find("#prevpage").addClass("c-on");
+            }else{
+                eve.find("#prevpage").removeClass("c-on");
+            }
+            if (json.next) {
+                eve.find("#nextpage").addClass("c-on");
+            }else{
+                eve.find("#nextpage").removeClass("c-on");
+            }
+            eve.find("#textpage").text(json.nowpage+"/"+json.totalpage);
+            if (json.totalpage > 1) eve.find(".pagebut").show();
+            var ljson = eval(json.list)
+            var _html = "<ul>";
+            for(var i=0; i<ljson.length; i++) {
+                var attr = ljson[i].attr+"";
+                attr = attr.replace(/<br\/>/g,'，');
+                attr = attr.replace(/null/g,'');
+                var content = ljson[i].content;
+                if (!content) content = "(空)";
+                var _goods = '';
+                if (ljson[i].cartid && ljson[i].cartid != '0') {
+                    _goods = '<div class="goods"><span>订单：</span>' +
+                            '<a href="{php echo urwdo('ordersinfo')}&id='+ljson[i].cartid+'">'+ljson[i].goodstitle+'</a></div>'
+                }else if (ljson[i].goodsid && ljson[i].goodsid != '0') {
+                    _goods = '<div class="goods"><span>商品：</span>' +
+                            '<a href="{php echo urwdo('goods')}&id='+ljson[i].goodsid+'">'+ljson[i].goodstitle+'</a></div>'
+                }
+                _html+= '<li>' +
+                        '<div class="totalprice">￥'+ljson[i].totalprice+'</div>' + _goods +
+                        '<div class="content">备注：'+content+'</div>' +
+                        '<div class="date">'+_getLocalTime(ljson[i].indate)+'</div>' +
+                        '</li>';
+            }
+            if (!ljson.length) {
+                _html+= '<li class="nolist">没有查询到记录!</li>'
+            }
+            _html+= '</ul>';
+            eve.find(".pagecon").html(_html);
+        });
+    }
+    function _getLocalTime(nS) {
+        var dateObj = new Date(nS * 1000);
+        return dateObj.getFullYear() + '-' + (dateObj.getMonth() + 1) + '-' +
+                dateObj.getDate() + ' ' + dateObj.getHours() + ':' + dateObj.getMinutes() + ':' + dateObj.getSeconds();
+    }
+    $(document).ready(function() {
+        _userbill();
+    });
+</script>
+</body>
+</html>

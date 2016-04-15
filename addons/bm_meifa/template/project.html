@@ -1,0 +1,243 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+  <li {if $op == 'display'}class="active"{/if}>
+    <a href="{php echo $this->createWebUrl('project', array('op' => 'display'))}">技师管理</a>
+  </li>
+  <li {if $op == 'post'}class="active"{/if}>
+    <a href="{php echo $this->createWebUrl('project', array('op' => 'post'))}">新增技师</a>
+  </li>
+</ul>
+{if $op == 'post'}
+<div class="panel panel-default">
+	<div class="panel-heading">
+     	技师设置
+    </div>
+	<div class="panel-body">
+		<form action="" class="form-horizontal form" method="post" enctype="multipart/form-data" >
+			<input type="hidden" name="id" value="{$item['id']}">
+			<div class="panel panel-default">
+			<div class="panel-body">
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">排序</label>
+			 		<div class="col-sm-8">
+			 			 <input type="text" name="sort" class="form-control" value="{$item['sort']}" />
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">技师名称</label>
+			 		<div class="col-sm-8">
+						<input type="text" name="ser_name" class="form-control" value="{$item['ser_name']}" />
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">技师职位</label>
+			 		<div class="col-sm-8">
+						<input type="text" name="Position" class="form-control" value="{$item['position']}" />
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">技师简介</label>
+			 		<div class="col-sm-8">
+						<input type="text" name="kbox" class="form-control" value="{$item['kbox']}" />
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">技师照片</label>
+			 		<div class="col-sm-8">
+						 {php echo tpl_form_field_image('picurl', $item['picurl'])}
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">预约时段</label>
+			 		<div class="col-sm-8">
+				 		<input type="hidden" name="srvtime" class="srvtime" value="{php echo htmlspecialchars($item['srvtime'])}">
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+			 		<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否显示</label>
+			 		<div class="col-sm-8">
+				 		<label class="radio-inline"><input type="radio" name="isshow" value="1" {if $item['isshow'] == '1'} checked="checked"{/if}/> 是</label>
+				 		<label class="radio-inline"><input type="radio" name="isshow" value="0" {if $item['isshow'] != '1'} checked="checked"{/if}/> 否</label>
+			 		</div>
+			 	</div>
+			 	<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">技师介绍</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea class="form-control richtext" name="project_info" rows="10">{$item['project_info']}</textarea>
+					</div>
+				</div>
+	 		</div>
+			</div>
+			 <div class="form-group">
+			 <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+			 <div class="col-sm-8">
+				<input name="submit" type="submit" value="提交" class="btn btn-primary span3" />
+				<input type="hidden" name="token" value="{$_W['token']}" />
+			 </div> 
+			 </div>			
+		</form>
+	</div>
+</div>	
+<script type="text/javascript">
+<!--
+  var category = {php echo json_encode($children)};
+require(['jquery', 'util'], function($, u){
+		$(function(){
+			u.editor($('.richtext')[0]);
+		});
+	});
+  function TimeInit(input){
+	  this.input=input;
+	  
+	  this.value=this.unserialize(input.value);
+	  this.box=$('<div class="timebox">\
+	  		<div class="weekset"></div>\
+	  		<ul class="list-unstyled timelist"></ul>\
+	  		<a class="btn btn-primary btn-add">添加</a>\
+	  		</div>');
+	  $(this.input).before(this.box);
+	  this.weekset=this.box.find('.weekset');
+	  this.listbox=this.box.find('.timelist');
+	  this.addbtn=this.box.find('.btn-add');
+	  this.init();
+  }
+  TimeInit.prototype.init=function(){
+	  var self=this;
+	  this.addbtn.click(function(){
+		  self.addrow();
+	  });
+
+
+	  //设置周
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="1" /> 周一</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="2" /> 周二</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="3" /> 周三</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="4" /> 周四</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="5" /> 周五</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="6" /> 周六</label>');
+	  $(this.weekset).append('<label class="checkbox-inline"><input type="checkbox" value="0" /> 周日</label>');
+	  for(var i=0;i<this.value.weekset.length;i++){
+		  $(this.weekset).find('[value='+this.value.weekset[i]+']').attr('checked',true);
+	  }
+		$(this.weekset).find('label').click(function(){
+			self.setValue();
+		})
+	  
+
+	  //设置时间段
+	  for(var i=0;i<this.value.times.length;i++){
+		  this.addrow(this.value.times[i]);
+	  }
+  }
+  TimeInit.prototype.addrow=function(val){
+	  var row=$('<li class="input-group" style="margin:10px 0">\
+		<span class="input-group-addon">时段</span>\
+		<input type="text" placeholder="8:00" class="form-control starttime"/>\
+		<span class="input-group-addon">-</span>\
+		<input type="text" placeholder="12:00" class="form-control endtime"/>\
+		<span class="input-group-addon">可预约量</span>\
+		<input type="text" placeholder="4" class="form-control number"/>\
+		<span class="input-group-addon">人</span>\
+		<span class="input-group-btn">\
+			<button class="btn btn-danger remove" type="button">移除</button>\
+		</span>\
+	  </li>');
+	  this.listbox.append(row);
+	  var self=this;
+	  row.find('.remove').click(function(){
+		  if(confirm('确定移除该时段?')){
+			  row.remove();
+			  self.setValue();
+		  }
+	  })
+	  row.find('focus').blur(function(){
+		  $(this).data('oldvalue',this.value);
+	  })
+	  row.find('input').blur(function(){
+		  if(this.value != this.oldvalue)self.setValue();
+	  })
+	  if(val){
+		  row.find('.starttime').val(val.start);
+		  row.find('.endtime').val(val.end);
+		  row.find('.number').val(val.number);
+	  }
+  }
+  TimeInit.prototype.setValue=function(){
+		var value={weekset:[],times:[]};
+		this.weekset.find('input:checked').each(function(){
+			value.weekset.push(this.value);
+		});
+
+		this.listbox.find('li').each(function(){
+			var row={};
+			row.start=$(this).find('.starttime').val();
+			row.end=$(this).find('.endtime').val();
+			row.number=$(this).find('.number').val();
+			if(row.start && row.end && row.number){
+				value.times.push(row);
+			}
+		});
+	  this.value=value;
+	  $(this.input).val(this.serialize(value));
+  }
+  TimeInit.prototype.unserialize=function(val){
+	  if(val){
+		  var data=eval('('+val+')');
+		  if(data)return data;
+	  }
+
+	  //默认值
+	  data= {
+		  weekset:[1,2,3,4,5],
+		  times:[
+		  {start:'8:00',end:'12:00',number:4},
+		  {start:'14:00',end:'16:00',number:4}
+		  ]
+		};
+		this.input.value=this.serialize(data);
+		return data;
+	}
+	TimeInit.prototype.serialize=function(val){
+	  return $.toJSON(val);
+	}
+
+  
+
+  new TimeInit($('.srvtime')[0]);
+//-->
+</script>
+{elseif $op == 'display'}
+<div style="padding:15px;">
+  <table class="table table-hover">
+    <thead class="navbar-inner">
+      <tr>
+        <th>序号</th>
+        <th>显示顺序</th>
+        <th>技师名称</th>
+        <th>职位</th>
+        <th>简介</th>
+        <th>是否显示</th>
+        <th>操作</th>
+  </tr>
+</thead>
+{loop $list $item}
+<tr>
+  <td>{$item['id']}</td>
+  <td>{$item['sort']}</td>
+  <td>{$item['ser_name']}</td>
+  <td>{$item['position']}</td>
+  <td>{$item['kbox']}</td>
+  <td>{php echo $item['isshow']?'隐藏':'显示'}</td>
+  <td>
+    <a href="{php echo $this->createWebUrl('project',array('id' => $item['id'] ,'op' => 'post'))}">编辑
+    </a>
+    <a href="{php echo $this->createWebUrl('project',array('id' => $item['id'],'op' => 'delete'))}">删除
+    </a>
+  </td>
+</tr>
+{/loop}
+</table>
+</div>
+{/if}
+
+{template 'common/footer'}

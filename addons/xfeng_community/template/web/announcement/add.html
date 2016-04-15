@@ -1,0 +1,204 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+        <li><a href="{php echo $this->createWebUrl('announcement', array('op' => 'list'));}">管理</a></li>
+        <li {if intval($_GPC[ 'id'])==0}class="active" {/if}><a href="{php echo $this->createWebUrl('announcement', array('op' => 'add'));}">创建公告</a></li>
+        {if intval($_GPC['id'])!=0}
+        <li class="active"><a href="{php echo $this->createWebUrl('announcement', array('op'=>'add','id'=>$item['id']));}">编辑公告</a></li>
+        {/if}
+    </ul>
+    <form action="" class="form-horizontal" method="post" enctype="multipart/form-data" onsubmit="return check(this);">
+        <input type="hidden" name="id" value="{$item['id']}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">使用模板消息，必须是认证的服务号才可以，先到参数设置里面设置对应的场景模板消息ID。</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label">是否启用模板消息</label>
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="2" id='status' {if $item['status']==2 || empty($item['status'])}checked="checked" {/if}> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="1" id='status' {if $item['status']==1 }checked="checked" {/if}> 否
+                        </label>
+                    </div>
+                </div>
+	                <div class="form-group" id='s4'>
+	                    <label for="title" class="col-sm-2 control-label">模板消息类型</label>
+	                    <div class="col-sm-10">
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="1" {if $item['enable']==1 || empty($item[ 'enable'])}checked="checked" {/if}> 停水通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="2" {if $item['enable']==2 }checked="checked" {/if}> 燃气通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="3" {if $item['enable']==3 }checked="checked" {/if}> 停电通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="4" {if $item['enable']==4 }checked="checked" {/if}> 门禁通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="5" {if $item['enable']==5 }checked="checked" {/if}> 电梯通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="6" {if $item['enable']==6 }checked="checked" {/if}> 停车场通知
+	                        </label>
+	                        <label class="radio-inline">
+	                            <input type="radio" name="enable" id="enable" value="7" {if $item['enable']==7 }checked="checked" {/if}> 其他通知
+	                        </label>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label for="title" class="col-sm-2 control-label">通知标题</label>
+	                    <div class="col-sm-6">
+	                        <input type="text" name="title" id='title' value="{$item['title']}" class="form-control" placeHolder="例：您好，很抱歉的告诉您小区将停止供应自来水一段时间。" />
+	                    </div>
+	                </div>
+	                <div class="form-group" id='s1'>
+	                    <label for="datetime" class="col-sm-2 control-label" id='datetime'>通知时间</label>
+	                    <div class="col-sm-6">
+	                        <input type="text" name="datetime" id='datetime' value="{$item['datetime']}" class="form-control" placeHolder="例：2015年4月25日8：00-2015年4月28日18:00" />
+	                    </div>
+	                </div>
+	                <div class="form-group" id='s2'>
+	                    <label for="location" class="col-sm-2 control-label" id='location'>通知范围</label>
+	                    <div class="col-sm-6">
+	                        <input type="text" name="location" id='location' value="{$item['location']}" class="form-control" placeHolder="例：A16栋-A18栋" />
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <label for="reason" class="col-sm-2 control-label" id='reason'>通知原因</label>
+	                    <div class="col-sm-6">
+	                        <textarea name="reason" id='reason' class="form-control" placeHolder="如是发布门禁通知,请填写门禁卡重新激活办法。其它通知填写原因">{$item['reason']}</textarea>
+	                    </div>
+	                </div>
+	                <div class="form-group" id='s3'>
+	                    <label for="remark" class="col-sm-2 control-label">通知备注</label>
+	                    <div class="col-sm-6">
+	                        <input type="text" name="remark" id='remark' value="{$item['remark']}" class="form-control" placeHolder="例：请您提前准备，如有疑问可咨询17715272440" />
+	                    </div>
+	                </div>
+                    {if !$user['regionid']}
+	                <div class="form-group">
+		                <label for="" class="col-sm-2 control-label">选择小区</label>
+		                <div class="col-sm-10">
+		                    <label class="checkbox-inline">  
+		                        <input type="checkbox" id="checkAll" name="checkAll" data-group="regionid">全部
+		                    </label>
+		                  {loop $regions $region}
+		                    <label class="checkbox-inline">
+		                      <input type="checkbox" id="regionid" value="{$region['id']}" name='regionid[]' data-group ="regionid" {if @in_array($region['id'], $regs)}checked='checked' {/if}> {$region['city']}{$region['dist']}{$region['title']}
+		                    </label>
+		                  {/loop}
+		                </div>
+		            </div>
+		            {/if}
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary span3" name="submit" value="提交">提交</button>
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+    // require(['jquery', 'util'], function($, util) {
+    //     $(function() {
+    //         var editor = util.editor($('#reason')[0]);
+
+    //     });
+    // });
+    function check(form){
+        var status = form['status'].value;
+        var enable = form['enable'].value;
+        
+
+            if (!form['title'].value) {
+                    alert('请输入公告标题。');
+                    return false;
+                }
+                if (status == 2) {
+
+                    if (!form['datetime'].value) {
+                            alert('请输入通知时间！');
+                            return false;
+                    }
+
+                };
+                
+                if (status == 2 && enable != 7) {
+                    if (!form['location'].value) {
+                        alert('请输入通知范围。');
+                        return false;
+                    }
+                };
+                if (!form['reason'].value) {
+                    alert('请输入通知原因。');
+                    return false;
+                }
+                if (status == 2 && enable != 7) {
+                    if (!form['remark'].value) {
+                        alert('请输入备注。');
+                        return false;
+                    }
+                }
+                
+                // var rid = " ";
+                // $('input[name="regionid"]:checked').each(function(){
+                //     var regionid = $(this).val();
+                //        rid += regionid;
+                // });
+                // alert(rid);
+                return true;
+        }
+    $(function() {
+		     $("#checkAll").click(function() {
+
+		            var checked = $(this).get(0).checked;
+		            var group = $(this).data('group');
+		            $("#regionid[data-group='" +group + "']").each(function(){
+		                $(this).get(0).checked = checked;
+		            })
+
+		     });
+		});
+    $(document).ready(function() {
+        $("input[name = 'status']").click(function(event) {
+            var s = $(this).val();
+            if (s == 1) {
+            	$("#s1").hide();
+            	$("#s2").hide();
+                $("#s3").hide();
+                $("#s4").hide();
+            }else{
+                $("#s1").show();
+                $("#s2").show();
+                $("#s3").show();
+                $("#s4").show();
+            }
+        });
+        $("input[name = 'enable']").click(function(event) {
+            var s = $(this).val();
+            if (s == 7) {
+            	$("#s2").hide();
+                $("#s3").hide();
+            }else{
+                $("#s1").show();
+                $("#s2").show();
+                $("#s3").show();
+                $("#s4").show();
+            }
+           if (s == 4) {
+                $("#datetime").html('门禁卡失效时间');
+                $("#location").html('门禁卡失效范围');
+                $("#reason").html('门禁卡重新激活办法');
+            };
+        });
+    });
+    </script>
+
+{template 'common/footer'}

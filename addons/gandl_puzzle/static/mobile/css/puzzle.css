@@ -1,0 +1,314 @@
+/* 共通 */
+h1{font-size:24px;}
+h2{font-size:16px;}
+h3{font-size:14px;}
+h4{font-size:12px;color:#999999;}
+h5{font-size:10px;color:#999999;text-indent:2px;}
+.co1{color:#FFFFFF;}
+
+.system-message{text-align:center;padding-top:100px;}
+.icon_success{height:50px;background:url("../images/icon_success.png") no-repeat center center;background-size:50px 50px;}
+.success{line-height:50px;color:#55bd5a;font-size:18px;}
+.icon_error{height:50px;background:url("../images/icon_error.png") no-repeat center center;background-size:50px 50px;}
+.error{line-height:50px;color:#dc5e5e;font-size:18px;}
+.jump{color:#999999;}
+
+a{text-decoration:none;-webkit-tap-highlight-color: rgba(0,0,0,0);color:#6b461a;}
+input{-webkit-user-modify:read-write-plaintext-only;-webkit-tap-highlight-color:rgba(0,0,0,0);font-size:18px;}
+textarea{-webkit-user-modify:read-write-plaintext-only;-webkit-tap-highlight-color:rgba(0,0,0,0);font-size:18px;}
+select{-webkit-tap-highlight-color: rgba(0,0,0,0);font-size:18px;}
+.ftext{position:relative;margin:10px 10px 0 10px;background:#FFFFFF;border:1px solid #CCCCCC;border-radius:4px;-moz-box-shadow:1px 1px 1px #EEEEEE inset;-webkit-box-shadow:1px 1px 1px #EEEEEE inset;box-shadow:1px 1px 1px #EEEEEE inset;zoom:1;}
+.ftext label{position:absolute;top:0px;left:10px;height:44px;line-height:44px;color:#666666;}
+.ftext input{width:100%;padding:0 0 0 60px;height:44px;line-height:44px;-webkit-appearance:none;background:none;}
+.ftext select{width:100%;padding:0 0 0 60px;height:44px;line-height:44px;-webkit-appearance:none;border:0px none;background:none;}
+.ftext textarea{width:100%;padding:10px 0 10px 60px;height:120px;line-height:26px;-webkit-appearance:none;border:0px none;background:none;}
+.selector{font-size:18px;min-width:250px;text-align:left;}
+.selector li{height:45px;line-height:45px;padding:0 10px 0 50px;background:url("../images/option.png") no-repeat 10px center;background-size:32px 32px;}
+.selector li.selected{color:#45c01a;background-image:url("../images/option_selected.png")}
+
+.loader{}
+.loader .loading{width:100%;height:100%;background:#F4F4F4 url("../images/load.gif")no-repeat center 30%;background-size:40px 40px;}
+.hide{display:none;}
+.mr5{margin-right:5px;}
+.ml5{margin-left:5px;}
+.mt5{margin-top:5px;}
+.mt10{margin-top:10px;}
+.mt20{margin-top:20px;}
+.pt10{padding-top:10px;}
+
+
+.dialog{padding:10px 0 0 60px;height:50px;line-height:25px;}
+.dialog.ok{background:url('../images/icon_ok.png') no-repeat left center;}
+.dialog.hint{background:url('../images/icon_hint.png') no-repeat left center;}
+.dialog h3{font-weight:bold;}
+.dialog h4{font-size:16px;}
+
+.empty{color:#AAAAAA;text-shadow:0 1px 1px #FFFFFF;text-align:center;}
+.empty h2{font-weight:bold;padding:20px 0 10px 0;}
+.empty h4{font-size:14px;padding:0 0 10px 0;}
+
+
+/* 共通 */
+.bigbtn{display:block;height:46px;line-height:46px;text-align:center;background:#F9F9F9;color:#666666;text-align:center;border:1px solid #CCCCCC;overflow:hidden;border-radius:46px;}
+.bigbtn:active{background:#EEEEEE;} 
+.bigbtn.post{background:#45c01a;color:#FFFFFF;border:1px solid #F9F9F9;font-size:18px;}
+.bigbtn.post:active{background:#25730a;} 
+/** list **/
+.list_load{margin:0 10px 10px 10px;color:#999999;text-align:center;height:40px;line-height:40px;}
+.list_load span{display:inline-block;height:40px;line-height:40px;vertical-align:middle;}
+.list_load.more{background:#FFFFFF }
+.list_load.more .icon{width:32px;background:url("../images/icon_more.png") no-repeat center center;background-size:32px 32px;}
+.list_load.loading{border:0px none;}
+.list_load.loading .icon{width:32px;background:url("../images/spinner.gif") no-repeat center center;background-size:16px 16px;}
+
+
+
+/** puzzle start **/
+/* app.js override */
+.app-topbar{background:#2a2f32;color:#FFFFFF;}
+.app-topbar.light{background:#FFFFFF;color:#000000;}
+.app-topbar .cross{padding-right:0px;background:url("../images/cross.png") no-repeat center center;width:32px;background-size:32px 32px;}
+.app-content{background:#FFFFFF;}
+.app-title {font-size:12px;}
+.app-button.post{background:#45c01a;color:#FFFFFF;}
+.app-button.post.active{background:#25730a;color:#EEEEEE;}
+/* app.js custom */
+.app-header{width:100%;background:#0e90d2;overflow:hidden;}
+.app-header dl{margin:10px;height:54px;zoom:1;}
+.app-header dl:after{content:"";display:block;height:0;line-height:0;clear:both;visibility:hidden;}
+.app-header dl dt{float:left;width:50px;height:50px;margin-right:10px;overflow:hidden;border:2px solid #FFFFFF;border-radius:50px;}
+.app-header dl dt img{width:50px;height:50px;border-radius:50px;}
+.app-header dl dd{float:left;}
+.app-header dl h1{height:32px;line-height:32px;color:#FFFFFF;}
+.app-header dl h4{height:22px;line-height:22px;color:#FFFFFF;}
+
+.app-naver{}
+.app-naver .nmenu{margin:0px 10px; overflow:hidden;padding:0px;color:#FFFFFF;background:url("../images/app-naver.png") repeat-x center bottom;zoom:1;}
+.app-naver .nmenu:after{content:"";display:block;height:0;line-height:0;clear:both;visibility:hidden;}
+.app-naver .nmenu li{float:left;height:48px;line-height:48px;}
+.app-naver .nmenu li.r{float:right;color:#013e5d;text-shadow:1px 1px 0 #0e90d2;}
+.app-naver .mbtn{display:block;height:48px;line-height:48px;padding:0 10px 0 46px;color:#FFFFFF;background:url("../images/icon_team.png") no-repeat 5px center;background-size:32px 32px;}
+
+/**
+.app-botbar{height:44px;position:relative;background:#FFFFFF;width:100%;z-index:3000;}
+.app-botbar .app-button{height:43px;line-height:43px;}
+.app-botbar .app-button.full{width:100%;display:block;overflow:hidden;padding:0px;background:#FFFFFF;text-align:center;border-top:1px solid #dfdfdd;zoom:1;}
+.app-botbar .app-button.full:active,.app-button.full:hover{background:#EEEEEE;}
+**/
+.app-botbar{position:absolute;bottom:0px;width:100%;z-index:2001;}
+.app-botbar .buttons{background:#FFFFFF;padding:10px 10px 0 10px;overflow:hidden;}
+.app-botbar .app-button{margin-bottom:10px;text-align:center;height:40px;line-height:40px;border-radius:2px;}
+.app-botbar .app-button.cancel{border:1px solid #DDDDDD;background:none;color: #666666;}
+.app-botbar .app-button.cancel:active{background: #DDDDDD;color: #FFFFFF;}
+
+
+.app-body{min-height:100%;position:relative;}
+.app-shoe{position:absolute;bottom:0px;}
+.app-foot{padding:40px 0 10px 0;}
+.app-footsp{position:relative;border-top:1px dotted #CCCCCC;height:10px;}
+.app-footsp .logo{position:absolute;width:100%;height:40px;background:url("../images/logo_foot.png") no-repeat center center;background-size:40px 40px;top:-20px;}
+.app-foot .slogan{margin:0 10px;text-align:center;line-height:24px;font-size:12px;padding:20px 0 10px 0;color:#999999;text-shadow:0 1px 1px #FFFFFF;}
+.app-foot .contact{margin:0 10px;text-align:center;line-height:24px;font-size:12px;padding:10px 0;color:#999999;text-shadow:0 1px 1px #FFFFFF;border-top:1px dotted #CCCCCC;}
+.app-footnav{text-align:center;margin:0 10px;padding:10px 0 30px 0;border-bottom:1px dotted #CCCCCC;}
+.app-footnav .btn{display:inline-block;padding:5px 15px;background:#FFFFFF;color:#999999;border:1px solid #CCCCCC;border-radius:2px;}
+/* 底部广告栏 */
+.adv_banner{position:relative;margin:10px;}
+.adv_banner dt img{width:36px;height:36px;position:absolute;}
+.adv_banner dd{padding:0 0 0 50px;position:relative;}
+.adv_banner dd p{line-height:18px;font-size:12px;color:#999999;text-shadow:0 1px 1px #FFFFFF;}
+.adv_banner dd a{position:absolute;right:0px;top:2px;display:inline-block;padding:5px 15px;background:#4cd964;color:#FFFFFF;border-radius:2px;}
+
+
+#bottom_holder{height:70px;}
+.app-footer{width:100%;position:fixed;bottom:0px;}
+.hmenu{width:100%;overflow:hidden;padding:0px;background:#FFFFFF;border-top:1px solid #dfdfdd;zoom:1;}
+.hmenu:after{content:"";display:block;height:0;line-height:0;clear:both;visibility:hidden;}
+.hmenu li{float:left;width:25%;}
+.hmenu.col3 li{width:33%;border:0px none;margin:0px;}
+.hmenu.col3 li .app-button{color:#999999;text-align:center;}
+.hmenu.col3 li .app-button .icon_m{margin:8px 0 0 0;}
+.hmenu.col3 li.middle{width:34%;border:0px none;margin:0px;}
+.hmenu.col3 li.middle .app-button{border-left:1px solid #dfdfdd;border-right:1px solid #dfdfdd;}
+.hmenu.col3 li.middle .green{color:#45c01a;}
+
+
+/** index **/
+#puzzle_info{background:#FFFFFF;}
+#puzzle_banner{position:relative;}
+#puzzle_cover{width:100%;}
+#puzzle_btns{width:100%;position:absolute;bottom:10px;text-align:center;}
+#puzzle_to_detail{display:inline-block;background:#F0F0F0 url("../images/icon_detail.png") no-repeat 8px center;height:40px;line-height:40px;padding:0 10px 0 36px;color:#666666;font-size:14px;border-radius:40px;background-size:24px 24px;}
+/**
+#puzzle_detail{color:#666666;line-height:26px;position:relative;}
+#puzzle_detail .toggle{position:absolute;height:35px;line-height:35px;top:-20px;width:100%;text-align:center;}
+#puzzle_detail_content{overflow:hidden;padding:30px 10px 10px 10px;display:none;}
+#puzzle_detail_toggle{display:inline-block;padding:0 15px;background:#EEEEEE;border:2px solid #FFFFFF;color:#666666;border-radius:20px;}
+#puzzle_detail_toggle.on{}
+**/
+#puzzle_timer{border-bottom:1px solid #dfdfdd;text-align:center;}
+#puzzle_timer_disp{display:inline-block;height:40px;line-height:40px;padding:0 10px 0 26px;color:#f2b500;background:url("../images/puzzle_timer.png") no-repeat 5px center;background-size:13px 20px;}
+#puzzle_truth{border-bottom:1px solid #dfdfdd;text-align:center;height:50px;line-height:50px;position:relative;font-size:12px;color:#999999;}
+#puzzle_truth_disp{font-size:18px;font-weight:bold;color:#45c01a;}/** display:inline-block; background:url("../images/puzzle_truth.png") no-repeat 5px center;background-size:19px 20px; **/
+#puzzle_truth_why{position:absolute;right:0px;top:0px;display:inline-block;height:50px;line-height:50px;padding:0 20px 0 10px;background:url("../images/viewmore.png") no-repeat right center;background-size:24px 24px;}
+
+#puzzle_to_aginst{display:block;height:50px;line-height:50px;text-align:center;color:#FFFFFF;font-size:18px;margin:20px 10px 0 10px;background:#45c01a;border-radius:50px;}
+#puzzle_to_aginst:active{background:#389c15;} 
+#puzzle_to_aginst_hint{color:#999999;padding:10px;text-align:center;font-size:12px;text-shadow:0 1px 1px #FFFFFF;}
+#puzzle_aginst{background:url("../images/dotted.gif") repeat-y center center;position:relative;padding-top:50px;background-size:2px 2px;} 
+#puzzle_fight{position:absolute;width:100%;top:-10px;background:url("../images/puzzle_lock.png") no-repeat center center;height:24px;background-size:24px 24px;}
+#puzzle_right{position:absolute;width:100%;top:-10px;background:url("../images/puzzle_right.png") no-repeat center center;height:24px;background-size:24px 24px;}
+#puzzle_wrong{position:absolute;width:100%;top:-10px;background:url("../images/puzzle_wrong.png") no-repeat center center;height:24px;background-size:24px 24px;}
+
+#puzzle_player{position:relative;height:45px;}
+#puzzle_my_name{position:absolute;width:50%;top:-15px;left:0px;text-align:right;font-size:12px;}
+#puzzle_my_name_in{background:#f8f8f8;color:#999999;height:44px;margin-left:10px;border:1px solid #DDDDDD;border-radius:5px;padding:0 10px;}
+#puzzle_my_name_in p{padding:6px 26px 0 0;line-height:14px;}
+#puzzle_my_name_in p em{color:#45c01a;}
+#puzzle_my_clue{position:absolute;width:50%;height:44px;top:-15px;right:0px;text-align:left;font-size:12px;}
+#to_exchange_btn{background:#e7ffde url("../images/icon_find.png") no-repeat 40px center;color:#999999;border:1px solid #45c01a;height:44px;line-height:44px;font-size:16px;color:#45c01a;margin-right:10px;padding:0 10px;text-indent:58px;border-radius:5px;background-size:24px 24px;}
+#to_exchange_btn:active{background-color:#cefabe;border:1px solid #45c01a;}
+#to_exchange_btn.my{background:#f8f8f8 url("../images/icon_clue_my.png") no-repeat 40px center;color:#999999;border:1px solid #DDDDDD;background-size:24px 24px;}  
+#to_exchange_btn.my:active{background-color:#EEEEEE;color:#999999;border:1px solid #DDDDDD;}
+#puzzle_my_avatar{position:relative;width:100%;top:-20px;text-align:center;}
+#puzzle_my_avatar span{position:absolute;margin-left:-25px;left:50%;z-index:2;display:inline-block;height:50px;line-height:50px;width:50px;border:2px solid #FFFFFF;overflow:hidden;font-size:36px;border-radius:50px;}
+#puzzle_my_avatar span img{width:50px;}
+
+#puzzle_keys{padding:10px 10px 20px 10px;}
+.puzzle_key{margin-bottom:5px;background:#77b3d4 url("../images/icon_clue.png") no-repeat 9px 9px;padding:5px 10px 5px 40px;line-height:26px;color:#FFFFFF;background-size:19px 18px;border-radius:2px;}
+.puzzle_key.k0{background-color:#57d97c;}
+.puzzle_key.k1{background-color:#d96957;}
+.puzzle_key.k2{background-color:#b9d957;}
+.puzzle_key.k3{background-color:#57d9ad;}
+.puzzle_key.k4{background-color:#57c2d9;}
+.puzzle_key.k5{background-color:#dd67dc;}
+.puzzle_key.k6{background-color:#dd67a4;}
+.puzzle_key.k7{background-color:#dd6778;}
+.puzzle_key.k8{background-color:#dd9c67;}
+.puzzle_key.k9{background-color:#99dd67;}
+.puzzle_key.k10{background-color:#57d97c;}
+
+#puzzle_hint{text-align:center;padding:0 0 5px 0;}
+#puzzle_hint span{background:#DDDDDD;color:#999999;text-shadow:0 1px 1px #FFFFFF;font-size:12px;padding:5px 8px;display:inline-block;border-radius:5px;}
+
+#puzzle_answer_block{margin:0 10px 20px 10px;}
+.truth_type1{background:#FFFFFF;border:1px solid #CCCCCC;padding:3px 0;position:relative;border-radius:5px;-moz-box-shadow:1px 1px 1px #EEEEEE inset;-webkit-box-shadow:1px 1px 1px #EEEEEE inset;box-shadow:1px 1px 1px #EEEEEE inset;}
+.truth_type1 .text{-webkit-appearance:none;background:none;height:40px;line-height:40px;width:80%;padding:0 10px;}
+.truth_type1 .btn{position:absolute;right:3px;top:3px;display:inline-block;height:40px;line-height:40px;font-size:18px;background:#45c01a;color:#FFFFFF;text-align:center;width:80px;border-radius:5px;}
+.truth_type1 .btn.disabled{background:#CCCCCC;}
+.truth_type1 .btn:active,.btn:hover{background:#389c15;} 
+.truth_type1 .btn.disabled:active,.btn.disabled:hover{background:#CCCCCC;}
+
+.truth_type1.disabled{background:#F5F5F5;}
+.truth_type1.disabled .text{font-size:16px;color:#666666;text-shadow:0 1px 1px #FFFFFF;}
+#puzzle_answered{background:#F0F0F0;color:#666666;text-shadow:0 1px 1px #FFFFFF;line-height:26px;padding:10px 10px;border:1px solid #CCCCCC;text-align:center;border-radius:5px;}
+#puzzle_answered em{color:#45c01a;}
+#puzzle_answer_wrong{background:#F0F0F0;color:#999999;border:1px solid #f08080;text-shadow:0 1px 1px #FFFFFF;line-height:26px;padding:10px 10px;border-radius:5px;background-size:42px 32px;}/** url("../images/answer_wrong.png") no-repeat right center;**/
+#puzzle_answer_wrong em{color:#f08080;}
+
+#puzzle_answer_select{display:block;height:40px;line-height:40px;padding:0 10px;}
+#puzzle_answer_select.disabled{border:1px solid #DDDDDD;color:#999999;background:#FFFFFF url("../images/dropdown.png") no-repeat right center;background-size:32px 32px;}
+#puzzle_answer_select.enabled{border:1px solid #45c01a;color:#45c01a;background:#FFFFFF url("../images/dropdown_en.png") no-repeat right center;background-size:32px 32px;}
+#puzzle_answer_select.enabled:active{border:1px solid #389c15;color:#389c15;background-color:#EFEFEF;}
+#puzzle_answer_options{border:1px solid #45c01a;border-top:0px none;background:#FFFFFF;padding:5px 0;}
+
+
+#puzzle_answer_right{background:#FFFFFF;color:#999999;border:1px solid #45c01a;line-height:26px;border-radius:5px;}
+#puzzle_answer_rank{position:relative;padding:10px;}
+#puzzle_answer_rank em{color:#45c01a;}
+#puzzle_answer_rank span{display:inline-block;height:46px;line-height:46px;position:absolute;right:10px;top:0px;font-size:12px;}
+#puzzle_to_award{display:block;height:46px;line-height:46px;padding:0 10px;background:#45c01a;color:#FFFFFF;font-size:16px;text-align:center;}
+#puzzle_no_award{display:block;height:46px;line-height:46px;padding:0 10px;background:#EEEEEE;color:#999999;font-size:16px;text-align:center;border-radius:0 0 5px 5px;}
+
+
+
+#rank_block{margin:20px 10px;}
+#rank_to_bang{text-align:center;}
+#rank_to_bang .btn{display:inline-block;height:46px;line-height:46px;text-align:center;width:200px;font-size:18px;background:#F9F9F9;color:#666666;text-align:center;border:1px solid #CCCCCC;border-radius:40px;}
+#rank_to_bang .btn:active,.btn:hover{background:#EEEEEE;} 
+
+
+#rank_title{text-align:center;border-bottom:1px solid #fbc116;}
+#rank_title span{display:inline-block;background:url("../images/rank.png") no-repeat left center;font-size:18px;color:#fbc116;height:40px;line-height:40px;padding-left:30px;background-size:25px 25px;}
+#rank_list_load{margin:0 10px 10px 10px;color:#999999;text-align:center;height:40px;line-height:40px;}
+#rank_list_load span{display:inline-block;height:40px;line-height:40px;vertical-align:middle;}
+#rank_list_load.more{border:1px solid #CCCCCC;background:#FFFFFF }
+#rank_list_load.more .icon{width:32px;background:url("../images/icon_more.png") no-repeat center center;background-size:32px 32px;}
+#rank_list_load.loading{border:0px none;}
+#rank_list_load.loading .icon{width:32px;background:url("../images/spinner.gif") no-repeat center center;background-size:16px 16px;}
+.rank_item{position:relative;padding:0 10px;border-bottom:1px dashed #DDDDDD;}
+.rank_val{position:absolute;right:10px;top:0px;color:#999999;height:52px;line-height:52px;font-size:12px;}
+.rank_val em{color:#fbc116;font-size:18px;font-weight:bold;}
+.rank_user{height:52px;zoom:1;}
+.rank_user:after{content:"";display:block;height:0;line-height:0;clear:both;visibility:hidden;}
+.rank_user dt{float:left;margin:10px 10px 0 0;width:32px;height:32px;overflow:hidden;border:1px solid #FFFFFF;border-radius:32px;}
+.rank_user dt img{width:32px;}
+.rank_user dd{float:left;padding:6px 0 0 0; line-height:20px;color:#666666;}
+
+
+#puzzle_to_clues{margin:20px 0 0 0;text-align:center;}
+#puzzle_to_clues .btn{display:inline-block;height:46px;line-height:46px;text-align:center;width:200px;font-size:18px;background:#F9F9F9;color:#666666;text-align:center;border:1px solid #CCCCCC;border-radius:40px;}
+#puzzle_to_clues .btn:active,.btn:hover{background:#EEEEEE;} 
+
+
+/** 排行榜 **/
+.ribbon{position:relative;height:70px;width:100%;}
+.ribbon_l{position:absolute;top:32px;left:0px;width:40px;height:34px;background:url("../images/ribbon.png")no-repeat 0 0;background-size:81px 34px;}
+.ribbon_r{position:absolute;top:32px;right:0px;width:40px;height:34px;background:url("../images/ribbon.png")no-repeat -40px 0;background-size:81px 34px;}
+.ribbon_c{position:absolute;top:0px;left:0px;height:70px;width:100%;}
+#pinfo{zoom:1;margin:0 20px;padding:0 10px;background:#fbd33d;color:#f75136;text-shadow:1px 1px 1px #ffefb4;height:60px;line-height:60px;}
+#pinfo h2{font-size:24px;font-weight:bold;text-align:center;}
+
+/** puzzle_detail **/
+#puzzle_detail{overflow:hidden;}
+#puzzle_detail_topic{font-size:18px;text-align:center;color:#666666;border-bottom:1px solid #CCCCCC;margin:0 10px;padding:20px 0;line-height:26px;}
+#puzzle_detail_content{font-size:14px;line-height:24px;padding:10px;color:#666666;}
+#puzzle_detail_content section{margin:0px;padding:0px;}
+#puzzle_detail_content span{margin:0px;padding:0px;}
+/** puzzle_truth **/
+#puzzle_truth_detail{overflow:hidden;font-size:14px;line-height:24px;padding:20px 10px;color:#666666;}
+/** puzzle_award **/
+#puzzle_award{padding:20px 10px;color:#666666;}
+#puzzle_award_mine{text-align:center;border-bottom:1px solid #CCCCCC;padding-bottom:20px;}
+#puzzle_award_mine .title{font-size:18px;}
+#puzzle_award_mine .code{font-size:18px;color:#45c01a;padding:10px 0;}
+#puzzle_award_mine .hint{font-size:12px;color:#999999;}
+#puzzle_award_remark{padding:10px 0;line-height:24px;}
+
+
+/** clue_exchange**/
+#clue_share_guide{position:absolute;z-index:99;right:10px;top:2px;width:94px;height:33px;background:url("../images/clue_share_guide.png") no-repeat;background-size:94px 33px;}
+/**#clue_find_guide{padding:10px 10px 10px 70px;color:#67aade;margin:10px 10px 10px 10px;background:#eeeeee url("../images/clue_exchange.png") no-repeat 10px center;background-size:50px 50px;border-radius:3px;}**/
+#clue_find_guide{padding:10px 10px 10px 10px;color:#999999;margin:10px 10px 10px 10px;line-height:24px;font-size:14px;background:#eeeeee;border-radius:3px;}
+#clue_hoster{background:#F8F8F8;padding:20px 0;position:relative;}
+#clue_share{position:relative;background:#46c7aa;margin:15px 10px 10px 10px;}
+#clue_share span{position:absolute;top:-8px;right:-10px;width:34px;height:18px;background:url("../images/exchange_sharer.png") no-repeat;background-size:17px 9px;}
+#clue_share p{text-align:center;padding:10px;color:#FFFFFF;}
+#clue_my_avatar{width:100%;text-align:center;}
+#clue_my_avatar span{display:inline-block;height:50px;line-height:50px;width:50px;border:2px solid #FFFFFF;overflow:hidden;font-size:36px;border-radius:50px;}
+#clue_my_avatar span img{width:50px;}
+#clue_mine{padding:10px;}
+#clue_mine dt{padding-bottom:10px;text-align:center;color:#666666;}
+#clue_hoster_sp{height:50px;width:100%;position:absolute;bottom:-25px;background:url("../images/clue_exchange.png") no-repeat center center;background-size:50px 50px;}
+#clue_exchange{height:40px;width:100%;position:absolute;bottom:-16px;text-align:center;}
+#clue_exchange_btn{margin:0 20px;}
+#clue_exchange_help{display:inline-block;height:46px;line-height:46px;padding:0 15px;font-size:18px;background:#FFFFFF;color:#45c01a;text-align:center;border-radius:46px;}
+#clue_exchange_ok{display:inline-block;height:40px;line-height:40px;padding:0 15px 0 55px;font-size:18px;color:#45c01a;text-align:center;background:#FFFFFF url("../images/clue_exchange.png") no-repeat 5px center;background-size:50px 50px;border-radius:40px;}
+
+#clue_froms{padding:10px 10px 10px 10px;}
+#clue_froms dt{padding:20px 0 0 0;text-align:center;color:#999999;line-height:26px;text-shadow:0 1px 1px #FFFFFF;}
+#clue_fromers{padding-top:15px;}
+.clue_fromer{position:relative;margin-top:15px;height:18px;line-height:18px;overflow:hidden;padding-left:41px;font-size:12px;color:#AAAAAA;text-shadow:0 1px 1px #FFFFFF;}
+.clue_fromer .avatar{position:absolute;height:30px;width:30px;border-radius:30px;left:5px;bottom:-12px;}
+#clue_join{text-align:center;padding:30px 10px 0 10px;}
+#clue_join .hint{color:#999999;margin-bottom:10px;}
+#clue_join .btn{display:block;height:40px;line-height:40px;font-size:18px;background:#45c01a;color:#FFFFFF;text-align:center;border-radius:40px;}
+
+#clue_friend_avatar{width:100%;text-align:center;margin-top:30px;}
+#clue_friend_avatar span{display:inline-block;height:50px;line-height:50px;width:50px;border:2px solid #FFFFFF;overflow:hidden;font-size:36px;border-radius:50px;}
+#clue_friend_avatar span img{width:50px;}
+#clue_friend{padding:10px;}
+#clue_friend dt{padding-bottom:10px;text-align:center;color:#666666;}
+
+.puzzle_home_btn{display:inline-block;margin:10px 0 0 0;color:#666666;padding:0 0 0 26px;background:url("../images/puzzle_home_s.png") no-repeat left center;height:20px;line-height:20px;background-size:20px 20px;}
+
+

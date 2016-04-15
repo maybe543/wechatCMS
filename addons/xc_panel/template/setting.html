@@ -1,0 +1,17 @@
+{template 'common/header'}
+<form action="" method="post" class="form-horizontal form">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    向分销面板中添加常用模块
+  </div>
+  <div class="panel-body">
+    <input class="form-control" name="modules" value="{$settings['modules']}" placeholder="填写模块的标示符，多个模块用分号分隔，例如: we7_bigwheel,we7_album,we7_shop" />
+  </div>
+  <div class="panel-footer">
+    <input class="btn btn-primary" type="submit" name="submit" value="保存" />
+    <input type="hidden" name="token" value="{$_W['token']}" />
+  </div>
+</div>
+</form>
+{template 'common/footer'}
+

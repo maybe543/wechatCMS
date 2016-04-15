@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>拆开有惊喜</title>
+{php echo register_jssdk(false);}
+<link rel="stylesheet" href="{MODULE_URL}template/mobile/css/chaikai.css?t={php echo time();}" />
+<script src="{MODULE_URL}template/mobile/js/jquery.js"></script>
+<script type='text/javascript' src="{MODULE_URL}template/mobile/js/jquery.blockUI.js"></script>
+<script src="{MODULE_URL}template/mobile/js/sweetalert.min.js"></script>
+<link rel="stylesheet" href="{MODULE_URL}template/mobile/js/sweetalert.css?t={php echo time();}" />
+<!--<script type='text/javascript' src='resource/js/lib/jquery-1.11.1.min.js'></script-->
+<script>
+$(document).ready(function(){
+	$(".hot-click").click(function(){
+		$.blockUI({ message:"正在拼命拆开..."});
+		 $.post("{php echo $this->createMobileUrl('fahb',array('id'=>$user['id'],'rid'=>$rid));}",{},function(data){
+			  $.unblockUI();
+			 var code=data.errno;
+		     $(".first-box").hide();
+		     $(".second-box").show();
+			 if(code==-1){
+				 swal({
+					title: "错误提示",
+					type:'error',
+					text: "你还没有关注本平台，无法领取",    
+					confirmButtonText: "马上关注",   closeOnConfirm: false }, function(){ 
+						window.location.href="{$reply['gzurl']}"; 
+					});
+			 }else if(code==-2){
+				 //'再接再厉、还邀请'.$lfnum.'个好友就可以领取你的第'.$nexthb.'个礼物哦！'
+				 var textmess = '再接再厉、还邀请'+data.lfnum+'个好友就可以领取你的第'+data.nexthn+'个礼物哦！'
+				 $('.hot-click').unbind();
+				  $('.second-box .money4 .bugou').text(textmess);
+                 $('.second-box .money4').show();
+			      swal({
+					title: "温馨提示",
+					type:'warning',
+					text: textmess,  
+					confirmButtonText: "去发礼物！",   closeOnConfirm: false }, function(){ 
+						   swal.close();
+						  $(".share").show();
+					});
+			 }else if(code==-3){
+				 $('.hot-click').unbind();
+                 $('.second-box .money6').show();
+			      swal({
+					title: "温馨提示",
+					type:'warning',
+					text: data.error,  
+					confirmButtonText:'知道了',   closeOnConfirm: false }, function(){ 
+						   swal.close();
+						 
+					});
+			 }else if(code==-9){
+			      $('.hot-click').unbind();
+                 $('.second-box .money6').show();
+			      swal({
+					title: "温馨提示",
+					type:'warning',
+					text: "每人最多领取{$reply['totalnum']}个礼物哦！",   
+					confirmButtonText:'知道了',   closeOnConfirm: false }, function(){ 
+						   swal.close();
+						 
+					});
+			 }else if(code==-10){
+			       $('.hot-click').unbind();
+			     $('.yuan').hide();
+				 $('.ttile').hide();
+                 $('.second-box .money3').show();
+			      swal({
+					title: "温馨提示",
+					type:'warning',
+					text: "对不起、本次发放总金额为{$reply['totalmoney']}元、已经全部被抢光了！",   
+					confirmButtonText:'知道了',   closeOnConfirm: false }, function(){ 
+						   swal.close();
+						 
+					});
+			 }else{
+			     $('.hot-click').unbind();
+			     $('.second-box .money3 .money-number').text(data.error);
+                 $('.second-box .money3').show();
+				  swal({
+					title: "恭喜恭喜",
+					type:'success',
+					text: data.error+'元！ 已存入钱包！',
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",   
+					confirmButtonText: "更多礼物", 
+					cancelButtonText: "我知道了", 
+					closeOnConfirm: false,  
+					closeOnCancel: false },
+					function(isConfirm){ 
+						if (isConfirm) { 
+							 swal({
+								title: "温馨提示",
+								text: "每邀请{$reply['tjnum']}个不同朋友领取你发的礼物，你就可以再领取一个礼物哦！",  
+								type: "success", 
+								confirmButtonColor: "#DD6B55",  
+								confirmButtonText: "马上去发礼物",   closeOnConfirm: false }, function(){ 
+									 swal.close();
+									 $(".share").show();
+								});
+						} else {
+							swal.close();
+						} 
+					});
+			 }
+		 },"json");
+	});
+	
+	
+	$(".close").click(function(){
+		$(".share").hide();
+	});
+	$(".guize").click(function(){
+		$("#active_rule_box").show();
+	});
+	$(".descinfo-close").click(function(){
+		$("#active_rule_box").hide();
+	});
+	-close
+});
+</script>
+</head>
+<body>
+
+<div class="first-box" style="display:"> 
+  <img class="body" src="{MODULE_URL}template/mobile/images/fools_1.png">
+  <img class="user-headimg" src="{MODULE_URL}template/mobile/images/hbss_icon.jpg">
+  <div class="hot-click"></div>
+  <div class="nickname">{$user['nickname']}的赠礼</div>
+</div>
+
+<div class="second-box" style="display:none">
+  <div class="second-wrapper"> 
+    <img class="second-bg" src="{MODULE_URL}template/mobile/images/fools_2.png"> 
+    <img class="second-headimg" src="{$user['headimgurl']}">
+    <div class="second-nickname">
+	   {$user['nickname']}的赠礼
+       <p style="font-size:13px; color:#999999">恭喜发财，大吉大利！</p>
+    </div>
+    <!--领取成功-->
+    <div class="money3">
+	<span class="money-number"></span><span class="yuan">元</span> 
+      <p style="color:#70A0D7;font-size:1em;" class="ttile">已存入你的钱包！</p>
+	   <a href="{php echo $this->createMobileUrl('txian',array('rid'=>$rid,'id'=>$user['id']))}" class="lg-btn" style="color:#fff">我要提现</a>
+	   <a href="javascript:void(0);" class="lg-btn guize">活动规则</a>
+    </div>
+    <div class="money4">
+      <p style="color:#70A0D7;font-size:1em;" class="bugou"></p>
+	   <a href="{php echo $this->createMobileUrl('txian',array('rid'=>$rid,'id'=>$user['id']))}" class="lg-btn" style="color:#fff">我要提现</a>
+	   <a href="javascript:void(0);" class="lg-btn guize">活动规则</a>
+    </div>
+	<div class="money6">
+       <p style="color:rgb(214, 86, 69);font-size:1.2em;">对不起、礼物被抢光了。</p>
+       <a href="javascript:void(0);" class="lg-btn sendMoney">立即发礼物</a>
+    </div>
+   <div class="share" style="display:none"> <span class="share-p">去发礼物吧！</span> 
+	  <img class="pointer" src="{MODULE_URL}template/mobile/images/share_arrow.gif"> 
+	  <img class="close" src="{MODULE_URL}template/mobile/images/close-black.gif"> 
+	</div>
+  </div>
+</div>
+<style type="text/css">
+  #active_rule_box{
+	position: fixed;
+	top:20%;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius:6px;
+	overflow: hidden;
+	z-index: 999999;
+  }
+ .descinfo-box{color: #3d3d3d; line-height: 1.6rem; font-size: 12px; padding: 5%; margin: 0 5%; background: rgba(255,255,255,0.85); border-radius: 3px; position: absolute; bottom: 5%; display: none; opacity: 0;}
+ .descinfo-box span{color: #00c177;}
+ .descinfo-box .link{color: #00c177; text-decoration: underline;}
+ .descinfo-box:after{content: "\200B"; height: 0; position: absolute; bottom: -10px; right: 7%; border-width:5px; border-style: solid; border-color: rgba(255,255,255,0.85) transparent transparent transparent;}
+ .descinfo-box-in{ bottom: 11%; opacity: 1; -webkit-transition: all 0.5s ease-in-out; z-index:10;}
+ .descinfo-box-out{ bottom: 5%; opacity: 0; -webkit-transition: all 0.5s ease-in-out; z-index:0;}
+ .descinfo-close{position: absolute; right: 0; top: 0; width: 3rem; height: 3rem; text-align: center; line-height: 3rem; font-size: 2rem; color:#666;}
+
+
+	   </style>
+         <section class="descinfo-box descinfo-box-in" style="display:none;" id="active_rule_box">
+            <div>{php echo html_entity_decode($reply['guize']);}</div>
+            <a href="javascript:void(0);" class="descinfo-close" id="J_descinfo-close">×</a>
+        </section>
+<script type="text/javascript">
+<?php 
+$surl =$_W['siteroot']."app/".$this->createMobileurl('redpack',array('rid'=>$rid,'fatherid'=>$user['id']));
+$surl = str_replace('./','',$surl);
+$settings['share_link'] = $surl;
+?>
+ wx.ready(function () {
+    var shareData = {
+    title: "{$settings['share_title']}",
+    desc: "{$settings['share_content']}",
+    link: "{$settings['share_link']}",
+    imgUrl: "{$_W['attachurl']}{$settings['share_img']}",
+  };
+  
+  //分享朋友
+  wx.onMenuShareAppMessage({
+       title: shareData.title,
+      desc: shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+        
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+ //朋友圈
+  wx.onMenuShareTimeline({
+      title: shareData.title+"~~~~~~"+shareData.desc,
+      link: shareData.link,
+      imgUrl:shareData.imgUrl,
+      trigger: function (res) {
+      },
+      success: function (res) {
+          
+      },
+      cancel: function (res) {
+      },
+      fail: function (res) {
+        alert("分享失败网络超时！！！！");
+      }
+    });   
+    
+  });
+
+</script>
+</body>
+</html>

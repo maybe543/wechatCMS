@@ -1,0 +1,276 @@
+{template 'common/header'}
+<script>
+require(['bootstrap.switch', 'util'], function($, u){
+	$(function(){
+		$('.make-switch').bootstrapSwitch();
+	});
+});
+</script>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+    	<div class="panel panel-default">
+			<div class="panel-heading">列表分享参数</div>
+			<div class="panel-body">
+				<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+                  <div class="col-sm-9"><input type="text" name="share_title" value="{$settings['share_title']}" class="form-control"/></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享简介</label>
+                  <div class="col-sm-9">
+                    <textarea name="share_info" rows="2" class="form-control">{$settings['share_info']}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+                  <div class="col-sm-9">{php echo tpl_form_field_image('share_img',$settings['share_img'], '', array('width'=>120,'height'=>120,))}</div>
+                </div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">参数</div>
+			<div class="panel-body">
+				<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">列表模式</label>
+                  <div class="col-sm-9 form-inline">
+                     <label class="radio-inline">
+                      <input type="radio" name="lisstyle" value="0" {if $settings['lisstyle'] == 0 || empty($settings['lisstyle'])} checked{/if} />
+                      小图模式</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="lisstyle" value="1" {if $settings['lisstyle'] == 1} checked{/if} />
+                      大图模式</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">列表loading</label>
+                  <div class="col-sm-9 form-inline">
+                     <label class="radio-inline">
+                      <input type="radio" name="showloading" value="0" {if $settings['showloading'] == 0 || empty($settings['showloading'])} checked{/if} />
+                      不显示</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="showloading" value="1" {if $settings['showloading'] == 1} checked{/if} />
+                      显示</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">自定义列表页</label>
+                  <div class="col-sm-9">
+                     <input type="text" name="self_list" value="{$settings['self_list']}" class="form-control"/>
+                     <div class="help-block">本参数只给有需要的自定义自己的页面使用，如果你不懂，请不要设置！如果页面名称为mypage.html,上方输入框只需输入mypage</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">自定义详情页</label>
+                  <div class="col-sm-9">
+                     <input type="text" name="self_view" value="{$settings['self_view']}" class="form-control"/>
+                     <div class="help-block">本参数只给有需要的自定义自己的页面使用，如果你不懂，请不要设置！如果页面名称为mypage.html,上方输入框只需输入mypage</div>
+                  </div>
+                </div>
+			</div>
+		</div>
+        <div class="panel panel-default">
+			<div class="panel-heading">服务号借用参数</div>
+			<div class="panel-body">
+            	<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否启用</label>
+                  <div class="col-sm-9 form-inline">
+                     <label class="radio-inline">
+                      <input type="radio" name="user_oauth" value="0" {if $settings['user_oauth'] == 0 || empty($settings['user_oauth'])} checked{/if} />
+                      关闭</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="user_oauth" value="1" {if $settings['user_oauth'] == 1} checked{/if} />
+                      启用</label>
+                      <div class="help-block">本功能仅开放给订阅号使用。如您是认证服务号，无需填写！</div>
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">AppId</label>
+                  <div class="col-sm-9"><input type="text" name="appid" value="{$settings['appid']}" class="form-control"/></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">AppSecret</label>
+                  <div class="col-sm-9"><input type="text" name="appsecret" value="{$settings['appsecret']}" class="form-control"/></div>
+                </div>
+			</div>
+		</div>
+        
+        <div class="panel panel-default">
+			<div class="panel-heading">支付功能</div>
+			<div class="panel-body">
+            	<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否启用</label>
+                  <div class="col-sm-9 form-inline">
+                     <label class="radio-inline">
+                      <input type="radio" name="is_pay" value="0" {if $settings['is_pay'] == 0 || empty($settings['is_pay'])} checked{/if} />
+                      关闭</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="is_pay" value="1" {if $settings['is_pay'] == 1} checked{/if} />
+                      启用</label>
+                      <div class="help-block">本功能仅开放给认证服务号，如需支付，请在微擎中设置好相关参数！</div>
+                  </div>
+                </div>
+			</div>
+		</div>
+        <div class="panel panel-default">
+			<div class="panel-heading">消息通知(通过客服消息通知客户)</div>
+			<div class="panel-body">
+            	<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">可用参数</label>
+                  <div class="col-sm-9">|#活动标题#|，|#活动时间#|，|#活动地点#|，|#姓名#|，|#昵称#|，|#性别#|，|#电话#|，|#签到回调#|</div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名成功</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_join" rows="2" class="form-control">{$settings['msg_join']}</textarea>
+                      <div class="help-block">例子：恭喜您成功报名《|#活动标题#|》，我们将会尽快审核您的报名信息。审核结果我们将通过微信公众平台通知您。</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">审核通过</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_ok" rows="2" class="form-control">{$settings['msg_ok']}</textarea>
+                      <div class="help-block">例子：恭喜您，|#姓名#| |#性别#|，您报名的《|#活动标题#|》已成功通过审核。活动将于|#活动时间#|，在|#活动地点#|举行。请准时出席哦</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">审核不通过</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_false" rows="2" class="form-control">{$settings['msg_false']}</textarea>
+                      <div class="help-block">例子：十分抱歉，您报名的《|#活动标题#|》审核不通过。再次感谢您的关注</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">签到成功</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_attend" rows="2" class="form-control">{$settings['msg_attend']}</textarea>
+                      <div class="help-block">例子：恭喜您，|#姓名#| |#性别#|签到成功！|#签到回调#|</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">群发模板1</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_temp1" rows="2" class="form-control">{$settings['msg_temp1']}</textarea>
+                      <div class="help-block">用于在报名列表中群发时使用，方便保存</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">群发模板2</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_temp2" rows="2" class="form-control">{$settings['msg_temp2']}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">群发模板3</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_temp3" rows="2" class="form-control">{$settings['msg_temp3']}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">群发模板4</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_temp4" rows="2" class="form-control">{$settings['msg_temp4']}</textarea>
+                  </div>
+                </div>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">模块消息</div>
+			<div class="panel-body">
+            	<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">模块消息开关</label>
+                  <div class="col-sm-9">
+                     <label class="radio-inline">
+                      <input type="radio" name="tempmsg_on" value="0" {if $settings['tempmsg_on'] == 0 || empty($settings['tempmsg_on'])} checked{/if} />
+                      关闭</label>
+                    <label class="radio-inline">
+                      <input type="radio" name="tempmsg_on" value="1" {if $settings['tempmsg_on'] == 1} checked{/if} />
+                      开启</label>
+                    <div class="help-block">仅支持认证服务号！如果非认证服务号开通，后果严重！</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">报名信息通知</label>
+                  <div class="col-sm-9">
+                     {php $list = pdo_fetchall("SELECT * FROM ".tablename('j_tempmsg_temp')." WHERE weid = '".$_W['uniacid']."' order by id desc");}
+                     {if empty($list)}请先添加模板消息{/if}
+                     <select name="tempmsg_join_call" class="form-control">
+                     	<option value="0" {if 0==$settings['tempmsg_join_call']}selected{/if}>不启用</option>
+                     	{loop $list $row}
+                        <option value="{$row['id']}" {if $row['id']==$settings['tempmsg_join_call']}selected{/if}>{$row['name']}</option>
+                        {/loop}
+                     </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">通过审核通知</label>
+                  <div class="col-sm-9">
+                     {php $list = pdo_fetchall("SELECT * FROM ".tablename('j_tempmsg_temp')." WHERE weid = '".$_W['uniacid']."' order by id desc");}
+                     {if empty($list)}请先添加模板消息{/if}
+                     <select name="tempmsg_join_ok" class="form-control">
+                     	<option value="0" {if 0==$settings['tempmsg_join_ok']}selected{/if}>不启用</option>
+                     	{loop $list $row}
+                        <option value="{$row['id']}" {if $row['id']==$settings['tempmsg_join_ok']}selected{/if}>{$row['name']}</option>
+                        {/loop}
+                     </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">不通过通知</label>
+                  <div class="col-sm-9">
+                     {php $list = pdo_fetchall("SELECT * FROM ".tablename('j_tempmsg_temp')." WHERE weid = '".$_W['uniacid']."' order by id desc");}
+                     {if empty($list)}请先添加模板消息{/if}
+                     <select name="tempmsg_join_out" class="form-control">
+                     	<option value="0" {if 0==$settings['tempmsg_join_out']}selected{/if}>不启用</option>
+                     	{loop $list $row}
+                        <option value="{$row['id']}" {if $row['id']==$settings['tempmsg_join_out']}selected{/if}>{$row['name']}</option>
+                        {/loop}
+                     </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">签到通知</label>
+                  <div class="col-sm-9">
+                     {php $list = pdo_fetchall("SELECT * FROM ".tablename('j_tempmsg_temp')." WHERE weid = '".$_W['uniacid']."' order by id desc");}
+                     {if empty($list)}请先添加模板消息{/if}
+                     <select name="tempmsg_join_sign" class="form-control">
+                     	<option value="0" {if 0==$settings['tempmsg_join_sign']}selected{/if}>不启用</option>
+                     	{loop $list $row}
+                        <option value="{$row['id']}" {if $row['id']==$settings['tempmsg_join_sign']}selected{/if}>{$row['name']}</option>
+                        {/loop}
+                     </select>
+                  </div>
+                </div>
+                
+			</div>
+		</div>
+        <div class="panel panel-default">
+			<div class="panel-heading">点指兵兵设置</div>
+			<div class="panel-body">
+            	<div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">中奖通知模板消息</label>
+                  <div class="col-sm-9">
+                     {php $list = pdo_fetchall("SELECT * FROM ".tablename('j_tempmsg_temp')." WHERE weid = '".$_W['uniacid']."' order by id desc");}
+                     {if empty($list)}请先添加模板消息{/if}
+                     <select name="tempmsg_lucky" class="form-control">
+                     	<option value="0" {if 0==$settings['tempmsg_lucky']}selected{/if}>不启用</option>
+                     	{loop $list $row}
+                        <option value="{$row['id']}" {if $row['id']==$settings['tempmsg_lucky']}selected{/if}>{$row['name']}</option>
+                        {/loop}
+                     </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-12 col-sm-3 col-md-2 control-label">中奖通知客服消息</label>
+                  <div class="col-sm-9">
+                    <textarea name="msg_temp4" rows="2" class="form-control">{$settings['msg_lucky']}</textarea>
+                  </div>
+                </div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

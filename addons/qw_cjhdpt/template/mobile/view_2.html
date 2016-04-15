@@ -1,0 +1,313 @@
+{template 'header'}
+<style>
+a:visited{color:#FFF;}
+.jgrade{color:#999;}
+.jred{color:#F09}
+.panel-body img{ max-width:100%;}
+.panel-body h1,h2,h3{ font-size:18px; font-weight:bolder}
+.j_user_list ul ,.j_user_list ul li{ margin:0; padding:0; list-style:none;}
+.j_user_list ul li{ padding:5px 0;}
+.pr10{ padding-right:10px;}
+.uploadimg{ width:90%;}
+</style>
+<Div class="header">
+  <div class="box">
+    <div class="boxsize-2"><A href="javascript:history.back()"><i class="fa fa-angle-left"></i></A></div>
+    <div class="boxsize-8">{$item['title']}</div>
+    <div class="boxsize-2"><A href="{php echo $this->createMobileUrl('append',array('id'=>$item['id']))}">&nbsp;</A></div>
+  </div>
+</Div>
+<div class="fixed_first">&nbsp;</div>
+<form action="" method="post" class="form-horizontal form" id="regform" enctype="multipart/form-data" >
+  <div class="jp_10_5">
+    <div class="panel panel-default">
+      <div class="panel-heading">盒子支付开通服务</div>
+      <div class="panel-body">{$item['info']}</div>
+    </div>
+    {if $member}
+    <div class="panel panel-danger">
+      <div class="panel-heading">审核情况</div>
+      <div class="panel-body">
+      	{if $member['status']==-1}
+        <div style="padding:10px 0;color:#F00;text-align:center">提交资料存在问题，请修改后重新上传</div>
+        {$member['reloadmsg']}
+        {elseif $member['status']==1}
+        <div style="padding:10px 0;color:#00F;text-align:center">审核中，工作人员将会与您联系。</div>
+        {elseif $member['status']==2}
+        <div style="padding:10px 0;color:#F60;text-align:center">恭喜您，申请已经通过审核</div>
+        {$member['reloadmsg']}
+        {/if}
+      </div>
+    </div>
+    {/if}
+    <div class="panel panel-default">
+      <div class="panel-heading">开通资料-文字资料录入</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <input type="text" name="realname" class="text-center form-control"  value="{$member['realname']}" {if $member['status']==2 || $member['status']==1}disabled="disabled"{/if} style="width:96%; margin:0 auto" placeholder="您的身份证上的姓名" />
+        </div>
+        <div class="form-group">
+          <input type="text" name="mobile" class="text-center form-control" value="{$member['mobile']}" {if $member['status']==2 || $member['status']==1}disabled="disabled"{/if} style="width:96%; margin:0 auto" placeholder="现用的手机号码" />
+        </div>
+        <div id="extend_text"></div>
+      </div>
+      <div class="panel-heading">开通资料-图片资料上传</div>
+      <div class="panel-body" id="extend_img">{$item['rule']}</div>
+    </div>
+    <div id="submit_btn">
+    
+    {if $item['status']==-1} <a href="#" class="btn btn-info btn-block" disabled>已停止报名</a> {/if}
+    {if $item['status']==0} <a href="#" class="btn btn-info btn-block" disabled>报名时间：{php echo date('Y.m.d',$item['joinstarttime'])} 至 {php echo date('m.d',$item['joinendtime'])}</a> {/if}
+    {if $item['status']==1}
+        {if $member}
+            {if $member['status']<0} 
+            <button type="button" class="btn btn-success btn-danger btn-block" onclick="checkmyFrom()">资料存在问题，请重新提交</button>
+            {elseif $member['status']==1}
+                <a href="#" class="btn btn-info btn-block" disabled>审核中</a>
+            {elseif $member['status']>1}
+            	<a href="#" class="btn btn-success btn-block" disabled>成功入选</a> 
+            {/if}
+        {else}
+        <button type="button" class="btn btn-success btn-block" onclick="checkmyFrom()">马上开通</button>
+        {/if}
+    {/if} 
+    
+    </div>
+  </div>
+</form>
+<div class="jreg_masker hide"></div>
+<div class="hide jalert_box" id="notfollow">
+  <div class="jalert_box_head"><b>系统提示</b></div>
+  <div class="jalert_box_body" style="padding:20px 10px; font-size:16px; line-height:30px;">亲，您还没有关注我们哦~<br />
+    活动只对本公众号粉丝开放哦~<br />
+    如果您已经是我们的粉丝，<br />
+    请在公众号发送“<b style="color:#F00">{php echo $keyword}</b>”进入哦</div>
+  <div class="jalert_box_foot"><a href="{php echo $_W['account']['subscribeurl']}" class="btn btn-block btn-warning lh30">确定</a></div>
+</div>
+
+<!--PHP代码-->
+<?php
+$text_ary=array();
+$img_ary=array();
+$temp="";
+$menber_info=json_decode($member["parama"],true);
+foreach($parma as $index=>$row) {
+	$temp.="<div key='".$index."'>".$menber_info[$index]."</div>";
+    switch($row){
+        case 1:
+            $text_ary[]=$index;
+        break;
+        case 2:
+        	$img_ary[]=$index;
+        break;
+        
+    }
+}
+?>
+<div id="parama" style="display:none;">{php echo $temp}</div>
+<script language="javascript">
+var text_ary=["{php echo implode('","',$text_ary)}"];
+var img_ary=["{php echo implode('","',$img_ary)}"];
+var user_nickname="{php echo $nickname}";
+var user_avatar="{php echo $avatar}";
+var user_from_user="{php echo $from_user}";
+var user_openid_oath="{php echo $openid_oath}";
+
+var status=parseInt("{$member['status']}");
+$(document).ready(function(e) {
+	//添加文本字段
+	var temp="";
+    for(i=0;i<text_ary.length;i++){
+		if(status==-1){
+			var val=$("div[key='"+text_ary[i]+"']").text();
+			temp+='<div class="form-group"><input type="text" name="parama-key['+text_ary[i]+']" key="'+text_ary[i]+'" class="text-center form-control" style="width:96%; margin:0 auto" placeholder="'+text_ary[i]+'" value="'+val+'"  /></div>';
+		}else if(status>0){
+			var val=$("div[key='"+text_ary[i]+"']").text();
+			temp+='<div class="form-group"><input type="text" name="parama-key['+text_ary[i]+']" key="'+text_ary[i]+'" class="text-center form-control" style="width:96%; margin:0 auto" placeholder="'+text_ary[i]+'" value="'+val+'" readonly/></div>';
+		}else{
+			temp+='<div class="form-group"><input type="text" name="parama-key['+text_ary[i]+']" key="'+text_ary[i]+'" class="text-center form-control" style="width:96%; margin:0 auto" placeholder="'+text_ary[i]+'" /></div>';
+			
+		}
+		
+	}
+	$("#extend_text").append(temp);
+	var imghtml=$("#extend_img").html();
+	var temp="";
+	for(i=0;i<img_ary.length;i++){
+		if(status==-1){
+			var val=$("div[key='"+img_ary[i]+"']").text();
+			temp='<div><input type="hidden" name="parama-key['+img_ary[i]+']" key="'+img_ary[i]+'" value="'+val+'" /><button type="button" onclick="uploadWimg(\''+img_ary[i]+'\')" key="'+img_ary[i]+'" disabled world="'+img_ary[i]+'" class="btn btn-warning btn-block wx-btn">系统加载中...</button></div>';
+		}else if(status>0){
+			temp='<div><button type="button"  disabled class="btn btn-success btn-block">'+img_ary[i]+'</button></div>';
+		}else{
+			temp='<div><input type="hidden" name="parama-key['+img_ary[i]+']" key="'+img_ary[i]+'" /><button type="button" onclick="uploadWimg(\''+img_ary[i]+'\')" key="'+img_ary[i]+'" disabled world="'+img_ary[i]+'" class="btn btn-warning btn-block wx-btn">系统加载中...</button></div>';
+		}
+		imghtml=imghtml.replace("|#"+img_ary[i]+"#|",temp);
+	}
+	$("#extend_img").html(imghtml);
+	for(i=0;i<img_ary.length;i++){
+		var val=$("div[key='"+img_ary[i]+"']").text();
+		if($("#"+img_ary[i]).size() && val.length>10){
+			$("#"+img_ary[i]).attr("src",val);
+		}
+	}
+	
+});
+
+
+function checkmyFrom() {
+	var rname=$('input[name="realname"]').val();
+	var mobile=$('input[name="mobile"]').val();
+	var gender=1;
+	
+	if(rname.length<2){
+		alert('请用中文填写您的姓名');
+		return false;
+	}
+	var reg = /^[\u4e00-\u9fa5]+$/i;
+	if(!reg.test(rname)){
+		alert('请用中文填写您的姓名');
+		return false;
+	}
+	if(mobile.length!=11 || isNaN(mobile)){
+		alert('请正确填写您的电话号码');
+		return false;
+	}
+	var paramkey=[];
+	var paramval=[];
+	$("input[name^='parama-']").each(function(index, element) {
+		if(!$(this).val() && $(this).attr("type")=="hidden"){
+			alert($(this).attr('key')+"图片没有上传哦");
+			return false;
+		}
+		paramkey.push($(this).attr('key'));
+		paramval.push($(this).val());
+	});
+	if(!confirm("资料无误，确认提交？"))return;
+	$('j').Jetsum.loadbox({do:true,});
+	
+	
+	$.post("{php echo $this->createMobileUrl('ajaxget',array('op'=>'submitreg'))}",{
+		'id':"{$item['id']}",
+		'realname':rname,
+		'mobile':mobile,
+		'gender':gender,
+		'nickname':user_nickname,
+		'avatar':user_avatar,
+		'from_user':user_from_user,
+		'openid':user_openid_oath,
+		'paramkey':paramkey.join("|#jetsum#|"),
+		'paramval':paramval.join("|#jetsum#|"),
+	},function(data){
+		$('j').Jetsum.loadbox({do:false,});
+		if(data.success){
+			$("#notfollow .jalert_box_body").html(data.msg);
+			$("#notfollow .jalert_box_foot").html('<a href="'+data.url+'" class="btn btn-block btn-warning lh30">确定</a');
+			var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+			
+			$(".jreg_masker").removeClass("hide").height($(document).height());
+			$(".jalert_box").css('top',_h);
+			$(".jalert_box").css({
+				'transition':'300ms',
+				'-webkit-transition':'scale(0.9)',
+				'transform':'scale(0.9)',
+			});
+			$(window).scroll (function(){
+				var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+				$(".jalert_box").css('top',_h);
+			});
+		}
+	},'json');
+}
+wx.ready(function () {
+	$(".wx-btn").each(function(index, element) {
+        world=$(this).attr("world");
+		$(this).text("上传"+world).removeAttr("disabled");
+    });
+	sharedata = {
+		title: "{if $isjoin && $_W['openid']} 我参加了《{$item['title']}》，一起来吧{else}{$item['title']}{/if}",
+		desc: "{$item['description']}",
+		link: "{$_W['siteurl']}",
+		imgUrl:"{$_W['attachurl']}{$item['clientpic']}",
+		success: function(){
+			//location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+	};
+	wx.onMenuShareAppMessage(sharedata);
+	var menulistoption=['menuItem:share:qq','menuItem:openWithQQBrowser','menuItem:copyUrl','menuItem:openWithSafari','menuItem:originPage','menuItem:share:QZone','menuItem:share:weiboApp'];
+	wx.hideMenuItems({
+		menuList: menulistoption
+    });
+	
+	wx.onMenuShareTimeline({
+		title: sharedata.title,
+		link: sharedata.link,
+		imgUrl: sharedata.imgUrl,
+		success: function (res) {
+		  //location.href="./index.php?c=home&i={$_W['uniacid']}";
+		}
+    });
+	wx.onMenuShareAppMessage({
+		title: sharedata.title, // 分享标题
+		desc: sharedata.desc, // 分享描述
+		link: sharedata.link, // 分享链接
+		imgUrl: sharedata.imgUrl, // 分享图标
+	});
+	
+});
+var images = {
+  localId: [],
+  serverId: []
+};
+
+function uploadWimg(obj){
+	var isfans=parseInt("{$_W['fans']['follow']}");
+	if(!isfans){
+		var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+		$(".jreg_masker").removeClass("hide").height($(document).height());
+		$(".jalert_box").css('top',_h);
+		$(".jalert_box").css({
+			'transition':'300ms',
+			'-webkit-transition':'scale(0.9)',
+			'transform':'scale(0.9)',
+		});
+		$(window).scroll (function(){
+			var _h=($(window).height() - $('.jalert_box').removeClass("hide").outerHeight())/2 + $(document).scrollTop() ;
+			$(".jalert_box").css('top',_h);
+		});
+		return false;
+	}
+	wx.chooseImage({
+		success: function (res) {
+			images.localId = res.localIds;
+			if (images.localId.length == 0) return;
+			var i = 0, length = 1;
+			images.serverId = [];
+			alert("图片选定数量"+images.localId.length);
+			wx.uploadImage({
+				localId: images.localId[0],
+				success: function (res) {
+					images.serverId.push(res.serverId);
+					imgServerid=res.serverId;
+					$.get("./index.php?c=entry&m=qw_cjhdpt&do=ajaxupload&i={$_W['uniacid']}",{media_id:imgServerid},function(data){
+						if(data=="0"){
+							alert("图片上传失败哦");
+							return;
+						}
+						$("input[name='parama-key["+obj+"]']").val(data);
+						$("img[id='"+obj+"']").attr("src",data);
+						
+						var str=$("button[key='"+obj+"']").text();
+						str=str.replace("上传","修改");
+						$("button[key='"+obj+"']").removeClass("btn-warning").addClass("btn-info").text(str);
+					})
+				},
+				fail: function (res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		}
+	});
+}
+</script>
+</body></html>

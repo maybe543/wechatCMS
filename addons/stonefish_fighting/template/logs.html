@@ -1,0 +1,16 @@
+<div class="table-responsive" style="height:300px;overflow-Y: auto; overflow-X:hidden;">
+	<table class="table" style="min-width:568px;">
+		<tr>
+			<th style="border-top:none;vertical-align:middle;width:500px;">问题</th>
+			<th style="border-top:none;vertical-align:middle;">状态</th>			
+		</tr>
+		{php $i=0;}
+		{loop $questionbank $row}
+		<tr>
+			<td title="{$row['question']}">[{$row['gname']}]{$row['question']}</td>
+			<td><label class='label label-{if $questionids[$i]==1}success{/if}{if $questionids[$i]=='w'}default{/if}{if $questionids[$i]=='j'}primary{/if}{if $questionids[$i]=='t' or $questionids[$i]=='n' or $questionids[$i]=='b'}danger{/if}'>{if $questionids[$i]==1}答对{/if}{if $questionids[$i]=='w'}出错{/if}{if $questionids[$i]=='j'}跳过{/if}{if $questionids[$i]=='t'}超时{/if}{if $questionids[$i]=='n'}未答{/if}{if $questionids[$i]=='b'}作弊{/if}</label></td>
+		</tr>
+		{php $i++;}
+		{/loop}
+	</table>
+</div>

@@ -1,0 +1,53 @@
+{template 'common/header'}
+
+ <div class="panel-heading">
+                共{$shang_total}人 悬赏了{$shang_total_fee}元
+            </div>
+<div class="panel panel-default">
+	<div class="table-responsive panel-body">
+		<table class="table">
+			<thead>
+				<tr>
+					<th style="width:15%">昵称</th>    
+					<th style="width:5%">头像</th>    				
+                    <th style="width:40%">来源标题</th>                 
+					<th style="width:10%">支付方式</th>					
+					<th style="width:5%">支付金额</th> 					
+					
+				</tr>
+			</thead>
+			<tbody>
+{loop $shang $list}
+<tr>
+					<td>
+						{$list['nickname']}
+					</td>
+					<td>
+						<img src="{$list['avatar']}" alt="" width="20">
+					</td>				
+					<td>						
+						<a href="{php echo $this->createWebUrl('article', array('op'=>'post','id'=>$list['article_id']));}" style="color:#333;">{$article[$list['article_id']]['title']}</a>
+					</td>		
+                    <td>
+                        {if $list['status']==1}
+                        <span class="label label-default" style="background:#56af45;">微信支付</span>
+                        {else}
+                        <span class="label label-default">未审核</span>
+                        {/if}
+                    </td>  			
+					<td>
+						{$list['fee']}
+					</td>
+					
+					
+				</tr>
+{/loop}
+</tbody>
+		</table>		
+	</div>
+</div>
+{$pager}
+
+    
+     
+    {template 'common/footer'}

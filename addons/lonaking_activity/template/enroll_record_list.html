@@ -1,0 +1,67 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class=""><a href="{php echo $this->createWebUrl('ActivityManage');}">活动管理</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('ActivityRecord');}">报名记录</a></li>
+	</ul>
+	<div>
+
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="" style="padding 15px">
+				<form action="" method="post">
+					<table class="table table-hover">
+						<thead class="navbar-inner">
+						<tr>
+							<th width="7%">编号</th>
+							<th>头像</th>
+							<th>姓名</th>
+							<th>电话</th>
+							<th>状态</th>
+							<th>报名时间</th>
+							<th>进场时间</th>
+						</tr>
+						</thead>
+						<tbody>
+						{loop $page['data'] $d}
+						<tr>
+							<td data-id="{$d['id']}">{$d['id']}</td>
+							<td>{if $d['pic']}<img src="{$d['pic']}" width="50px" height="50px">{else}无{/if}</td>
+							<td>{$d['name']}</td>
+							<td>{$d['mobile']}</td>
+							<td>{if $d['status']==0}<span class="label label-info">已报名</span>{else if $d['status'] == 1}<span class="label label-success">已到场</span>{else if $d['status'] == 2}<span class="label label-error">取消报名</span>{/if}</td>
+							<td>{php echo date("Y-m-d h:i:s",$d['create_time'])}</td>
+							<td>{if $d['verificate_time']}{php echo date("Y-m-d h:i:s",$d['verificate_time'])}{else}<span class="label label-info">未签到</span>{/if}</td>
+						</tr>
+						{/loop}
+						</tbody>
+					</table>
+				</form>
+				{$page['pager']}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".del-ad").on("click",function(){
+			var btn = $(this);
+			var url = btn.data('url')
+			var tr = btn.parent().parent();
+			$.post(url,function(result){
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					//移除dom
+					tr.remove();
+				}
+			});
+
+		});
+	});
+</script>
+{template 'common/footer'}

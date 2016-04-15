@@ -1,0 +1,140 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li>
+        <a href="{php echo $this->createWebUrl('activity', array('op' => 'list'));}">活动管理</a>
+    </li>
+    <li {if intval($_GPC['id'])==0}class="active" {/if}>
+        <a href="{php echo $this->createWebUrl('activity', array('op' => 'add'));}">创建活动</a>
+    </li>
+    {if intval($_GPC['id'])!=0}
+    <li class="active">
+        <a href="{php echo $this->createWebUrl('activity', array('op'=>'add','id'=>$item['id']));}">编辑活动</a>
+    </li>
+    {/if}
+</ul>
+<form action="" class="form-horizontal form" method="post" enctype="multipart/form-data" onsubmit="return check(this);">
+    <input type="hidden" name="id" value="{$item['id']}">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">活动信息</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="title" class="col-sm-2 control-label">活动标题</label>
+                <div class="col-xs-3">
+                    <input type='text' name='title' id='title' class="form-control" value="{$item['title']}" placeholder="请输入活动标题" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">活动时间</label>
+                <div class="col-sm-10">
+                    {php echo tpl_form_field_daterange('birth', array('starttime' => $starttime,'endtime' => $endtime));}
+                    <span class="help-block" style="display:block;clear:both;">活动报名的时间</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">报名截止</label>
+                <div class="col-xs-2">
+                    {php echo tpl_form_field_date('enddate',$item['enddate'],true);}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">封面</label>
+                <div class="col-xs-4">
+                    {php echo tpl_form_field_image('picurl', $item['picurl'])}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="number" class="col-sm-2 control-label">每人最多报名数量</label>
+                <div class="col-xs-4">
+                    <input type='text' name='number' class="form-control" value="{$item['number']}" placeHolder="1" id='number' />
+                    <span class="help-block" style="display:block;clear:both;">如果允许一人报多个名额，请设置每人最多可报名数量。</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price" class="col-sm-2 control-label">预付定金</label>
+                <div class="col-xs-4">
+                    <input type='text' name='price' class="form-control" value="{$item['price']}" placeHolder="活动如需支付定金，请填写定金金额" id='price' />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="number" class="col-sm-2 control-label">活动描述</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" name="content" rows='8' id='content'>{$item['content']}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ipt_status" class="col-sm-2 control-label">发布状态</label>
+                <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                        <input name="status" id="ipt_status" type="checkbox" value='1' {if intval($item['status'])==1}checked='checked' {/if} />推荐置顶
+                    </label>
+                </div>
+            </div>
+             {if !$user['regionid']}
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">选择小区</label>
+                <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="checkAll" name="checkAll" data-group="regionid">全部
+                    </label>
+                    {loop $regions $region}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="regionid" value="{$region['id']}" name='regionid[]' data-group="regionid" {if @in_array($region['id'], $regs)}checked='checked' {/if}> {$region['city']}{$region['dist']}{$region['title']}
+                    </label>
+                    {/loop}
+                </div>
+            </div>
+            {/if}
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary span3" name="submit" value="提交">提交</button>
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+function check(form) {
+    if (!form['title'].value) {
+        alert('请输入活动标题。');
+        return false;
+    }
+    if (!form['birth'].value) {
+        alert('请选择活动时间！');
+        return false;
+    }
+    if (!form['enddate'].value) {
+        alert('请选择活动截止时间。');
+        return false;
+    }
+    if (!form['picurl'].value) {
+        alert('请选择活动封面。');
+        return false;
+    }
+    if (!form['content'].value) {
+        alert('请输入活动描述。');
+        return false;
+    }
+    return true;
+}
+require(['jquery', 'util'], function($, util) {
+    $(function() {
+        var editor = util.editor($('#content')[0]);
+    });
+});
+$(function() {
+    $("#checkAll").click(function() {
+
+        var checked = $(this).get(0).checked;
+        var group = $(this).data('group');
+        $("#regionid[data-group='" + group + "']").each(function() {
+            $(this).get(0).checked = checked;
+        })
+
+    });
+});
+</script>
+{template 'common/footer'}

@@ -1,0 +1,174 @@
+<style>
+  .dl-horizontal dd {
+    min-height:30px;
+  }
+</style>
+<div class="main">
+	<form class="form-horizontal form" action="" method="post" enctype="multipart/form-data" onsubmit="return formcheck(this)">
+		<input type="hidden" name="id" value="{$item[id]}">
+    <h3>订单信息</h3>
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:50px;">ID</dt>
+					<th style="min-width:150px;">商品标题</dt>
+					<th style="width:100px;">销售价</dt>
+					<th style="width:150px;">属性</dt>
+					<th style="width:100px;">数量</dt>
+				</tr>
+			</thead>
+			{loop $item['goods'] $goods}
+			<tr>
+				<td>{$goods['id']}</td>
+        <td>{if $category[$goods['pcate']]['name']}
+          <span class="text-error">[{$category[$goods['pcate']]['name']}] </span>{/if}{if $children[$goods['pcate']][$goods['ccate']][1]}
+          <span class="text-info">[{$children[$goods['pcate']][$goods['ccate']][1]}] </span>{/if}
+          {$goods['title']}
+        </td>
+        <td style="background:#f2dede;">{$goods['marketprice']}元</td>
+        <td>{if $goods['status']==1}<span class="label label-success">上架</span>{else}<span class="label label-danger">下架</span>{/if}&nbsp;<span class="label label-info">{if $goods['goodstype'] == 1}实体商品{else}虚拟商品{/if}</span></td>
+				<td>{$goods['total']}</td>
+			</tr>
+			{/loop}
+		</table>
+		<table class="tb">
+			<tr>
+				<dt></dt>
+				<dd>
+					{if $item['status'] == Order::$ORDER_NEW}
+						<button type="submit" class="btn btn-primary span2" onclick="return confirm('确认付款此订单吗？'); return false;" name="confirmpay" onclick="" value="yes">确认付款</button>
+					{elseif $item['status'] == Order::$ORDER_PAYED}
+            {if $item['sendtype'] == Dispatch::$EXPRESS}
+						<button type="button" class="btn btn-primary span2" name="confirmsend" onclick="$('#modal-confirmsend').modal()" value="yes">确认发货</button>
+            {elseif $item['sendtype'] == Dispatch::$PICKUP}
+						<button type="button" class="btn btn-primary span2" name="confirmsend" onclick="$('#modal-confirmsend').modal()" value="yes">确认发货</button>
+            {/if}
+
+					{elseif $item['status'] == Order::$ORDER_DELIVERED}
+              {if $item['sendtype'] == 1}
+						  <button type="button" class="btn btn-danger span2" name="cancelsend" onclick="$('#modal-cancelsend').modal();" value="yes">取消发货</button>
+					    <button type="submit" class="btn btn-success span2" name="finish" onclick="return confirm('确认用户已经收货？确认收货后可进入发放佣金环节。');" value="yes">手工确认已收货</button>
+              {/if}
+					{elseif $item['status'] == Order::$ORDER_RECEIVED}
+
+					{/if}
+
+					{if $item['status'] < Order::$ORDER_RECEIVED and $item['status'] != Order::$ORDER_CANCEL}
+					<button type="button" class="btn span2" name="close" onclick="$('#modal-close').modal()" value="关闭">关闭订单</button>
+					{/if}
+
+					{if $item['status'] == Order::$ORDER_NEW or $item['status'] == Order::$ORDER_CANCEL}
+					<button type="submit" class="btn btn-success span2" onclick="return confirm('确认删除此订单吗？该订单相关的数据都将被删除，无法恢复。');" name="remove" value="yes">删除订单</button>
+					{/if}
+					<input type="hidden" name="token" value="{$_W['token']}" />
+				</dd>
+			</tr>
+		</table>
+
+		<h4>&nbsp;</h4>
+
+    <dl class="dl-horizontal">
+      <dt>给排长返利</dt>
+      <dd><b>{$com_fans[$commission[1]['from_user']]['nickname']}</b> {php echo sprintf('%.2f', $commission[1]['com_val'])}元</dd>
+      <dt>给连长返利</dt>
+      <dd><b>{$com_fans[$commission[2]['from_user']]['nickname']}</b> {php echo sprintf('%.2f', $commission[2]['com_val'])}元</dd>
+      <dt>给团长返利</dt>
+      <dd><b>{$com_fans[$commission[3]['from_user']]['nickname']}</b> {php echo sprintf('%.2f', $commission[3]['com_val'])}元</dd>
+    </dl>
+
+
+		<h4>&nbsp;</h4>
+
+		<dl class="dl-horizontal">
+
+      <dt>订单状态</dt>
+      <dd>
+        <span class="label label-warning">{php echo $_order->getOrderStatusName($item['status'])}</span>
+        <kbd>{php echo Dispatch::getSendTypeName($item['sendtype'])}</kbd>
+        <kbd>付款方式：{php echo Order::getPayTypeName($item['paytype']);}</kbd>
+			</dd>
+      {if !empty($item['expresssn'])}
+				<dt>快递单号</dt>
+				<dd>
+          <a target="_blank" href="http://www.kuaidi100.com/chaxun?com={$item['express']}&nu={$item['expresssn']}">{$item['expresssn']} ({$item['expresscom']})</a>
+        </dd>
+			{/if}
+				<dt>订单号</dt>
+        <dd>{$item['ordersn']}</dd>
+				<dt>价钱</dt>
+				<dd>
+          总价{$item['price']} 元, 实付{php echo $item['price'] - $item['discount']}元 （商品: {$item['goodsprice']} 元 运费: {$item['dispatchprice']} 元 折扣：{$item['discount']} 元)
+          {if $item['usecredit']}<span class="label label-warning">使用了积分折扣</span>{/if}
+      {if ($item['status'] == Order::$ORDER_NEW)}
+          <button type="button" class="btn btn-primary btn-xs" name="changeprice" onclick="$('#modal-changeprice').modal()" value="yes">改价</button>
+      {/if}
+
+				</dd>
+
+				<dt></dt><dd></dd>
+
+				<dt>OpenID</dt>
+				<dd>
+        <a target="_blank" href="{php echo url('site/entry/Center', array('m'=>'quickfans', 'from_user'=>$item['from_user'], 'op'=>'post', 'weid'=>$_W['weid']))}">{$item['from_user']}</a>
+        <button type="button" class="btn btn-primary btn-xs" name="talktouser_button" onclick="$('#modal-talktouser').modal()" value="yes">发送客服消息给用户</button>
+          <a class="btn btn-info btn-xs" href="#" onclick="window.open('{php echo wurl('site/entry/center', array('m'=>'quickfans', 'op'=>'post', 'from_user'=>$item['from_user']))}#MsgHistory', 'go', 'width=700, height=400, scrollbars=yes, alwaysraised=yes,left=200,top=200');return false;" >对话记录</a>
+				</dd>
+				<dt>姓名</dt>
+				<dd>{$item['user']['realname']}</dd>
+				<dt>手机</dt>
+				<dd>{$item['user']['mobile']}</dd>
+				<dt>地址</label></dt>
+				<dd>{$item['user']['province']}{$item['user']['city']}{$item['user']['area']}{$item['user']['address']}</dd>
+				<dt>微信信息</label></dt>
+        <dd>
+          {if !empty($fans['nickname'])}{$fans['nickname']}<br/>{/if}
+          {if !empty($fans['avatar'])}<img style="width:64px;height:64px" src='{$fans['avatar']}' />{/if}
+        </dd>
+				<dt></dt><dd></dd>
+
+
+			{if $item['transid']}
+      <dt>第三方交易号</dt>
+      <dd>{$item['transid']}
+      <span class="help-block">通过交易号可以在<a href="https://pay.weixin.qq.com" target="_blank">商户平台</a>查询对应交易记录。</span>
+      </dd>
+      {/if}
+				<dt>下单日期</dt>
+				<dd>
+					{php echo date('Y-m-d H:i:s', $item['createtime'])}
+				</dd>
+				<dt>备注</dt>
+        <dd>
+          <div>
+            <textarea style="height:150px;" class="span7" name="remark" cols="70">{$item['remark']}</textarea>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary span2" name="addremark" value="yes">更新备注</button>
+          </div>
+				</dd>
+      </dl>
+
+    {template 'order-modal-dialog'}
+
+	</form>
+</div>
+<script language='javascript'>
+  $(function(){
+    {if !empty($express)}
+    $("#express").val("{$express['express_url']}");
+    $("#expresscom").val(  $("#express").find("option:selected").data("name"));
+    {/if}
+    $("#express").change(function(){
+      var obj = $(this);
+      var sel =obj.find("option:selected").data("name");
+      $("#expresscom").val(sel);
+    });
+  });
+
+  $(function() {
+    $("#transid-helper").tipso({
+      useTitle : true
+    });
+  });
+</script>
+

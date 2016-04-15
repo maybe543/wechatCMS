@@ -1,0 +1,90 @@
+{template 'common/header'}
+{php $_item=3;}
+{php $_itemp=0;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd main-page">
+                <h2 class="title">{$submit}区域</h2>
+                <div class="clearfix"></div>
+                <hr/>
+
+                <div class="mod mod-rounded mod-bordered">
+                    <form action="{php echo get_url()}"  method="post" id="saveform" class="form-services">
+                        <table class="table table-form">
+                            <tbody>
+                            <tr>
+                                <td width="100"><span>区域名称</span></td>
+                                <td>
+                                    <input name="title" type="text" class="form-control" id="title" value="{php echo value($content,'title')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>显示顺序</span></td>
+                                <td>
+                                    <input name="inorder" type="text" class="form-control" id="inorder" value="{php echo value($content,'inorder')}" placeholder="请填写整数，越大越靠前">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>所属上级</span></td>
+                                <td class="form-reg">
+                                    <select name="parentid" id="parentid" class="form-control wi">
+                                        <option value="0">=作为一级功能=</option>
+                                        {loop $arealists $list}
+                                        <option value="{$list['id']}">{php echo value($list,'_tree|spacer')} {$list['title']}</option>
+                                        {/loop}
+                                    </select>
+                                    {if value($content,'parentid')}
+                                    <script>$("#parentid").val('{php echo value($content,'parentid')}');</script>
+                                    {/if}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="control-submit">
+                                        <input class="button" type="submit" value="{$submit}"> &nbsp;
+                                        <input class="button" type="button" value="返回" onclick="location.href='{php echo urido('goodsarea')}';">
+                                        <input type="hidden" name="dosubmit" value="1">
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //添加保存数据
+        $('#saveform').submit(function() {
+            $.alert('正在保存...', 0);
+            $(this).ajaxSubmit({
+                dataType : 'json',
+                success : function (data) {
+                    $.alert(0);
+                    if (data != null && data.success != null && data.success) {
+                        $.showModal(data.message, '{php echo urido('goodsarea')}');
+                    } else {
+                        $.showModal(data.message);
+                    }
+                },
+                error : function () {
+                    $.alert(0);
+                    $.inModal("保存失败！");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+{template 'common/footer'}

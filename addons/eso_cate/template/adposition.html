@@ -1,0 +1,131 @@
+{template 'common/header'}
+{php $_item=7;}
+{php $_itemp=1;}
+{template 'menu'}
+<div class="main w98auto">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+                    <div class="col-xs-12 col-sm-8 col-lg-9">
+                        <input class="form-control" id="keyval" type="text" value="{$_GPC['keyval']}"
+                               data-val="{$_GPC['keyval']}" placeholder="输入搜索关键字" />
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <div class="btn btn-default form-submit" onclick="keybut();"><i class="fa fa-search"></i> 搜索</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="control-group" style="margin-bottom:10px;">
+        <a class="button" href="{php echo urido('adpositionadd')}">+添加广告位</a>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body table-responsive">
+            <table class="table table-hover goodslist" style="min-width:995px;">
+                <thead class="navbar-inner">
+                <tr>
+                    <th width="60">ID</th>
+                    <th class="lt">广告位名称</th>
+                    <th width="100">读取方式</th>
+                    <th width="90">默认显示</th>
+                    <th width="90">位置宽度</th>
+                    <th width="90">位置高度</th>
+                    <th width="110">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $lists $list}
+                <tr class="align-center">
+                    <td>{$list['id']}</td>
+                    <td class="lt">{$list['title']}</td>
+                    <td>{$list['rand']}</td>
+                    <td>{$list['num']}</td>
+                    <td>{$list['width']}</td>
+                    <td>{$list['height']}</td>
+                    <td>
+                        <a href="{php echo urido('adpositionadd')}&id={$list['id']}" class="normal-link">修改</a>
+                        <a href="javascript:void(0);" onclick="_del({$list['id']});" class="normal-link">删除</a>
+                    </td>
+                </tr>
+                {/loop}
+                {if !$lists}
+                <tr>
+                    <td colspan="7" align="center">
+                        <div>无</div>
+                    </td>
+                </tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {$pager}
+</div>
+
+<script type="text/javascript">
+    function _del(id){
+        var _del = art.dialog({
+            title: '删除提醒',
+            fixed: true,
+            lock: true,
+            icon: 'warning',
+            opacity: '.3',
+            content: '确定要删除此广告位置及位置下的所有广告并且不可恢复吗？',
+            button: [{
+                name: '确定',
+                callback: function () {
+                    $.alert('正在删除',0);
+                    $.ajax({
+                        url: '{php echo urido('adpositiondel')}&id='+id,
+                        dataType: 'json',
+                        success: function (data) {
+                            $.alert(0);
+                            if (data != null && data.success != null && data.success) {
+                                $.showModal(data.message, '{php echo get_url()}');
+                            } else {
+                                $.showModal(data.message);
+                            }
+                            _del.close();
+                        },error : function () {
+                            $.alert("删除失败！");
+                        },
+                        cache: false
+                    });
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function keybut(){
+        var keyval = $('#keyval').val().trim();
+        if (keyval == ''){
+            if ($('#keyval').attr('data-val')){
+                window.location.href = "{php echo urido(0)}"; return;
+            }else{
+                alert("请输入搜索关键词"); $('#keyval').focus(); return;
+            }
+        }
+        window.location.href = "{php echo urido(0)}&keyval="+encodeURIComponent(keyval);
+    }
+    $(document).ready(function() {
+        $(".form-horizontal").submit(function(){
+            $(this).find(".form-submit").click();
+            return false;
+        });
+    });
+</script>
+{template 'common/footer'}

@@ -1,0 +1,58 @@
+{template 'common/header'}
+<link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.4.0/weui.css">
+<style>
+  body{font-family: "微软雅黑"}
+  .list-block{margin:0.8rem 0px;}
+  .label{color: #000;text-align: left;font-family: "微软雅黑"}
+</style>
+<div class="weui_tab">
+    <div class="weui_navbar">
+        <div class="weui_navbar_item weui_bar_item_on">
+            提现中心
+        </div>
+       
+    </div>
+    <div class="weui_tab_bd">
+
+    </div>
+</div>
+<div class="weui_msg">
+    <div class="weui_icon_area"><img src="{$_W['fans']['tag']['avatar']}" alt="" width="100" style="border-radius:50%"></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title">我的余额</h2>
+        <h1 >￥{$credit}</h1>
+    </div>
+ <form  id="form" action="" method="post"  class="am-form" enctype="multipart/form-data">
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="title" placeholder="请输入姓名" value="{$user['title']}" required>
+            </div>
+        </div>
+        <div class="weui_cell">
+           
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="wxh" placeholder="请输入微信号" value="{$user['wxh']}" required>
+            </div>
+        </div>
+        <div class="weui_cell">
+           
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" name="amount" type="text" placeholder="请输入最少1元" required>
+            </div>
+        </div>
+        <div class="weui_cells_title">提现金额处填写数字即可{if $settings['tixian']}<br>最低提现金额为{$settings['tixian']}元{/if}</div>
+    </div>
+    <div class="weui_opr_area">
+        <p class="weui_btn_area">
+             <input name="submit" type="submit" class="weui_btn weui_btn_primary" value="提交">
+             <input type="hidden" name="token" value="{$_W['token']}" />           
+        </p>
+    </div>
+  </form>
+    <div class="weui_extra_area">
+        <a href="{php echo $this->createMobileUrl('member', array('uid'=>$_W['fans']['uid']));}">返回会员中心</a>
+    </div>
+</div>
+{template 'common/footer'}

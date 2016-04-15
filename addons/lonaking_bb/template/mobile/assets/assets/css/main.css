@@ -1,0 +1,76 @@
+body{
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    background-color: #e2e2e2;
+}
+/*隐藏*/
+.hide{
+    display: none !important;   /*隐藏内容*/
+    visibility: hidden !important;  /*隐藏可视性*/
+}
+/*列表的margin-top:35px 取消*/
+.margin-none{
+    margin: 0px 0px;
+}
+.padding-none{
+    padding: 0px 0px;
+}
+.margin-15{
+    margin: 15px 0px;
+}
+.padding-15{
+    padding: 15px 15px;
+}
+div[class*="col-"] {
+    text-align: center;
+    color: #000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+.icon-15x {
+    font-size: 1.5em;
+}
+
+/*导航条*/
+.navbar{
+    /*background-color: #1dc400;*/
+    background-color: #d14;
+}
+/*导航条*/
+.navbar .left{
+    color: #fff;
+}
+.navbar .left *{
+    color: #fff;
+}
+.navbar .left a{
+    padding-right: 50px;
+}
+.navbar .center{
+    font-weight: 100;
+    color: #fff;
+}
+.navbar .right{
+    color: #fff;
+}
+.navbar .right a{
+    padding-left: 50px;
+}
+.navbar .right *{
+    color: #fff;
+}
+
+div[class*="col-"] {
+    text-align: center;
+    color: #000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+.badge.square{
+    border-radius: 3px;
+    padding: 1px 3px;
+}

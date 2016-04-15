@@ -1,0 +1,93 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo  $this->createWebUrl('User', array('name'=>'xm_housekeep_we7'));}">用户列表</a></li>
+	<li><a href="{php echo  $this->createWebUrl('Belong', array('name'=>'xm_housekeep_we7'));}">员工客户</a></li>
+</ul>
+
+<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<div class="panel-body">
+				<form action="./index.php" method="get" class="form-horizontal" role="form">
+					<input type="hidden" name="c" value="site" />
+					<input type="hidden" name="a" value="entry" />
+					<input type="hidden" name="m" value="xm_housekeep" />
+					<input type="hidden" name="do" value="User" />
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+						<div class="col-sm-8 col-lg-9">
+							<input class="form-control" name="keyword" placeholder="昵称关键字"  type="text" value="{$_GPC['keyword']}">
+						</div>
+						<div class=" col-xs-12 col-sm-2 col-lg-2">
+							<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+						</div>
+					</div>
+					<div class="form-group">
+					</div>
+				</form>
+			</div>
+	
+		</div>
+
+<div class="clearfix">    
+    <div class="panel panel-default">
+    	<div class="panel-heading">
+            用户列表
+        </div>
+        <div class="table-responsive panel-body" style="overflow:visible;">
+            <table class="table table-hover">
+            	<thead>
+                	<tr class="active">
+                        <td>头像</td>
+						<td>昵称</td>
+						<td>真实姓名</td>
+                        <td>手机号码</td>
+						<td>性别</td>
+						<td>订单数</td>
+						<td>所属员工</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	{loop $list $val}
+                	<tr>
+                        <td>
+							<span class="thumb-sm ">
+								<img src="{$val[avatar]}" style="width:40px; height:40px;">
+                            </span>
+                        </td>
+						<td>
+							<p class="form-control-static">{$val[nickname]}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{$val[realname]}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{$val[mobile]}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{php echo $this->getSex($val[gender])}</p>
+                        </td>
+						<td>
+							<p class="form-control-static">{php echo $this->getOrderSum($val[uid])}</p>
+                        </td>
+                        <td style="overflow:visible;">
+                        	<div class="btn-group btn-group-sm">
+								{php echo $this->getBelong($val[uid])}
+                            </div>
+                        </td>
+                    </tr>
+                    {/loop}
+                    
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel-body text-center">
+            {$pager}
+        </div>
+       
+        
+    </div>
+</div>
+
+
+{template 'common/footer'}

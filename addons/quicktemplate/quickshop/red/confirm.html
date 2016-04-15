@@ -1,0 +1,89 @@
+{php include $_template->template('header')}
+	<!--header-->
+    <header id="header">
+    	<a href="javascipt:history.back()" class="back-btn icon-angle-left icon-4x"></a>
+        <h1>结算</h1>
+    </header>
+    <!--header end-->
+    <form class="form-horizontal" method="post" role="form">
+    <!--content-->
+    <div class="content">
+        <!--收货人&电话-->
+        <div class="settlementItem">
+          <ul class="settlementItemUl">
+            <li><span class="label">收货人</span><p><input type="text" class="text form-control" name="realname" value="{$row['realname']}"/></p></li>
+            <li><span class="label">联系电话</span><p><input type="text" class="text form-control" name="mobile" value="{$row['mobile']}"/></p></li>
+          </ul>
+        </div>
+        <!--收货人&电话 end-->
+        <!--收货地址-->
+        <div class="settlementItem">
+        	<dl class="settlementItemUl_1">
+            	<dt><span>详细地址</span></dt>
+                <dd>
+                <p>
+                <select class="form-control" id="sel-provance" onChange="selectCity();" name="province">
+                  <option value="{$row['province']}" selected="true">省/直辖市</option>
+                </select>
+                </p>
+
+                <p>
+                <select class="form-control"  id="sel-city" onChange="selectcounty()" name="city">
+                  <option value="{$row['city']}" selected="true">请选择</option>
+                </select>
+                </p>
+
+                <p>
+                <select class="form-control"  id="sel-area" name="area">
+                  <option value="{$row['area']}" selected="true">请选择</option>
+                </select>
+                </p>
+                </dd>
+                <dd>
+                <p><textarea class="form-control" name="address">{$row['address']}</textarea></p>
+                </dd>
+            </dl>
+        </div>
+        <!--收货人地址 end-->
+        <!--订单明细-->
+        <div class="orderDetail">
+        	<dl>
+            	<dt><span>订单明细</span></dt>
+                <dd>
+                	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    	<tbody>
+                        {loop $allgoods $item}
+                        	<tr>
+                            <td align="left" width="65%">{$item['title']} X{$item['total']}{if !empty($item['unit'])}{$item['unit']}{/if}</td>
+                                <td align="right" width="35%"><em>                                    ￥{$item['totalprice']}元</em></td>
+                          </tr>
+                          {/loop}
+                        </tbody>
+                        <tfoot>
+                        	<tr>
+                            <td align="left">运费</td>
+                            <td align="right"><em>￥0.00元</em></td>
+                          </tr>
+                        </tfoot>
+                    </table>
+                </dd>
+                <dd>
+                <p><span>合计：<em>￥{$totalprice}元</em></span><button type="submit" name="submit" value="yes">提交订单</button></p>
+                </dd>
+            </dl>
+        </div>
+        <!--订单明细 end-->
+    </div>
+    <!--content end--> 
+    <input type="hidden" name="goodstype" value="{$goodstype}" />
+    <input type="hidden" name="sendtype" value="{$sendtype}" />
+    <input type="hidden" name="addressid" value="{$row['id']}" />
+    <input type="hidden" name="token" value="{$_W['token']}" />
+</form>
+<!-- begin address script -->
+<script type="text/javascript" src="./resource/script/cascade.js"></script>
+<script type="text/javascript">
+  cascdeInit('{$row['province']}','{$row['city']}','{$row['area']}');
+</script>
+<!-- end address script -->
+{php include $_template->template('footer')}

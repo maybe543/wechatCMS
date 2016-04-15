@@ -1,0 +1,112 @@
+{template 'common/header'}
+<style>
+    .modal-body{
+        max-height:100%;
+        width: 600px;
+        overflow-x: hidden;
+        overflow-y:auto;
+    }
+
+    .modal{
+        width: 650px;
+    }
+
+
+</style>
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li><a href="{php echo $this->createWebUrl('ZF');}">语音祝福</a></li>
+        <li class="active"> <a href="">参加祝福用户</a></li>
+
+    </ul>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="./index.php" method="get">
+
+                <input type="hidden" name="c" value="site" />
+                <input type="hidden" name="a" value="entry" />
+                <input type="hidden" name="m" value="mon_yyzf" />
+                <input type="hidden" name="do" value="ZR" />
+                <input type="hidden" name="yid" value="{$yid}" />
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">昵称</label>
+                    <div class="col-sm-8 col-lg-9">
+                        <input class="form-control" name="keywords" id="" type="text" value="{$_GPC['keywords']}" placeholder="昵称">
+                    </div>
+                    <div class=" col-xs-12 col-sm-2 col-lg-2">
+                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                    </div>
+                </div>
+
+
+
+            </form>
+            </div>
+
+        </div>
+
+
+
+    <div style="padding: 0 15px 0  15px;">
+        <div class="row-fluid">
+            <div class="span8 control-group">
+                <!--<a class="btn btn-default" href="{php echo $this->createWebUrl('userDownload', array('sid'=>$sid))}"><i class="icon-download-alt"></i>导出用户信息</a>-->
+                <a class="btn btn-default" href="#">参与用户共{$total}人</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <div style="padding:15px;">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:200px;">昵称</th>
+                    <th>头像</th>
+                    <th>语音ID</th>
+                    <th>祝福时间</th>
+
+                    <th style="min-width:60px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $zr}
+                <tr>
+
+
+                    <td>{$zr['nickname']}</td>
+                    <td><img src="{$zr['headimgurl']}" height="50px" width="50px"/></td>
+                    <td>{$zr['serverId']}</td>
+                    <td>{php echo date("Y-m-d  H:i", $zr['createtime'])}</td>
+
+                    <td >
+                     
+
+                        <a href="{php echo $this->createWebUrl('ZR', array( 'id' => $zr['id'], 'op' => 'delete'))}"
+                           onclick="return confirm('此操作不可恢复，确认删除？');return false;" title="删除"
+                           class="btn btn-small"><i class="glyphicon glyphicon-remove"></i>删除</a>
+
+
+                  
+                    </td>
+                </tr>
+                {/loop}
+
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+
+</div>
+
+
+
+{template 'common/footer'}

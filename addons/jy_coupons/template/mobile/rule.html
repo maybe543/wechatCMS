@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>活动规则</title>
+    <style>
+        html,body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: #000;
+        }
+        #bodybox {
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            {if empty($item['rule_bg'])}
+            background: url(../addons/jy_coupons/images/rule.jpg) no-repeat;
+            {else}
+            background: url({$_W['attachurl']}{$item['rule_bg']}) no-repeat;
+            {/if}
+            background-size: 100%;
+            overflow: hidden;
+            max-width: 640px;
+        }
+        #bodybox>div{width: 90%;margin: 20% auto;color: #00a4e2;font-size: 11px;margin-bottom: 39%}
+        .con1{font-size: 14px;}
+        .mbtm2{margin-bottom: 2%;}
+        .content{line-height: 20px}
+        .mtop3{margin-top: 4%}
+    </style>
+</head>
+<body>
+    <div id="bodybox">
+        <div>
+            {php echo htmlspecialchars_decode($item['rule'])}
+        </div>
+    </div>
+</body>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','hideOptionMenu',]
+    });
+
+    wx.ready(function () {
+        wx.hideOptionMenu();
+
+    });
+    </script>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-url-api="{$urls['api']}" data-url-adduserapi="{$urls['adduserapi']}" data-url-giftorderapi="{$urls['giftorderapi']}" data-openid="{$html['openid']}">
+	<head>
+		<title>{$html['config']['title']}</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="../addons/lonaking_taskcenter/template/mobile/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../addons/lonaking_taskcenter/template/mobile/css/common.css">
+		<link rel="stylesheet" type="text/css" href="../addons/lonaking_taskcenter/template/mobile/css/style.css">
+		<script src="../addons/lonaking_taskcenter/template/mobile/bootstrap/js/jquery-2.1.3.min.js"></script>
+		<script src="../addons/lonaking_taskcenter/template/mobile/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../addons/lonaking_taskcenter/template/mobile/js/center.js"></script>
+	</head>
+	<body>
+        <span id="prepare-data">
+            <input type="hidden" name="agree_duty" value="{$html['user']['agree_duty']}">
+            <input type="hidden" name="score" value="{$html['user']['score']}">
+        </span>
+        <!-- 头部-->
+        <header class="common-header back-red">
+            <div class="container">
+                <div class="row">
+                    <!-- title -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="header-middle">
+                            <span>{$html['config']['title']}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- 主体 -->
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                    <div class="circle bg-blue center-block" id="share-button">
+                        <a href="javascript:void(0);" >推广页面</a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                    <div class="circle bg-red center-block" data-toggle="modal" data-target="#ucenter">
+                        <a href="javascript:void(0);">我的推广</a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6" >
+                    <div class="circle bg-gray center-block" data-toggle="modal" data-target="#rank-modal">
+                        <a href="javascript:void(0);">推广排名</a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6" >
+                    <div class="circle bg-green center-block" data-toggle="modal" data-target="#gift-modal">
+                        <a href="javascript:void(0);">积分商城</a>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+
+        <!--modals-->
+        <!-- 推广页面 -->
+        <div class="modal fade modal-middle" id="reg-share-man" tabindex="-1" role="dialog" 
+           aria-labelledby="reg-share-man_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="reg-share-man_label">
+                           姓名登记
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control input-lg" name="name" value="{$html['user']['name']}" placeholder="请输入您的姓名" required>
+                        <span class="help-block">推广积分记录只按照此姓名登记，一次确定后请勿修改，建议使用姓名</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                        <button type="submit" class="btn btn-success submit-regist">
+                           提交登记
+                        </button>
+                    </div>     
+                </div>
+            </div>
+        </div>
+        <!-- 生成我的推广 -->
+        <div class="modal fade modal-middle" id="myshare_web" tabindex="-1" role="dialog" 
+           aria-labelledby="myshare_web_label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="myshare_web_label">
+                           我的推广页面
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>您的推广页面已经生成,点击这里查看,</p>
+                        <p>你可以将生成的页面分享至朋友圈，或者发送给微信好友，当好友扫描您的推广页面上的二维码关注本微信平台后，您将得到一定的奖励</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                    </div>     
+                </div>
+            </div>
+        </div>
+        <!-- 我的推广 -->
+        <div class="modal fade" id="ucenter" tabindex="-1" role="dialog" 
+           aria-labelledby="ucenter_lable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                        <h4 class="modal-title" id="ucenter_lable">
+                           我的推广
+                        </h4>
+                    </div>
+                    <!--
+                    <div class="mybarcode">
+                        <div class="col-xs-6 col-md-6 col-lg-6 col-sm-6 center-block">
+                            <img class="qrcode img-responsive" src="images/erweima.jpeg">
+                        </div>
+                    </div>
+                    -->
+                    <div class="mybarcode">
+                        <img class="qrcode img-responsive" src="{$html['user']['qrcode']}">
+                        <p>长按上面二维码识别、或扫描此二维码关注{$html['account_name']}</p>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <caption>
+                                您的积分:<span class="font-red">{$html['user']['score']}</span>
+                                <p>推广关注:<span class="font-red">+{$html['config']['follow_score']}/人</span>
+                                取消关注:<span class="font-red">-{$html['config']['unfollow_score']}/人</span>
+                                二级推广人:<span class="font-red">+{$html['config']['second_shareman_score']}/人</span></p>
+                            </caption>
+                            
+                            <tbody>
+                            <tr>
+                                <td>推广人数总计</td>
+                                <th><span class="font-red">{$html['user']['follow_times']}</span></th>
+                            </tr>
+                            <tr>
+                                <td>取消关注人数</td>
+                                <th><span class="font-red">{$html['user']['unfollow_times']}</span></th>
+                            </tr>
+                            <tr>
+                                <td>下级推广人数</td>
+                                <th><span class="font-red">{$html['user']['second_shareman']}</span></th>
+                            </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-success convert">
+                           兑换礼品
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推广页面 推广任务列表 -->
+        <div class="modal fade" id="share-task-list" tabindex="-1" role="dialog" 
+           aria-labelledby="share-task-list-lable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                        <h4 class="modal-title" id="share-task-list-lable">
+                           推广任务
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped share-task">
+                        <caption>
+                            <span>你好 <span class="font-red">{$html['user']['name']}</span>，你可以分享以下任务</span>
+                            <span><button class="btn btn-warning btn-sm" id="look-up-rank">查看排名</button></span>
+                        </caption>
+                        
+                        <thead>
+                          <tr>
+                             <th width="60%">任务</th>
+                             <th width="40%">我的分享链接</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {loop $html['tasks'] $task}
+                          <tr>
+                             <td>{$task['name']}</td>
+                             <td><a class="btn btn-success btn-sm" href="{php echo $this->createMobileUrl($go,array('share_uid'=>$html['user']['id'],'task_id'=>$task['id'],'new_name'=>$user['name']))}" data-url="{php echo $this->createMobileUrl($go,array('share_uid'=>$html['user']['id'],'task_id'=>$task['id']))}">分享至朋友圈</a></td>
+                          </tr>
+                        {/loop}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 推广排名 -->
+        <div class="modal fade" id="rank-modal" tabindex="-1" role="dialog" 
+           aria-labelledby="rank-modal-lable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                        <h4 class="modal-title" id="rank-modal-lable">
+                           推广排名
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        您目前共推广<span class="font-red">{$html['user']['follow_times']}</span>名粉丝，排名为<span class="font-red">{$html['sort_users']['user']['sort']}</span>
+                        <table class="table">
+                            <caption>仅显示前10名</caption>
+                            <thead>
+                              <tr>
+                                 <th>姓名</th>
+                                 <th>推广人数</th>
+                                 <th>排名</th>
+                                 <th>积分</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {loop $html['sort_users']['users'] $su}
+                            <tr class="{if $html['user']['id'] == $su['id']}success{/if}">
+                                <td>{$su['name']}</td>
+                                <td>{$su['follow_times']}/{$su['unfollow_times']}</td>
+                                <th><span class="font-red">{$su['sort']}</span></th>
+                                <th><span class="font-red">{$su['score']}</span></th>
+                            </tr>
+                            {/loop}
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-success convert">
+                           兑换礼品
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 积分商城 -->
+        <div class="modal fade" id="gift-modal" tabindex="-1" role="dialog" 
+           aria-labelledby="gift-modal-lable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                        <h4 class="modal-title" id="gift-modal-lable">
+                           积分商城
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped gift">
+                        <caption>
+                            <span>您的积分: <span class="font-red my-score" data-score="{$html['user']['score']}">{$html['user']['score']}</span></span>
+                            <span><button class="btn btn-warning btn-sm history-gift">兑换记录</button></span>
+
+                        </caption>
+                        
+                        <thead>
+                          <tr>
+                             <th width="50%">礼品</th>
+                             <th width="30%">所需积分</th>
+                             <th width="20%"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {loop $html['gifts'] $gift}
+                          <tr>
+                             <td>{$gift['name']}</td>
+                             <td>{$gift['price']}</td>
+                             <td><button class="btn btn-success btn-sm buy-gift" data-id="{$gift['id']}" data-price="{$gift['price']}">兑换</button></td>
+                          </tr>
+                        {/loop}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 兑换记录 -->
+        <div class="modal fade" id="history-gift" tabindex="-1" role="dialog" 
+           aria-labelledby="history-gift_lable" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                          &times;
+                        </button>
+                        <h4 class="modal-title" id="history-gift_lable">
+                           兑换记录
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped gift">
+                        <caption>
+                            <span>您共兑换过 <span class="font-red">{php echo sizeof($html['gift_orders'])}</span>次，其中<span class="font-red">{$success_order_times}</span>次成功</span>
+                            <span><button class="btn btn-warning btn-sm return-gift">积分商城</button></span>
+
+                        </caption>
+                        
+                        <thead>
+                          <tr>
+                             <th width="30%">礼品</th>
+                             <th width="20%">兑换时间</th>
+                             <th width="20%">状态</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {loop $html['gift_orders'] $o}
+                              <tr class="{if $o['status'] == 0}success{elseif $o['status'] == 1}{elseif $o['status'] == 2}danger{/if}">
+                                 <td>{$o['gift_name']}</td>
+                                 <td>{php echo date("Y-m-d",$o['createtime'])}</td>
+                                 <td><span>{if $o['status'] == 0}进行中...{elseif $o['status'] == 1}成功{elseif $o['status'] == 2}失败{/if}</span></td>
+                              </tr>
+                            {/loop}
+                        </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 商城兑换按钮 -->
+        <div class="modal fade modal" id="order-info-modal" tabindex="-1" role="dialog" 
+           aria-labelledby="order-info-modal-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="order-info-modal-label">
+                           兑换信息填写
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group hide">
+                                <label for="order_info_1" class="col-sm-2 control-label">gift_id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="order_gift_id" class="form-control" id="order_info_1" placeholder="请输入id" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="order_info_2" class="col-sm-2 control-label">姓名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="order_name" class="form-control" id="order_info_2" value="{$html['user']['name']}" placeholder="请输入真实姓名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="order_info_3" class="col-sm-2 control-label">手机号码</label>
+                                <div class="col-sm-10">
+                                    <input type="mobile" name="order_mobile" class="form-control" id="order_info_3" placeholder="请输入手机号码">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="order_info_4" class="col-sm-2 control-label">目标账户</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="order_target" class="form-control" id="order_info_4" placeholder="请输入兑换礼品的账号" aria-describedby="target-id-block">
+                                </div>
+                            </div>
+                            <span id="target-id-block" class="help-block">此账户将是您领取礼品的目标对象，如果您领取的礼品是现金，则填写支付宝账号，如果是话费，则填写手机号码，如果是QQ币，则填写QQ号码，依此类推.</span>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-success submit-order-info">
+                           提交兑换
+                        </button>
+                    </div>     
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 免责条款 -->
+        <div class="modal fade modal-middle" id="duty-free" tabindex="-1" role="dialog" 
+           aria-labelledby="duty-free-label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="duty-free-label">
+                           免责声明
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>您好，点击同意后，将意味着您将遵照本平台的约束规定，本免责声明将不会提示。</p>
+                        <p>最终解释权归本平台所有。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" 
+                           data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-success agree-duty">
+                           同意
+                        </button>
+                    </div>     
+                </div>
+            </div>
+        </div>
+
+        <!-- warning -->
+        <div class="modal fade modal-middle" id="warning" tabindex="-1" role="dialog" 
+           aria-labelledby="warning－label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="warning－label">
+                           
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>   
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

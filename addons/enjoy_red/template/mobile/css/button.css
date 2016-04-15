@@ -1,0 +1,76 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*
+DEMO 2
+*/
+
+.a_demo_two {
+	background-color:#c9222e;
+	padding:10px;
+	position:relative;
+	font-family: 'Open Sans', sans-serif;
+	font-size:25px;
+	font-weight:bold;
+	text-decoration:none;
+	position:absolute;
+	left:36%;
+	color:#fff;
+	background-image: linear-gradient(bottom, rgb(201,34,46) 0%, rgb(217,55,16) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(201,34,46) 0%, rgb(217,55,16) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(201,34,46) 0%, rgb(217,55,16) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(201,34,46) 0%, rgb(217,55,16) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(201,34,46) 0%, rgb(217,55,16) 100%);
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(201,34,46)),
+	color-stop(1, rgb(217,55,16))
+	);
+	-webkit-box-shadow: inset 0px 1px 0px #DE5A3E, 0px 6px 0px #6F1A05;
+	-moz-box-shadow: inset 0px 1px 0px #DE5A3E, 0px 6px 0px #6F1A05;
+	-o-box-shadow: inset 0px 1px 0px #DE5A3E, 0px 6px 0px #6F1A05;
+	box-shadow: inset 0px 1px 0px #DE5A3E, 0px 6px 0px #6F1A05;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.a_demo_two::before {
+	background-color:#072239;
+	content:"";
+	display:block;
+	position:absolute;
+	width:100%;
+	padding-left:2px;
+	padding-right:2px;
+	padding-bottom:4px;
+	left:-2px;
+	top:5px;
+	z-index:-1;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0px 1px 0px #fff;
+	-moz-box-shadow: 0px 1px 0px #fff;
+	-o-box-shadow: 0px 1px 0px #fff;
+	box-shadow: 0px 1px 0px #fff;
+}
+
+.a_demo_two:active {
+	color:#5D030A;
+	text-shadow: 0px 1px 1px rgba(255,255,255,0.3);
+	background:rgb(201,34,46);
+	-webkit-box-shadow: inset 0px 1px 0px #DE5A3E, inset 0px -1px 0px #6F1A05;
+	-moz-box-shadow: inset 0px 1px 0px #DE5A3E, inset 0px -1px 0px #6F1A05;
+	-o-box-shadow: inset 0px 1px 0px #DE5A3E, inset 0px -1px 0px #6F1A05;
+	box-shadow: inset 0px 1px 0px #DE5A3E, inset 0px -1px 0px #6F1A05;
+	top:7px;
+}
+
+.a_demo_two:active::before {
+	top:-2px;
+}

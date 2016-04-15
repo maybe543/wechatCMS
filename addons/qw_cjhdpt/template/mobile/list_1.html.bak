@@ -1,0 +1,135 @@
+{template 'header'}
+
+<style>
+body{background:url(../addons/qw_cjhdpt/image/big/au-bg.gif) repeat;}
+.j_list_box{ padding:10px;}
+.j_list_box a{color:#333; text-decoration:none;}
+.j_list_box panel-body:active{ background:#EEE;}
+.j_list_box a h2{ margin:0; line-height:18px; font-size:14px;}
+.j_list_box a .abouttime{ font-size:12px; color:#999; line-height:18px;padding:3px 0; }
+.j_list_box a .info{ font-size:12px; color:#999; line-height:18px;padding:3px 0; height:45px;}
+.j_list_box .img{ padding:5px 0;}
+.j_list_box .img img{ width:100%;}
+</style>
+<Div class="header">
+	<div class="box">
+    	<div class="boxsize-2"><A href="{php echo $this->createMobileUrl('idqrcode')}"><i class="fa fa-credit-card"></i>证件</A></div>
+        <div class="boxsize-8">活动列表</div>
+        <div class="boxsize-2"><A href="javascript:scanQrcode()" id="scanbtn"><i class="fa fa-qrcode"></i> <span>签到</span></A></div>
+    </div>
+</Div>
+<div class="fixed_first">&nbsp;</div>
+<div class="j_list_box"> 
+  {if empty($list)}
+  <div class="alert alert-warning alert-dismissible" style="margin:10px;"> <strong>暂无您要的内容哦</strong> </div>
+  {/if}
+  
+</div>
+<script language="javascript">
+function scanQrcode(){
+	wx.scanQRCode({
+		needResult: 1, 
+		scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+		success: function (res) {
+			var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+			url="./index.php?i={$_W['uniacid']}&c=entry&m=qw_cjhdpt&do=ajax&str="+result+"&wxref=mp.weixin.qq.com#wechat_redirect";
+			//alert(url);
+			$.getJSON(url,'',function(data){
+				if(data.success){
+					alert(data.msg);
+					location.href="./index.php?i={$_W['uniacid']}&c=entry&m=qw_cjhdpt&do=view&id="+data.id+"&wxref=mp.weixin.qq.com#wechat_redirect";
+				}else{
+					alert('签到失败！\r\n原因:'+data.msg);
+				}
+			})
+		}
+	});
+}
+$(document).ready(function(e) {
+    getList()
+});
+nowpage=1;
+var showLoading=parseInt("{php echo $cfg['showloading']}");
+function getList(){
+	if(showLoading)$('j').Jetsum.loadbox({do:true,});
+	var _width=$(window).width();
+	var _height=$(window).height();
+	_world=parseInt((_width-52)/12)*2-4;
+	_imgH=(_width-52)*0.5;
+	_pagesize=parseInt(20);
+	$.getJSON("{php echo $this->createMobileUrl('ajaxget',array('op'=>'getlist'))}",{page:nowpage,psize:_pagesize,world:_world},function(data){
+		if(data.success){
+			var item=data.item;
+			$(".pagenext").remove();
+			for(var i=0; i<item.length;i++){
+				var temp='<div class="panel panel-default">';
+				temp+='<div class="panel-body"><a href="'+item[i].link+'">';
+				temp+='<h2>'+item[i].title+'</h2>';
+				temp+='<div class="abouttime">报名时间：'+item[i].time+'</div>';
+				temp+='<div class="img"><img src="'+item[i].img+'" style="height:'+_imgH+'px"/></div>';
+				temp+='<div class="info">'+item[i].info+'</div>';
+				var word=item[i].status ? "精彩花絮":"浏览详情";
+				temp+='<div class="boxbtn"><span class="pull-right"><button type="button" class="btn btn-xs btn-info">'+word+'</button></span>';
+				if(item[i].address){
+					temp+='<span style="color:#5BC0DE"><i class="fa fa-map-marker"></i></span> <small style="color:#5BC0DE">'+item[i].address+'</small></div>';
+				}else{
+					temp+='<span>&nbsp;</div>';
+				}
+				temp+='</div>';
+				temp+='</a></div></div>';
+				$(".j_list_box").append(temp);
+			}
+			nowpage++;
+			if(parseInt(data.total)>nowpage){
+				if($('.pagenext').size()==0){
+					$(".j_list_box").append("<button class='btn btn-default btn-block pagenext' onclick='getList("+nowpage+")'>更多</button>");
+				}else{
+					$(".pagenext").attr("onclick","getList("+nowpage+")");
+				}
+			}
+			$('j').Jetsum.loadbox({do:false});
+		}
+	})
+}
+</script> 
+		{if empty($footer_off)}
+			<div class="text-center footer" style="margin:10px 0; padding-bottom:60px; width:100%; text-align:center; word-break:break-all;">
+				{if !empty($_W['page']['footer'])}
+					{$_W['page']['footer']}
+				{else}
+					{if IMS_FAMILY != 'x'}<a href="#">&copy;路之达科技</a>{/if}
+				{/if}
+				&nbsp;&nbsp;{$_W['setting']['copyright']['statcode']}
+			</div>
+		{/if}
+	</div>
+<script>
+_showMenu=parseInt("{php echo $_showMenu}");
+wx.ready(function () {
+	sharedata = {
+		title: "{$cfg['share_title']}",
+		desc: "{$cfg['share_info']}",
+		imgUrl:"{$_W['attachurl']}{$cfg['share_img']}",
+		link: "{$_W['siteurl']}",
+		
+		success: function(){
+			//alert('success');
+		},
+		cancel: function(){
+			//alert('cancel');
+		}
+	};
+	wx.onMenuShareAppMessage(sharedata);
+	wx.onMenuShareTimeline(sharedata);
+	wx.onMenuShareQQ(sharedata);
+	wx.onMenuShareWeibo(sharedata);
+	//是否显示按钮
+	if(!_showMenu){
+		wx.showOptionMenu();
+	}else{
+		wx.hideOptionMenu();
+	}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{template 'common/header'}
+
+<div style="padding:15px;">
+  <p>(本次收集订单总数：<span class="redamount">{$total}</span>个)</p>
+  <table class="table table-hover">
+    <thead class="navbar-inner">
+      <tr>
+        <th>序号</th>
+        <th>真实姓名</th>
+        <th>电话</th>
+        <th>预约技师</th>
+        <th>预约时间</th>
+        <th>处理状态</th>
+        <th>操作</th>
+  </tr>
+</thead>
+{loop $orders $item}
+<tr>
+  <td>{$item['id']}</td>
+  <td>{$item['truename']}</td>
+  <td>{$item['mobile']}</td>
+  <td>{$item['ser_name']}</td>
+  <td>{php echo date('Y-m-d',$item['createtime'])}</td>
+  <td>{if $item['isdel']}
+  <span class="label label-danger">客户已取消</span>
+  {else}
+  {if $item['remate'] == '0'}
+  <span class="label label-warning">待回复</span>
+  {elseif $item['remate'] == '1'}
+  <span class="label label-primary">确认</span>
+  {elseif $item['remate'] == '2'}
+  <span class="label label-default">拒绝</span>
+  {elseif $item['remate']=='3'}
+  <span class="label label-success">完成</span>
+  {/if}
+  {/if}
+  </td>
+  <td>
+    <a href="{php echo $this->createWebUrl('detail',array('id' => $item['id']))}">详细</a>
+    <!--<a href="{php echo $this->createWebUrl('orders',array('id' => $item['id'],'op' => 'delete'))}">删除-->
+    </a>
+  </td>
+</tr>
+{/loop}
+</table>
+</div>
+
+{template 'common/footer'}

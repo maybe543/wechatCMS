@@ -1,0 +1,31 @@
+{template 'header'}
+<style>
+.error_box{ padding:10px;}
+.jreg_box{ position:relative;}
+</style>
+<div class="error_box">
+	<div class="jreg_box">
+      <div class="jreg_box_head">系统错误</div>
+      <div class="jreg_box_body">
+          由于腾讯技术限制，请您在本公众号中发送关键字“<b style="color:#F00;">{php echo $keyword}</b>”触发，并点击弹出的内容进入活动报名。
+      </div>
+	</div>
+</div>
+{if empty($footer_off)}
+    <div class="text-center footer" style="margin:10px 0; padding-bottom:60px; width:100%; text-align:center; word-break:break-all;">
+        {if !empty($_W['page']['footer'])}
+            {$_W['page']['footer']}
+        {else}
+            {if IMS_FAMILY != 'x'}<a href="#">&copy;云浮捷讯设计</a>{/if}
+        {/if}
+        &nbsp;&nbsp;{$_W['setting']['copyright']['statcode']}
+    </div>
+{/if}
+</div>
+<script>
+wx.ready(function () {
+	wx.hideOptionMenu();
+});
+</script>
+</body>
+</html>

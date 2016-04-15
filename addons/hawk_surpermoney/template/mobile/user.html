@@ -1,0 +1,80 @@
+{template 'header'}
+<style>
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+    .color-orange{color:#BB5E00}
+    .border-top-bottom{border-top:1px dashed gray;border-bottom:1px dashed gray;}
+
+    .margintop{margin-top:10px;}
+    .border{border-right:1px dotted darkgrey;border-bottom:1px dotted gray }
+    .img-padding{padding-top:5px;}
+    .bgcolor{background-color: #ffffff}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+            <img class="img-circle" width="50" height="50" src="{if empty($userinfo['avatar'])}../addons/hawk_surpermoney/images/grapmoney.png{else}{$userinfo['avatar']}{/if}" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>个人中心</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-12 text-center">
+        <h1 class="color-orange">{$meminfo['todaymoney']}</h1>
+        <p>今日收益</p>
+    </div>
+</div>
+<div class="row border-top-bottom">
+    <div class="col-xs-4 col-md-4 text-center">
+        <h4>{$meminfo['yestodaymoney']}</h4>
+        <p>昨日收益</p>
+    </div>
+    <div class="col-xs-4 col-md-4 text-center">
+        <h4>{$allowmoney}</h4>
+        <p>可提现</p>
+    </div>
+    <div class="col-xs-4 col-md-4 text-center">
+        <h4>{$meminfo['totalmoney']}</h4>
+        <p>总收益</p>
+    </div>
+</div>
+<div class="row text-center margintop bgcolor">
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->createMobileUrl('home')}"> <img class="img-padding" src="../addons/hawk_surpermoney/images/icon_fx_team.png" width="50px" height="50px">
+            <h4>我的家族</h4>
+        </a>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->createMobileUrl('cash')}">
+            <img class="img-padding" src="../addons/hawk_surpermoney/images/icon_fx_dollar.png" width="50px" height="50px">
+            <h4>我要提现</h4>
+        </a>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->createMobileUrl('recruit')}">
+            <img class="img-padding"  src="../addons/hawk_surpermoney/images/icon_fx_scan.png" width="50px" height="50px">
+            <h4>招募族员</h4>
+        </a>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->createMobileUrl('charts')}">
+            <img class="img-padding" src="../addons/hawk_surpermoney/images/icon_fx_grap.png" width="50px" height="50px">
+            <h4>土豪榜</h4>
+        </a>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->createMobileUrl('cashrd')}">
+            <img class="img-padding" src="../addons/hawk_surpermoney/images/icon_fx_share.png" width="50px" height="50px">
+            <h4>提现记录</h4>
+        </a>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 border">
+        <a href="{php echo $this->module['config']['api']['learn']}">
+            <img class="img-padding" src="../addons/hawk_surpermoney/images/icon_fx_grades.png" width="50px" height="50px">
+            <h4>新手学堂</h4>
+        </a>
+    </div>
+</div>
+{template 'footbar'}
+{template 'footer'}

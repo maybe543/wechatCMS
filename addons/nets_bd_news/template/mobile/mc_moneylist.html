@@ -1,0 +1,77 @@
+<?php$pagetitle="积分明细";?>
+{template 'mobile_head'}
+<header class="header-fixed">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">积分明细</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<br/><br/>
+<section class="box detail-box rate-list-son">
+  <ul>
+  <li>
+      <div class="left">一级会员贡献</div>
+      <a href="javascript:void(0);" class="toFundHistoryList" id="monthGrowthRate">
+      <div class="right negative">{if empty($level_1_i)}0{else}{$level_1_i}{/if} </div>
+      </a> </li>
+	  <li>
+      <div class="left">二级会员贡献</div>
+      <a href="javascript:void(0);" class="toFundHistoryList" id="monthGrowthRate">
+      <div class="right negative">{if empty($level_2_i)}0{else}{$level_2_i}{/if} </div>
+      </a> </li>
+	  <li>
+      <div class="left">三级会员贡献</div>
+      <a href="javascript:void(0);" class="toFundHistoryList" id="monthGrowthRate">
+      <div class="right negative">{if empty($level_3_i)}0{else}{$level_3_i}{/if} </div>
+      </a> </li>
+  
+  </ul>
+
+</section>
+  <div class="bond-top"  onclick="location.href='/app/index.php?i={$_W['uniacid']}&c=entry&m=recharge&do=pay';">
+  <input type="button" style="border:1px solid #228fff;background:#228fff;-webkit-box-flex: 1;border-radius: 5px;color:#fff;font-size:20px;width:100%!important;padding:5px;" value="立即充值" />
+  </div>
+<section class="box detail-box rate-list-son" id="content">
+  <ul>
+  {loop $moneylist $m}
+    <li>
+      <div class="left"><?php  echo date("Y-m-d",$m["createtime"]); ?>&nbsp;&nbsp;&nbsp;
+	  <?php  $arr=explode("^",$m["remark"]); if(sizeof($arr)>4){$title=$arr[4];}else if(sizeof($arr)==3){$title=$arr[1];}else{$title=$arr[0];} ?>
+	  {$title}</div>
+      <a href="javascript:void(0);" class="toFundHistoryList" id="monthGrowthRate">
+      <div class="right negative"><?php echo $m["num"]?>  {if $m["credittype"]=="credit2"}{else}{/if}</div>
+      </a> </li>
+	{/loop}
+  </ul>
+</section>
+<div class="scroll-loading" id="msg">&nbsp;往上划查看更多历史...</div>
+{template 'common'}
+<script>
+	var uniacid="{$_W['uniacid']}";
+	var page="{$pindex}";
+	var total_page="{$total_page}";
+	var append_divid="content";
+	var cid=0;
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+<script>
+//滚动条下拉事件的分页
+window.onscroll = function(){
+　　if(getScrollTop() + getWindowHeight() == getScrollHeight()){
+　　if(page==total_page){/*fyt$("no-content").style.display="block";*/fyt$("msg").innerHTML="&nbsp;没有更多了"; return;}
+		sendAjaxRequest("/app/index.php?c=entry&do=mc_moneylist_ajax&m=nets_bd_news&i="+uniacid+"&page="+page,appendMyMoneyList);  
+　　}else{
+		
+	}
+};
+</script>
+{template 'common_share'}
+</body>
+</html>

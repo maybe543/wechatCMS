@@ -1,0 +1,130 @@
+{template 'common/header'}
+<div class="main">
+    <form class="form-horizontal form" id="setting-form" action=""
+          method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">配置中心</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">聊天时间限制</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[chat_limit_minute]"
+                               value="{$settings['chat_limit_minute']}" />
+                        <span class="help-block">超过此时间，将自动结束两人的聊天,默认为60分钟，为了服务器正常运行，不能设置为空和不限制</span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">引导关注url</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[follow_url]"
+                               value="{$settings['follow_url']}" />
+                        <span class="help-block">关注引导页面,当用户没有关注,跳转到这里关注</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">消息提醒设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">默认提示</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[default_message]"
+                               value="{$settings['default_message']}" />
+                        <span class="help-block">当用户没有匹配或被匹配，发送消息给公众平台的时候，对他对提示，建议什么都不设置</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">匹配成功提示(对自己)</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[pipei_success_me]"
+                               value="{$settings['pipei_success_me']}" />
+                        <span class="help-block">匹配成功对对方的提示,不写则不通知</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">匹配成功提示(给对方)</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[pipei_success]"
+                               value="{$settings['pipei_success']}" />
+                        <span class="help-block">匹配成功对对方的提示</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">挂断提示(给自己)</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[hang_up_me]"
+                               value="{$settings['hang_up_me']}" />
+                        <span class="help-block">挂断时对方的提示,不写则不通知</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">挂断提示(给对方)</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[hang_up]"
+                               value="{$settings['hang_up']}" />
+                        <span class="help-block">挂断时对对方的提示</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">聊天时间结束提醒</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[chat_timeout_message]"
+                               value="{$settings['chat_timeout_message']}" />
+                        <span class="help-block">当用户聊天时间结束的时候，自动挂断双方，提示给双方的内容</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">分享配置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">标题设置</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[title]"
+                               value="{$settings['title']}" />
+                        <span class="help-block">匹配页面的标题,也是分享的标题</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享内容</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[share_content]"
+                               value="{$settings['share_content']}" />
+                        <span class="help-block">分享内容</span>
+                    </div>
+                </div>
+                <!-- 图片-->
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享logo</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[share_logo]', $settings['share_logo'])}
+                        <span class="help-block">分享时显示的图片</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input name="token" type="hidden" value="{$_W['token']}" /> <input
+                type="submit" class="btn btn-primary col-lg-1" name="submit"
+                value="提交" />
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    require([ 'jquery', 'util' ], function($, util) {
+        $(function() {
+            $("#setting-form").submit(function() {
+                if ($("input[name='data[title]']").val().trim() == "") {
+                    util.message("未填写标题！");
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+{template 'common/footer'}

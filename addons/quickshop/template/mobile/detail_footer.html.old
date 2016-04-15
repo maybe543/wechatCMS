@@ -1,0 +1,80 @@
+	{if empty($footer_off)}<div id="footer">&copy;{if empty($_W['account']['name'])}微信营销团队{else}{$_W['account']['name']}{/if}</div>{/if}
+</div>
+{if $_W['quickmenu']['menus']}
+	{template $_W['quickmenu']['template']}
+{/if}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(".user-box .box-item").each(function(i) {
+		i = i +1;
+		if(i%3 == 0) $(this).css("border-right", "0");
+	});
+	$(window).scroll(function(){
+		$(".menu-button").find("i").removeClass("icon-minus-sign").addClass("icon-plus-sign");
+		$(".menu-main").hide();
+	});
+	$(".menu-main a").click(function(){ $(".menu-main").hide(); });
+
+	//控制tab宽度
+	var profile_tab = $(".nav-tabs li");
+	profile_tab.css({"width": 100/profile_tab.length+"%", "text-align": "center"});
+
+	//手机表单处理
+	$(".form-table").delegate(".checkbox input[type='checkbox']", "click", function(){
+		$(this).parent().toggleClass("btn-inverse");
+	});
+	$(".form-table").delegate(".file input[type='file']", "change", function(){
+		var a = $(this).next("button");
+		a.html(a.html() +' '+  $(this).val());
+	});
+
+	//处理固定横向导航条
+	var navbarFixedTop = false, navbarFixedBottom = false;
+	navbarFixedTop = $(".navbar").hasClass("navbar-fixed-top");
+	navbarFixedBottom = $(".navbar").hasClass("navbar-fixed-bottom");
+	if(navbarFixedTop) $("body").css("padding-top", "41px");
+	if(navbarFixedBottom) $("body").css("padding-bottom", "41px");
+});
+
+jssdkconfig = {php echo json_encode($_W['account']['jssdkconfig']);} || {};
+
+// 是否启用调试
+jssdkconfig.debug = true;
+
+jssdkconfig.jsApiList = [
+'checkJsApi',
+'onMenuShareTimeline',
+'onMenuShareAppMessage',
+'onMenuShareQQ',
+'onMenuShareWeibo',
+'hideOptionMenu',
+'showOptionMenu',
+'closeWindow'
+];
+
+alert({php echo json_encode($_W['account']['jssdkconfig'])});
+wx.config(jssdkconfig);
+
+<?php
+  $wx_share_title = $goods['timelinetitle'];
+  $wx_share_desc = $goods['timelinedesc'];
+  $wx_share_thumb = $goods['timelinethumb'];
+  $wx_share_link = $_W['siteroot']. $this->createMobileUrl('shareDetail', array('id'=>$goodsid, 'begger'=>$_W['fans']['from_user'])) . '&wxref=mp.weixin.qq.com';
+?>
+
+wx.ready(function () {
+  var sharedata = {};
+  sharedata['title'] ="{$wx_share_title}" ;
+  sharedata['desc'] = "{$wx_share_desc}";
+  sharedata['link'] = "{$wx_share_link}";
+  sharedata['imgUrl'] = "{$wx_share_thumb}";
+  wx.onMenuShareAppMessage(sharedata);
+  wx.onMenuShareTimeline(sharedata);
+  wx.onMenuShareQQ(sharedata);
+  wx.onMenuShareWeibo(sharedata);
+});
+</script>
+{if empty($main_off)}</div>{/if}
+</body>
+</html>

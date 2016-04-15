@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>首页</title>
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css"
+          media="screen, projection">
+</head>
+<body class="index-body">
+<div class="index-head">
+    <!--<img src="../addons/xkd_fkz/template/mobile/image/headimg.png">-->
+    <div class="index-head-circle">
+        <div>{$setting['fkz_name']}</div>
+    </div>
+    <div class="index-head-title">交友&nbsp;&nbsp;&nbsp;赚钱&nbsp;&nbsp;&nbsp;好玩</div>
+</div>
+<div class="index-content">
+    <a class="entry-btn" href="{php echo $this->createMobileUrl('index')}">开启{$setting['fkz_name']}</a>
+    <div class="readme">
+        <div class="title">互动说明</div>
+        <div class="content">
+            <ol>
+                {if $this->m_setting['adv_open']}
+                <li><p>升级成为会员可以在互粉朋友圈发广告，等级越高广告排名越靠前</p></li>
+                {/if}
+                <li><p>本页面头像与微信号是您的上级好友或者群主，请点击绿色升级按钮向上级好友发起升级申请</p></li>
+                <li><p>添加头像下面的微信号为好友，经上级好友的同意后转发相应的升级红包金额，并且备注“<b>我的编号{$member['uid']}，很高兴认识您</b>”</p></li>
+                <li><p>每次向上升一级须向您的上级好友转发相应的红包金额(微信转红包)，请注意每次升级的用户可能不同</p></li>
+                <li><p>发送红包以后，请耐心等待好友收取您的红包，如果对方在24小时没有收取，腾讯公司会自动将红包金额退回到您的账号上，您再主动联系平台客服为您处理升级</p></li>
+                <li><p>如果上级好友领取红包后15分钟未处理您的升级请求，您可以截图(发红包凭证)与平台联系，平台将冻结不按规操作者的账号</p></li>
+            </ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>

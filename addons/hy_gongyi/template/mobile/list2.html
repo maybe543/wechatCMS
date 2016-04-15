@@ -1,0 +1,240 @@
+{php $bootstrap_type = 3;}
+{if empty($_W['isajax'])}
+{template 'header'}
+<style>
+	.show-more {padding-bottom:30px;}
+</style>
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style.css?{TIMESTAMP}">
+<link type="text/css" rel="stylesheet" href="../addons/hx_zhongchou/images/style_new.css?{TIMESTAMP}">
+<div class="head" style="height:50px !important; line-height:50px !important;">
+	<a href="javascript:;" onclick="history.back(-1);" style="height:40px; line-height:40px;" id="fli_btn" class="bn pull-left">
+    <!--<a href="javascript:;" onclick="$('.head .order').toggleClass('hide');" style="height:40px; line-height:40px;" id="fli_btn" class="bn pull-left">-->
+    <!--<i class="lyphicon glyphicon-list"></i>-->
+
+    <span class="glyphicon glyphicon-th-list" aria-hidden="true" style="color:#706d5e;"></span> 
+   <span style="color:#706d5e !important; display:inline-block;">
+
+		{if $_GPC['ishot']==1}热门项目{/if}
+		{if !empty($_GPC['keyword'])}搜索结果{/if}
+		{if $_GPC['pcate']}{$category[$_GPC['pcate']]['name']}{/if}
+		{if $_GPC['ccate']} - {$children[$_GPC['pcate']][$_GPC['ccate']]['name']}{/if}
+	</span>
+    </a>
+	
+<!--分类列表-->
+	<!--<a href="{php echo $this->createMobileUrl('mycart')}" class="bn pull-right">
+	
+		<span class="buy-num img-circle" id="carttotal">{$carttotal}</span>
+	</a>-->
+	<!--<div class="unstyled order hide gdfl" style="margin-bottom:0 !important;">
+        
+			<a href="###" class="close_fli">
+            <div style="background:#fff; padding:10px 10px 15px 10px; border-bottom:#ccc 1px solid;  ">
+			  取消
+			</a>
+        </div>
+        
+		{loop $category $item}
+		<div class="gdfl_1">
+			<a href="{php echo $this->createMobileUrl('list2', array('pcate' => $item['id']))}" class="bigtype">
+				<div class="gdfl_1_1"><i class="glyphicon glyphicon-flag"></i>  {$item['name']}</div>
+			</a>
+			{loop $children[$item['id']] $child}
+			<a href="{php echo $this->createMobileUrl('list2', array('ccate' => $child['id']))}" class="smtype" style="float:left; margin:10px 10px 0 0; color:#333 !important;">
+				<div class="gdfl_1_1"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> {$child['name']}</div>
+			</a>
+			{/loop}
+		</div>
+		{/loop}
+	</div>-->
+   <div class="float_r" style="width:40% !important; margin-top:6px; margin-right:11px;">
+     <form action="index.php" method="get">
+		<input type="hidden" name="i" value="{$_W['weid']}" />
+		<input type="hidden" name="c" value="entry" />
+		<input type="hidden" name="m" value="hx_zhongchou" />
+		<input type="hidden" name="do" value="list2" />
+		 
+			{if $_GPC['ishot']==1}<input type="hidden" name="ishot" value="1" />{/if}
+			<input type="hidden" name="sort" value="{$sort}" />
+		<div class="input-group"  style="width:100% !important; float:left;">
+			<input type="text" class="form-control" style="width:90% !important;border-top-right-radius: 4px;border-bottom-right-radius: 4px; float:right; margin-top:2px;" name="keyword" value="{$_GPC['keyword']}" placeholder="{if $_GPC['isnew']==1}新品推荐{/if}{if $_GPC['ishot']==1}热卖商品{/if}{if $_GPC['isdiscount']==1}折扣商品{/if}{if $_GPC['istime']==1}限时卖{/if}关键字">
+			<span class="input-group-btn" style="  position:absolute; top:-5px; right:24px; z-index:9999">
+				<button class="btn btn-info" style="background:none !important; border:none !important; padding:0px 0 !important;" type="submit">
+                 <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:#cecfca !important; font-size:14px;"></span></button>
+			</span>
+            <div class="clear"></div>
+		</div>
+        <div class="clear"></div>
+	</form>
+   </div>
+   <div class="clear"></div>
+   
+   
+</div>
+<style type='text/css'>
+	.sel { background:#33cdd6; color:#fff;}
+	.nosel { background:#fff;color:#000}
+</style>
+<div class="shopping-main" style="margin-top:50px;padding:0;">
+	
+	<div class="list" id="list">
+		<div style='float:left;height:56px; line-height:30px !important;width:100%; box-sizing:border-box; padding:10px 15px 30px 15px;margin:0px 0% 0px 0%; background:#fff;'>
+   		<div {if $sort==0}class='sel'{else}class="nosel"{/if} style='border-top-left-radius: 5px;border-bottom-left-radius:5px;border:1px solid #33cdd6;text-align: center;float:left;width:50%' onclick="location.href='{$sorturl}&sort=0&sortb0={$sortb00}'">
+		时间降序 {if $sort==0}{if $sortb0=="desc"}<i class="fa fa-arrow-down"></i>{else}<i class="fa fa-arrow-up"></i>{/if}{/if}
+		</div>
+		<!--<div {if $sort==1}class='sel'{else}class="nosel"{/if} style='border:1px solid #33cdd6;margin-left:-1px;float:left;width:33.5%;text-align: center;' onclick="location.href='{$sorturl}&sort=1&sortb1={$sortb11}'">
+		按销量 {if $sort==1}{if $sortb1=="desc"}<i class="fa fa-arrow-down"></i>{else}<i class="fa fa-arrow-up"></i>{/if}{/if}
+		</div>-->
+		<div {if $sort==2}class='sel'{else}class="nosel"{/if} style='border:1px solid #33cdd6;border-top-right-radius: 5px;border-bottom-right-radius:5px; margin-left:-1px;float:left;width:50%;text-align: center;' onclick="location.href='{$sorturl}&sort=2&sortb2={$sortb22}'">
+		捐款热度 {if $sort==2}{if $sortb2=="desc"}<i class="fa fa-arrow-down"></i>{else}<i class="fa fa-arrow-up"></i>{/if}{/if}
+		</div>
+</div>
+{/if}
+<div style="clear:both"></div>
+{loop $list $item}
+<!--<div class="list-item img-rounded">
+	<div>
+		<a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">
+			<img src="{$_W['attachurl']}{$item['thumb']}">
+		</a>
+		<span class="title"><a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">{$item['title']}</a></span>
+	</div>
+	<span class="sold">
+		<span class="soldnum pull-left">已筹资￥{$item['finish_price']}</span>
+	</span>
+	<span class="sold">
+		<div class="progress">
+  			<div class="progress-bar" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}" aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+    			<span class="sr-only">{php echo $item['finish_price']*100/$item['limit_price']}% Complete</span>
+  			</div>
+		</div>
+	</span>
+	<span class="sold">
+		<span class="soldnum pull-left">{php echo floor($item['finish_price']*100/$item['limit_price'])}%</span>
+		<span class="price pull-right">剩余{php echo $item['deal_days'] - floor((time() - $item['createtime'])/86400)}天</span>
+	</span>
+</div>-->
+
+<div class="i_d_5" style="">
+  <div class="i_d_5_1" style="  padding: 10px 15px 10px 0;">
+   <a href="{php echo $this->createMobileUrl('detail', array('id' => $item['id']))}">
+    <div class="i_d_5_1_l">
+    <img src="{$_W['attachurl']}{$item['thumb']}">
+    </div>
+    <div class="i_d_5_1_r" style="padding-right:0 !important;">
+    <div>
+    <div><span class="title">{$item['title']}</span></div>
+    <div class="i_show_li">{php  echo cutstr($item['brief'],34)}</div><!--摘要还未填写--></div>
+    <div style="padding:0 !important; margin:-10px 0 !important;">
+    <div class="progress float_l" style="height:4px; width:74%; margin-top:8px; margin-bottom:15px;">
+      <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{php echo $item['finish_price']*100/$item['limit_price']}" aria-valuemin="0" aria-valuemax="100" style="width: {php echo $item['finish_price']*100/$item['limit_price']}%;">
+        
+      </div>
+    </div>
+    <div class="float_r" style="vertical-align:bottom; width:25%; overflow:hidden; padding-top:0px; text-align:right; padding-right:0px; color:#fe6903;"><span id="bfb_show">{php echo round($item['finish_price']*100/$item['limit_price'],2)}</span>%</div>
+    <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div style="margin-top:5px;">
+     <div class="float_l i_show_li">
+    共<span style="color:#e39a65;">￥{$item['finish_price']}</span>元爱心</div>
+    <div class="float_r i_show_li">
+    目标<span style="color:#e39a65;">{php echo round($item['limit_price'])}</span>元</div>
+    </div>
+    </div>
+    <div class="clear"></div>
+   </a> 
+  </div>
+</div>
+
+
+{/loop}
+
+{if empty($_W['isajax'])}
+	</div>
+	<div class="show-more" style="margin:0 !important; padding:10px  !important; background:#fff;"><a href="javascript:;" onclick="loadPage('{$pindex}', 'list')" class="btn btn-default btn-block" id="pager" >浏览更多</a></div>
+</div>
+<script type="text/javascript">
+function loadPage(pindex, container) {
+	pindex = parseInt(pindex) + 1;
+	$('#pager').html('正在加载数据...');
+	$.get(location.href, {'page' : pindex}, function(html){
+	
+		if (html.indexOf('list-item') > -1) {
+			$('#'+container).append(html);
+			$('#pager').get(0).onclick = function(){
+				loadPage(pindex, container);
+			}
+			$('#pager').html("浏览更多");
+		} else {
+			$('#pager').html('已经显示全部');
+		}
+	});
+}
+
+</script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+ <script>
+ 
+	wx.config({
+		debug:false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: 'wxe89fbe468173b2cc', // 必填，公众号的唯一标识
+		timestamp:'{php echo $time}', // 必填，生成签名的时间戳
+		nonceStr: '{php echo $nonceStr}', // 必填，生成签名的随机串
+		signature: '{php echo $signature}',// 必填，签名，见附录1
+		jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		
+    });
+	
+	
+
+wx.ready(function () {
+    // 在这里调用 API
+	
+	wx.onMenuShareAppMessage({
+	  title: '公益联盟', // 分享标题
+	  desc: '公益联盟 与您一起传递爱', // 分享描述
+	  link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+	  imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+	  type: '', // 分享类型,music、video或link，不填默认为link
+	  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	  success: function () { 
+		  // 用户确认分享后执行的回调函数
+	  },
+	  cancel: function () { 
+		  // 用户取消分享后执行的回调函数
+	  }
+});
+
+ 
+ 
+ 	 wx.onMenuShareTimeline({
+		title: '公益联盟', // 分享标题
+		link: 'http://gongyichina.org/app/index.php?i=2&c=entry&eid=1', // 分享链接
+		imgUrl: 'http://gongyichina.org/attachment/images/2/2015/07/dgQf5Z4y8f4VN5tvQH8x4r8Yfrr54r.jpg', // 分享图标
+		success: function () { 
+			// 用户确认分享后执行的回调函数
+		},
+		cancel: function () { 
+			// 用户取消分享后执行的回调函数
+		  }
+    });  
+	
+ });	
+ 
+	</script>
+
+
+{template 'footer'}
+{/if}
+
+<script>
+
+ /* $(".close_fli").click(
+  function(){
+	 $("#fli_btn").click(); 
+	  }
+  );*/
+</script>

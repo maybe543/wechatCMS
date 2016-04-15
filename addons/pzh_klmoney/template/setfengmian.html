@@ -1,0 +1,118 @@
+{template 'common/header'}
+
+<div class="main">
+  <form id="redSet" class="form form-horizontal" action="{php echo $this->createWebUrl('fenxiangsave')}" method="post">
+  <div class="panel panel-default">
+
+    <div class="panel-heading">
+      方案一：（若设置了这个，方案二失效）
+    </div>
+     <div class="panel-body">
+         <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">自定义界面链接：</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="fenxaingURL" value="<?php echo $this->module['config']['kouling']['fenxaingURL']; ?>" class="form-control">
+            <span class="help-block">请输入自定义界面链接地址，口令将会用get的形式拼接在URL后</span>
+            <span class="help-block">如输入http://www.baidu.com?,则最终地址为：http://www.baidu.com?kouling1=xx&kouling2=xx&kouling3=xx</span>
+          </div>
+        </div>
+      </div>
+
+       <div class="form-group">
+      <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+
+        <input name="submit" type="submit" value="保存" class="btn btn-primary" />
+        <input type="hidden" name="token" value="{$_W['token']}" />
+      </div>
+    </div>
+    
+     </div>
+  
+
+
+
+  
+   <div class="panel panel-default">
+    <div class="panel-heading">
+      方案二：
+    </div>
+    <div class="panel-body">
+     <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">背景图片</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_image('back_img',$this->module['config']['kouling']['back_img'],'');}
+        <span class="help-block">图片规格差不多为640*1100，请自行压缩后上传</span>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">整体高度调整</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="top" value="<?php echo $this->module['config']['kouling']['top']; ?>" class="form-control">
+        <span class="help-block">请输入1-100的整数，将按输入的百分比来调整文字框的高度</span>
+       
+      </div>
+    </div>
+      
+       <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动标题文案（分享显示）</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="theme" value="<?php echo $this->module['config']['kouling']['theme']; ?>" class="form-control">
+        <span class="help-block">分享的时候显示的文字</span>
+      </div>
+    </div>
+   
+     <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动内容文案</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="title" value="<?php echo $this->module['config']['kouling']['title']; ?>" class="form-control">
+        <span class="help-block">若要换行，请在文字中插入'\n'</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动内容颜色</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_color('title_color',$this->module['config']['kouling']['title_color']);}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">末尾内容文案</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="tail" value="<?php echo $this->module['config']['kouling']['tail']; ?>" class="form-control">
+          <span class="help-block">若要换行，请在文字中插入'\n'</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">末尾内容文案颜色</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_color('tail_color',$this->module['config']['kouling']['tail_color']);}
+      </div>
+    </div>
+
+      <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">口令文案颜色</label>
+      <div class="col-sm-9 col-xs-12">
+       {php echo tpl_form_field_color('kling_color',$this->module['config']['kouling']['kling_color']);}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+
+        <input name="submit" type="submit" value="保存" class="btn btn-primary" />
+        <input type="hidden" name="token" value="{$_W['token']}" />
+      </div>
+    </div>
+  </div>
+   </div>
+</form>
+
+
+
+</div>
+
+
+
+{template 'common/footer'}

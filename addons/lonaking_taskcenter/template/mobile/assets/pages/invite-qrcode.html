@@ -1,0 +1,42 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="back"><i class="icon icon-angle-left icon-2x"></i></a>
+        </div>
+        <!-- We have home navbar without left link-->
+        <div class="center sliding">我的二维码</div>
+        <div class="right">
+        </div>
+    </div>
+</div>
+<div class="page toolbar-fixed" data-page="invite-qrcode" id="invite-qrcode">
+    <div class="page-content">
+        <div class="col-auto qrcode">
+            <img src="{{qrcode}}">
+        </div>
+        <div class="col-auto user-name">{{user_name}}</div>
+        <div class="content-block-title">积分规则</div>
+        <div class="list-block">
+            <ul>
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title">邀请关注</div>
+                        <div class="item-after">+{{follow_score}}/人</div>
+                    </div>
+                </li>
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title">取消关注</div>
+                        <div class="item-after">-{{unfollow_score}}/人</div>
+                    </div>
+                </li>
+                <li class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title">下级推广人</div>
+                        <div class="item-after">+{{second_shareman_score}}/人</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

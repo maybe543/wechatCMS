@@ -1,0 +1,132 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo $this->createWebUrl('add')}">创建解密活动</a></li>
+	<li class="active"><a href="{php echo $this->createWebUrl('list')}">管理解密活动</a></li>
+</ul>
+
+<div class="panel panel-default">
+	<nav role="navigation" class="navbar navbar-default navbar-static-top" style="margin-bottom:0;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="javascript:;" class="navbar-brand">解密活动</a>
+			</div>
+			<ul class="nav navbar-nav nav-btns">
+				<li {if empty($_GPC['status']) || $_GPC['status'] == '0'} class="active" {/if} >
+					<a href="{php echo $this->createWebUrl('list')}">全部</a>
+				</li>
+				
+				<li {if $_GPC['status'] == '1'} class="active" {/if}>
+					<a href="{php echo $this->createWebUrl('list',array('status'=>'1'))}">进行中</a>
+				</li>
+
+				<li {if $_GPC['status'] == '2'} class="active" {/if}>
+					<a href="{php echo $this->createWebUrl('list',array('status'=>'2'))}">未开始</a>
+				</li>
+
+				<li {if $_GPC['status'] == '3'} class="active" {/if}>
+					<a href="{php echo $this->createWebUrl('list',array('status'=>'3'))}">已结束</a>
+				</li>
+			
+			</ul>
+		</div>
+	</nav>
+
+
+	<div class="panel-body table-responsive" style="overflow:visible;">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th style="width:5%;">ID</th>
+					<th style="width:20%;">主题</th>
+					<th style="width:8%;">奖励人数</th>
+					<th style="width:15%;">开始时间</th>
+					<th style="width:15%;">结束时间</th>
+					<th style="width:10%;">状态</th>
+					<th style="text-align:right; width:20%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $item}
+				<tr>
+					<td>{$item['id']}</td>
+					<td>{$item['topic']}</td>
+					<td>{$item['award']}</td>
+					<td>{php echo date('Y-m-d h:i:s', $item[start_time]);}</td>
+					<td>{php echo date('Y-m-d h:i:s', $item[end_time]);}</td>
+					<td>
+						<label class='label  label-default {if $item['status']==1}label-success{/if} {if $item['status']==2}label-info{/if}' >
+							{if $item['status']==1}进行中{/if}
+							{if $item['status']==2}未开始{/if}
+							{if $item['status']==3}已结束{/if}
+						</label>
+					</td>
+					<td style="text-align:right;overflow:visible;">
+						<a href="{php echo $this->createWebUrl('edit', array('id' => $item['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="编辑"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
+						<a href="{php echo $this->createWebUrl('delete', array('id' => $item['id']))}" onclick="return confirm('此操作不可恢复，确认删除？');return false;" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="删除"><i class="fa fa-times"></i></a>
+						<div class="btn-group btn-group-sm">
+							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="javascript:;">访问入口 <span class="caret"></span></a>
+							<ul class="dropdown-menu dropdown-menu-right" role="menu">
+								<li>
+									<a href="{$item['url']}" target="_blank"><i class="fa fa-external-link fa-fw"></i> 直接访问</a>
+								</li>
+								<li role="presentation">
+									<a href="javascript:;" onclick="displayUrl('{$item['url']}', '{$item['surl']}');"><i class="fa fa-link fa-fw"></i> 查看链接</a>
+								</li>
+								<li role="presentation">
+									<a href="javascript:;" onclick="displayQr('{php echo $this->createWebUrl('qr', array('raw' => base64_encode($item['url'])))}');"><i class="fa fa-qrcode fa-fw"></i> 查看二维码</a>
+								</li>
+							</ul>
+						</div>
+						<a href="{php echo $this->createWebUrl('view', array('id' => $item['id']))}" class="btn btn-success btn-sm">活动参与</a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+	</div>
+</div>
+<script type="text/javascript">
+	require(['bootstrap'],function($){
+		$('.btn').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+	});
+
+	function displayUrl(lurl, surl) {
+		require(['jquery', 'util'], function($, u) {
+			var content = '<p class="form-control-static" style="word-break:break-all">菜单使用链接(需要oAuth): <br>' + lurl + '</p>';
+			content += '<p class="form-control-static" style="word-break:break-all">自动回复使用链接: <br>' + surl + '</p>';
+			var footer =
+					'<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
+					'<button type="button" class="btn btn-primary">复制菜单链接</button>' +
+					'<button type="button" class="btn btn-success">复制自动回复链接</button>';
+			var diaobj = u.dialog('查看URL', content, footer);
+			diaobj.find('.btn-default').click(function() {
+				diaobj.modal('hide');
+			});
+			diaobj.on('shown.bs.modal', function(){
+				u.clip(diaobj.find('.btn-primary')[0], lurl);
+				u.clip(diaobj.find('.btn-success')[0], surl);
+			});
+			diaobj.modal('show');
+		});
+	}
+	function displayQr(url) {
+		require(['jquery', 'util'], function($, u) {
+			var content = '<div class="panel panel-default text-center"><img src="' + url + '" alt="活动地址二维码" class="img-rounded"></div>';
+			var footer =
+					'<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
+			var diaobj = u.dialog('查看URL二维码', content, footer);
+			diaobj.find('.btn-default').click(function() {
+				diaobj.modal('hide');
+			});
+			diaobj.modal('show');
+		});
+	}
+</script>
+
+{template 'common/footer'}

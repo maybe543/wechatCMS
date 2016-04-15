@@ -1,0 +1,94 @@
+{template 'common/header'}
+<link rel="stylesheet" type="text/css" href="{$_W['siteroot']}addons/superman_lottery/template/images/index.css" media="all">
+<body id="wrap">
+<div class="card border-1px" style="margin-bottom: 0; background-color: #808080; color: #fff">
+	填写领奖信息
+</div>
+<div class="card" style="margin-bottom: 0; padding-left: 0; padding-right: 0">
+	<form method="post" action="" id="form">
+		<input type="hidden" name="token" value="{$_W['token']}" />
+		<ul class="round" style="border: 0">
+			<li class="nob">
+				<table class="kuang" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+					<tr>
+						<th>姓名</th>
+						<td>
+							<input class="px" placeholder="请输入姓名" id="realname" name="realname" value="{if isset($member['realname'])}{$member['realname']}{/if}" type="text" maxLength="20" required/>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</li>
+			<li class="nob">
+				<table class="kuang" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+					<tr>
+						<th>手机</th>
+						<td>
+							<input class="px" placeholder="请输入手机号" id="mobile" name="mobile" value="{if isset($member['mobile'])}{$member['mobile']}{/if}" type="text" required>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</li>
+			<li class="nob">
+				<table class="kuang" border="0" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+					<tr>
+						<th>地址</th>
+						<td>
+							<input class="px" placeholder="请输入收货地址" id="address" name="address" value="{if isset($member['address'])}{$member['address']}{/if}" type="text">
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</li>
+		</ul>
+		<div class="row">
+			<div class="col-xs-12" style="padding: 0 30px;">
+				<button class="btn btn-success btn-block" value="提交" name="submit" type="submit">提交</button>
+			</div>
+			<div class="col-xs-12" style="padding: 5px 30px 10px 30px; font-size: 12px; color:#f47983;">
+				注意：为了保证您能正常领奖，请认真填写联系信息
+			</div>
+		</div>
+	</form>
+</div>
+<hr/>
+<script>
+	require(['jquery', 'util'], function($, u){
+		$('#form').submit(function(){
+			var realname = $('input[name=realname]');
+			if (realname.val() == '') {
+				u.message('请输入姓名', '', 'error');
+				return false;
+			}
+			var mobile = $('input[name=mobile]');
+			if (mobile.val() == '') {
+				u.message('请输入手机', '', 'error');
+				return false;
+			}
+			var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+			if (!reg.test($.trim(mobile.val()))) {
+				u.message('手机格式不正确.');
+				return false;
+			}
+			return true;
+		});
+	});
+	function onBridgeReady(){
+		WeixinJSBridge.call('hideOptionMenu');
+	}
+	if (typeof WeixinJSBridge == "undefined"){
+		if( document.addEventListener ){
+			document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		}else if (document.attachEvent){
+			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		}
+	}else{
+		onBridgeReady();
+	}
+</script>
+{template 'common/footer'}

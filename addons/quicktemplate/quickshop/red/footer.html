@@ -1,0 +1,33 @@
+
+   <script>
+    $(function() {
+		//banner
+		var i = $(".box_swipe").find("li").length;
+		var proimg_count = i;
+        new Swipe($('#banner_box')[0], {
+            speed:500,
+            auto:3000,
+            callback: function(){
+                var lis = $(this.element).next("ol").children();
+                lis.removeClass("on").eq(this.index).addClass("on");
+            }
+        });
+
+		 //选择数量
+         $(".decrease").click(function(){
+			 var num = parseInt($(this).siblings('.goods_number').val());   
+			 if(num>1){
+				 $(this).siblings('#goods_number').val(num-1);
+			 }
+		 }); 
+		 $(".increase").click(function(){
+			 var num = parseInt($(this).siblings('.goods_number').val());   
+			 $(this).siblings('#goods_number').val(num+1);
+		 });
+    });
+    </script>
+
+{php include $_template->template('wechat-footer')}
+
+</body>
+</html>

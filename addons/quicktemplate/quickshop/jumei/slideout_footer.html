@@ -1,0 +1,22 @@
+<script type="text/javascript" src="{$_tpl_dir_path}js/slideout.min.js"></script>
+<script type="text/javascript" src="{$_tpl_dir_path}js/jquery.min.js"></script>
+
+<script>
+  jQuery.noConflict();
+  window.onload = function() {
+    var doc = window.document;
+    var slideout = new Slideout({
+      'panel': doc.getElementById('panel'),
+      'menu': doc.getElementById('menu')
+    });
+
+    jQuery('.js-slideout-toggle').on('click', function() {
+      slideout.toggle();
+    });
+
+    jQuery('.menu').on('click', function(eve) {
+      // if (eve.target.nodeName === 'A') { slideout.close(); }
+    });
+  };
+</script>
+

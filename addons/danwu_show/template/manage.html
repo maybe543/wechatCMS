@@ -1,0 +1,175 @@
+{template 'common/header'}	
+<script type="text/javascript" src="../addons/danwu_show/template/jquery-1.7.2.min.js"></script>
+<script>
+	function selectall(obj, name){
+		$('input[name="'+name+'[]"]:checkbox').each(function() {
+			$(this).attr("checked", $(obj).attr('checked') ? true : false);
+		});
+	}
+</script>
+
+<ul class="nav nav-tabs">
+	<li {if $status == '0'} class="active"{/if}><a href="{php echo $this->createWebUrl('manage', array('status' => 0))}" class="fa fa-times">待审核</a></li>
+	<li {if $status == '1'} class="active"{/if}><a href="{php echo $this->createWebUrl('manage', array('status' => 1))}" class="fa fa-check">已审核</a></li>
+</ul>
+
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="danwu_show" />
+			<input type="hidden" name="do" value="manage" />
+			{if $status=='1'}
+			   <input type="hidden" name="status" value="1" />
+			{else}
+             <input type="hidden" name="status" value="0" />
+			{/if}
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">昵称</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<input class="form-control" name="keyword" id="" type="text" value="{$_GPC['keyword']}" placeholder="请输入粉丝昵称">
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">粉丝目前的显示状态</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<select name="yingcang" class='form-control'>
+							<option value="2" {if $yingcang=='2'} selected{/if}>显示</option>
+							<option value="1" {if $yingcang=='1'} selected{/if}>隐藏</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="form-group">
+			    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"></label>
+				<div class=" col-xs-12 col-sm-2 col-lg-3">
+					<input type="submit"  value="搜索" class="btn btn-success btn-block" />
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<div class="panel panel-success">
+	<div class="panel-heading">
+		{if $status == '0'}<i class="fa fa-times"></i>待审核{/if}
+		{if $status == '1'}<i class="fa fa-check"></i>已审核<br><br>点击粉丝昵称 可以看粉丝上传图片情况哦{/if}
+	</div>
+	<div class="panel-body">
+		<div class="main" id="table-list">
+			<form action="" method="post" onsubmit="">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead class="navbar-inner">
+						<style>
+						.row-first{text-align:center}
+						.row-hover{text-align:center}
+						</style>
+						<tr>
+							<th style="width:6%;" class="row-first"><i class="fa fa-th-list"></i>选择</th>
+							<th style="width:10%;" class="row-first" style="text-align:center"><i class="fa fa-user"></i>粉丝昵称</th>
+							<th style="width:34%" class="row-first"><i class="fa fa-heart"></i>粉丝心情</th>
+							<th style="width:10%;"><i class="fa fa-weixin fa-fw"></i>上传数量</th>
+							<th style="width:10%;"><i class="fa fa-plus-square"></i>点赞次数<i></i></th>
+							<th style="width:10%;"><i class="fa fa-plus-square"></i>分享次数<i></i></th>
+							<th style="width:10%;"><i class="fa fa-clock-o"></i>提交时间<i></i></th>
+							
+						</tr>
+						</thead>
+						<tbody>
+						{loop $list $row}
+						<tr>
+							<td class="row-first"><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+							<td class="row-hover">
+								<img width="50" src="{$row['avatar']}" class="avatar" />
+								<div class="mainContent">
+									<div class="nickname"><a href="{php echo $this->createWebUrl('Imagesmanage',array('keyword'=>$row['nickname'],'status'=>1))}">{$row['nickname']}</a></div>
+								</div>
+							</td>
+							
+							<td class="row-hover">
+								{$row['content']}
+							</td>
+							<td class="row-hover">
+							    <div style="margin-bottom:10px;"><i class="fa fa-check"></i> {$row['pass']}</div>
+								<div><i class="fa fa-times"></i> {$row['nopass']}</div>
+								
+							</td>
+							<td class="row-hover">
+								<i class="fa fa-heart"></i> {$row['liketimes']}次
+							</td>
+							<td class="row-hover">
+								<i class="fa fa-share"></i> {$row['sharetimes']}次
+							</td>
+							<td class="row-hover">
+								<div style="margin-bottom:10px;">{php echo date('Y-m-d', $row['createtime']);}</div>
+								<div>{php echo date('h:i:s', $row['createtime']);}</div>
+							</td>
+							
+						</tr>
+						{/loop}
+						</tbody>
+					</table>
+					
+					<table class="table">
+						<tr>
+							<td style="width:50px;" class="row-first"><input type="checkbox" onclick="selectall(this, 'select');" /></td>
+							<td colspan="4">
+								{if $status == '0'}
+								<input type="submit" name="verify" value="审核" class="btn btn-success" />
+								{/if}
+								<input type="submit" name="delete" value="删除" class="btn btn-danger" />
+								<input type="hidden" name="token" value="{$_W['token']}" />
+							</td>
+						</tr>
+					</table>
+					
+					{$pager}
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+require(['jquery'], function($){
+	//详细数据相关操作
+	var tdIndex;
+	$("#table-list thead").delegate("th", "mouseover", function(){
+		if($(this).find("i").hasClass("")) {
+			$("#table-list thead th").each(function() {
+				if($(this).find("i").hasClass("icon-sort")) $(this).find("i").attr("class", "");
+			});
+			$("#table-list thead th").eq($(this).index()).find("i").addClass("icon-sort");
+		}
+	});
+	$("#table-list thead th").click(function() {
+		if($(this).find("i").length>0) {
+			var a = $(this).find("i");
+			if(a.hasClass("icon-sort") || a.hasClass("icon-caret-up")) { //递减排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-down");
+			} else if(a.hasClass("icon-caret-down")) { //递增排序
+				/*
+					数据处理代码位置
+				*/
+				$("#table-list thead th i").attr("class", "");
+				a.addClass("icon-caret-up");
+			}
+			$("#table-list thead th,#table-list tbody:eq(0) td").removeClass("row-hover");
+			$(this).addClass("row-hover");
+			tdIndex = $(this).index();
+			$("#table-list tbody:eq(0) tr").each(function() {
+				$(this).find("td").eq(tdIndex).addClass("row-hover");
+			});
+		}
+	});
+});
+</script>
+{template 'common/footer'}

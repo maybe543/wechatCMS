@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>我的公众号</title>
+    {php echo register_jssdk(false);}
+<style>
+body { background-color:#BEBCB1; margin:0px; padding:0px; font: 14px Verdana, Arial, Helvetica, sans-serif; color:#7a6100 }
+.tips { width:100px; height:42px; line-height:42px; color:#fff; font-weight:bold; text-indent:1em }
+.row { width:100%; margin:10px 0px; padding:0px; }
+.text-center { text-align:center }
+</style>
+
+</head>
+<body>
+<div class="row">
+  <div class="tips">第一步</div>
+</div>
+<div class="row text-center"> 
+
+<img src="{$_W['attachurl']}{$settings['qrcode_thumb']}" width="180"/>
+</div>
+<div class="row text-center" >
+  <div style="font-size:22px;color:#fff;font-weight:bold;line-height:40px;color:#fa3137">"长按图片，识别图中二维码"</div>
+  <div style="line-height:30px;"> 如长按图片无效，搜索以下微信号添加即可 </div>
+  <div style="font-size:28px;font-weight:bold;line-height:60px;color:#000000"><span style="border:1px dashed #000000;padding:5px 10px">{$settings['weixinid']}</span></div>
+  <div style="line-height:30px;">长按虚线框，拷贝微信号</div>
+</div>
+<div class="row">
+  <div class="tips">第二步</div>
+</div>
+<div class="row text-center" >
+<div style="font-size:22px;color:#fff;font-weight:bold;line-height:40px;color:#fa3137">发送"YX"给公众号</div>
+  <div style="line-height:30px;">点击图文消息，参加活动！</div>
+</div>
+</body>
+<script type="text/javascript">
+    //<![CDATA[
+    var isAndroid = false;
+    //]]>
+</script>
+<script type="text/javascript">
+    var wxShareIconList = [
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798227_5_33e7edc054_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798226_5_648526ecc5_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798225_5_5d13641930_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798223_5_ee292b90e6_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798222_5_b5c335342e_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798221_5_8b25ba8b7a_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798220_5_87bdb78d28_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798219_5_685d9b7a7b_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798218_5_8d597dfda5_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798217_5_f9c1fbb584_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798216_5_8f434a53b8_o.png"
+    ];
+
+    var rnd = parseInt(Math.random()*0x7FFFFFFF);
+
+    var wxShareDataArray = [
+        [
+            "匿名印象墙",
+            "我在你们心中竟然是这样的，有本事别匿名啊~",
+            wxShareIconList[rnd % wxShareIconList.length ],
+            "{$shareurl}"
+        ],
+        [
+            "匿名印象墙",
+            "我在你们心中竟然是这样的，有本事别匿名啊~",
+            wxShareIconList[rnd % wxShareIconList.length ],
+            "{$shareurl}"
+        ]
+    ];
+
+
+    initShare();
+    function initShare(){
+        wx.ready(function () {
+            changeWeixinShareData(isAndroid ? 1 : 0);
+        });
+    }
+
+
+    function changeWeixinShareData(index){
+        wx.onMenuShareTimeline({
+            title: wxShareDataArray[index][1],
+            link: wxShareDataArray[index][3],
+            imgUrl: wxShareDataArray[index][2],
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                //showAfterShareGuide();
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: wxShareDataArray[index][0],
+            desc: wxShareDataArray[index][1],
+            link: wxShareDataArray[index][3],
+            imgUrl: wxShareDataArray[index][2],
+            //type: '', // 分享类型,music、video或link，不填默认为link
+            //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                //showAfterShareGuide();
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                //showAfterShareGuide();
+            }
+        });
+    }
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>电话114-{$set['copyright']}</title>
+<meta name="keywords" content="电话114,本地运维利器，微信定制开发，QQ214983937" />
+<meta name="description" content="电话114,本地运维利器，微信定制开发，QQ214983937" />
+<link rel="stylesheet" type="text/css" href="../addons/amouse_tel114/template/mobile/css/style.css" />
+<link rel="stylesheet" type="text/css" href="../addons/amouse_tel114/template/mobile/css/tel.css" />
+<script src="../addons/amouse_tel114/template/mobile/js/jquery.js" type="text/javascript"></script>
+<script src="../addons/amouse_tel114/template/mobile/js/tc.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="../addons/amouse_tel114/template/mobile/css/owl.carousel.css">
+<link rel="stylesheet" href="../addons/amouse_tel114/template/mobile/css/owl.theme.css">
+<script src="../addons/amouse_tel114/template/mobile/js/owl.carousel.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../addons/amouse_tel114/template/mobile/js/yxMobileSlider.js"></script>
+<script>
+    $(document).ready(function(){
+        var arrLinks = $(".mer_tit");
+        arrLinks.each(function(){
+            var s = $(this).text(),l=$(this).text().length,n=45;
+            if(l>n){
+                $(this).attr("title",s);
+                s=$(this).text(s.substring(0,n)+"...");
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $("input.inputext").css("color","#999").val("请输入要查找的电话");
+        textFill($('input.inputext'));
+    });
+
+    function textFill(input){
+        var originalvalue = input.val();
+        input.focus( function(){
+            if( $.trim(input.val()) == originalvalue ){ input.val(''); }
+        });
+        input.blur( function(){
+            if( $.trim(input.val()) == '' ){ input.val(originalvalue); }
+        });
+    }
+</script>
+</head>
+<body screen_capture_injected="true">
+<div class="sr_header">
+    <div class="hb">
+        <div class="sr_logo l">
+            <a href="{$shareurl}">
+                {if !empty($set['logo'])}
+                <img src="{php echo strpos($set['logo'],'http://')===FALSE?($_W['attachurl'].$set['logo']):$set['logo']}" />
+                {else}
+                <img src="../addons/amouse_tel114/template/mobile/images/tel114_logo.png" />
+                {/if}
+            </a>
+        </div>
+        <div class="sr_function r">
+           <div class="sr_share l">
+                <a id="activator" href="{php echo $this->createMobileUrl('new',array('wxid'=>$openid),true)}">
+                    <img src="../addons/amouse_tel114/template/mobile/images/add_group.jpg" />
+                </a>
+            </div>
+            <!-- <div class="sr_member l">
+                <a href="home.php?mod=space&amp;uid=0"><img src="../addons/amouse_tel114/template/mobile/images/add_group.jpg"></a>
+            </div>
+             -->
+            {if !empty($navs)}
+            <div class="sr_more l">
+                <a href="javascript:showmenu()"><img src="../addons/amouse_tel114/template/mobile/images/more.png" /></a>
+            </div>
+            {/if}
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="ht"></div>
+<div class="clear"></div>
+<!-- .sr_header -->
+<div class="bigbox">
+    <div class="ad" id="syad">
+        <div class="slider" style="width: 100%; height: 120px; position: relative; overflow: hidden; margin: 0px auto;">
+            <ul style="position: absolute; left: -793.099682815044px; width: 2048px;">
+                {loop $advs $adv}
+                <li style="float: left; display: inline; width: 1024px; height: 380px;">
+                    <a href="{$adv['followurl']}" class="ui-link">
+                        <img width="100%" height="120px"  src="{php echo strpos($adv['thumb'],'http://')===FALSE?($_W['attachurl'].$adv['thumb']):$adv['thumb']}" style="width: 100%; height: 100%;">
+                    </a>
+                </li>
+                {/loop}
+            </ul>
+            <div class="focus"
+                 style="max-height: 20px; position: absolute; bottom: 0px; width: 1024px; height: 57px; z-index: 2; background: rgba(0, 0, 0, 0);">
+                <div style="width: 0px; position: absolute; right: 10px; top: 50%; margin-top: 0px;">
+                    <span  class="current" style="display: block; float: left; cursor: pointer;"></span>
+                    <span class="" style="display: block; float: left; cursor: pointer;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $(".slider").yxMobileSlider({width:1024,height:320,during:3000});
+        });
+    </script>
+
+    <div class="sr_search">
+        <form  method="post" action="{php echo $this->createMobileUrl('index')}">
+            <input type="text" class="inputext"  name="keyword" value="请输入要查找的电话"  />
+            <input type="image" src="../addons/amouse_tel114/template/mobile/images/search.png" class="inputbtn" />
+        </form>
+    </div>
+
+    <!-- .sr_search -->
+    <div class="sr_cate_list">
+        <div class="sr_telcate">
+            <div class="sr_telcon">
+                <ul>
+                    <li>
+                        <a href="{php echo $this->createMobileUrl("index",array('cid'=>0),true)}" {if $cid==0}class="cateon"{/if}>
+                        全部分类
+                        </a>
+                    </li>
+                    {loop $fls $fl}
+                    <li><a href="{php echo $this->createMobileUrl("index",array('cid'=>$fl['id']),true)}" {if $cid==$fl['id']}class="cateon"{/if}>{$fl['title']}</a></li>
+                    {/loop}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="sr_tel">
+        <div class="sr_telbox">
+            {if !empty($list)}
+            <ul>
+                {loop $list $tel}
+                <li>
+                    <div class="tel_con">
+                        {if empty($tel['outlink'])}
+                        <div class="tel_tit"><font color="#000000"> {$tel['title']} </font></div>
+                        {else}
+                        <a href="{$tel['outlink']}">
+                            <div class="tel_tit"><font color="#000000"> {$tel['title']} </font></div>
+                        </a>
+                        {/if}
+                        <div class="clear"></div>
+                        <div class="tel_num">
+                            {if $tel['lat']=='0.0000000000'}{else}
+                            <a href="http://api.map.baidu.com/marker?location={$tel['lat']},{$tel['lng']}&amp;title={$tel['title']}&amp;content={$tel['place']}&amp;output=html">【导航】
+                            </a>
+                            {/if}
+                            <a href="tel:{$tel['mobile']}"> <font color="#999">{$tel['mobile']} </font>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="telto">
+                        <a href="tel:{$tel['mobile']}"><img src="../addons/amouse_tel114/template/mobile/images/tel.png" />
+                            <div class="arrow_rb"></div>
+                        </a>
+                    </div>
+                </li>
+                {/loop}
+
+                {if !empty($list)}
+                <div class="pager">
+                    <div class="pg">
+                        {if $pindex== '1'}
+                        {if $pindex+1<=$pageend}
+                        <strong> {$pindex} </strong>
+                        <a href='{php echo $this->createmobileUrl('index',array('page'=>$pindex+1,'cid'=>$cid),true)}' class="next">{php echo $pindex+1} </a>
+                        {else}
+                        {/if}
+                        {else}
+
+                        {if $pindex+1>=$pageend}
+                        <a href='{php echo $this->createmobileUrl('index',array('page'=>$pindex-1,'cid'=>$cid),true)}' class="prev">上页</a>
+                        <strong> {$pindex} </strong>
+                        {else}
+                        <a href='{php echo $this->createmobileUrl('index',array('page'=>$pindex-1,'cid'=>$cid),true)}' class="prev">上页</a>
+                        <strong> {$pindex}</strong>
+                        <a href='{php echo $this->createmobileUrl('index',array('page'=>$pindex+1,'cid'=>$cid),true)}' class="nxt">下页</a>
+                        {/if}
+                        {/if}
+                    </div>
+                </div>
+                {/if}
+            </ul>
+            {/if}
+           <!-- <div class="no_colum">
+                    后台自定义
+            </div>-->
+        </div>
+        <div class="dibu">
+            {if !empty($set['thumb'])}
+            <img src="{php echo strpos($set['thumb'],'http://')===FALSE?($_W['attachurl'].$set['thumb']):$set['thumb']}" />
+
+            {/if}
+        </div>
+    </div>
+    <div class="footer">
+        Copyright <a href="{$set['comurl']}" taget="_blank">
+        {if empty($set['copyright'])}{$_W['account']['name']} {else}{$set['copyright']}{/if}
+    </a> {$set['comdate']}
+    </div>
+</div>
+<!--.sr_tel-->
+<div class="clear"></div>
+<div class="hf"></div>
+
+<!-- .sr_footer -->
+<div class="clear"></div>
+<div id="sbg" class="sbg hide"></div>
+<!--<div id="sharebox" class="sharebox hide">
+    <div class="fx-tit">分享到</div>
+    <div class="fx-content">
+        <div class="bdsharebuttonbox">
+            <ul>
+                <li><a title="qq空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
+                    <div  class="clear"></div><div>qq空间</div></li>
+                <li><a title="新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
+                    <div  class="clear"></div><div>新浪微博</div></li>
+                <li><a title="腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
+                    <div  class="clear"></div><div>腾讯微博</div></li>
+                <li><a title="人人网" href="#" class="bds_renren" data-cmd="renren"></a>
+                    <div  class="clear"></div><div>人人网</div></li>
+                <li><a title="微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
+                    <div  class="clear"></div><div>微信</div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <a id="boxclose" href="#">取消</a>
+    <script>
+        window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};
+        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+</div>-->
+<div class="clear"></div>
+<script>
+    $(document).ready(function() {
+        $("#owl-demo").owlCarousel({
+            autoPlay : true,
+            navigation : true,
+            slideSpeed : 300,
+            paginationSpeed : 400,
+            singleItem : true
+        });
+
+    });
+</script>
+{if !empty($navs)}
+<script type='text/javascript' src='../addons/amouse_tel114/template/mobile/js/menuopen.js'></script>
+<div id="menu">
+    {loop $navs $mav}
+    <a href="{$mav['followurl']}">{$mav['title']}</a>
+    {/loop}
+    <div class="arrow_top"></div>
+</div>
+{/if}
+
+{php echo register_jssdk(false);}
+<script type="text/javascript">
+initShare();
+function initShare(){
+    wx.ready(function () {
+        shareMeta = {
+            title: '{$sharetitle}',
+            desc: '{$sharedesc}',
+            link: '{$shareurl}',
+            imgUrl: '{$shareimg}',
+            success: function(){
+            },
+            cancel: function(){
+                // alert("分享失败，可能是网络问题，一会儿再试试？");
+            }
+        };
+        wx.onMenuShareTimeline(shareMeta);
+        wx.onMenuShareAppMessage(shareMeta);
+        wx.onMenuShareWeibo(shareMeta);
+        wx.onMenuShareQQ(shareMeta);
+        wx.onMenuShareQZone(shareMeta);
+    });
+}
+</script>
+</body>
+</html>

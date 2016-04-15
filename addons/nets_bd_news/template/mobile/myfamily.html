@@ -1,0 +1,182 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta content="telephone=no" name="format-detection">
+<link rel="stylesheet" type="text/css" href="../addons/nets_bd_news/template/style/css/bill_selloff_main.css">
+<title>我的家族</title>
+</head>
+<body>
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">我的家族</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="content-wrap">
+  <ul class="ques-list">
+
+    <li>
+      <div class="question"> <span>一级会员</span> <i class="bg right"></i> </div>
+	  <div class="answer-box">
+        <div class="answer">
+			
+			<div class="question">
+				<span style="width:33%;text-align:left;">头像</span> 
+				<span style="width:33%;text-align:center;">昵称</span> 
+				<span style="width:33%;text-align:right;">收益</span>
+			</div>
+		</div>
+      </div>
+      <div class="answer-box">
+        <div class="answer">
+			<?php $uidstr1="";?>
+			{loop $family1 $f}
+			<div class="question">
+				<?php
+					$uidstr1=$uidstr1.$f['uid'].",";
+					$ishttp=strstr($f['avatar'],"http");
+					if ($f['avatar'] != ""){
+						if($ishttp==true){
+							$userheadurl=$f['avatar'];
+						}
+						if($ishttp==false){
+							$userheadurl=$_W['siteroot']."/attachment/".$f['avatar'];
+						}
+					}
+				?>
+				<span style="width:33%;text-align:left;padding-top:5px;"><img src="{$userheadurl}" width="30"/></span> 
+				<span style="width:33%;text-align:center;">{$f['nickname']}</span> 
+				<span style="width:33%;text-align:right;">{$f['credit2']}</span>
+			</div>
+			{/loop}
+		</div>
+      </div>
+    </li>
+	<li>
+      <div class="question"> <span>二级会员</span> <i class="bg right"></i> </div>
+	  <div class="answer-box">
+        <div class="answer">
+			
+			<div class="question">
+				<span style="width:33%;text-align:left;">头像</span> 
+				<span style="width:33%;text-align:center;">昵称</span> 
+				<span style="width:33%;text-align:right;">收益</span>
+			</div>
+		</div>
+      </div>
+      <div class="answer-box">
+        <div class="answer">
+			<?php 
+				$uidstr1=$uidstr1."0";
+				$family2=pdo_fetchall("SELECT M.uid,M.nickname,M.credit2,M.avatar,M.createtime from ims_netsbd_mc_members_relation AS R LEFT JOIN ims_mc_members AS M ON M.uid=R.uid WHERE p_uid IN (".$uidstr1.")");
+				$uidstr2="";
+			?>
+			{loop $family2 $f}
+			<div class="question">
+				<?php
+					$uidstr2=$uidstr2.$f['uid'].",";
+					$ishttp=strstr($f['avatar'],"http");
+					if ($f['avatar'] != ""){
+						if($ishttp==true){
+							$userheadurl=$f['avatar'];
+						}
+						if($ishttp==false){
+							$userheadurl=$_W['siteroot']."/attachment/".$f['avatar'];
+						}
+					}
+				?>
+				<span style="width:33%;text-align:left;padding-top:5px;"><img src="{$userheadurl}" width="30"/></span> 
+				<span style="width:33%;text-align:center;">{$f['nickname']}</span> 
+				<span style="width:33%;text-align:right;">{$f['credit2']}</span>
+			</div>
+			{/loop}
+		</div>
+      </div>
+    </li>
+	<li>
+      <div class="question"> <span>三级会员</span> <i class="bg right"></i> </div>
+	  <div class="answer-box">
+        <div class="answer">
+			
+			<div class="question">
+				<span style="width:33%;text-align:left;">头像</span> 
+				<span style="width:33%;text-align:center;">昵称</span> 
+				<span style="width:33%;text-align:right;">收益</span>
+			</div>
+		</div>
+      </div>
+      <div class="answer-box">
+        <div class="answer">
+			<?php 
+				$uidstr2=$uidstr2."0";
+				$family3=pdo_fetchall("SELECT M.uid,M.nickname,M.credit2,M.avatar,M.createtime from ims_netsbd_mc_members_relation AS R LEFT JOIN ims_mc_members AS M ON M.uid=R.uid WHERE p_uid IN (".$uidstr2.")");
+				
+			?>
+			{loop $family3 $f}
+			<div class="question">
+				<?php
+					$ishttp=strstr($f['avatar'],"http");
+					if ($f['avatar'] != ""){
+						if($ishttp==true){
+							$userheadurl=$f['avatar'];
+						}
+						if($ishttp==false){
+							$userheadurl=$_W['siteroot']."/attachment/".$f['avatar'];
+						}
+					}
+				?>
+				<span style="width:33%;text-align:left;padding-top:5px;"><img src="{$userheadurl}" width="30"/></span> 
+				<span style="width:33%;text-align:center;">{$f['nickname']}</span> 
+				<span style="width:33%;text-align:right;">{$f['credit2']}</span>
+			</div>
+			{/loop}
+		</div>
+      </div>
+    </li>
+    
+  </ul>
+</section>
+<script type="text/javascript" src="../addons/nets_bd_news/template/style/js/zepto.temple.js"></script> 
+<script type="text/javascript" src="../addons/nets_bd_news/template/style/js/exp.min.js"></script> 
+<script type="text/javascript" src="../addons/nets_bd_news/template/style/js/headerCommon.js"></script> 
+<script>
+	
+    function getQueryString(name) {	
+    }
+    function pageInit(){
+        var index = getQueryString("index");
+        var list = $(".ques-list").find("li");
+        if(index !== null){
+            list.eq(index).addClass("on");
+        }
+    }
+    (function(){
+        pageInit();
+        var list = $(".ques-list").find("li");
+        Exp.click(list, function(){
+            if($(this).hasClass('on')){
+                $(this).removeClass("on");
+                return;
+            }
+            $(this).addClass('on');
+        });
+    })();
+
+</script>
+{template 'common_share'}
+</body>
+</html>

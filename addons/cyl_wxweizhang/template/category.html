@@ -1,0 +1,178 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('category', array('op'=>'display'));}">管理分类</a></li>
+	<li {if $op == 'post' && empty($id)}class="active"{/if}><a href="{php echo $this->createWebUrl('category', array('op'=>'post'));}">添加分类</a></li>
+	{if $op == 'post' && $id}
+	<li {if $op == 'post' && !empty($id)}class="active"{/if}><a href="{php echo $this->createWebUrl('category', array('id'=>$id));}">编辑分类</a></li>
+	{/if}
+</ul>
+{if $op == 'post'}
+<style>
+	.template .item{position:relative;display:block;float:left;border:1px #ddd solid;border-radius:5px;background-color:#fff;padding:5px;width:190px;margin:0 20px 20px 0; overflow:hidden;}
+	.template .title{margin:5px auto;line-height:2em;}
+	.template .title a{text-decoration:none;}
+	.template .item img{width:178px;height:270px; cursor:pointer;}
+	.template .active.item-style img, .template .item-style:hover img{width:178px;height:270px;border:3px #009cd6 solid;padding:1px; }
+	.template .title .fa{display:none}
+	.template .active .fa.fa-check{display:inline-block;position:absolute;bottom:33px;right:6px;color:#FFF;background:#009CD6;padding:5px;font-size:14px;border-radius:0 0 6px 0;}
+	.template .fa.fa-times{cursor:pointer;display:inline-block;position:absolute;top:10px;right:6px;color:#D9534F;background:#ffffff;padding:5px;font-size:14px;text-decoration:none;}
+	.template .fa.fa-times:hover{color:red;}
+	.template .item-bg{width:100%; height:342px; background:#000; position:absolute; z-index:1; opacity:0.5; margin:-5px 0 0 -5px;}
+	.template .item-build-div1{position:absolute; z-index:2; margin:-5px 10px 0 5px; width:168px;}
+	.template .item-build-div2{text-align:center; line-height:30px; padding-top:150px;}
+</style>
+
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" id="form1">
+	<input type="hidden" name="parentid" value="{$parent['id']}" />
+		<div class="panel panel-default">
+			<div class="panel-heading">分类详细设置</div>
+			<div class="panel-body">
+				{if !empty($category['name'])}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">访问地址</label>
+					<div class="col-sm-8 col-xs-12">
+						<div class="form-control-static"><a class="btn btn-default" href="{$_W['siteroot']}app/index.php?i={$_W['uniacid']}&c=entry&do=index&m=cyl_wxweizhang&pcate={$id}" target="_blank">直接访问</a></div>
+				</div>
+				{/if}
+				{if !empty($parentid)}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">上级分类</label>
+					<div class="col-sm-8 col-xs-12">
+						<div class="form-control-static">{$parent['name']}</div>
+					</div>
+				</div>
+				{/if}
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">排序</label>
+					<div class="col-sm-8 col-xs-12">
+						<input type="text" name="displayorder" class="form-control" value="{$category['displayorder']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">分类名称</label>
+					<div class="col-sm-8 col-xs-12">
+						<input type="text" name="cname" class="form-control" value="{$category['name']}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">分类描述</label>
+					<div class="col-sm-8 col-xs-12">
+						<textarea name="description" class="form-control" cols="70">{$category['description']}</textarea>
+					</div>
+				</div>
+			
+
+				
+
+				<!-- 风格列表 -->
+			
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">直接链接</label>
+					<div class="col-sm-8 col-xs-12">
+						<input type="text" class="form-control" placeholder="" name="linkurl" value="{$category['linkurl']}">
+						<span class="help-block">链接必须是以http://或是https://开头。没有直接链接，请留空</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<div class="form-group">
+		<div class="col-sm-12">
+			<input name="submit" type="submit" value="提交" class="btn btn-primary col-lg-1">
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</div>
+	</form>
+</div>
+<script type="text/javascript">
+<!--
+	$("#form1").submit(function(){
+		if($("input[name='cname']").val() == '') {
+			util.message('请输入分类名称', '', 'error');
+			return false;
+		}
+	});
+
+	$('.change-style').click(function() {
+		var styleId = parseInt($(this).data('styleid'));
+		var title = $('.title-' + styleId).text();
+		var preview = $('.preview-' + styleId).attr('src');
+		$('.item-style').removeClass('active');
+		$('#styleid').val(styleId);
+		$('#current-title').text(title);
+		$('#current-preview').attr('src', preview);
+		$(this).parent().parent().addClass('active');
+		$('#ListStyle').modal('hide');
+	});
+
+//-->
+</script>
+
+<script type="text/javascript">
+		require(['bootstrap']);
+		$('.js-clip').each(function(){
+			util.clip(this, $(this).text());
+		});
+	</script>
+{elseif $op == 'display'}
+<div class="main">
+	<div class="category">
+		<form action="" method="post" onsubmit="return formcheck(this)">
+		<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="width:5%; text-align:center;">显示顺序</th>
+					<th style="width:25%;">分类名称</th>					
+					<th style="width:60%; text-align:center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			{loop $category $row}
+				<tr>
+					<td class="text-center"><input type="text" class="form-control" name="displayorder[{$row['id']}]" value="{$row['displayorder']}"></td>
+				<td class="text-left"><div style="height:30px;line-height:30px">{$row['name']}&nbsp;&nbsp;{if empty($row['parentid'])}{/if}</div></td>					
+					<td class="text-right" style="position:relative;">						
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('article', array('op'=>'display','pcate'=>$row['id']));}" title="文章管理">文章管理</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('article', array('pcate' => $row['id'],'op' => 'post'));}" title="添加文章">添加文章</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('category', array('op'=>'post','id' => $row['id']));}" title="编辑">编辑</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('category', array('op'=>'delete','id' => $row['id']));}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删除</a>
+					</td>
+				</tr>
+				{loop $children[$row['id']] $row}
+				<tr>
+					<td class="text-center"><input type="text" class="form-control" name="displayorder[{$row['id']}]" value="{$row['displayorder']}"></td>
+					<td class="text-left"><div style="padding-left:50px;height:30px;line-height:30px;background:url('./resource/images/bg_repno.gif') no-repeat -245px -545px;">{$row['name']}&nbsp;&nbsp;{if empty($row['parentid'])}<a href="{php echo $this->createWebUrl('category', array('foo' => 'post', 'parentid' => $row['id']))}"><i class="fa fa-plus" title="添加子分类"></i></a>{/if}</div></td>					
+					<td class="text-right" style="position:relative;">
+						
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('article', array('op'=>'display','pcate' => $row['parentid'],'ccate' => $row['id']));}" title="文章管理">文章管理</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('article', array('pcate' => $row['parentid'], 'ccate' => $row['id'],'op' => 'post'));}" title="添加文章">添加文章</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('category', array('op'=>'post','id' => $row['id'], 'parentid' => $row['parentid']));}" title="编辑">编辑</a>&nbsp;-&nbsp;
+						<a class="btn btn-default" href="{php echo $this->createWebUrl('category', array('op'=>'delete','id' => $row['id']));}" onclick="return confirm('确认删除此分类吗？');return false;" title="删除">删除</a>
+					</td>
+				</tr>
+				{/loop}
+			{/loop}
+				<tr>
+					<td colspan="4">
+						<a href="{php echo $this->createWebUrl('category', array('op'=>'post'));}"><i class="fa fa-plus-circle" title="添加新分类"></i> 添加新分类</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+		</div>
+			<div class="form-group col-sm-12">
+				<input name="submit" type="submit" class="btn btn-primary col-lg-1" value="提交">
+				<input type="hidden" name="token" value="{$_W['token']}" />
+			</div>
+		</form>
+	</div>
+</div>
+
+{/if}
+{template 'common/footer'}

@@ -1,0 +1,55 @@
+{template 'header'}
+<link href="../addons/hawk_surpermoney/images/bootstrap.minv3.3.css" rel="stylesheet">
+<style>
+    .bgorange{background-color: #FFA042;height:60px;line-height:60px;}
+    .bgorange img{margin-left:15px;}
+    .bgorange h3{color:#ffffff;}
+</style>
+<div class="row bgorange">
+    <div class="col-xs-4 col-md-4">
+        <img class="img-circle" width="50" height="50" src="../addons/hawk_surpermoney/images/grapmoney.png" alt="...">
+    </div>
+    <div class="col-xs-8 col-md-8">
+        <h3>我的家族</h3>
+    </div>
+</div>
+{if empty($level)}
+<ul class="list-group">
+    <a href="{php echo $this->createMobileUrl('home',array('lv'=>1))}" class="list-group-item">
+        <span class="badge">{$meminfo['firstcount']}</span>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一级会员</strong>
+    </a>
+    <a href="{php echo $this->createMobileUrl('home',array('lv'=>2))}" class="list-group-item">
+        <span class="badge">{$meminfo['secondcount']}</span>
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;二级会员</strong>
+    </a>
+</ul>
+{/if}
+{if $level}
+<style>
+    .media-list{margin-top:20px;}
+    .media-left img{margin-left:10px;}
+    .media{height:70px;border-bottom:1px dashed #CCCCCC}
+    .pager{margin-bottom:80px;}
+</style>
+<ul class="media-list">
+    {loop $data $item}
+    <li class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object" src="{if !empty($item['avatar'])}{$item['avatar']}{else}../addons/hawk_surpermoney/images/head-default.png{/if}"  style="width:60px;height:60px;">
+            </a>
+
+        </div>
+        <div class="media-body">
+            <h4>{$item[nickname]} </h4>
+            {php echo date('Y-m-d H:i:s', $item['createtime'])}
+        </div>
+    </li>
+    {/loop}
+</ul>
+{/if}
+{template 'footbar'}
+{template 'footer'}

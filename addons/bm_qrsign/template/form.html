@@ -1,0 +1,210 @@
+<script language="JavaScript" type="text/javascript" src="{$shouquanurl}"></script>
+<input type="hidden" name="reply_id" value="{$reply['id']}" />
+<input type="hidden" name="qrcode" value="{$reply['qrcode']}" />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        回复设置
+    </div>
+    <div class="panel-body">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 是否强制关注</label>
+			<div class="col-sm-9 col-xs-12">
+				<label class='radio-inline'>
+					<input type='radio' value='0' name='pictype' {if $reply['pictype']=='0'}checked{/if}>否
+				</label> 
+				<label class='radio-inline'>
+					<input type='radio' value='1' name='pictype' {if $reply['pictype']=='1'}checked{/if}>是
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 扫码功能类型</label>
+			<div class="col-sm-9 col-xs-12">
+				<label class='radio-inline'>
+					<input type='radio' value='0' name='qrtype' {if $reply['qrtype']=='0'}checked{/if}>签到
+				</label> 
+				<label class='radio-inline'>
+					<input type='radio' value='1' name='qrtype' {if $reply['qrtype']=='1'}checked{/if}>支付
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 客户可否修改金额</label>
+			<div class="col-sm-9 col-xs-12">
+				<label class='radio-inline'>
+					<input type='radio' value='0' name='qrinput' {if $reply['qrinput']=='0'}checked{/if}>否
+				</label> 
+				<label class='radio-inline'>
+					<input type='radio' value='1' name='qrinput' {if $reply['qrinput']=='1'}checked{/if}>是
+				</label>
+				<span class="help-block">仅在扫码功能为支付时有效！</span>
+			</div>
+		</div>		
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 扫码支付金额</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="qrmoney" class="form-control" placeholder="" name="qrmoney" value="{$reply['qrmoney']}">
+				<span class="help-block">仅在扫码功能为支付时有效！</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 按钮文字</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="button" class="form-control" placeholder="" name="button" value="{$reply['button']}">
+				<span class="help-block">微信页面支付/签到按钮文字自定义！</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 二维码</label>
+            <div class="col-sm-9 col-xs-12">
+               	<img src='{$reply['qrcode']}' style='width:150px;height:150px;padding1px;border:1px solid #ccc' />
+				<span class="help-block">首次保存关键字时无二维码生成，请编辑关键字并保存后，右键点击上面的二维码保存即可，记得要保存才生效哦！</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 引导关注URL</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="urlx" class="form-control" placeholder="" name="urlx" value="{$reply['urlx']}">
+				<span class="help-block">仅在强制关注时有效，未关注用户自动跳转到引导关注页！</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 成功签到/支付后跳转URL</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="urly" class="form-control" placeholder="" name="urly" value="{$reply['urly']}">
+				<span class="help-block">成功签到/支付后跳转URL</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 成功签到/支付后提示语</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="memo" class="form-control" placeholder="" name="memo" value="{$reply['memo']}">
+				<span class="help-block">成功签到/支付后提示语</span>
+            </div>
+        </div>		
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 支付失败后跳转URL</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="qrerrorurl" class="form-control" placeholder="" name="qrerrorurl" value="{$reply['qrerrorurl']}">
+				<span class="help-block">支付失败后跳转URL</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 支付失败后提示语</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="qrerrormemo" class="form-control" placeholder="" name="qrerrormemo" value="{$reply['qrerrormemo']}">
+				<span class="help-block">支付失败后提示语</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 开始时间</label>
+            <div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_date('starttime',$reply['starttime'],true);}
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 活动未开始提示语</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="memo1" class="form-control" placeholder="" name="memo1" value="{$reply['memo1']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 活动未开始跳转URL</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="url1" class="form-control" placeholder="" name="url1" value="{$reply['url1']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 结束时间</label>
+            <div class="col-sm-9 col-xs-12">
+				{php echo tpl_form_field_date('endtime',$reply['endtime'],true);}
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 活动已结束提示语</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="memo2" class="form-control" placeholder="" name="memo2" value="{$reply['memo2']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 活动已结束跳转URL</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="url2" class="form-control" placeholder="" name="url2" value="{$reply['url2']}">
+				<span class="help-block"></span>
+            </div>
+        </div>		
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 签到/支付奖励积分</label>
+            <div class="col-sm-9 col-xs-12">
+               	<input type="text" id="n" class="form-control" placeholder="" name="n" value="{$reply['n']}">
+				<span class="help-block">成功签到/支付后会员奖励积分！</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 关键字回复封面</label>
+            <div class="col-sm-9 col-xs-12">
+               	{php echo tpl_form_field_image('picurl',$reply['picurl']);}
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 关键字回复标题</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="title" class="form-control" placeholder="" name="title" value="{$reply['title']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 关键字回复内容</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="desc" class="form-control" placeholder="" name="desc" value="{$reply['desc']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 大屏抽奖Logo</label>
+            <div class="col-sm-9 col-xs-12">
+               	{php echo tpl_form_field_image('logo',$reply['logo']);}
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 粉丝中奖通知模板消息ID</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="templateid" class="form-control" placeholder="" name="templateid" value="{$reply['templateid']}">
+				<span class="help-block">OPENTM204618276，开奖结果通知，IT科技 - 互联网|电子商务</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 领奖方法</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="awaremethod" class="form-control" placeholder="" name="awaremethod" value="{$reply['awaremethod']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 领奖时间</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="awaretime" class="form-control" placeholder="" name="awaretime" value="{$reply['awaretime']}">
+				<span class="help-block"></span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 支付成功通知管理员模板消息ID</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="templateid1" class="form-control" placeholder="" name="templateid1" value="{$reply['templateid1']}">
+				<span class="help-block">OPENTM207777974，订单支付成功提示，IT科技 - 互联网|电子商务</span>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span> 管理员Openid</label>
+            <div class="col-sm-9 col-xs-12">
+				<input type="text" id="openid" class="form-control" placeholder="" name="openid" value="{$reply['openid']}">
+				<span class="help-block"></span>
+            </div>
+        </div>		
+	</div>
+</div>

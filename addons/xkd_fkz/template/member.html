@@ -1,0 +1,240 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li {if $op == 'display'}class="active"{/if}><a href="{php echo $this->createWebUrl('member')}">会员列表</a></li>
+	{if !empty($parent_name)&&!empty($child_level)}
+	<li class="active"><a href="javascript;">{$parent_name}的{$junior_list[$child_level]['name']}</a></li>
+	{/if}
+	{if $op == 'post'}<li class="active"><a href="{php echo $this->createWebUrl('member',array('op' => 'post'))}">编辑会员资料</a></li>{/if}
+	{if $op == 'packet'}<li class="active"><a href="{php echo $this->createWebUrl('member',array('op' => 'packet'))}">会员红包详情</a></li>{/if}
+</ul>
+{if $op=='display'||$op=='child'}
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="" method="get" class="form-horizontal" role="form">
+		<input type="hidden" name="c" value="site">
+		<input type="hidden" name="a" value="entry">
+		<input type="hidden" name="op" value="display">
+		<input type="hidden" name="do" value="member">
+		<input type="hidden" name="m" value="jiexi_aaa">
+		<input type="hidden" name="child_level" value="{$_GPC['child_level']}">
+		<input type="hidden" name="parentid" value="{$_GPC['parentid']}">
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">UID</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<input type="text" class="form-control" name="uid" value="{$_GPC['uid']}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<input type="text" class="form-control" name="nickname" class="" value="{$_GPC['nickname']}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-2 control-label">微信号/QQ号/手机号</label>
+				<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+					<input type="text" class="form-control" name="wqm_member" value="{$_GPC['wqm_member']}" />
+				</div>
+				<div class="pull-right col-xs-12 col-sm-3 col-md-2 col-lg-2">
+				<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="panel panel-default ">
+	<div class="panel-heading">
+		会员信息列表
+	</div>	
+	<div class="table-responsive panel-body">
+	<table class="table table-hover">
+		<thead class="navbar-inner">
+			<tr>
+				<th style="width:60px;">UID</th>
+				<th>昵称</th>
+				<th>微信号</th>
+				<th>QQ号</th>
+				<th>手机号</th>
+				<th style="width:60px;">级别</th>
+				<th>累计红包</th>
+				<th>下线数量</th>
+				<th style="width:160px;">加入时间</th>
+				<th style="width:160px;">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		{loop $member_list $member}
+			<tr>
+				<td>{$member['uid']}</td>
+				<td>{$member['nickname']}</td>
+				<td>{$member['wechat']}</td>
+				<td>{$member['qq']}</td>
+				<td>{$member['mobile']}</td>
+				<td>{$member['level']}</td>
+				<td>{$member['packet']}</td>
+				<td>总计:{$member['parentcount']}<br>
+					{if $member['parentcount'] != '没有下层'}
+						{if $member['parentcount1'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 1))}">一层:{$member['parentcount1']}</a><br>
+						{/if}
+						{if $member['parentcount2'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 2))}">二层:{$member['parentcount2']}</a><br>
+						{/if}
+						{if $member['parentcount3'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 3))}">三层:{$member['parentcount3']}</a><br>
+						{/if}
+						{if $member['parentcount4'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 4))}">四层:{$member['parentcount4']}</a><br>
+						{/if}
+						{if $member['parentcount5'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 5))}">五层:{$member['parentcount5']}</a><br>
+						{/if}
+						{if $member['parentcount6'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 6))}">六层:{$member['parentcount6']}</a><br>
+						{/if}
+						{if $member['parentcount7'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 7))}">七层:{$member['parentcount7']}</a><br>
+						{/if}
+						{if $member['parentcount8'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 8))}">八层:{$member['parentcount8']}</a><br>
+						{/if}
+						{if $member['parentcount9'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 9))}">九层:{$member['parentcount9']}</a><br>
+						{/if}
+						{if $member['parentcount10'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 10))}">十层:{$member['parentcount10']}</a><br>
+						{/if}
+						{if $member['parentcount11'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 11))}">十一层:{$member['parentcount11']}</a><br>
+						{/if}
+						{if $member['parentcount12'] != 0}
+						<a href="{php echo $this->createWebUrl('member',array('op' => 'child', 'parentid' => $member['uid'], 'parent_name' => $member['nickname'], 'child_level' => 12))}">十二层:{$member['parentcount12']}</a><br>
+						{/if}
+					{/if}
+				</td>
+				<td>{php echo date('Y-m-d H:i:s', $member['add_time'])}</td>
+				<td>
+					<a href="{php echo $this->createWebUrl('member',array('op' => 'post', 'uid' => $member['uid']))}" data-toggle="tooltip" data-placement="top" title="编辑" class="btn btn-default btn-sm"><i class="fa fa-edit"></i>编辑</a>
+					<a href="{php echo $this->createWebUrl('member',array('op' => 'packet', 'uid' => $member['uid'],'nickname' => $member['nickname']))}" data-toggle="tooltip" data-placement="top" title="红包详情" class="btn btn-default btn-sm"><i class="fa fa-bar-chart-o"></i>红包详情</a>
+				</td>
+			</tr>
+		{/loop}
+		</tbody>
+	</table>
+</div>
+</div>
+	{$pager}
+{/if}
+{if $op=='post'}
+<div class="main">
+<form action="" class="form-horizontal form" method="post">
+<div class="panel panel-default">
+	<input type="hidden" name="uid" value="{$member['uid']}" />
+	<div class="panel-heading">
+		基本资料
+	</div>
+	<div class="panel-body">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">微信号</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" class="form-control" name="wechat" value="{$member['wechat']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">QQ号</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" class="form-control" name="qq" value="{$member['qq']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">手机号</label>
+			<div class="col-sm-9 col-xs-12">
+				<input type="text" class="form-control" name="mobile" value="{$member['mobile']}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">级别</label>
+			<div class="col-sm-9 col-xs-12">
+				<select name="level" class='form-control'>
+				{loop $levellist $item}
+					<option value="{$item['level']}" {if $item['level'] == $member['level']}selected="selected"{/if}>{$item['name']}</option>
+				{/loop}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-sm-12">
+		<button type="submit" class="btn btn-primary col-lg-1" name="submit" value="提交">提交</button>
+		<input type="hidden" name="token" value="{$_W['token']}" />
+	</div>
+</div>
+</form>
+</div>
+{/if}
+{if $op == 'packet'}
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="" method="get" class="form-horizontal" role="form">
+		<input type="hidden" name="c" value="site">
+		<input type="hidden" name="a" value="entry">
+		<input type="hidden" name="op" value="packet">
+		<input type="hidden" name="do" value="member">
+		<input type="hidden" name="m" value="jiexi_aaa">
+		<input type="hidden" name="uid" value="{$uid}">
+		<input type="hidden" name="nickname" value="{$nickname}">
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">申请人UID/昵称/微信号</label>
+			<div class="col-sm-6 col-md-8 col-lg-8 col-xs-12">
+				<input type="text" class="form-control" name="apply_member" value="{$_GPC['apply_member']}" />
+			</div>
+			<div class="pull-right col-xs-12 col-sm-3 col-md-2 col-lg-2">
+			<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+<div class="panel panel-default ">
+	<div class="panel-heading">
+		{$_GPC['nickname']}的红包详情列表
+	</div>	
+	<div class="table-responsive panel-body">
+	<table class="table table-hover">
+		<thead class="navbar-inner">
+			<tr>
+				<th>UID</th>
+				<th>申请者</th>
+				<th>微信号</th>
+				<th>QQ号</th>
+				<th>手机号</th>
+				<th>金额</th>
+				<th>类型</th>
+				<th style="width:160px;">申请时间</th>
+				<th style="width:160px;">审批时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		{loop $packet_list $packet}
+			<tr>
+				<td>{$packet['record_id']}</td>
+				<td>{$packet['apply_name']}</td>
+				<td>{$packet['wechat']}</td>
+				<td>{$packet['qq']}</td>
+				<td>{$packet['mobile']}</td>
+				<td>{$packet['packet']}元</td>
+				<td>{if $packet['approval_uid']==$uid}上级红包{elseif $packet['manager_uid']==$uid}群主红包{/if}</td>
+				<td>{php echo date('Y-m-d H:i:s', $packet['apply_time'])}</td>
+				<td>{php echo date('Y-m-d H:i:s', $packet['approval_time'])}</td>
+			</tr>
+		{/loop}
+		</tbody>
+	</table>
+</div>
+</div>
+	{$pager}
+{/if}
+{template 'common/footer'}

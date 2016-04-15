@@ -1,0 +1,306 @@
+{template 'common/header'}
+{php $_item=-1;}
+{php $_itemp=4;}
+{template 'menu'}
+<style type="text/css">
+    .table-win img{max-width: 500px;max-height: 50px;}
+    .typeinfo{color: #FF7E00;}
+    .quantity{color: #0995cc;cursor: pointer;text-decoration: underline;}
+    .status2{color: #0995cc;cursor: pointer;text-decoration: underline;}
+    .button.re{margin-left: 10px;background-color: #ff661b;border-color: #f05d19;}
+</style>
+<div class="main w98auto">
+    <div class="main cf custom-menu">
+        <div class="mod">
+
+            <div class="main-bd">
+
+                <div class="control-group" style="margin-bottom:5px;">
+                    <a class="button" href="javascript:void(0);" onclick="addcard();">+添加卡券</a>
+                    {if $this->reply['tmplmsg']['cardisopen']}
+                    <a class="button re" href="javascript:void(0);" onclick="cardisopen(this);"
+                       data-cardisopen="0">点击关闭卡券功能</a>
+                    {else}
+                    <a class="button re" href="javascript:void(0);" onclick="cardisopen(this);"
+                       data-cardisopen="1">点击开启卡券功能</a>
+                    {/if}
+                    <a class="button re" href="javascript:void(0);" onclick="recard();">刷新列表</a>
+                    <span style="color:#ABABAB;padding-left:15px;">支持 代金券、折扣券。</span>
+                </div>
+
+                    <table style="margin-bottom: 20px;" class="table table-primary" id="menu-table">
+                        <thead>
+                        <tr>
+                            <th width="200">卡券类型</th>
+                            <th width="180">卡券名称</th>
+                            <th width="120">卡券状态</th>
+                            <th width="120">公开领取</th>
+                            <th width="80">库存</th>
+                            <th>卡券有效期</th>
+                            <th>描述</th>
+                            <th width="100">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="fen_list">
+                        {loop $cardlist $list}
+                        {php $card_info = $list['info'][strtolower($list['info']['card_type'])]}
+                        {php $base_info = $card_info['base_info']}
+                        <tr class="align-center" id="{$base_info['id']}">
+                            <td>
+                                {php echo Card::type($list['info']['card_type'])}
+                                <span class="typeinfo">
+                                    {if $list['info']['card_type'] == "DISCOUNT"}
+                                        ({php echo Card::discount($card_info['discount'])})
+                                    {/if}
+                                    {if $list['info']['card_type'] == "CASH"}
+                                        ({php echo Card::cash($card_info['least_cost'],$card_info['reduce_cost'])})
+                                    {/if}
+                                </span>
+                            </td>
+                            <td data-logo="{$base_info['logo_url']}"{php echo cot($base_info['color'])}>{$base_info['title']}</td>
+                            <td class="status">{php echo Card::status($base_info['status'])}</td>
+                            <td class="status2" title="点击修改使用状态">
+                                {if $list['info2']}
+                                    公开
+                                {else}
+                                    不公开
+                                {/if}
+                            </td>
+                            <td class="quantity">{$base_info['sku']['quantity']}</td>
+                            <td>
+                                {if $base_info['date_info']['type'] == "1"}
+                                    {$base_info['date_info']['begin_timestamp']}至{$base_info['date_info']['end_timestamp']}
+                                {/if}
+                                {if $base_info['date_info']['type'] == "2"}
+                                    领取后{php echo Card::fixed($base_info['date_info']['fixed_begin_term'])}生效{php echo Card::fixed($base_info['date_info']['fixed_term'])}有效
+                                {/if}
+                            </td>
+                            <td title="{$base_info['description']}">{php echo get_html($base_info['description'],40)}</td>
+                            <td>
+                                <a href="javascript:void(0);" onclick="_info('{$base_info['id']}');" class="normal-link">详情</a>
+                                <a href="javascript:void(0);" onclick="_del('{$base_info['id']}');" class="normal-link">删除</a>
+                                <script id="cardjosn-{$base_info['id']}" type="text/plain">{php echo json_encode($base_info)}</script>
+                            </td>
+                        </tr>
+                        {/loop}
+                        {if !$cardlist}
+                        <tr>
+                            <td colspan="8" align="center" class="align-center">
+                                <div>无</div>
+                            </td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="info_temp" style="display:none;">
+    <table class="table table-form table-win" style="width:auto;min-width:inherit;">
+        <tbody></tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("td.quantity").click(function(){
+            var tthis = $(this);
+            var quan = art.dialog({
+                title: '修改库存',
+                lock: true,
+                opacity: '.3',
+                content: '<p>增加库存数：<input id="increase_stock_value" placeholder="可以不填或填0"></p>' +
+                        '<p>减少库存数：<input id="reduce_stock_value" placeholder="可以不填或填0"></p>',
+                button: [{
+                    name: '确定修改',
+                    callback: function () {
+                        $.alert("正在提交...",0,1);
+                        $.ajax({
+                            type: "POST",
+                            url: "{php echo urido('cardnum')}",
+                            dataType: "json",
+                            data: "increase="+$("#increase_stock_value").val()+"&reduce="+$("#reduce_stock_value").val()+
+                                    "&cardid="+tthis.parents("tr").attr("id"),
+                            success: function (msg) {
+                                if (msg.success == "1"){
+                                    $.alert(0);
+                                    quan.close();
+                                    alert("修改成功，但修改结果不会立即生效，等过几分钟后再刷新查看。");
+                                }else{
+                                    $.alert(msg.message);
+                                }
+                            },
+                            error: function (msg) {
+                                $.alert("修改错误！");
+                            }
+                        });
+                        return false;
+                    }
+                },{
+                    name: '取消',
+                    callback: function () {
+                        return true;
+                    }
+                }]
+            });
+        });
+        $("td.status2").click(function(){
+            var tthis = $(this);
+            var stat = art.dialog({
+                title: '修改使用状态',
+                lock: true,
+                opacity: '.3',
+                content: '确定修改卡券公开领取状态？<br/>*公开领取：用户可通过对应关键词进入领取入口公开领取的卡券。',
+                button: [{
+                    name: '确定修改',
+                    callback: function () {
+                        $.alert("正在提交...",0,1);
+                        $.ajax({
+                            type: "POST",
+                            url: "{php echo urido('cardstatus')}",
+                            dataType: "json",
+                            data: "cardid="+tthis.parents("tr").attr("id"),
+                            success: function (msg) {
+                                if (msg.success == "1"){
+                                    $.alertk("修改成功");
+                                    stat.close();
+                                    tthis.text(msg.status);
+                                }else{
+                                    $.alert(msg.message);
+                                }
+                            },
+                            error: function (msg) {
+                                $.alert("修改错误！");
+                            }
+                        });
+                        return false;
+                    }
+                },{
+                    name: '取消',
+                    callback: function () {
+                        return true;
+                    }
+                }]
+            });
+        });
+    });
+    function cardisopen(obj) {
+        var tthis = $(obj);
+        $.alert("请稍等...",0,1);
+        setTimeout(function(){
+            window.location.href = "{php echo urido('card')}&cardisopen="+tthis.attr("data-cardisopen");
+        },1);
+    }
+    function recard() {
+        art.dialog({
+            title: '刷新卡券',
+            lock: true,
+            opacity: '.3',
+            content: '本功能的卡券信息是通过缓存数据读取的。<br/>刷新卡券通过同步微信公众平台上的卡券列表来获取最新的卡券信息，但速度会比较慢，是否确认刷新。',
+            button: [{
+                name: '确定刷新',
+                callback: function () {
+                    $.alert("正在刷新...",0,1);
+                    window.location.href = "{php echo urido('card')}&updata=1";
+                    return false;
+                }
+            },{
+                name: '关闭',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function addcard() {
+        art.dialog({
+            title: '添加卡券说明',
+            lock: true,
+            opacity: '.3',
+            content: '请登录 <a href="http://mp.weixin.qq.com/" target="_blank">微信公众平台</a> 卡券功能处添加代金券或折扣券',
+            button: [{
+                name: '关闭',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function _del(cardid) {
+        art.dialog({
+            title: '确认删除？',
+            lock: true,
+            opacity: '.3',
+            content: '删除卡券后，该卡券对应已生成的领取用二维码、添加到卡包 JS API 均会失效。<br/><span style="color:#ff0000">注意：如用户在商家删除卡券前已领取一张或多张该卡券依旧有效。即删除卡券不能删除已被用户领取，保存在微信客户端中的卡券。</span>',
+            button: [{
+                name: '确定删除',
+                callback: function () {
+                    $.alert("正在删除...",0,1);
+                    window.location.href = "{php echo urido('carddel')}&cardid="+cardid;
+                    return false;
+                }
+            },{
+                name: '取消',
+                callback: function () {
+                    return true;
+                }
+            }]
+        });
+    }
+    function _info(cardid) {
+        var _info = eval("("+$("#cardjosn-" + cardid).html()+")");
+        var _html = "",_infotype_cn = "",_infostatus_cn = "";
+        _html += '<tr><td><span>卡券ID</span></td><td>'+_info.id+'</td></tr>';
+        _html += '<tr><td><span>LOGO</span></td><td><img src="'+_info.logo_url+'"></td></tr>';
+        _html += '<tr><td><span>商户名字</span></td><td>'+_info.brand_name+'</td></tr>';
+        _html += '<tr><td><span>券名</span></td><td style="color:'+_info.color+'">'+_info.title+'</td></tr>';
+        _html += '<tr><td><span>使用信息</span></td><td>'+$("#card-" + cardid).find(".typeinfo").text()+'</td></tr>';
+        _html += '<tr><td><span>使用提醒</span></td><td>'+_info.notice+'</td></tr>';
+        _html += '<tr><td><span>客服电话</span></td><td>'+_info.service_phone+'</td></tr>';
+        _html += '<tr><td><span>使用说明</span></td><td>'+_info.description.replace(/\n/g, "<br/>")+'</td></tr>';
+        _html += '<tr><td><span>每人使用次数限制</span></td><td>'+_info.use_limit+'</td></tr>';
+        _html += '<tr><td><span>每人最大领取次数</span></td><td>'+_info.get_limit+'</td></tr>';
+        _html += '<tr><td><span>卡券是否可分享</span></td><td>'+_info.can_share+'</td></tr>';
+        _html += '<tr><td><span>卡券是否可转赠</span></td><td>'+_info.can_give_friend+'</td></tr>';
+        if (_info.date_info.type == "1") {
+            _infotype_cn = "固定日期区间<br/>";
+            _infotype_cn+= "起用时间："+_info.date_info.begin_timestamp+"<br/>";
+            _infotype_cn+= "结束时间："+_info.date_info.end_timestamp;
+        }else if (_info.date_info.type == "2") {
+            _infotype_cn = "固定时长（自领取后按天算）<br/>";
+            _infotype_cn+= "领取后多少天内有效："+_info.date_info.fixed_term+"<br/>";
+            _infotype_cn+= "领取后多少天开始生效："+_info.date_info.fixed_begin_term;
+        }
+        _html += '<tr><td><span>使用日期</span></td><td>'+_infotype_cn+'</td></tr>';
+        _html += '<tr><td><span>库存数量</span></td><td>'+_info.sku.quantity+'</td></tr>';
+        if (_info.status == "CARD_STATUS_NOT_VERIFY") {
+            _infostatus_cn = "待审核";
+        }else if (_info.status == "CARD_STATUS_VERIFY_FALL") {
+            _infostatus_cn = "审核失败";
+        }else if (_info.status == "CARD_STATUS_VERIFY_OK") {
+            _infostatus_cn = "通过审核";
+        }else if (_info.status == "CARD_STATUS_USER_DELETE") {
+            _infostatus_cn = "卡券被用户删除";
+        }else if (_info.status == "CARD_STATUS_USER_DISPATCH") {
+            _infostatus_cn = "在公众平台投放过的卡券";
+        }else if (_info.status == "CARD_STATUS_DELETE") {
+            _infostatus_cn = "卡券已被删除";
+        }else if (_info.status == "CARD_STATUS_DISPATCH") {
+            _infostatus_cn = "卡券已投放";
+        }
+        _html += '<tr><td><span>卡券状态</span></td><td>'+_infostatus_cn+'</td></tr>';
+        _html = _html.replace(/<td>undefined<\/td>/g, "<td>未定义</td>");
+        _html = _html.replace(/<td>true<\/td>/g, "<td>是</td>");
+        _html = _html.replace(/<td>false<\/td>/g, "<td>否</td>");
+        $("#info_temp").find("tbody").html(_html);
+        art.dialog({
+            title: '卡券详情',
+            opacity: '.3',
+            content: $("#info_temp").html()
+        });
+    }
+</script>
+
+{template 'common/footer'}

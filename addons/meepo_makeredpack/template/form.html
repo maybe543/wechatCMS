@@ -1,0 +1,231 @@
+   <div class="panel panel-default">
+   <input name="reply_id" type="hidden" value="{$reply['id']}" />
+            <div class="panel-heading">
+                添加红包活动
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">封面</label>
+                    <div class="col-xs-12 col-sm-9">
+                         {php echo tpl_form_field_image('cover', $reply['cover'])}
+                    </div>
+                </div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">标题内容</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="title" value="{$reply['title']}">
+						<span class="help-block">标题内容</span>
+					</div>
+				</div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动简介</label>
+                    <div class="col-xs-12 col-sm-9">
+                         <textarea style="height:200px;" class="form-control" id="description" name="description" cols="70">{$reply['description']}</textarea>
+                         <div class="help-block">用于图文显示的简介</div>
+                    </div>
+                </div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动起止时间</label>
+					<div class="col-sm-2">
+						{php echo tpl_form_field_date('starttime', date('Y-m-d H:i:s',empty($reply['starttime'])?time():$reply['starttime']), true)}
+					</div>
+					<div class="col-sm-1" style="width:3%;text-align:center">~</div>
+					<div class="col-sm-2">
+								{php echo tpl_form_field_date('endtime', date('Y-m-d H:i:s',empty($reply['endtime'])?time()+3600*240:$reply['endtime']), true)}
+						
+					</div>
+				</div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则</label>
+                    <div class="col-xs-12 col-sm-9">
+					<?php 
+					 if(empty($reply['guize'])){
+					    $reply['guize'] = '1、活动时间: 2015-08-11至2015-08-22<br>
+2、为了感恩新老会员、本次福利活动总金额达到2000万。<br>
+3、会员分享到朋友圈、有三个不同的粉丝助力将可以再领取一个礼物！<br>
+4、此活动最终解释权由平台所有！<br>
+5、本活动由米波科技亲情赞助！<br>
+6、如发现用户有恶意刷礼物行为，我们将取消其提现资格！<br>';
+					 }
+					?>
+                        {php echo tpl_ueditor('guize',$reply['guize']);}
+                         <div class="help-block">点击活动规则显示内容</div>
+                    </div>
+                </div>
+				
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">是否必须关注才可领取红包</label>
+					<div class="col-sm-9">
+						<label class="radio-inline">
+							<input type="radio" name="guanzhu" value="1" id="xh" {if $reply['guanzhu'] == '1'}checked="true"{/if}>是
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="guanzhu" value="2" id="xh"  {if $reply['guanzhu'] == '2'}checked="true"{/if}>否
+						</label>
+						<span class="help-block">设置为否 即为未关注也可以领取红包</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">限制地区名称</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="area" value="{$reply['area']}">
+						<span class="help-block">限制地区名称 不限制不用填写 如:北京 注意如需填写多个 请以逗号隔开 例如:北京，上海</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">不在限制地区内粉丝、转跳链接</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="outareaurl" value="{$reply['outareaurl']}">
+						<span class="help-block">不在限制地区内粉丝、转跳链接、如:比如说该粉丝不在限定的地区里、那么将转跳到此链接</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">未关注粉丝、转跳链接</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="gzurl" value="{$reply['gzurl']}">
+						<span class="help-block">未关注粉丝、转跳链接</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">发送总金额</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="totalmoney" value="{$reply['totalmoney']}">
+						<span class="help-block">提现总金额 当粉丝提现总金额超出此数值、将显示红包已经被全部领完</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">每人最多领取多少个</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="totalnum" value="{$reply['totalnum']}">
+						<span class="help-block">每人最多领取多少个</span>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">第一个红包面值区间(单位: 分)</label>
+					<div class="col-sm-2">
+						<input type="text"  class="form-control" name="firstmin" value="{$reply['firstmin']}">
+						<span class="help-block" style="color:red">
+						</span>
+					</div>
+					<div class="col-sm-1" style="width:3%;text-align:center">~</div>
+					<div class="col-sm-2">
+						<input type="text"  class="form-control" name="firstmax" value="{$reply['firstmax']}">
+						<span class="help-block" style="color:red">
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">推荐粉丝数量</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="tjnum" value="{$reply['tjnum']}">
+						<span class="help-block">推荐粉丝数量 即为下线每次达到此值将可以再次领取一次红包</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">推荐粉丝方式</label>
+					<div class="col-sm-9">
+						<label class="radio-inline">
+							<input type="radio" name="tjtype" value="1" id="xh" {if $reply['tjtype'] == '1'}checked="true"{/if}>浏览者领取红包成功增加下线
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="tjtype" value="2" id="xh"  {if $reply['tjtype'] == '2'}checked="true"{/if}>浏览者浏览领红包页面增加下线
+						</label>
+						<span class="help-block">浏览就增加下线即为：分享出去、被浏览者点击即可增加下线</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">第二个到第N个红包面值区间(单位: 分)</label>
+					<div class="col-sm-2">
+						<input type="text"  class="form-control" name="secondmin" value="{$reply['secondmin']}">
+						<span class="help-block" style="color:red">
+						</span>
+					</div>
+					<div class="col-sm-1" style="width:3%;text-align:center">~</div>
+					<div class="col-sm-2">
+						<input type="text"  class="form-control" name="secondmax" value="{$reply['secondmax']}">
+						<span class="help-block" style="color:red">
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">提现记录顶部背景</label>
+                    <div class="col-xs-12 col-sm-9">
+                         {php echo tpl_form_field_image('topbg', $reply['topbg'])}
+						 <span class="help-block">背景图片 标准尺寸: 726 * 427 参照文件夹中的样板文件back.png</span>
+                    </div>
+                </div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">提现成功微信提现内容</label>
+					<div class="col-sm-9">
+						<input type="text"  class="form-control" name="_desc" value="{$reply['_desc']}">
+						<span class="help-block">如:加微信xxx为好友、好事早知道！</span>
+					</div>
+				</div>
+            </div>
+   </div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		借用设置
+		注意:<br><br>
+		1: 若是当前公众号并未开通微信支付  即便你是认证服务号  仍然需要借用系统已经具备的微信支付的认证服务号
+		<a style="color:red" href="https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN" target="__blank">去设置</a>
+	</div>
+	<div class="panel-body">
+	    <div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">借用公众平台appid</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="appid" value="{$reply['appid']}">
+				<span class="help-block">借用公众平台appid
+				</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">借用公众平台secret</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="secret" value="{$reply['secret']}">
+				<span class="help-block">借用公众平台secret</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">商户号</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="mchid" value="{$reply['mchid']}">
+				<span class="help-block">商户号</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">商户密钥</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="signkey" value="{$reply['signkey']}">
+				<span class="help-block">商户密钥</span>
+			</div>
+		</div> 
+		<div class="form-group">
+			<label class="col-xs-12 col-sm-3 col-md-2 control-label">服务器IP</label>
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" name="ip" value="{$reply['ip']}">
+				<span class="help-block">服务器IP</span>
+			</div>
+		</div> 
+		        <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商户支付证书<font color=red>{if $_cert==1}已经上传{/if}</font></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="cert" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_cert.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付证书私钥<font color=red>{if $_key==1}已经上传{/if}</font></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="key" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>apiclient_key.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付根证书<font color=red>{if $_ca==1}已经上传{/if}</font></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <textarea class="form-control" name="ca" rows="8" placeholder="为保证安全性, 不显示证书内容. 若要修改, 请直接输入"></textarea>
+                        <span class="help-block">从商户平台上下载支付证书, 解压并取得其中的 <mark>rootca.pem</mark> 用记事本打开并复制文件内容, 填至此处</span>
+                    </div>
+                </div>
+</div>

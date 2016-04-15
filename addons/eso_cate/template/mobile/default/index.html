@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/focus.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/mobile.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/addtocart.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script type="text/javascript">
+        var shareData = {
+            "imgUrl" : "{php echo toimage($this->reply['share_txt'])}",
+            "link" : document.location.href,
+            "title" : "{php echo $this->reply['share_title']}",
+            "desc" : "{php echo $this->reply['share_desc']}"
+        };
+        var jssdkconfig = {JSONJSSDKCONFIG} || {};
+        $.mall_init();
+    </script>
+</head>
+
+<body id="LB" data-url="{php echo urwdo()}">
+
+<div id="go_top">
+    <a href="{php echo urwdo('cart')}" id="a_shop"><em>{$cart_num}</em><img src="{NOW_PATH}img/m-app-shop.png"></a>
+    <a href="#" id="a_top"><img src="{NOW_PATH}img/m-app-top.png"></a>
+</div>
+
+
+<div class="mb-sou mb-top">
+    <form action="{php echo urwdo('lists')}" id="saveform" method="POST">
+        <div class="c-f-search">
+            <input placeholder="请输入关键字" type="search" name="key" value="" class="c-f-text J_autocomplete" autocomplete="off">
+            <input type="submit" name="search" value="&nbsp;" class="c-f-bton">
+            <a class="c-f-right" href="{php echo urwdo('user')}">我的</a>
+        </div>
+    </form>
+</div>
+
+{php Cate::adshow('首页焦点图')}
+{php Cate::adshow('首页八宫格')}
+{php Cate::adshow('首页四宫格')}
+
+<div id="deals_list_n">
+    <ul class="clearfix">
+
+        {php $listdata = cate::db('数据表:goods,显示数目:20,排序:'.$ordersql, $wheresql)}
+        {php $lists = $listdata['lists']}
+        {loop $lists $list}
+        <li>
+            <div class="frame">
+                <a href="javascript:void(0);" class="mb0" data-id="{$list['id']}" data-cartid="{php echo cate_cookie($list['id'])}" data-number="{$list['number']}" data-isattr="{php echo cate_isattr($list['setting'])}">
+                    <div class="pic">
+                        <img class="lazy" data-original="{php echo toimage($list['img'])}" src="{IMG_PATH}loading.png"/>
+                    </div>
+                    <h1>{$list['title']}</h1>
+                    <em class="price">
+                        ￥{$list['shop_price']}
+                        {if $list['market_price'] && $list['market_price']!=$list['shop_price']}<em class="market">￥{$list['market_price']}</em>{/if}
+                    </em>
+                </a>
+                <a href="{php echo urwdo('goods')}&id={$list['id']}">购买详情&gt;&gt;</a>
+            </div>
+        </li>
+        {/loop}
+        {if !$lists}
+        <li>
+            <div class="nodeals">目前没有商品喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+<div class="clearfix"></div>
+
+{if $lists}
+<div class="indexmore _n"><a href="{php echo urwdo('lists')}">查看全部商品</a></div>
+{/if}
+
+{template TEMPLET.'bottom'}
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var __cate_status = '{php echo $this->cate_status()}';
+        if (__cate_status != '') { alert(__cate_status); }
+        //
+        $(".frame").find(".mb0").addtocart($("#go_top #a_shop"));
+    });
+</script>
+</body>
+</html>

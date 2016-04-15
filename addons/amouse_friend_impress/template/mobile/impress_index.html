@@ -1,0 +1,787 @@
+<!DOCTYPE html><html lang="zh-CN" class="">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=0" />
+    <title>大家对{$joinUser['nickname']}的印象</title>
+    {php echo register_jssdk(false);}
+    <link href="http://libs.malmam.com/bootstrap/3.3.2/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        /* chunk: 0 */
+
+        html,body {/* background-color:#fff;color:#555555;font-size:14px; */}
+        body {background-color:#f8f8f8;/*color:#666;*/}
+        h3 {/*color:#666;*/}
+        .page-main .page-frame {
+            padding-top:20px;
+            padding-bottom:20px;
+        }
+        a {color:#37a5be;}
+        a:hover {color:#37a5be;}
+
+        /* chunk: 1 */
+
+        body {
+            background-color:#fff;
+            background-image:none;
+            background-repeat:repeat;
+            background-position:50% 0;
+            color:#333;
+        }
+        .page-container {
+            max-width:500px;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:50% 100%;
+        }
+        .page-container a {
+            text-decoration:none;
+        }
+
+        .highcol {
+            position:relative;
+            _xoverflow:hidden;
+        }
+
+        .page-container .col-xs-12 {
+            padding:0;
+        }
+
+        h1 {
+            display:none;
+            margin:0;
+            padding:30px 0;
+            text-align:center;
+            font-size:30px;
+        }
+
+        .record {
+            position:relative;
+            min-height:120px;
+            margin:5px 2px;
+        }
+        .rbg {
+            position:absolute;
+            left:0;
+            top:0;
+            width:100%;height:100%;
+        }
+
+        .record-t {
+            background-image:none;
+            background-position:50% 50%;
+            background-repeat:no-repeat;
+            border-radius:8px;
+            -webkit-border-radius:8px;
+            position:relative;
+        }
+
+        .record-t0 {
+            background-color:rgba(214,230,171,1);
+        }
+        .record-t1 {
+            background-color:rgba(251,230,194,1);
+        }
+        .record-t2 {
+            background-color:rgba(240,193,216,1);
+        }
+        .record-t .recbi {
+            z-index:1;
+            width:100%;
+            height:100%;
+            top:0;
+            left:0;
+            position:absolute;
+        }
+
+        .record-t table {
+            position:absolute;
+            left:10px;
+            top:10px;
+            width:auto;
+            z-index:2;
+        }
+        .record-t table td {padding:0;}
+        .record-t .content{
+            color:#3e3a39;
+            min-height:30px;
+            padding-bottom:2em;
+        }
+
+        .content pre {
+            color:#3e3a39;
+            padding:0;
+            margin:0;
+            background-color:transparent;
+            border:0;
+            background-image:none;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            border-radius:0;
+            -webkit-border-radius:0;
+            font-size:16px;
+            line-height:25px;
+        }
+        .record-t .nickname{
+            color:#333;
+            font-weight:bold;
+            font-size:16px;
+        }
+
+        .record-t .votei{
+            text-align:right;
+            white-space:nowrap;
+        }
+        .record-t .votei a {
+            color:#333;
+        }
+        .record-t .votei em {font-style:normal;}
+        .record-t .votei img {
+            width:20px;
+            height:20px;
+        }
+
+        .record-a {
+            background-image:url(http://lxfm-s.malmam.com/uploads/image/150519/2797989_5_b3ce49fa58_o.png);
+            background-position:50% 50%;
+            background-repeat:no-repeat;
+            background-color:rgba(242,73,162,0.6);
+            border-radius:8px;
+            -webkit-border-radius:8px;
+        }
+        .record-a .playbtn {
+            position:absolute;
+            left:150px;
+            top:50px;
+            width:40px;
+            height:40px;
+        }
+        .record-a .playbtn img {
+            width:100%;
+            height:100%;
+        }
+
+        .record-a .nickname{
+            color:#e52f8a;
+            font-size:18px;
+            position:absolute;
+            left:0;
+            bottom:10px;
+            width:100%;
+            text-align:center;
+        }
+
+
+        .record-playing .playbtn {
+            opacity:0.2;
+            -webkit-opacity:0.2;
+        }
+        .record-playing.record-a {
+            background-image:none;
+        }
+
+
+        body {
+            padding-bottom:100px;
+        }
+        .fbtnbar {
+            position:fixed;
+            background-color:rgba(55,35,53,0.8);
+            left:0;
+            width:100%;
+            bottom:0;
+            height:100px;
+            z-index:100;
+        }
+        .bbtnbar {
+            width:100%;
+        }
+        .bbtnbar td {
+            width:33.3%;text-align:center;vertical-align:middle;
+            font-size:16px;
+        }
+        .bbtnbar td a {color:#fff;}
+        .bbtnbar img {width:75px; }
+
+
+
+        .record-a .pai {
+            position:absolute;
+            left:0;
+            top:0;
+            width:100%;
+            height:100%;
+            text-align:center;
+            overflow:hidden;
+        }
+        .record-a .pai img {
+            height:100%;
+            opacity:0;
+            -webkit-opacity:0;
+        }
+
+        /* 播放同心圆动画 */
+        @-webkit-keyframes play {
+            from { -webkit-transform:scale(0.2) ; -webkit-opacity:1;   }
+            to   { -webkit-transform:scale(3) translateY(10px);-webkit-opacity:0.1; }
+        }
+        @keyframes play {
+            from { transform:scale(0.2); opacity:1;    }
+            to   { transform:scale(3)  translateY(10px); opacity:0.1; }
+        }
+
+        .paia1 {
+            -webkit-animation-name: play;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-duration: 2s;
+
+            animation-name: play;
+            animation-iteration-count: infinite;
+            animation-duration: 2s;
+        }
+
+        .topX {
+            font-size:18px;
+            text-align:center;
+        }
+
+        .topX em {
+            font-size:200%;
+            font-style:normal;
+        }
+
+        .uic {
+            width:50px;height:50px;
+            border-radius:25px;
+            -webkit-border-radius:25px;
+        }
+
+
+        /* 按钮动画 */
+        .bibox {
+            display:inline-block;
+            position:relative;
+        }
+        .beatLayer {
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        @-webkit-keyframes beat2 {
+            from { -webkit-transform:scale(1); -webkit-opacity:1;  }
+            to   { -webkit-transform:scale(1.7);-webkit-opacity:0;}
+        }
+        @keyframes beat2 {
+            from { transform:scale(1); opacity:1;  }
+            to   { transform:scale(1.7);opacity:0; }
+        }
+        .bibox .beatLayer {
+            -webkit-animation-name: beat2;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-duration: 1.5s;
+
+            animation-name: beat2;
+            animation-iteration-count: infinite;
+            animation-duration: 1.5s;
+        }
+        /* 旋转*/
+        @-webkit-keyframes rt2 {
+            from { -webkit-transform:rotate(0);  }
+            to   { -webkit-transform:rotate(360deg);}
+        }
+        @keyframes rt2 {
+            from { transform:rotate(0);  }
+            to   { transform:rotate(360deg); }
+        }
+        .rotateBtn {
+            -webkit-animation-name: rt2;
+            -webkit-animation-duration: 1.5s;
+
+            animation-name: rt2;
+            animation-duration: 1.5s;
+        }
+        .shareGuide{
+            position:fixed;
+            top:0;
+            width:100%;
+            height:100px;
+            right:0;
+            z-index:10000;
+            background-color:rgba(0,0,0,0.6);
+        }
+        .shareGuide img {
+            width:100%;
+        }
+        .rfbtn {
+            float:right;
+            margin-top:10px;
+            margin-right:10px;
+        }
+        .rfbtn img {
+            width:40px;
+            height:40px;
+        }
+        .imgPool img {max-width:100%; display:none;}
+    </style>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://libs.malmam.com/jquery/jquery.tmpl.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    //<![CDATA[
+    function fixHeight(id,width,height,top,bottom){
+        // width:实际宽度
+        // height:实际等比例情况下的高度
+        // 1064x425
+        // top:120,85
+        // bottom:120,60
+        var rbox = $('.record-id-'+id);
+        var table = rbox.find('table');
+        var ch = table.height();
+        // 等比例情况下table应该高度
+        var shouldH = Math.floor((425-85-60)*width/1064);
+        var scaleh = ch/shouldH;
+        var st = Math.floor(85*width*scaleh/1064)
+        var sb = Math.floor(60*width*scaleh/1064)
+        //alert(width+","+scaleh+","+st);
+        // line-height:25px;
+        if(true || ch>50){
+            rbox.css({height:(ch+(st+sb))+'px'});
+            table.css({top:st+'px',"min-height":shouldH+'px'});
+        }
+    }
+    //]]>
+</script>
+
+<div class="container-fluid page-container">
+    <div class="row">
+        <div class="col-xs-12 highcol hdmain">
+            <h1>大家对{$joinUser['nickname']}的印象</h1>
+            <div class="topX">
+                <a class="rfbtn" href="">
+                    <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/o83mspp45wt.png"/>
+                </a>
+                <img src="http://libs.malmam.com/images/cleardot.gif" class="uic" />
+                共收到<em>{$recCount}</em>个匿名印象<br />
+            </div>
+
+            <div class="norec hide" style="width:100%;text-align:center;">
+                <img style="width:70%;" src="{AMOUSE_FRIEND_IMPRESS_RES}/images/o83fVnI6qkX.png" />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="fbtnbar">
+    <table class="bbtnbar">
+        <tr>
+            <td>
+                <a href="{php echo $this->createMobileUrl('create',array('uid'=>$joinUser['id']),true)}">
+          <span class="bibox">
+            <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/create.png" alt="" />
+            <img class="beatLayer" src="{AMOUSE_FRIEND_IMPRESS_RES}/images/create.png" alt="" />
+          </span>
+                </a>
+            </td>
+            <td>
+                <a href="{php echo $this->createMobileUrl('guanzhu',array('oid'=>$joinUser['oid']),true)}">
+                    <img class="createBtn" src="{AMOUSE_FRIEND_IMPRESS_RES}/images/o83803r0Khb.png" alt="" />
+                </a>
+            </td>
+            <td>
+                <a class="aurl aurl0 Xhide"  >
+                    <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/more.png" alt="" />
+                </a>
+                <!--<a class="aurl aurl1 Xhide" href="http://www.qunahaowan.com/huodong/yanzhi/">
+                    <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/more.png" alt="" />
+                </a>-->
+            </td>
+        </tr>
+        <tr>
+            <td><a href="{php echo $this->createMobileUrl('create',array('uid'=>$joinUser['id']),true)}">我来说说</a>
+            </td>
+            <td><a href="{php echo $this->createMobileUrl('guanzhu',array('oid'=>$joinUser['oid']),true)}">我也要玩</a></td>
+            <td>
+                <a class="aurl aurl0 Xhide" >享</a>
+                <!--<a class="aurl aurl1 Xhide" href="http://www.lvxing.fm/huodong/collections-4789223-0-92653d1df1a0f31458a6a11bf681f142.html">大家都在玩</a>-->
+            </td>
+        </tr>
+    </table>
+</div>
+
+ 
+{if empty($list)}
+{else}
+{loop $list $tno $item}
+<div>
+    <div class="record record-t record-t{$tno} record-id-{$item['id']}" data-id="{$item['id']}">
+        <img class="recbi" src="{AMOUSE_FRIEND_IMPRESS_RES}/images/o83mIdkcYuP.png"/>
+        <table cols="2"><tbody>
+        <tr>
+            <td colspan="2">
+                <div class="content"><pre>{$item['content']}
+                    {$cont}
+                </pre></div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="nickname">-- {$item['nickname']}</div>
+            </td>
+            <td class="votei">
+                <a href="javascrip:;" onclick="recordVote({$item['id']});return false;">
+                    <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/vote.png"/> 觉得准(<em>{$item['vote']}</em>)
+                </a>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+</div>
+{/loop}
+{/if}
+ 
+<!--<script id="tplText" type="text/x-jquery-tmpl"> 
+</script>-->
+<script id="tplVoice" type="text/x-jquery-tmpl">
+ <div>
+
+   <div class="record record-a record-id-${id}" data-voice-id="${service_id}" data-timelength="${time_length}">
+    <div class="pai pai0 hide">
+      <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/2797986_5_ec02208704_o.png" />
+    </div>
+    <div class="pai pai1 hide">
+      <img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/2797986_5_ec02208704_o.png" />
+    </div>
+
+
+    <div class="playbtn">
+      <a href="javascript:;" onclick="playRecordVoice(${id});"><img src="{AMOUSE_FRIEND_IMPRESS_RES}/images/2797865_5_93ab403bf7_o.png"/></a>
+    </div>
+
+    <div class="nickname">
+      ${nickname}
+    </div>
+
+   </div>
+
+</div>
+</script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var user = {"id":"{$joinUser['id']}", "username":"{$joinUser['nickname']}", "headimg":"{$joinUser['avatar']}"};
+    var showCreated = false;
+    $(function(){
+        $('.uic').prop('src',user.headimg);
+
+        if(showCreated){
+            //$('.shareGuide').removeClass('hide');
+        }
+
+        var i=0;
+
+        var box = $('.hdmain');
+        //var tplText = $('#tplText');
+        var tplVoice = $('#tplVoice');
+        /*for(;i<recList.length;i++){
+         var rec = recList[i];
+
+         if(rec.type == 'text'){
+         rec.tno = (i %3);
+         var cnt = rec.content.replace(/(\r?\n){2,10000000}/g,"$1$1");
+         rec.content = cnt;
+         // box.append( tplText.tmpl(rec).html());
+         }else{
+         box.append( tplVoice.tmpl(rec).html());
+         }
+         }*/
+    });
+
+    function hideShareGuide(){
+        $('.shareGuide').addClass('hide');
+    }
+
+
+    $(function(){
+        var $recCount="{$recCount}";
+        if($recCount== 0){
+            $('.norec').removeClass('hide');
+        }
+
+
+        setInterval(function(){
+            $('.createBtn').addClass('rotateBtn');
+        },5000);
+
+        setTimeout(function(){
+            setInterval(function(){
+                $('.createBtn').removeClass('rotateBtn');
+            },5000);
+        },2500);
+
+
+    });
+
+
+    function recordVote(id){
+        var ajaxurl="{php echo $_W['siteroot'].'app/'.murl('entry//vote',array('m'=>'amouse_friend_impress'),true)}";
+        $.ajax({
+            url: ajaxurl+"&_rnd=" + (Math.random()*0x7FFFFFFF),
+            dateType:"json",
+            type:"POST",
+            data:{record_id:id}
+        }).done(function(data){
+            if(data && data.ret === 0){
+            }else{
+            }
+        }).complete(function(){
+            var v = $('.record-id-'+id+" .votei em");
+            var c = v.text()*1+1;
+            v.text(c);
+        });
+    }
+
+    var voice_record_time=0;
+    var play_time_ti;
+    var is_playing=false;
+    function playVoice(id){
+        is_playing=true;
+        //switchIconTo('playing');
+
+        play_time_ti = setInterval(function(){
+            //var tt = $('.voice-time-bar .voice-time');
+            //var ss = tt.text() *1;
+            //tt.text(ss>1 ? ss-1:0);
+        },1000);
+
+        setTimeout(function(){
+            is_playing=false;
+            //switchIconTo('play');
+
+            //$('.voice-time-bar .voice-time').text(voice_record_time*1);
+
+            isLastPlaying=false;
+            stopPlayAnimation(last_play_id);
+            last_play_id=0;
+
+            if(play_time_ti){
+                clearInterval(play_time_ti);
+            }
+
+        },voice_record_time*1000);
+
+        wx.playVoice({
+            localId: id// 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+
+    }
+
+    var last_voice_localId="";
+    var last_play_id=0;
+    var isLastPlaying=false;
+    function playVoiceByUser(){
+        if(is_playing) return;
+
+        playVoice(last_voice_localId);
+    }
+
+    function downloadVoice(serverId){
+        wx.downloadVoice({
+            serverId: serverId, // 需要下载的音频的服务器端ID，由uploadVoice接口获得
+            isShowProgressTips: 1, // 默认为1，显示进度提示
+            success: function (res) {
+                var localId = res.localId; // 返回音频的本地ID
+                last_voice_localId = localId;
+                //$('.voice-time-bar').show();
+                setTimeout('playVoiceByUser()',500);
+                //playVoice(localId);
+            },
+            fail:function(res){
+                isLastPlaying=false;
+
+                stopPlayAnimation(last_play_id);
+                last_play_id=0;
+            }
+        });
+    }
+
+    function playRecordVoice(id){
+        if(isLastPlaying){
+            return;
+        }
+
+        isLastPlaying=true;
+        last_play_id=id;
+        startPlayAnimation(id);
+
+        //时长
+        voice_record_time = $('.record-id-'+id).attr('data-timelength')*1;
+
+        var serverId = $('.record-id-'+id).attr('data-voice-id');
+        downloadVoice(serverId);
+    }
+
+    function startPlayAnimation(id){
+        $('.record-id-'+id).addClass('record-playing');
+        $('.record-id-'+id+' .pai').removeClass('hide');
+        $('.record-id-'+id+' .pai0 img').addClass('paia1');
+        setTimeout(function(){
+            $('.record-id-'+id+' .pai1 img').addClass('paia1');
+        },1000);
+    }
+
+    function stopPlayAnimation(id){
+        $('.record-id-'+id).removeClass('record-playing');
+        $('.record-id-'+id+' .pai').addClass('hide');
+        $('.record-id-'+id+' .pai img').removeClass('paia1');
+
+    }
+
+
+    /* fix style */
+    function _fixLayoutStyle(){
+        var w = $(window).width();
+        var h = $(window).height()
+        if(w>500) w=500;
+
+        var bgiH = Math.floor(w*1136/720); // 720x1136
+        var topOffset = Math.min(0,(h-bgiH));
+
+
+        var rH = Math.floor(425*w/1064);
+        var rcT = Math.floor(110*w/1064); // content top,left
+        var rcL = Math.floor(120*w/1064);
+        var rnB = Math.floor(60*w/1064); // nickname bottom
+
+
+        var raW = Math.floor(122*w/1080); // play width
+        var raT = Math.floor(152*w/1080);
+        var raL = Math.floor(475*w/1080);
+
+
+        // bbtnbar img width
+        var bbH = Math.floor(100*w/360);
+        var bbiW = Math.floor(150*w/1080);
+        var bbcH = bbiW + 20; //内容高度
+        var bbT = Math.max(0,Math.floor(bbH/2-bbcH/2));
+
+        $(document.body).append('<sty'+'le>'
+        + ' .page-container .hdmain {xheight:'+h+'px;}'
+        + ' .bgi {top:'+topOffset+'px;}'
+        + ' .record {height:'+rH+'px;}'
+        + ' .record-t table {left:'+rcL+'px;top:'+rcT+'px;width:'+(w-rcL*2)+'px;}'
+        + ' .record-t table .content {width:'+(w-rcL*2)+'px;}'
+        + ' .record-a .playbtn {left:'+raL+'px;top:'+raT+'px;width:'+raW+'px;height:'+raW+'px;}'
+        + ' .XXrecord-t .nickname {left:'+rcL+'px;bottom:'+rnB+'px;}'
+        + ' .record-a .nickname {bottom:'+rnB+'px;}'
+        + ' .bbtnbar td img {width:'+bbiW+'px;}'
+        + ' .bbtnbar {margin-top:'+bbT+'px;}'
+        + ' .fbtnbar {height:'+bbH+'px;}'
+        + ' body {padding-bottom:'+bbH+'px;}'
+        + ' .shareGuide {height:'+h+'px;}'
+        +'<\/sty'+'le>');
+
+
+        // fix record height
+
+        $('.record').each(function(x,el){
+
+            var id = $(el).attr('data-id');
+            fixHeight(id,w,rH,rcT,rnB);
+        });
+
+    }
+    $(_fixLayoutStyle);
+    $(window).on("load",_fixLayoutStyle);
+
+    $(".bbtnbar .aurl").click(function(){　
+        $('.shareGuide').removeClass('hide');
+    })
+
+
+    //]]>
+</script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var isAndroid = false;
+    //]]>
+</script>
+<script type="text/javascript">
+    var wxShareIconList = [
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798227_5_33e7edc054_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798226_5_648526ecc5_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798225_5_5d13641930_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798223_5_ee292b90e6_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798222_5_b5c335342e_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798221_5_8b25ba8b7a_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798220_5_87bdb78d28_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798219_5_685d9b7a7b_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798218_5_8d597dfda5_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798217_5_f9c1fbb584_o.png",
+        "http://lxfm-s.malmam.com/uploads/image/150522/2798216_5_8f434a53b8_o.png"
+    ];
+
+    var rnd = parseInt(Math.random()*0x7FFFFFFF);
+
+    var wxShareDataArray = [
+        [
+            "匿名印象墙",
+            "我在你们心中竟然是这样的，有本事别匿名啊~",
+            wxShareIconList[rnd % wxShareIconList.length ],
+            "{$shareurl}&uid={$joinUser['id']}"
+        ],
+        [
+            "匿名印象墙",
+            "我在你们心中竟然是这样的，有本事别匿名啊~",
+            wxShareIconList[rnd % wxShareIconList.length ],
+            "{$shareurl}&uid={$joinUser['id']}"
+        ]
+    ];
+
+
+    initShare();
+    function initShare(){
+        wx.ready(function () {
+            changeWeixinShareData(isAndroid ? 1 : 0);
+        });
+    }
+
+
+    function changeWeixinShareData(index){
+        wx.onMenuShareTimeline({
+            title: wxShareDataArray[index][1],
+            link: wxShareDataArray[index][3],
+            imgUrl: wxShareDataArray[index][2],
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                $(".shareGuide").css({display: "none"});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                //showAfterShareGuide();
+                $(".shareGuide").css({display: "none"});
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: wxShareDataArray[index][0],
+            desc: wxShareDataArray[index][1],
+            link: wxShareDataArray[index][3],
+            imgUrl: wxShareDataArray[index][2],
+            //type: '', // 分享类型,music、video或link，不填默认为link
+            //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                //showAfterShareGuide();
+                $(".shareGuide").css({display: "none"});
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                $(".shareGuide").css({display: "none"});
+            }
+        });
+    }
+</script><!-- layout -->
+</body>
+</html><!-- page processed by tidy, 0.005024 sec. -->

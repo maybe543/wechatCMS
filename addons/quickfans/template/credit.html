@@ -1,0 +1,26 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">积分历史记录</h3>
+  </div>
+  <div class="panel-body">
+    {php $has_log = false;}
+    {loop $creditlog $log}
+    {php $has_log = true;}
+    <p style="color: inherit;">
+    <b style="color:inherit; font-size:16px">{$log['nickname']}</b>
+    <span style="margin-left:10px">{php echo date('Y-m-d H:i:s', $log['createtime'])}</span>
+    <span style="margin-left:10px">{$log['tag']}</span>
+    <span style="margin-left:10px">{$log['credit']}</span>
+    <span style="margin-left:10px">变化值:{$log['delta']}</span>
+    </p>
+    {/loop}
+    {if false == $has_log}
+    <p style="color: inherit;">
+    还没有TA的积分记录。小提示：商城、分销、余额取现、积分兑换模块之外的积分变化我们没有记录哦。
+    </p>
+    {/if}
+
+
+  </div>
+</div>
+

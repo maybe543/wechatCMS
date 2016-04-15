@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/Loading.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/focus.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/mobile.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/iscroll.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.query-2.1.7.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/addtocart.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script type="text/javascript">
+        var shareData = {
+            "imgUrl" : "#deals_list_n",
+            "link" : "{php echo urwdo('cart','',1)}",
+            "title" : $("title").text(),
+            "desc" : $("title").text()
+        };
+        var jssdkconfig = {JSONJSSDKCONFIG} || {};
+        $.mall_init();
+    </script>
+</head>
+
+<body id="LB" data-url="{php echo urwdo()}" data-dourl="{php echo urwdo(0)}">
+
+<div id="go_top">
+    <a href="{php echo urwdo('cart')}" id="a_shop"><em>{$cart_num}</em><img src="{NOW_PATH}img/m-app-shop.png"></a>
+    <a href="#" id="a_top"><img src="{NOW_PATH}img/m-app-top.png"></a>
+</div>
+
+
+<div id="header" class="shadow">
+    <h1><img src="{NOW_PATH}img/mweb_logo.png" width="100" height="30"/></h1>
+    <ul class="nav">
+        <li{php echo isto($type,'now',' class="LB"')}><a href="{php echo urwdo(0)}">新品上市</a></li>
+        <li{php echo isto($type,'besa',' class="LB"')}><a href="{php echo urwdo(0)}&type=besa">推荐商品</a></li>
+        <li{php echo isto($type,'hot',' class="LB"')}><a href="{php echo urwdo(0)}&type=hot">最热商品</a></li>
+        <li><a href="{php echo urwdo('user')}">我的！</a></li>
+    </ul>
+</div>
+
+<div class="mb-sou mb-top">
+    <form action="{php echo urwdo(0)}" id="saveform" method="get">
+        <div class="c-f-search">
+            <a class="c-f-lhome" href="{php echo urwdo('index')}"></a>
+            <input placeholder="请输入关键字" type="search" name="key" value="{$key}" class="c-f-text J_autocomplete" autocomplete="off">
+            <input type="submit" name="search" value="&nbsp;" class="c-f-bton">
+            <input type="hidden" name="type" value="{$type}">
+            <a class="c-f-right" href="{php echo urwdo('user')}">我的</a>
+        </div>
+    </form>
+</div>
+
+<div id="headerfilter-bar">
+    <ul class="nav" style="display:none;">
+        <li class="city"><a href="javascript:void(0);"><span>地区</span><b class="caret"></b></a></li>
+        <li class="category w34"><a href="javascript:void(0);"><span>分类</span><b class="caret"></b></a></li>
+        <li class="sort"><a href="javascript:void(0);"><span>排序</span><b class="caret"></b></a></li>
+    </ul>
+    <div class="dropdown-wrapper">
+        <div class="dropdown-module">
+            <div class="scroller-wrapper">
+                <div id="dropdown-scroller">
+                    <ul class="menubox">
+                        <li class="city-wrapper"><ul class="dropdown-list"></ul></li>
+                        <li class="category-wrapper"><ul class="dropdown-list"></ul></li>
+                        <li class="sort-wrapper"><ul class="dropdown-list"></ul></li>
+                    </ul>
+                </div>
+                <div id="dropdown-sub-scroller" class="dropdown-sub-scroller">
+                    <ul class="dropdown-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deals_list_n">
+    <ul class="clearfix">
+        {php $listdata = cate::db('数据表:goods,显示数目:20,分页显示:1,排序:'.$ordersql, $wheresql)}
+        {php $lists = $listdata['lists']}
+        {loop $lists $list}
+        <li>
+            <div class="frame">
+                <a href="javascript:void(0);" class="mb0" data-id="{$list['id']}" data-cartid="{php echo cate_cookie($list['id'])}" data-number="{$list['number']}" data-isattr="{php echo cate_isattr($list['setting'])}">
+                    <div class="pic">
+                        <img class="lazy" data-original="{php echo toimage($list['img'])}" src="{IMG_PATH}loading.png"/>
+                    </div>
+                    <h1>{$list['title']}</h1>
+                    <em class="price">
+                        ￥{$list['shop_price']}
+                        {if $list['market_price'] && $list['market_price']!=$list['shop_price']}<em class="market">￥{$list['market_price']}</em>{/if}
+                    </em>
+                </a>
+                <a href="{php echo urwdo('goods')}&id={$list['id']}">购买详情&gt;&gt;</a>
+            </div>
+        </li>
+        {/loop}
+        {if !$lists}
+        <li>
+            <div class="nodeals">您所选择的项目，目前没有商品喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+<div class="clearfix"></div>
+<div id="divLoading" style="display:none;">
+    <div id="floatingCirclesG">
+        <div class="f_circleG" id="frotateG_01"></div>
+        <div class="f_circleG" id="frotateG_02"></div>
+        <div class="f_circleG" id="frotateG_03"></div>
+        <div class="f_circleG" id="frotateG_04"></div>
+        <div class="f_circleG" id="frotateG_05"></div>
+        <div class="f_circleG" id="frotateG_06"></div>
+        <div class="f_circleG" id="frotateG_07"></div>
+        <div class="f_circleG" id="frotateG_08"></div>
+    </div>
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript" src="{NOW_PATH}js/gmFilter.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".frame").find(".mb0").addtocart($("#go_top #a_shop"));
+        //
+        $.getJSON("{php echo urwdo('area')}", function(area){
+            $.getJSON("{php echo urwdo('sort')}", function(sort){
+                if (area.length <= 1) {
+                    $("#headerfilter-bar .nav li").addClass("w50");
+                    $("#headerfilter-bar .nav li.city").hide();
+                }
+                $("#headerfilter-bar .nav").show();
+                var gmfilter = new gmFilter(null, area, sort);
+            });
+        });
+        $(".searchd").click(function(){
+            $(this).hide();
+            $('.mb-sou').addClass('mb-show');
+            if($(window).scrollTop() > 104){
+                $("html,body").animate({scrollTop: $('.mb-sou').offset().top - 10}, 300);
+            }
+        });
+    });
+    //
+    window._loadlist = true;
+    window._loadpage = {php echo intval($listdata['pageinfo']['now_page'])};
+    $(window).scroll(function () {
+        if ($(".searchd").length > 0){
+            if($(this).scrollTop() > 104){
+                $(".searchd").addClass("fixed");
+            }else{
+                $(".searchd").removeClass("fixed");
+            }
+        }
+        //
+        if (window._loadlist){
+            if ($(window).scrollTop() + 200 >= $(document).height() - $(window).height()) {
+                window._loadlist  = false;
+                if (window._loadpage >= {php echo intval($listdata['pageinfo']['total_page'])}) return;
+                $("#divLoading").show();
+                var url = "{php echo urwdo(0)}&type={$type}&page=" + parseInt(window._loadpage + 1);
+                $("<div>").load(url + ' #deals_list_n ul > *', function() {
+                    $intemp = $($(this).html());
+                    $intemp.find('img.lazy').lazyload({effect: 'fadeIn'});
+                    $('#deals_list_n ul').append($intemp);
+                    $("#divLoading").hide();
+                    window._loadpage++;
+                    if (window._loadpage <= {php echo intval($listdata['pageinfo']['total_page'])}){
+                        window._loadlist  = true;
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

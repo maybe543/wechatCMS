@@ -1,0 +1,183 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('member');}">用户管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('coupons');}">卡券管理</a></li>
+    <li  class="active"><a href="{php echo $this->createWebUrl('setting');}">基本设置</a></li>
+</ul>
+
+<div class="main">
+	<form action="" method="post" class="form-horizontal form"
+		enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$item['id']}" />
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				活动设置
+			</div>
+			<div class="panel-body">
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动名称</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="aname" class="form-control"
+							   value="{$item['aname']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">关注链接URL</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="url" class="form-control"
+							   value="{$item['url']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则</label>
+					<div class="col-sm-9 col-xs-12">
+						<textarea style="height:180px;" class="form-control" name="rule" id="rule" >{$item['rule']}</textarea>
+					<span class="help-block">活动的相关说明</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动规则页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('rule_bg', $item['rule_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('index_bg', $item['index_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页元素1</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('index1', $item['index1']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页元素2</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('index2', $item['index2']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页元素3</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('index3', $item['index3']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">首页button按钮文字</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="index_text" class="form-control"
+							   value="{$item['index_text']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">发起活动页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('huodong_bg', $item['huodong_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动页元素1</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('huodong1', $item['huodong1']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动页元素2</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('huodong2', $item['huodong2']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">活动页元素3</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('huodong3', $item['huodong3']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享引导页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('share_bg', $item['share_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友页背景图</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('friend_bg', $item['friend_bg']);}
+						建议(宽*高=720*1135)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">朋友页顶部元素</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('friend', $item['friend']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享标题</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="share_title" class="form-control"
+							   value="{$item['share_title']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享描述</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="share_desc" class="form-control"
+							   value="{$item['share_desc']}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享logo</label>
+					<div class="col-sm-9 col-xs-12">
+						{php echo tpl_form_field_image('share_logo', $item['share_logo']);}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+					<div class="col-sm-9 col-xs-12">
+						<input name="submit" type="submit" value="提交"
+							   class="btn btn-primary span3"> <input type="hidden"
+																	 name="token" value="{$_W['token']}" />
+					</div>
+				</div>
+
+			</div>
+			</div>
+	</form>
+</div>
+<script>
+require(['jquery', 'util'], function($, u){
+	$(function(){
+		u.editor($('#rule')[0]);
+	});
+});
+</script>

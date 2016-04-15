@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>拉黑</title>
+    <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <style>
+      input{
+        margin:0px;
+        padding:0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <header>拉黑</header>
+      <section id="main">
+      <form id="form"  action="" method="post">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <input name="act" type="hidden"  value="module" />
+        <input name="name" type="hidden"   value="quicklink" />
+        <input name="do" type="hidden"  value="blacklist" />
+        <input name="weid" type="hidden"  value="{$_W['weid']}" />
+        嫌疑人：<input name="from_user" value="{$_GPC['from_user']}" />
+        <br>
+        拉黑密码：<input name="passwd" value="" />
+        <br>
+        <input name="submit" type="submit" class="mybtn" value="提交" />
+      </form>
+      </section>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,2 @@
+/* Date: 2015-03-31T18:12:26Z Path: js/touch/global/deals_new_main.js */
+define("deals_new",["ui"],function(e){var n=e("ui"),i={init:function(){new n.gotop,new n.imglazyload,new n.slider}};i.init()}),seajs.use(["deals_new"]);

@@ -1,0 +1,31 @@
+{template 'common/header'}
+<form action="" method="post" class="form-horizontal form">
+  {template 'install-menu'}
+  <div class="panel panel-default">
+    <div class="panel-heading">顾客统计设置</div>
+    <div class="panel-body">
+
+      <div class="form-group">
+        {php echo FormTpl::label2('未关注顾客', 'col-xs-12 col-sm-3 col-md-2 col-lg-2', true); }
+        <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+          <label for="followonly0" class="radio-inline"><input type="radio" name="followonly" value="0" id="followonly0" {if empty($settings['followonly'])}checked="true"{/if} /> 在代言中心显示</label>
+          <label for="followonly1" class="radio-inline"><input type="radio" name="followonly" value="1" id="followonly1"  {if !empty($settings) && $settings['followonly'] == 1}checked="true"{/if} /> 不在代言中心显示</label>
+          <span class="help-block">未关注用户无法获取到他们的图像和昵称，为了美观，可以选择不在代言中心显示。</span>
+          <span class="help-block text-danger">如果是已经运营一段时间的账号，选择【不在代言中心显示】会导致用户认为自己突然掉粉，所以不建议这类用户选择。</span>
+          <span class="help-block text-danger">无论选择与否，未关注用户如果下单购买了商品，依然会给上线分佣，规则不变。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    {php echo FormTpl::label2('&nbsp;', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+      <input name="submit" type="submit" value="提交" class="btn btn-primary">
+      <input type="hidden" name="token" value="{$_W['token']}" />
+    </div>
+  </div>
+
+
+</form>
+{template 'common/footer'}

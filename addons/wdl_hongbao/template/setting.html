@@ -1,0 +1,130 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="javascript:;">红包发放参数设置</a></li>
+	</ul>
+	
+    <form class="form-horizontal form" id="form2" action="" method="post">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">服务号商户ID</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_mchid']}" class="form-control" name="fhb_mchid">
+	             </div>
+            </div>
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">服务号appid</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_appid']}" class="form-control" name="fhb_appid">
+	             </div>
+            </div> 
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">商户平台密钥key</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_send_key']}" class="form-control" name="fhb_send_key">
+	             <br />登录获取地址：https://pay.weixin.qq.com
+                 </div>
+            </div>            
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">公司名称</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_send_name']}" class="form-control" name="fhb_send_name">
+	             </div>
+            </div> 
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">公司昵称</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_nick_name']}" class="form-control" name="fhb_nick_name">
+	             </div>
+            </div> 
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">红包祝福语</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_wishing']}" class="form-control" name="fhb_wishing">
+	             </div>
+            </div>             
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">红包备注信息</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_remark']}" class="form-control" name="fhb_remark">
+	             </div>
+            </div>              
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">活动名称</label>
+             	<div class="col-sm-4">
+                	<input type="text" value="{php echo $this->module['config']['fhb_act_name']}" class="form-control" name="fhb_act_name">
+	             </div>
+            </div>
+            
+                                                           
+        </div>
+     
+        <div class="panel panel-default">
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">发放红包形式</label>
+             	<div class="col-sm-4">
+                	<input type="radio" value="f" name="fhb_send_type" onclick="chg_send_type('f');" {if $fhb_send_type == 'f'}checked="checked"{/if} />固定金额&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" value="r" name="fhb_send_type" onclick="chg_send_type('r');" {if $fhb_send_type == 'r'}checked="checked"{/if} />随机金额
+	             </div>
+            </div>
+            <div class="panel-body" id="div_fixed" style="display:none">
+            	<label class="col-sm-4 control-label">发放红包金额</label>
+             	<div class="col-sm-4">
+                	<input type="text" style="float:left;width:30%;" value="{php echo round($this->module['config']['fhb_send_money']/100,2);}" class="form-control" name="fhb_send_money">
+	             	<span style="float:left; margin-top:6px"> 元 </span>
+                 </div>
+            </div>
+            <div class="panel-body" id="div_random" style="display:none">
+            	<label class="col-sm-4 control-label">发放红包金额范围</label>
+             	<div class="col-sm-4">
+                	<span style="float:left; margin-top:6px"> 从 </span>
+                	<input type="text" style="width:30%; float:left" value="{php echo $this->module['config']['fhb_send_money_from']}" class="form-control" name="fhb_send_money_from">
+	             	<span style="float:left; margin-top:6px"> 到 </span>
+                    <input type="text" style="width:30%; float:left" value="{php echo $this->module['config']['fhb_send_money_to']}" class="form-control" name="fhb_send_money_to">
+                 	<span style="float:left; margin-top:6px"> 元 </span>
+                 </div>
+            </div>
+                                    
+        </div>  
+  
+        <div class="panel panel-default">
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">服务商户证书设置</label>
+             	<div class="col-sm-4">
+                将下载下来的“apiclient_cert.pem、apiclient_key.pem、rootca.pem”证书文件上传至目录“{php echo getcwd();}\”
+	             </div>
+            </div>
+                                    
+        </div> 
+ 
+        <div class="panel panel-default">
+            <div class="panel-body">
+            	<label class="col-sm-4 control-label">第三方调用实例PHP</label>
+             	<div class="col-sm-4">
+                <a href="{MODULE_URL}php_demo.txt" target="_blank">【点击下载第三方调用实例PHP】</a>
+	             </div>
+            </div>
+                                    
+        </div>         
+           
+  
+  
+        <div class="form-group col-sm-12">
+            <input name="token" type="hidden" value="{$_W['token']}" />
+            <input type="submit" class="btn btn-primary col-lg-1" name="submit" value="提交" />
+        </div>
+    </form>
+<script>
+function chg_send_type(v) {
+	$('#div_fixed').hide();
+	$('#div_random').hide();
+	if (v == 'f') {
+		$('#div_fixed').show();
+	} else {
+		$('#div_random').show();
+	}
+}
+chg_send_type('{$fhb_send_type}');
+</script>      
+</div>
+{template 'common/footer'}

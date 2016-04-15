@@ -1,0 +1,47 @@
+{template 'common/header'}
+<div class="main">
+{template 'common/menu'}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        提现记录
+    </div> 
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:80px;">会员</th>
+                    <th style="width:80px;">姓名</th>
+					<th style="width:80px;">金额(元)</th>
+                    <th style="width:100px;">提现方式</th>
+					<th style="width:100px;">状态</th>
+					<th style="width:80px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+			<tbody>
+				{loop $record $r}
+				<tr>
+                    <td style="white-space: inherit;"><p>{$r["nickname"]}</p></td>
+                    <td style="white-space: inherit;">{$r["realname"]}  </td>
+                    <td>{$r["cash"]}</td>
+					<td>{if $r["cash_type"]==1}支付宝({$r["alipay"]}){else}微信{/if}</td>
+					<td>
+					{if $r["state"]==0}未审核{/if}
+					{if $r["state"]==1}提现中{/if}
+					{if $r["state"]==2}已完成{/if}
+					</td>
+					<td>
+						<a href="/web/index.php?c=site&a=entry&op=ing&do=Hxscash&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">提现中</a>
+						<a href="/web/index.php?c=site&a=entry&op=complate&do=Hxscash&m=nets_bd_news&id={$r['id']}" class="btn btn-primary">已完成</a>
+					</td>
+                </tr>
+				{/loop}
+				</tbody>
+            </tbody>
+        </table>
+		{$pager}
+    </div>
+</div>
+</div>
+{template 'common/footer'}

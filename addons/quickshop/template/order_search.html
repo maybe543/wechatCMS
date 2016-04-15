@@ -1,0 +1,27 @@
+<form action="" method="get" class="form-horizontal" role="form">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">搜索</h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-2 col-sm-2 col-xs-12">
+          {php echo FormTpl::getWebControl2('option', 'searchtype', $_GPC['searchtype'], array( 'realname'=>'姓名', 'mobile'=>'手机', 'province'=>'省/直辖市', 'city'=>'市', 'ordersn'=>'订单编号')) }
+        </div>
+        <div class="col-lg-8 col-sm-7 col-xs-12">
+        {php echo FormTpl::getWebControl2('text', 'search', $_GPC['search']) }
+        </div>
+        <div class="col-lg-2 col-sm-3 col-xs-12">
+        {php echo FormTpl::getWebControl2('submit', 'submit', '搜索','col-lg-2 col-xs-12 col-sm-12') }
+        </div>
+        {php echo FormTpl::getWebControl2('hidden', 'token', $_W['token'])}
+        {php echo FormTpl::getWebControl2('hidden', 'op', $operation)}
+        {php echo FormTpl::getWebControl2('hidden', 'status', $status);}
+        {php echo FormTpl::getWebControl2('hidden', 'c', 'site')}
+        {php echo FormTpl::getWebControl2('hidden', 'a', 'entry')}
+        {php echo FormTpl::getWebControl2('hidden', 'm', 'quickshop')}
+        {php echo FormTpl::getWebControl2('hidden', 'do', 'order')}
+      </div>
+    </div>
+  </div>
+</form>

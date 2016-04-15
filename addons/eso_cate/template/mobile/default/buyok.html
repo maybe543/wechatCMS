@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>订单提交成功 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body>
+<header class="top">
+    <h1>订单提交成功</h1>
+    <a class="back" href="{php echo urwdo('index')}">返回</a>
+    <a class="right" href="{php echo urwdo('user')}">我的</a>
+</header>
+
+
+<div class="tm-block buyok" style="display:none;">
+    <header class="orders-title">订单号：</header>
+    <div class="item-content">
+        {loop $orderarr $list}
+        <p>{$list['ordernum']} ({$list['title']})</p>
+        {/loop}
+    </div>
+</div>
+
+{if $delivery}
+{if $delivery['descriptions']}
+<div class="tm-block buyok">
+    <header class="orders-title">配送：{$delivery['title']}</header>
+    <div class="item-content">
+        {if $delivery['descriptions']}{$delivery['descriptions']}{else}无备注{/if}
+    </div>
+</div>
+{/if}
+{/if}
+
+{if $payment}
+{if $payment['descriptions']}
+<div class="tm-block buyok">
+    <header class="orders-title">支付：{$payment['title']}</header>
+    <div class="item-content">
+        {if $payment['descriptions']}{$payment['descriptions']}{else}无备注{/if}
+    </div>
+</div>
+{/if}
+{/if}
+
+<div class="buyokbtn" style="margin-top:17px;">
+    <a href="{php echo urwdo('orders')}&ona=no" class="ui-btn-white">查看订单列表</a>
+    <a href="{php echo urwdo('index')}" class="ui-btn-white">继续购物</a>
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

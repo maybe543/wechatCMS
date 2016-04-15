@@ -1,0 +1,23 @@
+<?php 
+$condition = 
+$pars=array();
+$pars['uniacid']=$_W['uniacid'];
+$sql="select * from ".tablename('netsbd_set')." where uniacid=:uniacid";
+$set=pdo_fetch($sql,$pars);
+?>
+{if empty($set['detail_ad_top'])}
+	<?php echo htmlspecialchars_decode($set['detail_ad_bottom'])?>	
+{else}
+	<img src="/attachment/{$set['detail_ad_middle']}"/>
+{/if}
+<?php
+$ad=pdo_fetchall("select a.* from ims_netsbd_adlist AS a LEFT JOIN ims_mc_members AS m ON a.uid=m.uid  
+WHERE a.state=1 AND a.uniacid=".$_W['uniacid']." AND m.credit2>=a.click_price limit 0,10");
+
+?>
+
+{loop $ad $a}
+<div style="text-align:center;width:100%;">
+	<a href="/app/index.php?i={$_W['uniacid']}&c=entry&do=ad&m=nets_bd_news&adid={$a['id']}"><img src="/attachment/adpicture/{$a['picture']}" width="100%"/></a>
+</div>
+{/loop}

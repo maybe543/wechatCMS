@@ -1,0 +1,123 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="{php echo $this->createWebUrl('member');}">用户管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('huodong');}">红包发放</a></li>
+    <li><a href="{php echo $this->createWebUrl('setting');}">活动管理</a></li>
+    <li><a href="{php echo $this->createWebUrl('api');}">接口参数</a></li>
+</ul>
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">众筹用户详细数据  |  总数:{$total}  |  总打赏金额:{$total_money}</div>
+
+		<div class="panel-body table-responsive">
+
+		    <form action="" method="post" onsubmit="">
+
+			<table class="table table-hover">
+
+				<thead class="navbar-inner">
+
+					<tr>
+
+						<th style="width:30px;" class="row-first">选择</td>
+
+						<th style="width:80px;">昵称</th>
+
+						<th style="width:100px;">头像</th>
+
+						<th style="width:100px;">目的地</th>
+
+						<th style="width:100px;">预算</th>
+
+						<th style="width:80px;" class="row-hover">打赏人数</th>
+
+						<th style="width:80px;">打赏金额</th>
+
+						<th style="width:80px;">是否完成</th>
+
+						<th style="width:120px;">活动发起时间</th>
+
+						<th style="width:80px;">操作</th>
+
+					</tr>
+
+				</thead>
+
+				<tbody id="main">
+
+				{php $i=1;}
+
+					{loop $member $row}
+
+					<tr>
+
+					    <td><input type="checkbox" name="select[]" value="{$row['id']}" /></td>
+
+					    <td>{$row['nickname']}</td>
+
+						<td><img style="width:70px" src="{$_W['attach_url']}{$row['avatar']}"></td>
+
+						<td>{$row['destination']}</td>
+
+						<td>{$row['budget']}</td>
+
+						<td>{$row['num']}</td>
+
+						<td>{$row['sum']}</td>
+
+						<td>{if $row['budget']>$row['sum']}未完成{else}<font color=red>已完成</font>{/if}</td>                               
+
+						<td>{php echo date('m-d H:i:s', $row['createtime']);}</td>
+
+						<td><a href="{php echo $this->CreateWebUrl('mingxi',array('member_id'=>$row['id']))}"><div class="btn btn-danger">打赏名单</div></a></td>  
+
+					</tr>
+
+					{php $i++;}
+
+					{/loop}
+
+				</tbody>
+
+			</table>
+
+
+			</form>			
+
+	    </div>
+
+	</div>
+
+	{$pager}
+	<!--
+	<a id="needCopy" href="javascript:">点击复制我吧</a>
+	-->
+
+</div>
+
+<script type="text/javascript">
+require(['jquery', 'util'], function($, util){
+	$(function(){
+		util.clip($('#needCopy')[0], $('#needCopy').text());
+	});
+});
+</script>
+
+<script>
+
+$(function(){   
+
+    $(".check_all").click(function(){
+
+       var checked = $(this).get(0).checked;
+
+       $("input[type=checkbox]").attr("checked",checked);
+
+    });	
+
+});
+
+</script>
+
+{template 'common/footer'}

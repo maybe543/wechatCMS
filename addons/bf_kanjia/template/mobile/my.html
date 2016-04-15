@@ -1,0 +1,206 @@
+{template 'common/header-base'}
+<div ng-controller="detailController">
+  <!-- 砍价情况 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="kanjia-status clearfix">
+          <div class="pull-left">
+            <span>已有</span>
+            <span class="number">{{kanjia.obj.number_join}}</span>
+            <span>人正在热抢(还剩:</span>
+            <span>{{kanjia.obj.product_inventory-kanjia.obj.product_sold}}</span>
+            <span>)</span>
+          </div>
+          <div class="pull-right">
+            <div class="rule" ng-click="kanjia.showNotice()">参与须知</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--公告-->
+  <div class="notice" ng-show="kanjia.obj.product_inventory-kanjia.obj.product_sold <= 0">
+    <div class="inner">
+      亲，库存都被小伙伴们给清空了，欢迎下次再参与~
+    </div>
+  </div>
+  <!-- 参与须知 -->
+  <div class="kanjia-notice-box" ng-show="kanjia.shownotice">
+    <div class="kanjia-notice-title"> <strong>参与须知</strong>
+      <div class="kanjia-notice-close" ng-click="kanjia.HideNotice()">×</div>
+    </div>
+    <div class="kanjia-notice-content">
+      <div ng-bind-html="kanjia.obj.notice"></div>
+    </div>
+  </div>
+  <!-- 砍价介绍 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-content">
+            <div class="kanjia-list">
+              <div class="item">
+                <div class="image">
+                  <img ng-src="{{kanjia.obj.cover}}" alt=" "/>
+                  <div class="time">活动结束：<timer end-time="kanjia.obj.endtime * 1000">{{days}}天{{hours}}时{{minutes}}分{{seconds}}秒</timer></div>
+                </div>
+                <div class="name">{{kanjia.obj.title}}</div>
+                <div class="attr">
+                  <div class="price">
+                    <span class="text">原价：</span> <del><span class="number">¥&nbsp;{{kanjia.obj.product_price}}</span></del>
+                  </div>
+                  <div class="pricelow">
+                    <span class="text">底价：</span>
+                    <span class="number">¥&nbsp;{{kanjia.obj.product_pricelow}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 砍价记录 -->
+  <div class="container" ng-controller="recordController">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-header text-center">
+            <div class="title">{{record.obj.nickname}}的砍价</div>
+          </div>
+          <div class="box-content">
+            <div class="kanjia-record">
+              <div class="image">
+                <img ng-src="{{record.obj.headimgurl}}" alt=" "/>
+              </div>
+              <div class="record-info">
+                <div class="title">
+                  已有
+                  <span class="number_help">{{record.obj.number_help}}</span>
+                  个小伙伴帮
+                  <span class="nickname">{{record.obj.nickname}}</span>
+                  砍价，已砍到
+                  <span class="price">{{record.obj.price | number:2}}</span>
+                  元！
+                </div>
+                <div class="record-prprogress">
+                  <div class="text">砍价进度：</div>
+                  <div class="progress">
+                    <span class="mark" style="width:{{(kanjia.obj.product_price-record.obj.price)/(kanjia.obj.product_price-kanjia.obj.product_pricelow)*100 | number : 2 }}%;"></span>
+                  </div>
+                  <div class="text">
+                    {{(kanjia.obj.product_price-record.obj.price)/(kanjia.obj.product_price-kanjia.obj.product_pricelow)*100 | number : 2 }}%
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 砍价按钮 -->
+            <div class="kanjia-btns-box">
+              <div>
+                <a class="btn btn-kanjia" href="javascript:;" ng-show="record.obj.record_type=='friend'" ng-click="help(record.obj.id)">帮TA砍一刀</a>
+                <a class="btn btn-other" href="{php echo $this->createMobileUrl('detail', array('id'=>$record['kid']))}" ng-show="record.obj.record_type=='friend'">我也参与
+                </a>
+                <a class="btn btn-kanjia" href="javascript:;" ng-show="record.obj.record_type=='mine'" ng-click="buy(record.obj.id)">立即购买</a>
+                <a class="btn btn-other" href="javascript:;" ng-show="record.obj.record_type=='mine'" ng-click="needhelp()">邀请好友帮砍</a>
+              </div>
+              <div>
+                <a class="btn btn-follow" href="{{kanjia.obj.follow_url}}">一键关注{$_W["account"]["name"]}</a>
+              </div>
+            </div>
+            <div class="text-center kanjia-tel">
+              联系方式：
+              <span class="tel">{{kanjia.obj.tel}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="needhelp" ng-show="helpstatus" ng-click="closehelp()"></div>
+  </div>
+  <!-- 好友帮砍 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-header text-center">
+            <div class="title">帮砍记录（看谁最会砍）</div>
+          </div>
+          <div class="box-content">
+            <div class="kanjia-helplist" ng-controller="helpController">
+              <div class="item" ng-repeat="item in helplist.items">
+                <div class="image">
+                  <img ng-src="{{item.headimgurl}}" alt=" "/>
+                </div>
+                <div class="help-info">
+                  <div>
+                    <span class="nickname">{{item.nickname}}</span>
+                    ，小刀一挥帮Ta砍了
+                    <span class="price">{{item.price}}</span>
+                    元，剩下的就靠自己了。
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 产品图文介绍 -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">
+          <div class="box-header text-center">
+            <div class="title">产品详情</div>
+          </div>
+          <div class="box-content">
+            <div class="kanjia-product_detail" ng-bind-html="kanjia.obj.product_detail"></div>
+            <div class="kanjia-btns-box">
+              <a class="btn btn-kanjia" href="{{kanjia.obj.product_url}}">更多详情</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="top">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="top-nav">
+          <li class="item">
+            <a href="{$_W["siteroot"]}app/{php echo $this->createMobileUrl("list");}">商城首页</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">排行榜</a>
+          </li>
+		  <li class="item">
+            <a href="{{kanjia.obj.kanjia_href}}">我的订单</a>
+          </li>
+		  <li class="item">
+            <a href="{php echo $this->createMobileUrl('top', array('id'=>intval($_GPC['id'])))}">关注我们</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<style media="screen">
+body{
+  padding-bottom: 4.4rem;
+}
+</style>
+<script type="text/javascript">
+var KANJIA_DETAIL_URL = "{php echo $this->createMobileUrl('detailajax', array('id'=>$record['kid']))}";
+var KANJIA_MY_URL = "{php echo $this->createMobileUrl('myajax', array('id'=>$_GPC['id']))}";
+var KANJIA_BUY_URL = "{php echo $this->createMobileUrl('buyajax')}";
+var KANJIA_HELP_URL = "{php echo $this->createMobileUrl('helpajax')}";
+var KANJIA_HELPLIST_URL = "{php echo $this->createMobileUrl('helplist')}";
+var KANJIA_RECORD_ID = "{$record['id']}";
+</script>
+{template 'common/footer-base'}

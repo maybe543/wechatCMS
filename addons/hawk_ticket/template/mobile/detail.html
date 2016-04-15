@@ -1,0 +1,39 @@
+{template 'header'}
+<link href="../addons/hawk_ticket/images/bootstrap.minv3.3.css" rel="stylesheet">
+
+{if $ds['extype']==0}
+<style>
+    body{background-image: url(../addons/hawk_ticket/images/bg_top.jpg);background-repeat: repeat-x;}
+    .container{margin:0;padding:0;}
+    .media{padding-left:30px;padding-top:15px;height:130px;margin-bottom:15px;}
+    .content{padding:5px 15px 30px 15px;}
+</style>
+<div class="main">
+<div class="media">
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object" src="{$_share['imgUrl']}" width="70" height="100" alt="...">
+        </a>
+    </div>
+    <div class="media-body">
+        <h5 class="media-heading">{$ds['title']}</h5>
+        <p>{php echo date('Y年m月d日',$ds['starttime'])}-{php echo date('d日',$ds['endtime'])}</p>
+        <p>{$ds['place']}</p>
+        <p>票价:{$ds['fee']}元/张</p>
+    </div>
+</div>
+<ol class="breadcrumb">
+    <li>活动内容</li>
+</ol>
+    <div class="content">{$ds['content']}</div>
+</div>
+{else}
+<a href="{php echo $this->createMobileUrl('order',array('actid'=>$ds['id']));}" ><img src="{$ds['singleimg']}" width="100%"  height="100%"/></a>
+{/if}
+<style>
+    .footerbar{position:fixed; left:0; bottom:0px; width:100%; height:50px; background:#f1f1f1; border-top:1px solid #c9c9c9; z-index:5;}
+</style>
+<div class="footerbar">
+    <a href="{php echo $this->createMobileUrl('order',array('actid'=>$ds['id']));}" class="btn btn-success btn-lg btn-block active" role="button">立即购买</a>
+</div>
+{template 'footer'}

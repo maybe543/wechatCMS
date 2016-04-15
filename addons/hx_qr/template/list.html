@@ -1,0 +1,47 @@
+{template 'common/header'}
+<script type="text/javascript" src="{$_W['siteroot']}addons/hx_qr/template/style/js/ToolTip.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/twitter-bootstrap/3.2.0/js/tooltip.min.js"></script>
+<div class="main">
+<ul class="nav nav-tabs">
+	<li class="active"><a href="{php echo $this->createWebUrl('list');}">活动列表</a></li>
+</ul>	
+	<div style="padding:15px;">
+		<form action="" method="post">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					<th align="center" style="width:40px;text-align:center;">活动ID</th>						
+                    <th align="center" style="width:20px;text-align:center;">背景图</th>
+					<th align="center" style="width:40px;text-align:center;">参与人数</th>
+					<th align="center" style="width:40px;text-align:center;">关注赠余额</th>
+					<th align="center" style="width:40px;text-align:center;">一级推广赠余额</th>
+					<th align="center" style="width:40px;text-align:center;">二级推广赠余额</th>
+					<th align="center" style="width:50px;text-align:center;">添加时间</th>
+					<th style="width:80px;text-align:center;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list $row}
+					<tr>		
+						<td align="center" style="text-align:center;">{$row['id']}</td>
+                        <td align="center" style="text-align:center;">
+                        	<a class="list" onMouseOver="toolTip('<img src=\'{php echo tomedia($row['bg'])}\' style=\'width:180px;\'>')" onMouseOut="toolTip()"><button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-picture"></i></button></a>
+                        </td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{php echo $this->getusernum($row['id'])}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$row['newbie_credit']}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$row['click_credit']}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{$row['sub_click_credit']}</td>
+						<td align="center" style="font-size:12px; color:#666; text-align:center;">{php echo date('Y-m-d H:i:s',$row['createtime'])}</td>
+						<td style="text-align:center;">
+                        	<a href="./index.php?c=platform&a=reply&do=post&m=hx_qr&rid={$row['rid']}">编辑</a>
+                        	<a href="{php echo $this->createWebUrl('log',array('reply_id'=>$row['id']))}">推广记录</a>
+                        </td>
+					</tr>
+				{/loop}
+			</tbody>
+		</table>
+	</form>
+		{$pager}
+	</div>
+</div>
+{template 'common/footer'}

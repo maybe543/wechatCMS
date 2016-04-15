@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta  charset="utf-8">
+<meta  name="viewport"  content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>一元夺宝</title>
+{php echo register_jssdk();}
+<link  rel="stylesheet"  href="../addons/moneygo_dao/template/css/css.css">
+<script   src="../addons/moneygo_dao/template/js/jquery.js" type="text/javascript"></script>
+</head>
+<body  style="background:#f6f6f8;">
+<section  class="top_bar"> 
+	<a  href="javascript:history.back(-1);"   title="返回"  class="back"><i  class="b_arr"></i>返回</a>
+	<a  href="{php echo $this->createMobileUrl('index')}"  title="首页"  class="home">首页</a>
+	<h2  id="oneNavTitle">个人资料</h2>
+</section>
+<section  class="wrap" style="padding:60px 10px;">
+<section  class="address">
+<p  class="tips">所有信息都为必填项</p>
+<div  class="addr_info">
+	<form id="form1" action="javascript:;" method="post">
+    <ul>
+	  <li style="margin:10px 0;"><label  class="lb">收货姓名：</label><input  id="acceptname"  class="ipt" style="padding:10px;"  value="{$people['realname']}"  type="text"  placeholder="请输入正确收货姓名"></li>
+	  <li style="margin:10px 0;"><label  class="lb">手机号码：</label><input  id="phone"  class="ipt" style="padding:10px;"  value="{$people['mobile']}"  type="text"  placeholder="请输入正确手机号码"></li>
+	  <li style="margin:10px 0;"><label  class="lb">个人昵称：</label><input  id="nickname"  class="ipt" style="padding:10px;"  value="{$people['nickname']}"  type="text"  placeholder="请输入您的个人昵称"></li>
+	  <li style="margin:10px 0;"><label  class="lb">街道地址：</label><input  id="addr"  class="ipt" style="padding:10px;"  value="{$people['address']}"  type="text"  placeholder="请输入正确街道地址"></li>
+	</ul>
+	</form>
+</div>
+<div  class="save_opt">
+	<p  id="oneSaveTips"  class="s_tips"  style="">为保证商品的到达 <span  class="fc3">请确认无误后再保存</span></p>
+	<a  id="oneSaveAddr"  href="javascript:submit1();"  title="保存"  class="chk_btn"  style="">保存</a>
+</div>
+ </section>
+</section>
+<style type="text/css">
+	.footer {
+		clear: both;
+		width: 100%;
+		background: none repeat scroll 0% 0% #4E4E4E;
+		border-top: 1px solid #DDD;
+		height: 48px;
+		position: fixed;
+		bottom: 0px;
+		z-index: 100;
+	}
+	* {
+		outline: 0px none;
+	}
+	ul {
+		list-style: outside none none;
+	}
+	li,  ul {
+		margin: 0px;
+		padding: 0px;
+	}
+	.footer a {
+		width: 20%;
+		height: 44px;
+		padding-top: 3px;
+		text-align: center;
+		float: left;
+		display: block;
+		color: #fff;
+		font-size: 12px;
+	}
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+	.footer li.f_personal i {
+		width: 20px;
+		height: 22px;
+		background-position: 0px -151px;
+		position: relative;
+		top: 3px;
+		margin-bottom: 4px;
+	}
+	.footer a i {
+		display: block;
+		background: url('../addons/moneygo_dao/template/image/f_set.png') repeat scroll 0% 0% / 28px auto transparent;
+		margin: 0px auto 1px;
+	}
+	address, em, i, cite, s {
+		font-style: normal;
+	}
+	.footer li a.active { background-color: #F03048;}
+	.footer li.f_whole i {
+		width: 23px;
+		height: 25px;
+		background-position: 0px -78px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_sd i {
+		width: 23px;
+		height: 25px;
+		background-position: -5px -127px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_all i {
+		width: 23px;
+		height: 25px;
+		background-position: 0 75px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_home i {
+		width: 27px;
+		height: 25px;
+		background-position: 0px -25px;
+	}
+</style>
+<!-- 底部导航 -->
+<div class="footer" style="bottom: 0px;">
+	<ul>
+		<li class="f_home"><a href="{php echo $this->createMobileUrl('index')}" title="首页"><i></i>首页</a></li>
+		<li class="f_all"><a href="{php echo $this->createMobileUrl('list')}" title="全部商品"><i></i>全部商品</a></li>
+		<li class="f_whole"><a href="{php echo $this->createMobileUrl('introduction')}" title="规则介绍"><i></i>规则介绍</a></li>
+		<li class="f_sd"><a href="{php echo $this->createMobileUrl('show')}" title="幸运晒单"><i></i>幸运晒单</a></li>
+		<li class="f_personal"><a href="{php echo $this->createMobileUrl('profile')}" class="active" title="个人中心"><i></i>个人中心</a></li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript">
+	function submit1(){	    
+    	var form_input = document.getElementById("form1");
+    	var acceptname = form_input['acceptname'].value;
+    	var phone = form_input['phone'].value;
+		var nickname = form_input['nickname'].value;
+		var addr=form_input['addr'].value;
+		if (!acceptname) {
+			alert('请输入您的真实姓名！');
+			return false;
+		}
+		if (!phone) {
+			alert('请输入您的手机号码！');
+			return false;
+		}
+		if (!nickname) {
+			alert('请输入您的个人昵称！');
+			return false;
+		}
+		if (!addr) {
+			alert('请输入您的收货地址！');
+			return false;
+		}
+		
+		var message=confirm('请确认您的信息');
+		if (message) {
+        	$.post('{php echo $this->createMobileUrl('ajaxypsubmit',array('id'=>$people['id']))}',{acceptname:acceptname,phone:phone,nickname:nickname,addr:addr},function(m){
+        	alert(m);
+        	window.location.href="{php echo $this->createMobileUrl('profile')}";
+        	},"html");
+        };
+    }
+</script>
+</html>

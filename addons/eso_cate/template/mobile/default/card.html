@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>卡券 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .card {
+            margin: 15px;
+            background-color: #ffffff;
+            position: relative;
+            height: 93px;
+            padding-bottom: 2px;
+            border-top: 3px solid #ffffff;
+        }
+        .card .img {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+        }
+        .card .img img{
+            width: 80px;
+            height: 80px;
+        }
+        .card .info {
+            position: absolute;
+            top: 8px;
+            left: 103px;
+        }
+        .card .info .title {
+            padding-top: 5px;
+            font-weight: 600;
+            font-size: 22px;
+            line-height: 22px;
+        }
+        .card .info .brand {
+            padding: 3px;
+        }
+        .card .info .text {
+            padding-left: 3px;
+        }
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+
+<body>
+<header class="top">
+    <h1>卡券领取</h1>
+    <a class="back" href="javascript:history.go(-1);">返回</a>
+    <div class="right-s">
+        <a class="right-user" href="{php echo urwdo('user')}"></a>
+        <a class="right-home" href="{php echo urwdo('index')}"></a>
+    </div>
+</header>
+
+{loop $cardlist $list}
+{php $setting = string2array($list['setting'])}
+{php $card_info = $setting[strtolower($setting['card_type'])]}
+{php $base_info = $card_info['base_info']}
+<div class="card" style="border-top-color:{$base_info['color']}" data-cardid="{$base_info['id']}">
+    <div class="img"><img src="{$base_info['logo_url']}"></div>
+    <div class="info">
+        <div class="title">{$base_info['title']}</div>
+        <div class="brand">{$base_info['brand_name']}</div>
+        <div class="text">
+            [{php echo Card::type($setting['card_type'])}]
+            {if $setting['card_type']=="DISCOUNT"}
+            {php echo Card::discount($card_info['discount'])}
+            {elseif $setting['card_type']=="CASH"}
+            {php echo Card::cash($card_info['least_cost'],$card_info['reduce_cost'])}
+            {else}
+            不可领取
+            {/if}
+        </div>
+    </div>
+</div>
+{/loop}
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+<script>
+    var jssdkconfig = {JSONJSSDKCONFIG} || {};
+    $(function(){
+        // 是否启用调试
+        jssdkconfig.debug = false;
+        //
+        jssdkconfig.jsApiList = [
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ];
+        wx.config(jssdkconfig);
+        wx.ready(function () {
+            $("div.card").click(function(){
+                var tthis = $(this);
+                wx.addCard({
+                    cardList: [{
+                        cardId: tthis.attr("data-cardid"),
+                        cardExt: ''
+                    }], // 需要添加的卡券列表
+                    success: function (res) {
+                        $.alert('已添加卡券');
+                        //var cardList = res.cardList; // 添加的卡券列表信息
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>

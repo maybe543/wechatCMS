@@ -1,0 +1,173 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>{if !$pcate}{$settings['title']}{else}{$category[$pcate]['name']}{/if}</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/> 
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes"> 
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+    <script>
+    (function() {
+        var baseFontSize = 100;
+        var baseWidth = 320;
+        var clientWidth = document.documentElement.clientWidth || window.innerWidth;
+        var innerWidth = Math.max(Math.min(clientWidth, 480), 320);
+
+        var rem = 100;
+
+        if (innerWidth > 362 && innerWidth <= 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.9);
+        }
+        
+        if (innerWidth > 375) {
+            rem = Math.floor(innerWidth / baseWidth * baseFontSize * 0.84);
+        }
+
+        document.querySelector('html').style.fontSize = rem + 'px';
+    })();
+</script>
+<link rel="stylesheet" type="text/css" href="http://weui.github.io/weui/weui.css" />
+<link rel="stylesheet" type="text/css" href="{MODULE_URL}images/style.css" />
+{php echo register_jssdk($debug);} 
+</head>
+
+<body>
+<div id="wrapper" class="wrapper" style="padding:0.84rem 0 1rem 0">
+    <header class="header3">
+        <h1>
+            <img src="{MODULE_URL}images/logo.png" alt="微信精选">
+            <span class="tit" id="greet-tip">{$settings['title']}</span>
+        </h1>
+        
+    </header>
+	<div class="tab-area not-eof" >
+            <div class="scroll-area" data-am-sticky>
+                <ul class="am-nav-justify">
+                
+                <li  class="{if empty($pcate)} selected {/if}"><a href="{php echo $this->createMobileUrl('index')}">热门推荐</a></li>
+			
+   
+  {loop $category $typeid}
+ 	
+              
+  <li class="{if $typeid['id']== $pcate} selected {/if}"><a href="{php echo $this->createMobileUrl('index')}&pcate={$typeid['id']}">{$typeid['name']}</a></li>
+ 
+{/loop} 
+
+<li class=""><a href="{php echo $this->createMobileUrl('category',array('pcate'=>$pcate))}">查看更多</a></li>
+               </ul>
+            </div>
+        </div>
+    <div class="container" id="container" >
+        
+
+        <div class="list-scroll">
+            <div class="list-wrap">
+			
+				<div class="list-area2" style="height: auto;">
+				<script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+<script>
+    var city = remote_ip_info['city'];
+    
+</script>
+				{loop $listgg $id $data}
+				{php $pic = iunserializer($data['pic'])}
+				{php $credit = iunserializer($data['credit'])}
+
+				{php $picnum = count($pic)}
+				{if $picnum <= 4}
+					<div class="list-item list4"><a name="{$data['id']}" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><span class="u-img2"><img class="img" src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}"></span><span class="p-txt">{$data['title']} </span><div class="info"><span class="tag type1">转发赚钱 单价{$credit['share']} 浏览{$credit['click']}</span>
+					<span class="resource">{$data['source']}
+					
+</span>
+					</div></a>
+					</div>
+				{else}
+					<div class="list-item list5"><a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><p class="tit">{$data['title']}</p><ul>
+					<?php $j = 1 ?>
+					{loop $pic $key $picsome} 
+
+					{if $j <= 3}
+					<li><img class="img" src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" width="200" height="80"></li>
+					 {/if}
+				  	 <?php $j++ ?> 
+					 {/loop}
+					</ul><div class="info2"><span class="tag type1">转发赚钱 单价{$credit['share']} 浏览{$credit['click']}</span><span class="resource">{$data['source']}{if "商户" == '<script>document.write(city);</script>'}不在{/if}</span>
+					</div></a></div>
+				
+				{/if}
+				 {/loop}
+
+
+				 {loop $list $id $data}
+				{php $pic = iunserializer($data['pic'])}
+				{php $credit = iunserializer($data['credit'])}
+
+				{php $picnum = count($pic)}
+				{if $picnum <= 4}
+					<div class="list-item list4"><a name="{$data['id']}" href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><span class="u-img2"><img class="img" src="{if strpos($data['thumb'],'img01')}{$data['thumb']}{else}{php echo tomedia($data['thumb'])}{/if}"></span><span class="p-txt">{$data['title']} </span><div class="info"><span class="resource">{$data['source']} </span></div></a>
+					</div>
+				{else}
+					<div class="list-item list5"><a href="{php echo $this->createMobileUrl('detail', array('id'=>$data['id'],'pcate'=>$data['pcate'],'page'=>$page,'keyword'=>$keyword,'uid'=>$data['uid'],'op'=>'detail'));}" class="lk"><p class="tit">{$data['title']}</p><ul>
+					<?php $j = 1 ?>
+					{loop $pic $key $picsome} 
+
+					{if $j <= 3}
+					<li><img class="img" src="{if strpos($picsome,'img01')}{$picsome}{else}{php echo tomedia($picsome)}{/if}" width="200" height="80"></li>
+					 {/if}
+				  	 <?php $j++ ?> 
+					 {/loop}
+					</ul><div class="info2"><span class="resource">{$data['source']}</span></div></a></div>
+				
+				{/if}
+				 {/loop}
+				
+				</div>
+			</div>
+        </div>
+
+       {if $page == 1}   
+        <a class="weui_btn weui_btn_default"  style="float: left;width: 50%">没有了 &raquo;</a>   
+	      {else}
+	      <a class="weui_btn weui_btn_default"  href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page-1,'keyword'=>$keyword));}" {if $page != $totalpage}style="float: left;width: 50%"{/if}><<前往上一页 </a>
+	      {/if}
+	       {if $page == $totalpage}  
+	         
+	      {else}
+        <a class="weui_btn weui_btn_default" href="{php echo $this->createMobileUrl('index', array('pcate'=>$pcate,'page'=>$page+1,'keyword'=>$keyword));}" {if $page != $totalpage}style="float: right;width: 50%;margin-top: 0px"{/if}>前往下一页 >></a>
+        {/if}
+    </div>
+</div>
+
+
+ 
+<div class="weui_tabbar" style="position: fixed;bottom: 0px">
+    <a href="{php echo $this->createMobileUrl('index');}" class="weui_tabbar_item weui_bar_item_on">
+      <div class="weui_tabbar_icon">
+        <img src="{MODULE_URL}images/home.png" alt="">
+      </div>
+      <p class="weui_tabbar_label">首页</p>
+    </a>    
+    <a href="{php echo $this->createMobileUrl('member', array('uid'=>$_W['fans']['uid']));}" class="weui_tabbar_item">
+      <div class="weui_tabbar_icon">
+        <img src="{MODULE_URL}images/ren.png" alt="">
+      </div>
+      <p class="weui_tabbar_label">会员</p>
+    </a> 
+</div>
+</body>
+</html>

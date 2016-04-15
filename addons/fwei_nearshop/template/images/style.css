@@ -1,0 +1,145 @@
+#page_order {
+    background-color: #e9e9eb;
+    overflow-x: hidden;
+    padding: 8px;
+}
+#page_order section {
+    background-color: #fff;
+    border: 1px solid #dbdbdd;
+    box-shadow: 1px 1px 2px #e3e3e5, -1px -1px 2px #e3e3e5;
+    height: 122px;
+    margin-bottom: 12px;
+    padding: 0 10px;
+}
+
+#page_order section article {
+    border-bottom: 1px solid #e7eaeb;
+    min-height: 76px;
+    overflow: hidden;
+    padding-left: 88px;
+    position: relative;
+}
+#page_order section ul {
+    clear: both;
+    height: 30px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding-top: 9px;
+    width: 99%;
+}
+#page_order section li {
+    border-right: 1px solid #e8eaeb;
+    display: inline-block;
+    float: left;
+    height: 30px;
+    text-align: center;
+    width: 33%;
+}
+#page_order section span:before {
+    left: 2px;
+    top: 2px;
+    z-index: -1;
+}
+#page_order section li:last-of-type {
+    border: medium none;
+}
+#page_order section span:before, #page_order section span:after {
+    border: 1px solid #e7eaeb;
+    content: "";
+    display: none;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+#page_order section span, #page_order section span:before, #page_order section span:after {
+    background-color: #fff;
+    display: inline-block;
+    height: 52px;
+    position: absolute;
+    width: 72px;
+}
+#page_order section span:after {
+    left: 4px;
+    top: 4px;
+    z-index: -2;
+}
+#page_order section span:before, #page_order section span:after {
+    border: 1px solid #e7eaeb;
+    content: "";
+    display: none;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+#page_order section span, #page_order section span:before, #page_order section span:after {
+    background-color: #fff;
+    display: inline-block;
+    height: 52px;
+    position: absolute;
+    width: 72px;
+}
+#page_order section span {
+    left: 3px;
+    top: 10px;
+    z-index: 0;
+}
+#page_order section span, #page_order section span:before, #page_order section span:after {
+    background-color: #fff;
+    display: inline-block;
+    height: 52px;
+    position: absolute;
+    width: 72px;
+}
+
+#page_order section h1 {
+    color: #5e6060;
+    font-size: 16px;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+    padding-top: 3px;
+}
+
+#page_order section p {
+    color: #969696;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+#page_order section li a.order {
+    background-image: url("icon_order.png");
+}
+
+#page_order section li a.gps {
+    background-image: url("icon_gps2.png");
+}
+
+#page_order section li a.reality {
+    background-image: url("icon_reality.png");
+}
+#page_order section li a {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 23px 24px;
+    color: #36b35f;
+    display: inline-block;
+    font-size: 13px;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 26px;
+}
+a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+abbr, article, aside, audio, canvas, datalist, details, dialog, eventsource, fieldset, figure, figcaption, footer, header, hgroup, mark, menu, meter, nav, output, progress, section, small, time, video, legend {
+    display: block;
+}
+body, article, section, h1, h2, hgroup, p, a, ul, ol, li, em, div, small, span, footer, canvas, figure, figcaption, input {
+    margin: 0;
+    padding: 0;
+}

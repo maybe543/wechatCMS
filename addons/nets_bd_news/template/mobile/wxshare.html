@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>god阅读真的能赚钱</title>
+<link href="/addons/nets_bd_news/template/style/css/font-awesome.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<script src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<?php
+if(empty($_W["member"]["uid"]) && empty($_GPC["hxs_uid"])){
+	$loginurl=url('auth/login', array('forward' => base64_encode($_SERVER['QUERY_STRING'])), true);
+	Header("Location: $loginurl"); 
+}
+$uid=0;
+if(!empty($_W["member"]["uid"])){
+	$uid=$_W["member"]["uid"];
+}
+if(!empty($_GPC["hxs_uid"])){
+	$uid=$_GPC["hxs_uid"];
+}
+require_once '../addons/nets_bd_news/site/thumbhandler.func.php';
+require_once('../addons/nets_bd_news/site/phpqrcode.php');
+$member=pdo_fetch("select * from ".tablename('mc_members')." where uid=:id",array("id"=>$uid));
+$userheadurl=$member['avatar'];
+
+	 $ishttp=strstr($member['avatar'],"http");
+					if ($member['avatar'] != ""){
+						if($ishttp==true){
+							$userheadurl=$member['avatar'];
+						}
+						if($ishttp==false){
+							$userheadurl=$_W['siteroot']."/attachment/".$member['avatar'];
+						}
+					}
+
+//print("<br/>ssss::".$userheadurl);
+
+$username=$member['nickname'];
+$userhead=IA_ROOT."/addons/nets_bd_news/template/style/bg/userhead_".$uid.".jpg";
+$qrcode_value = $_W['siteroot']."/app/index.php?i=".$_W['uniacid']."&c=entry&do=news&m=nets_bd_news&hxs_news_re=".$_GPC['re']; //二维码内容  
+$user_qrcode=IA_ROOT."/addons/nets_bd_news/template/style/bg/qrcode_".$uid.".jpg";
+//二维码不存在的时候才生成二维码
+if (!file_exists($user_qrcode)) {
+	$errorCorrectionLevel = 'L';//容错级别   
+	$matrixPointSize = 6;//生成图片大小   
+	//生成二维码图片   
+	QRcode::png($qrcode_value, $user_qrcode, $errorCorrectionLevel, $matrixPointSize, 2);   
+}
+//原背景图
+$bg="../addons/nets_bd_news/template/style/bg/bg01.png";
+//文字水印输出图片
+$usershare_bgtext="../addons/nets_bd_news/template/style/bg/usershare_".$uid.".png";
+//用户分享的
+$usershare="../addons/nets_bd_news/template/style/bg/usershare_".$uid.".png";
+$fileshare=IA_ROOT."/addons/nets_bd_news/template/style/bg/usershare_".$uid.".png";
+if (!file_exists($fileshare)) {
+	//给图片增加文字水印
+	
+	$t = new ThumbHandler();
+	$t->setSrcImg($bg);
+	$t->setDstImg($usershare_bgtext);
+	//$t->setMaskWord($username);
+	//$t->setMaskFont("C:\WINDOWS\Fonts\simfang.ttf");
+	$t->setMaskFontColor("#FF3030");
+	$t->setMaskFontSize(26);
+	$t->setMaskPosition(1);
+	$t->setMaskOffsetY(120);
+	$t->setMaskOffsetX(300);
+	// 指定缩放比例
+	$t->createImg(100);
+
+	//二维码图片水印
+	$t = new ThumbHandler();
+	//给图片增加水印
+	$t->setSrcImg($usershare_bgtext);
+	$t->setDstImg($usershare);
+	$t->setMaskImg($user_qrcode);
+	$t->setMaskPosition(1);
+	$t->setMaskImgPct(100);
+	$t->setMaskOffsetY(300);
+	$t->setMaskOffsetX(175);
+	// 指定缩放比例
+	$t->createImg(100);
+
+	//用户头像处理,头像不存在的时候才会去微信下载
+	if (!file_exists($userhead)) {
+		$t = new ThumbHandler();
+		$t->GrabImage($userheadurl,$userhead);
+		//处理用户头像缩放
+		$t->setSrcImg($userhead);
+		$t->setDstImg($userhead);
+		// 指定缩放比例
+		//print($ishttp);
+		$ishttp=strstr($member['avatar'],"http");
+		if($ishttp){
+			$t->createImg(120);
+		}else{
+			$t->createImg(80);
+		}
+	}
+	//给图片增加水印
+	$t = new ThumbHandler();
+	$t->setSrcImg($usershare_bgtext);
+	$t->setDstImg($usershare);
+	$t->setMaskImg($userhead);
+	$t->setMaskPosition(1);
+	$t->setMaskImgPct(100);
+	$t->setMaskOffsetY(57);
+	$t->setMaskOffsetX(30);
+	// 指定缩放比例
+	$t->createImg(100);
+}
+?>
+
+
+<style type="text/css">
+body {margin:0px; background:#f4f4f4;}
+.top {height:68px; background:#fff; border-bottom:#e3e3e3; overflow:hidden;}
+.top .ico {height:44px; width:44px; margin:12px; background:#fe9900; border-radius:44px; font-size:30px; line-height:44px; text-align:center; color:#fff; float:left;}
+.top .info1 {height:44px; padding:12px 0px; float:left;}
+.top .info1 .t1 {height:22px; font-size:16px; color:#666; line-height:26px;}
+.top .info1 .t2 {height:22px; font-size:13px; color:#999; line-height:20px;}
+.top span {color:#ff6600}
+.img {padding:1px;overflow:hidden;height:auto;}
+.img img { width:100%;}
+
+.info {height:auto; background:#fff; padding:10px; padding-bottom:80px; border-bottom:1px solid #eee; border-top:1px solid #eee;}
+.info .title {height:38px; border-bottom:1px solid #eee; overflow:hidden;}
+.info .title .ico {height:24px; width:24px; background:#fd6401; margin:7px 7px 7px 0px; border-radius:24px; font-size:12px; color:#fff; line-height:24px; text-align:center; float:left;}
+.info .title .text {height:38px; line-height:38px; font-size:14px; color:#666; float:left;}
+.info .con {height:auto; padding:10px 0px;}
+.info .con .line {height:auto; overflow:hidden; margin-bottom:5px;}
+.info .con .line .t1 {height:auto; width:55px; float:left; font-size:14px; color:#666; line-height:20px;}
+.info .con .line .t2 {padding-left:55px; background:#f90;}
+.info .con .line .t2 .t3 {height:auto; float:left; font-size:14px; color:#999;}
+.info .info2 {height:auto; background:#fe924a; padding:10px; font-size:14px; color:#fff;}
+
+.bottom {height:50px; width:100%; background:#fff; padding:10px; border-top:1px solid #eee; position:fixed; bottom:0px; left:0px; box-shadow:1px 2px 10px rgba(0,0,0,0.2);}
+.bottom .sub {height:50px; width:46%; margin-left:2%; float:left; border:1px solid #eee; border-radius:3px; font-size:16px; line-height:50px; text-align:center; color:#666;}
+
+.btn {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background: #f77b6f;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    padding: 5px 5px;
+    cursor: pointer;
+	text-decoration:none;
+}
+<!-- 验证是否关注过官方号 BEGIN -->
+<style>
+.follow_topbar {height:34px; width:100%; background:rgba(0,0,0,0.8); position:fixed; top:0px; left:0px; z-index:999;}
+.follow_topbar .headimg {height:32px; padding-left:6px; float:left;}
+.follow_topbar .headimg img {height:32px;}
+.follow_topbar .info {height:14px; padding:0px 0px;font-size:14px;border:none;}
+.follow_topbar .info .i {height:14px; line-height:14px; color:#ccc; font-size:13px;border:none; background:rgba(0,0,0,0.8); padding-top:10px;}
+.follow_topbar .info {float:left; margin-left:10px;}
+.follow_topbar span {color:#ff6600}
+.follow_topbar .sub {height:24px; width:auto; background:#32cd32; padding:0px 10px; margin:5px 8px 5px 0px; float:right; font-size:12px; color:#fff; line-height:26px; border-radius:3px;}
+.follow_topbar .sub1 {height:24px; width:auto; padding:0px 0px; margin:5px 8px 0px 0px; float:right; font-size:12px; color:#FFFFFF; line-height:26px; border-radius:3px; }
+</style>
+
+<!-- 验证是否关注过官方号 END -->
+<div class="top" style="display:none;">
+  <div class="ico" id="head_ico"><i class="fa fa-cny" ></i></div>
+  <div class="info1">
+    <div class="t1" style="float:left;">我为烽云台代言，分享赚佣金</div>
+	
+  </div>
+</div>
+
+<!-- 系统生成图片 开始 -->
+<div style="font-size:12px;padding:10px 50px 0px 50px; text-align:center;display:none;"><h3>自助免费APP和微信建站</h3></div>
+<div class="img"> <img id="posterimg" style="" src="{$usershare}"/> 
+
+<div style="font-size:12px;padding:0px 50px 10px 50px; text-align:center;display:none;">移动平台品牌展示、营销互动、移动电商、会员管理、在线支付、行业应用。
+</div>
+
+</div>
+<!-- 系统生成图片 结束 -->
+<div class="info">
+  <div class="title">
+    <div class="ico"><i class="fa fa-cubes"></i></div>
+    <div class="text">分享如何赚钱</div>
+  </div>
+  <div class="con">
+    <div class="line">
+      <div class="t1">第一步</div>
+      <div class="t2">
+        <div class="t3">转发该链接或二维码图片给微信好友；</div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="t1">第二步</div>
+      <div class="t2">
+        <div class="t3">从您转发的链接或图片进入阅读新闻的好友，系统将自动锁定成为您的好友, 他们在阅读你分享的新闻时，你都可以获得积分奖励；</div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="t1">第三步</div>
+      <div class="t2">
+        <div class="t3">您可以在管理后台查看我的积分记录和余额，当你余额符合商家最小提现额度的时候就可以申请提现了。</div>
+      </div>
+    </div>
+  </div>
+  <div class="info2">说明：分享后会带有独有的推荐码，您的好友访问之后，系统会自动检测并记录会员关系。如果您的好友已被其他人抢先发展成了会员，他就不能成为您的会员，以最早发展成为会员为准。</div>
+</div>
+
+<!-- 底部浮层 开始 -->
+<div class="bottom">
+  <div id="btn1" class="sub" style="margin:0px;" onClick="document.getElementById('mcover').style.display='block';"><i class="fa fa-link" style="height:18px; width:18px; color:#fcac71; border:1px solid #fcac71; border-radius:20px; line-height:18px; text-align:center; font-size:14px;"></i> &nbsp; 链接分享</div>
+  <div id="btn2" class="sub" onclick="alert('长按二维码收藏，发送给好友或者扫一扫即分享成功');"><i class="fa fa-image" style="height:18px; width:18px; color:#63b3aa; border:1px solid #63b3aa; border-radius:20px; line-height:18px; text-align:center; font-size:12px;"></i> &nbsp; 图片分享</div>
+  
+</div>
+<?php
+if(!empty($_GPC["hxs_uid"])){
+	$reuid=$_GPC["hxs_uid"];
+	$remember=pdo_fetch("select * from ".tablename('mc_members')." where uid=:id",array("id"=>$reuid));
+	if(strstr($remember['avatar'],"http://")){$imgurl=$remember["avatar"];}else{$imgurl="/attachment/".$remember["avatar"];}
+}
+?>
+<?php
+$share_img=$imgurl;
+$share_title=$remember['nickname']."邀请你一起来赚钱";
+$share_url=$_W['siteroot']."/app/index.php?i=".$_W['uniacid']."&c=entry&do=news&m=nets_bd_news&re=".$_GPC['hxs_uid'];
+?>
+<!-- 底部浮层 结束 -->
+{template 'common_share'}
+</body>
+</html>
+

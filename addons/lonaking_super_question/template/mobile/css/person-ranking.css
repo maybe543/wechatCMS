@@ -1,0 +1,71 @@
+.container .head{
+    border-bottom: 2px solid #E4E4E4;
+    margin: 0px 0px 0px 0px;
+    padding-bottom: 10px;
+}
+.head{
+    padding-top: 20px;
+}
+.head .head-img{
+    padding-left: 0px;
+}
+.container .content-body{
+    margin: 10px 0px 0px 0px;
+}
+.head .head-context{
+    padding-left: 30px;
+}
+
+.head-context .head-name{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 30px;
+}
+.head-context .score{
+    font-size: 15px;
+    line-height: 30px;
+}
+
+.head-context .score .score-num{
+    color: red;
+}
+.head-context .time-and-ranking{
+    font-size: 15px;
+    line-height: 20px;
+}
+.head-context .time-and-ranking .ranking{
+    padding-left: 20px;
+}
+.head-context .time-and-ranking .ranking .ranking-num{
+    color: red;
+    font-size: 20px;
+    font-weight: 400;
+}
+.content-body tbody tr td{
+    line-height: 30px;
+}
+.content-body tbody span.nickname{
+    padding-left: 10px;
+    font-weight: 600;
+}
+.content-body tbody tr:nth-child(1) .badge{
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+.content-body tbody tr:nth-child(2) .badge{
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+.content-body tbody tr:nth-child(3) .badge{
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+button.load-more{
+    margin-bottom: 30px;
+    background-color : #6db888;
+    border-color : #FFFFff;
+    border-radius : inherit;
+}

@@ -1,0 +1,54 @@
+<div class="selectattrval min">
+    <div class="min-main">
+        <header>
+            <h1>请选择属性</h1>
+        </header>
+        <section>
+            <div class="summary">
+                <div class="img"><img src="{php echo toimage($goods['img'])}" alt=""></div>
+                <div class="main">
+                    <div class="gt">{$goods['title']}</div>
+                    <div class="priceContainer">
+                        <span class="selectprice" data-price="{$goods['shop_price']}">￥{$goods['shop_price']}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sku-control">
+                <ul class="mui-sku">
+                    {loop $goods['attrA'] $name $list}
+                    <li>
+                        <h2>{$name}</h2>
+                        <div class="items">
+                            {loop $list $namep $listp}
+                            {php $_rand = rand(10000,99999)}
+                            <input type="radio" data-img="" autocomplete="off" name="att_{$listp['name']}" id="a_{$_rand}"
+                                   data-price="{php echo intval($listp['price'])}" value="{$listp['val']}"{if value($listp,'default')} checked{/if}>
+                            <label for="a_{$_rand}">{$listp['val']}</label>
+                            {/loop}
+                        </div>
+                    </li>
+                    {/loop}
+                </ul>
+            </div>
+            <div class="number">
+                <h2>数量</h2>
+                <div class="content">
+                    <div class="number-control">
+                        <div class="mui-number">
+                            <div type="button" class="decrease">-</div>
+                            <input type="text" id="quantity" name="quantity" class="num" value="1" max="{$goods['number']}">
+                            <div type="button" class="increase">+</div>
+                        </div>
+                    </div>
+                    <div class="stock">供应：<span class="goodsv">{if $goods['number']>0}现货{else}<font color="red">缺货</font>{/if}</span></div>
+                </div>
+            </div>
+            <div class="option-ft">
+                <button class="cart add" id="buynow" data-type="add">加入购物车</button>
+            </div>
+        </section>
+        <footer>
+            <a class="back" href="javascript:void(0);">关闭</a>
+        </footer>
+    </div>
+</div>

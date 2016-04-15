@@ -1,0 +1,50 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li class="active"><a>模板管理</a></li>
+    <li><a href="/web/index.php?c=account&a=printer_show&id={$_GPC['id']}" target="_blank">查看屏幕</a></li>
+</ul>
+
+<style>
+.photo_list{padding:15px 0;}
+.photo_list .alert{width:auto; margin-top:10px; overflow:hidden;}
+.photo_list .photo_preview{width:130px;}
+.photo_list .photo_preview img{width:130px; margin-bottom:5px;}
+.photo_list .photo_preview label{padding:0;}
+.photo_list .photo_preview input[type="radio"]{margin-left:0; margin-right:10px;}
+.photo_list table{margin-left:40px;}
+.photo_list table th,.photo_list table td{padding-bottom:5px;}
+.photo_list table th{width:60px; font-size:14px;}
+.photo_list table input,.photo_list table select{margin-bottom:0;}
+</style>
+<div class="main">
+
+	<div class="photo_list">
+	<form method="post" class="form">
+	<input name="token" type="hidden" value="{$_W['token']}" />
+	<input name="id" type="hidden" value="{$_GPC['id']}" />
+
+	<table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td>桌面机广告模板</td>
+    </tr>
+  <tr>
+    <td align="center"><img src="../addons/wr_printer/style/images/d1.jpg" width="300" height="169" /><br />
+      <input type="radio" name="template" value="d1" {if $template == 'd1'}checked="checked"{/if}>&nbsp;&nbsp;风格一</td>
+    </tr>
+</table>
+			<table width="100%" border="0" cellspacing="2" cellpadding="2">
+			  <tr>
+			    <td>广告机广告模板</td>
+		      </tr>
+			  <tr>
+			    <td align="center"><img src="../addons/wr_printer/style/images/a1.jpg" width="300" /><br />
+			      <input type="radio" name="template" value="a1" {if $template == 'a1'}checked="checked"{/if} />
+		        &nbsp;&nbsp;风格一</td>
+		      </tr>
+		    </table>
+            
+	
+<center><input type="submit" name="submit" id="selectimage" class="btn" value="保存" /> </center>
+	</div>
+</div>
+{template 'common/footer'}

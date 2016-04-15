@@ -1,0 +1,143 @@
+{template 'common/header'}
+
+<div class="main">
+{template 'common/menu'}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsset&m=nets_bd_news">营销设置</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadset&m=nets_bd_news">站点设置</a></li>
+	<li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadprice&m=nets_bd_news">广告价格</a></li>
+    <li><a href="/web/index.php?c=site&a=entry&op=display&do=Hxsadlist&m=nets_bd_news">广告管理</a></li>
+</ul>
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" id="form1">
+		<div class="panel panel-default">
+			<div class="panel-heading">营销设置</div>
+			<div class="panel-body">	
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">注册送现金</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="register_eq_money" maxlength="5" class="form-control" value="{$record['register_eq_money']}">
+						<span class="input-group-addon">元</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">最小提现</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="min_cashmoney" maxlength="5" class="form-control" value="{$record['min_cashmoney']}">
+						<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">设置最小提现额度 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">登录赠送</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="login_eq_integral" maxlength="5" class="form-control" value="{$record['login_eq_integral']}">
+						<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">设置会员每日登录赠送的金额 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">推荐会员</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="reregster_eq_integral" maxlength="5" class="form-control" value="{$record['reregster_eq_integral']}">
+						<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">设置推荐会员赠送的金额</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享文章</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="share_eq_integral" maxlength="5" class="form-control" value="{$record['share_eq_integral']}">
+						<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">设置分享文章赠送的金额 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">分享被读</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="beclick_eq_integral" maxlength="5" class="form-control" value="{$record['beclick_eq_integral']}">
+						<span class="input-group-addon">元</span>
+						</div>
+						<div class="help-block">设置分享被读的金额 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">一级提成</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="member_level1dis" maxlength="5" class="form-control" value="{$record['member_level1dis']}">
+						<span class="input-group-addon">%</span>
+						</div>
+						<div class="help-block">设置一级提成比例 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">二级提成</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="member_level2dis" maxlength="5" class="form-control" value="{$record['member_level2dis']}">
+						<span class="input-group-addon">%</span>
+						</div>
+						<div class="help-block">设置二级提成比例 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">三级提成</label>
+					<div class="col-sm-9 col-xs-12">
+						<div class="input-group">
+						<input type="text" name="member_level3dis" maxlength="5" class="form-control" value="{$record['member_level3dis']}">
+						<span class="input-group-addon">%</span>
+						</div>
+						<div class="help-block">设置三级提成比例 </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">参与活动通知</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="template_msg1" maxlength="50" class="form-control" value="{$record['template_msg1']}">
+						<div class="help-block">模版库搜“任务处理通知”，模版消息ID：“OPENTM200605630” </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">商城购买通知</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="template_msg2" maxlength="50" class="form-control" value="{$record['template_msg2']}">
+						<div class="help-block">模版库搜“任务处理通知”，模版消息ID：“OPENTM200605630” </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">新闻被读通知</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="template_msg3" maxlength="50" class="form-control" value="{$record['template_msg3']}">
+						<div class="help-block">模版库搜“任务处理通知”，模版消息ID：“OPENTM200605630” </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label">新增下级通知</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" name="template_msg4" maxlength="50" class="form-control" value="{$record['template_msg4']}">
+						<div class="help-block">会员注册成功通知，模版消息ID：“OPENTM207207788” </div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="form-group col-sm-12">
+			<input type="hidden" name="op" value="post"/>
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+{template 'common/footer'}

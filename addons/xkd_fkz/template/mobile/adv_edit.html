@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>互粉朋友圈</title>
+    <!-- Bootstrap -->
+    <link href="../addons/xkd_fkz/template/mobile/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../addons/xkd_fkz/template/mobile/css/common.css"
+          media="screen, projection">
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../addons/xkd_fkz/template/mobile/js/alert.js"></script>
+</head>
+<body style="background: #fff">
+<div class="adv-head">
+    <div class="head-bar">
+        <a class="edit-adv-btn" href="{php echo $this->createMobileUrl('editAdv')}"></a>
+    </div>
+    <div class="adv-user">
+        <div class="username">{$wechat_user['nickname']}</div>
+        <div class="userheadimg">
+            <img src="{$wechat_user['avatar']}">
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="">
+    <form method="post" style="margin-bottom: 70px">
+        <h3>编辑我的广告</h3>
+        <hr>
+        <div class="form-group">
+            <label>内容</label>
+            <textarea class="form-control" maxlength="255" name="adv[content]">{$adv['content']}</textarea>
+        </div>
+        <div class="form-group">
+            <label>链接</label>
+            <input class="form-control" maxlength="300" name="adv[link]" value="{$adv['link']}"/>
+        </div>
+        <div class="form-group">
+            <label>图片</label>
+            <div class="picture-select">
+                <input id="picture-select" data-preview=".picture-preview" data-textarea=".picture-textarea" type="file"
+                       accept="image/*" capture="camera">
+                <div class="picture-preview" style="background-image: url({$adv['uploadimg']});background-size: cover;"></div>
+            </div>
+        </div>
+        <div style="display: none">
+            <canvas id="canvas"></canvas>
+            <textarea class="picture-textarea" name="adv[uploadimg]">{$adv['uploadimg']}</textarea>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success btn-block">保存</button>
+        </div>
+    </form>
+    {template 'navbar'}
+</div>
+<script>
+    (function () {
+        var file = document.getElementById("picture-select");
+        var preview = $($(file).data("preview"));
+        var textarea = $($(file).data("textarea"));
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var maxWidth = 400, maxHeight = 400;
+        file.onchange = function () {
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                var image = new Image();
+                image.src = e.target.result;
+                image.onload = function () {
+                    var imgHeight = image.height, imgWidth = image.width;
+                    console.log(imgWidth + "_" + imgHeight);
+                    if (imgWidth > maxWidth) {
+                        imgHeight = (maxWidth * imgHeight) / imgWidth;
+                        imgWidth = maxWidth;
+                    }
+                    console.log(imgWidth + "_" + imgHeight);
+                    if (imgHeight > maxHeight) {
+                        imgWidth = (imgWidth * maxHeight) / imgHeight;
+                        imgHeight = maxHeight;
+                    }
+                    console.log(imgWidth + "_" + imgHeight);
+                    canvas.width = imgWidth;
+                    canvas.height = imgHeight;
+                    ctx.drawImage(image, 0, 0, imgWidth, imgHeight);
+                    var imgData = canvas.toDataURL("image/jpeg");
+                    console.log(imgData);
+                    preview.css({
+                        "background-image": "url(" + imgData + ")",
+                        "background-size": "cover"
+                    });
+                    textarea.val(imgData);
+                };
+            };
+            fileReader.readAsDataURL(file.files[0]);
+        };
+    })();
+</script>
+</body>
+</html>

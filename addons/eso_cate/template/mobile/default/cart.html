@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>已选 - {php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .userorders ul li .con label { padding: 0 8px; }
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/init.js"></script>
+    <script type="text/javascript" src="{NOW_PATH}js/cart.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+    <script>$.mall_init();</script>
+</head>
+
+<body id="LB" data-url="{php echo urwdo()}" data-view="{$mall_view}">
+
+
+<div class="mb-sou mb-top">
+    <div class="c-f-search">
+        <a class="c-f-back" href="javascript:history.back()">返回</a>
+        <span class="c-f-title">已选</span>
+        <span class="c-f-h-s">
+            <a class="c-f-home" href="{php echo urwdo('index')}"></a>
+            <a class="c-f-user" href="{php echo urwdo('user')}"></a>
+        </span>
+    </div>
+</div>
+
+
+<div class="userorders" id="orderslist">
+    <ul>
+        {php $listdata = cate::db('数据表:cart,显示数目:100,排序:`indate` DESC', $wheresql)}
+        {php $lists = $listdata['lists']}
+
+        {loop $lists $list}
+        <li id="order_{$list['id']}" data-id="{$list['id']}" data-goodsid="{$list['goodsid']}">
+            <div class="tit">
+                <div class="indata">加入时间：{php date('Y-m-d H:i:s', $list['indate'])}</div>
+                <div class="delete" data-id="{$list['id']}"></div>
+            </div>
+            <div class="con" data-num="{php echo $list['price']*$list['number']}">
+                <label>
+                    <div class="ol-a">
+                        <input type="checkbox" class="c-f-checkbox" id="cartid" value="{$list['id']}" checked/>
+                    </div>
+                </label>
+                <div class="ol-l">
+                    <a class="fragment" href="{php echo urwdo('goods')}&id={$list['goodsid']}">
+                    <img class="lazy" data-original="{php echo toimage($list['goodsimg'])}" src="{IMG_PATH}loading.png" />
+                    </a>
+                </div>
+                <div class="ol-r">
+                    <a class="fragment" href="{php echo urwdo('goods')}&id={$list['goodsid']}">
+                        <h3><span>{$list['title']}</span></h3>
+                    </a>
+                    <div class="r-price">
+                        单价：<span>¥<strong>{$list['price']}</strong></span>
+                        <div class="r-total">
+                            <input type="tel" value="{$list['number']}" readonly="readonly"><em>{php echo $this->cate_unit($list['unit'])}</em>
+                        </div>
+                    </div>
+                    {if $list['attr']}
+                        <div class="r-attr">{php echo str_replace('<br/>',',',$list['attr'])}</div>
+                    {/if}
+                </div>
+            </div>
+        </li>
+        {/loop}
+        {if $lists}
+        <li class="emptycart">清空已选</li>
+        {else}
+        <li>
+            <div class="nodeals">您已选的目前没有商品喔！</div>
+        </li>
+        {/if}
+    </ul>
+</div>
+
+<div class="carttotalprice">
+    <div class="checkall">
+        <label><input type="checkbox" class="c-f-checkbox" checked> 全选</label>
+        <div class="total-price">
+            <span>合计:</span>
+            <strong>￥0.00</strong>
+        </div>
+    </div>
+    <button class="btn-sub" type="submit">提交(<span class="num">0</span>)</button>
+</div>
+
+{template TEMPLET.'bottom'}
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+    function input_cartid() {
+        window.cheed = '';
+        window.cheedi = 0;
+        var totalprice = 0;
+        $('input#cartid').each(function() {
+            if ($(this).attr('checked') ==true) {
+                totalprice+= parseFloat($(this).parents(".con").attr("data-num"));
+                window.cheed+= (window.cheed)?'-'+$(this).val():$(this).val();
+                window.cheedi++;
+            }
+        });
+        $(".carttotalprice strong").text("￥" + totalprice.toFixed(2));
+        $(".carttotalprice .num").text(window.cheedi);
+        if ($('input#cartid').length == window.cheedi) {
+            $(".carttotalprice .c-f-checkbox").attr('checked', true);
+        }else{
+            $(".carttotalprice .c-f-checkbox").attr('checked', false);
+        }
+    }
+    $(document).ready(function() {
+        var __cate_status = '{php echo $this->cate_status()}';
+        if (__cate_status != '') { alert(__cate_status); }
+        //
+        input_cartid();
+        $(".r-attr,.r-total").editcart();
+        $("input#cartid").click(function(){
+            input_cartid();
+        });
+        $(".carttotalprice .c-f-checkbox").click(function(){
+            if ($(this).attr('checked')) {
+                $("input#cartid").attr('checked', true);
+            }else{
+                $("input#cartid").attr('checked', false);
+            }
+            input_cartid();
+        });
+        $(".carttotalprice .btn-sub").click(function(){
+            if (!window.cheed) {
+                $.alertk("请选择需要结算的商品");
+                return;
+            }
+            $.alert("正在提交...");
+            window.location.href = "{php echo urwdo('buy')}&id=" + window.cheed;
+        });
+        $(".delete").click(function(){
+            $.alertb("确定要将此商品从已选中删除吗？", "<button class='alert-but' onclick='$.alert(0)'>取消</button><button class='alert-but' onclick='_del("+$(this).attr('data-id')+")'>确定</button>", 1);
+        });
+        $(".emptycart").click(function(){
+            $.alertb("确定要将已选的所有商品清空吗？", "<button class='alert-but' onclick='$.alert(0)'>取消</button><button class='alert-but' onclick='_delall()'>确定</button>", 1);
+        });
+        $('img.lazy').lazyload({effect: 'fadeIn'});
+    });
+    //
+    function _del(id) {
+        $.ajax({
+            type: "GET",
+            url: "{php echo urwdo('delcart')}&id=" + id,
+            dataType: "json",
+            success: function (data) {
+                $.alertk(data.message);
+                if (data != null && data.success != null && data.success) {
+                    $("li#order_"+id).remove();
+                    if ($("#orderslist").find("li").length == 1) {
+                        $("#orderslist").find("ul").html('<li><div class="nodeals">您已选的目前没有商品喔！</div></li>');
+                    }
+                    input_cartid();
+                }
+            },
+            error: function (msg) {
+                $.alertk("删除错误！");
+            }
+        });
+    }
+    function _delall() {
+        $.ajax({
+            type: "GET",
+            url: "{php echo urwdo('delallcart')}",
+            dataType: "json",
+            success: function (data) {
+                $.alertk(data.message);
+                if (data != null && data.success != null && data.success) {
+                    $("#orderslist").find("ul").html('<li><div class="nodeals">您已选的目前没有商品喔！</div></li>');
+                }
+                input_cartid();
+            },
+            error: function (msg) {
+                $.alertk("删除错误！");
+            }
+        });
+    }
+</script>
+</body>
+</html>

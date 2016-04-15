@@ -1,0 +1,66 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('Order', array('name'=>'xm_housekeep_we7'));}">订单列表</a></li>
+    <li class="active"><a href="">派单</a></li>
+</ul>
+
+<div class="clearfix">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                订单信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div class="alert alert-info">
+                            <span>服务项目：</span><span class="label label-info">{php echo $this->gettypename($item['typeid'])}</span><br/><br/>
+							<span>服务时间：</span><span class="label label-info">{$item[ftime]}</span><br/><br/>
+							<span>服务地点：</span><span class="label label-info">{$item[address]}</span><br/><br/>
+							<span>备注：</span><span class="label label-info">{$item[mark]}</span><br/><br/>
+                        </div>
+                    </div>
+                </div>
+			</div>	
+			
+			<form id="theform" class="form form-horizontal" action="{php echo $this->createWebUrl('paidanok',array('name'=>'xm_housekeep_we7'));}" method="post">
+			<input type="hidden" name="orderid" value="{$item[orderformid]}" />
+			<input type="hidden" name="openid" value="{$item[openid]}" />
+			<input type="hidden" name="typeid" value="{$item[typeid]}" />
+			<input type="hidden" name="ftime" value="{$item[ftime]}" />
+			<input type="hidden" name="address" value="{$item[address]}" />
+			<input type="hidden" name="mark" value="{$item[mark]}" />
+			<div class="panel-heading">
+                派单表单
+            </div>
+			<div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">选择员工</label>
+                    <div class="col-sm-9 col-xs-12">
+						{loop $list $val}
+                        <label class="i-checks radio-inline">
+							<input type="radio" name="waiterid" value="{$val[id]}"  >
+							<i></i>
+							{$val[name]}
+						</label>
+						{/loop}
+					
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+                    <div class="col-md-2 col-lg-1">
+                        <input name="submit" type="submit" value="保存" class="btn btn-primary btn-block" />
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                    </div>
+                </div>
+            </div>
+			</form>			
+			
+        </div>
+
+</div>
+
+{template 'common/footer'}

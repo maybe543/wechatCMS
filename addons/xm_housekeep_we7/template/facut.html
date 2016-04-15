@@ -1,0 +1,59 @@
+{template 'common/header'}
+<div class="main">
+    <ul class="nav nav-tabs">
+        <li><a href="{php echo $this->createWebUrl('cut');}">提成列表</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('facut');}">发放列表</a></li>
+    </ul>
+	
+	<div class="panel panel-info">
+			<div class="panel-heading">筛选</div>
+			<div class="panel-body">
+				<form action="./index.php" method="get" class="form-horizontal" role="form">
+					<input type="hidden" name="c" value="site" />
+					<input type="hidden" name="a" value="entry" />
+					<input type="hidden" name="m" value="xm_housekeep" />
+					<input type="hidden" name="do" value="Facut" />
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">关键字</label>
+						<div class="col-sm-8 col-lg-9">
+							<input class="form-control" name="keyword" id="" type="text" value="{$_GPC['keyword']}">
+						</div>
+						<div class=" col-xs-12 col-sm-2 col-lg-2">
+							<button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+						</div>
+					</div>
+					<div class="form-group">
+					</div>
+				</form>
+			</div>
+	
+		</div>
+	
+	
+		<div class="panel panel-default">
+			<div class="table-responsive panel-body">
+	
+		<div style="padding:15px;">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+				<tr>
+					<th>员工姓名</th>
+					<th>发放金额</th>
+					<th>发放时间</th>
+				</tr>
+				</thead>
+				<tbody>
+				{loop $list $row}
+				<tr>
+					<td>{$row[staff_name]} </td>
+					<td>{$row[cut]}</td>
+					<td>{$row[addtime]} </td>
+				</tr>
+				{/loop}
+				</tbody>
+			</table>
+			{$pager}
+		</div>
+	</div>
+</div>
+{template 'common/footer'}

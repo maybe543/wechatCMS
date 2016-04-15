@@ -1,0 +1,20 @@
+{template 'header'}
+<link type="text/css" rel="stylesheet" href="../addons/hawk_ticket/images/style.css?{TIMESTAMP}">
+<style>
+    .row{margin-top:30px;}
+    body{height:800px;}
+    p{margin:30px 15px 15px 15px;}
+    strong{font-size:18px;}
+</style>
+<div class="head">
+    <a href="javascript:history.back();" class="bn pull-left"><i class="fa fa-angle-left"></i></a>
+    <span class="title">票据二维码</span>
+</div>
+<div class="row text-center">
+    <div class="col-xs-12 col-md-12">
+        <img src="{php echo $this->createMobileUrl('qr',array('raw'=>$url))}" width="280" height="280">
+    </div>
+</div>
+<p><strong>将二维码给门卫或店员扫描下，即可以通过资格审核进场或换取其他票据,长按二维码可保存到手机</strong></p>
+{template 'footer'}
+{template 'footbar'}

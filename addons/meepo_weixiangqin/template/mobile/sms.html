@@ -1,0 +1,235 @@
+{template 'common/header'}
+<script>
+	require(['angular', 'bootstrap', 'util'], function(angular, $, u){
+		angular.module('app', []).controller('loginPanel', function($scope, $http){
+			$scope.label = {
+				basic: {
+					error: false
+				},
+				code: {
+					countDown : '',
+					error: false
+				},
+				running: false
+			};
+			$scope.ret = {
+				basic: {
+					username : '',
+					password : ''
+				},
+				code: {
+					username : '',
+					password : ''
+				}
+			};
+			$scope.login = function(){
+				if($scope.label.running) {
+					return;
+				}
+				var ret = $scope.ret;
+				var mode = angular.element('li.active a[data-toggle="tab"]').attr('href') == '#basic' ? 'basic' : 'code';
+				if(ret[mode].username == '' || ret[mode].password == '') {
+					$scope.label[mode].error = true;
+					return;
+				}
+				$scope.label[mode].error = false;
+
+				$scope.label.running = true;
+				var params = angular.copy(ret[mode]);
+				params.mode = mode;
+				$http.post(location.href, params).success(function(dat){
+					if(dat != 'success') {
+						u.message(dat);
+					} else {
+						location.reload();
+					}
+					$scope.label.running = false;
+				});
+			};
+		});
+		angular.bootstrap(document, ['app']);
+        u.sendCode2 = function(elm, no, callback) {
+		if(!no || !elm || !$(elm).attr('uniacid')) {
+			if($.isFunction(callback)) {
+				callback('failed', '给定的参数有错误');
+			}
+			return;
+		}
+		$(elm).attr("disabled", true);
+		var downcount = 60;
+		$(elm).html(downcount + "秒后重新获取");
+
+		var timer = setInterval(function(){
+			downcount--;
+			if(downcount <= 0){
+				clearInterval(timer);
+				$(elm).html("重新获取验证码");
+				$(elm).attr("disabled", false);
+				downcount = 60;
+			}else{
+				if($.isFunction(callback)) {
+					callback('downcount', downcount);
+				}
+				$(elm).html(downcount + "秒后重新获取");
+			}
+		}, 1000);
+
+		var params = {};
+		params.mobile = no;
+		params.uniacid = $(elm).attr('uniacid');
+
+		$.post("{php echo $this->createMobileUrl('smssend')}", params).success(function(dat){
+			if(dat == '1') {
+				if($.isFunction(callback)) {
+					callback('success', null);
+				}
+			} else {
+				if($.isFunction(callback)) {
+					callback('failed', dat);
+				}
+			}
+		});
+	};
+		$(function(){
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				if($(e.target).attr('href') == '#code') {
+					$('#code').addClass('fadeInRight');
+				} else {
+					$('#basic').addClass('fadeInLeft');
+				}
+			});
+			$('.btn-sender').on('click', function(){
+				var mode = $('li.active a[data-toggle="tab"]').attr('href') == '#basic' ? 'basic' : 'code';
+				if(mode == 'basic') {
+					return;
+				}
+				var scope = angular.element('.ng-container').scope();
+				if(!scope.ret.code.username) {
+					//alert('请输入手机号.');
+					return;
+				}
+				u.sendCode2(this, scope.ret.code.username, function(ret, message){
+					if(ret == 'failed') {
+						//u.message('发送验证码失败. 详情: ' + message);
+                        alert('发送验证码失败. 详情: ' + message);
+					}
+				});
+					
+                
+			});
+		});
+	});
+</script>
+<style>
+	body{background:#d2e6e9;}
+	.panel{margin:.5em; border:none;}
+	.panel-info>.panel-heading {background: -webkit-gradient(linear, 0 0, 100% 0, from(#ebebeb), to(#f3f9fa), color-stop(30%, #f5f9f9)); color:#666666; border:none;}
+	a{color:#666666;}a:hover{color: #3ebacc;}
+	.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus{color: #3ebacc;}
+	.actions{margin:.8em auto;}
+	.nav.nav-tabs{margin-bottom:.8em;}
+	.btn.btn-primary{background: #56c6d6; color: #FFF; border: 0;}
+	/**/
+#poptip { display:block;position: fixed; top:30%;left:50%;width:160px;margin-left:-80px;height: 80px;background:#000; opacity: 0.7;filter:alpha(opacity=0.7); color:#fff;z-index: 999;  border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;}
+#poptip_content { display:block;position: fixed; top:30%;left:50%;width:160px;margin-left:-80px; height: 27px; color:#fff;text-align:center;font-size:14px;z-index: 9909;text-align:center;line-height:80px}
+
+</style>
+<div class="ng-cloak panel panel-info ng-container" ng-controller="loginPanel">
+	<div class="panel-heading">
+		<h4>手机验证</h4>
+	</div>
+	<div class="panel-body">
+	<form name="theform" method="post" role="form" onsubmit="login2();">
+		<ul class="nav nav-tabs" role="tablist">
+			
+				
+				<li class="active"><a href="#code" role="tab" data-toggle="tab">手机验证</a></li>
+			
+		</ul>
+		<div class="tab-content">
+			
+			
+				<div class="tab-pane animated active" id="code">
+					<div class="form-group has-feedback" ng-class="{'has-error': label.code.error}">
+						<label class="control-label sr-only"></label>
+						<input ng-model="ret.code.username" type="number"  class="form-control" placeholder="请输入您的手机号" id="mobile">
+						<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="label.code.error"></span>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-warning btn-block btn-sender" uniacid="{$_W['uniacid']}">获取验证码</button>
+					</div>
+					<div class="form-group has-feedback" ng-class="{'has-error': label.code.error}">
+						<label class="control-label sr-only"></label>
+						<input ng-model="ret.code.password" type="number" class="form-control" id="yzm" placeholder="验证码">
+						<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="label.code.error"></span>
+					</div>
+				</div>
+			
+		</div>
+		<button type="submit" class="btn btn-primary btn-block">确定</button>
+	</form>
+	
+	</div>
+</div>
+<script>
+function login2(){
+
+  var mobile = $('#mobile').val();
+  var yzm = $('#yzm').val();
+  var check = '1';
+  if(mobile==''){
+    //alert('请输入你的手机号');
+	tip('请输入你的手机号',true);
+	check = '2';
+	return;
+  }
+  if(yzm==''){
+    //alert('请输入验证码');
+	tip('请输入验证码',true);
+	check = '2';
+	return;
+  }
+  tip('加载中...');
+  if(check == '1'){
+       $.ajax({
+				type : "POST",
+				url: '{php echo $this->createMobileUrl('smspost')}',
+				data:{'mobile':mobile,'yzm':yzm},
+				dataType:'JSON',
+				success: function (data) {
+					if (data.error == 0) {
+						tip('验证成功',true);
+						   window.location.href="{php echo $this->createMobileUrl('alllist')}"; 
+					} else {
+						
+						tip(data.message,true);
+					}
+				}   
+			});
+  }
+}
+function tip(msg,autoClose){
+	var div = $("#poptip");
+	var content =$("#poptip_content");
+	if(div.length<=0){
+		div = $("<span id='poptip'></span>").appendTo(document.body);
+		content =$("<span id='poptip_content'>" + msg + "</span>").appendTo(document.body);
+	}else{
+		content.html(msg);
+		content.show(); 
+		div.show();
+	}
+	if(autoClose) {
+		setTimeout(function(){
+			content.hide();
+			div.hide();
+		},2000);
+	}
+   }
+	function tip_close(){
+		$("#poptip").hide();
+		$("#poptip_content").hide();
+	}
+</script>
+
+{template 'footer'}

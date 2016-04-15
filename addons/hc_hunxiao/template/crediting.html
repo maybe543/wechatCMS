@@ -1,0 +1,146 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="{php echo $this->createWebUrl('credit', array('op'=>'display'))}">未审核</a></li>
+	<li><a href="{php echo $this->createWebUrl('credit', array('op'=>'applyed'))}">已审核</a></li>
+</ul>
+<div class="main">
+	<div class="stat">
+		<form action="">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="hc_hunxiao" />
+			<input type="hidden" name="do" value="credit" />
+			<input type="hidden" name="op" value="display" />
+			<input type="hidden" name="opp" value="sort" />
+			<table class="table sub-search">
+				<tbody>
+					<tr>
+						<th style="width:100px;">真实姓名</th>
+						<td>
+							<input name="realname" type="text" class="form-control" style="width:150px;" value="{$sort['realname']}" />
+						</td>
+					</tr>
+					<tr>
+						<th style="width:100px;">手机号码</th>
+						<td>
+							<input name="mobile" type="text" class="form-control" style="width:150px;" value="{$sort['mobile']}" />
+						</td>
+					</tr>
+					<tr>
+						<th></th>
+						<td>
+							<input type="submit" name="" value="搜索" class="btn btn-primary">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<form action="">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="hc_hunxiao" />
+			<input type="hidden" name="do" value="outCrediting" />
+			<input type="hidden" name="op" value="display" />
+			<table class="table sub-search">
+				<tbody>
+					<tr>
+						<th style="width: 90px;">数据导出</th>
+						<td>
+							{php echo tpl_form_field_daterange('outputdate', array('start'=>date('Y-m-d', time()-7*24*3600), 'end'=>date('Y-m-d',time()+24*3600)))}
+						</td>
+					</tr>
+					<tr>
+						<th></th>
+						<td>
+							<input type="submit" name="" value="导出" class="btn btn-primary">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div class="stat-div">
+			<div class="sub-item" id="table-list">
+				<h4 class="sub-title" style="float:right;color:red;">总数：<?php echo $total;?>&nbsp;&nbsp;<a href="">刷新</a></h4>
+				<h4 class="sub-title">审核通过名单</h4>
+
+				<form action="" method="post" onsubmit="">
+				<div class="sub-content">
+					<table class="table table-hover">
+						<thead class="navbar-inner">
+							<tr>
+								<th class="row-hover"><input type="checkbox" onclick="selected(this);" name="crediting" /></th>
+								<th class="row-hover">真实姓名</th>
+								<th class="row-hover">手机号码</th>
+								<th class="row-hover">申请时间</th>
+								<th class="row-hover">佣金</th>
+								<th class="row-hover">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{loop $list $v}
+								<tr>
+									<td>
+										<input type="checkbox" name="creditings" value="{$v['id']}"/>
+									</td>
+									<td>
+										{$member['realname'][$v['mid']]}
+									</td>
+									<td>
+										{$member['mobile'][$v['mid']]}
+									</td>
+									<td>
+										{php echo date('Y-m-d',$v['createtime'])}
+									</td>
+									<td>
+										{$v['commission']}
+									</td>
+									<td>
+										<a href="{php echo $this->createWebUrl('credit',array('op'=>'detail', 'id' => $v['id']));}">详情</a>		
+									</td>
+								</tr>
+							{/loop}
+						</tbody>
+					</table>
+				</div>
+				</form>
+				{$pager}
+			</div>
+			<input type="submit" onclick="output();" value="导出" class="btn btn-primary" style="position:relative;left:25px;"/>
+		</div>
+	</div>
+</div>
+<script>
+function selected(obj){
+	var creditings = document.getElementsByName('creditings');
+	if(obj.checked==true){
+		for (var i=0; i<creditings.length; i++){
+			creditings[i].checked = true;
+		}
+	} else {
+		for (var i=0; i<creditings.length; i++){
+			creditings[i].checked = false;
+		}
+	}
+}
+
+function output(){
+	var creditings = document.getElementsByName("creditings");
+	var flag = false;
+	var j = 0;
+		
+	var selected = new Array();
+	for (var i=0; i<creditings.length; i++){
+		if(creditings[i].checked == true){
+			selected[j] = creditings[i].value;
+			flag = true;
+			j++;
+		}
+	}
+	if(!flag){
+		alert('您还未选择需要导出的名单！');
+		return;
+	}
+	window.location.href = "{php echo $this->createWebUrl('outcrediting', array('op'=>'output'), true)}&selected="+selected;
+}
+</script>
+{template 'common/footer'}

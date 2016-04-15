@@ -1,0 +1,88 @@
+{template 'header'}
+
+<div id="activity-detail">
+<style type="text/css">
+@charset "utf-8";
+body > .tips{display:none;left:50%;padding:20px;position:fixed;text-align:center;top:50%;width:200px;z-index:100;}
+.page{padding:15px;}
+.page .page-error, .page .page-loading{line-height:30px;position:relative;text-align:center;}
+#activity-detail .page-bizinfo{border-bottom:1px dotted #CCC;}
+#activity-detail .page-bizinfo .header{padding:10px 10px 10px;}
+#activity-detail .page-bizinfo .header #activity-name{color:#000;font-size:20px;font-weight:bold;word-break:normal;word-wrap:break-word;}
+#activity-detail .page-bizinfo .header #post-date{color:#8c8c8c;font-size:11px;margin:0;}
+#activity-detail .page-content{padding:10px;}
+#activity-detail .page-content .media{margin-bottom:18px;}
+#activity-detail .page-content .media img{width:100%;}
+#activity-detail .page-content .text{color:#3e3e3e;font-size:1.5;line-height:1.5;width: 100%;overflow: hidden;zoom:1;}
+#activity-detail .page-content .text p{min-height:1.5em;min-height: 1.5em;word-wrap: break-word;word-break:break-all;}
+#activity-list .header{font-size:20px;}
+#activity-list .page-list{border:1px solid #ccc;border-radius:5px;margin:18px 0;overflow:hidden;}
+#activity-list .page-list .line.btn{border-radius:0;margin:0;text-align:left;}
+#activity-list .page-list .line.btn .checkbox{height:25px;line-height:25px;padding-left:35px;position:relative;}
+#activity-list .page-list .line.btn .checkbox .icons{background-color:#ccc;left:0;position:absolute;top:0;}
+#activity-list .page-list .line.btn.off .icons{background-image:none;}
+#activity-list #save.btn{background-image:linear-gradient(#22dd22, #009900);background-image:-moz-linear-gradient(#22dd22, #009900);background-image:-ms-linear-gradient(#22dd22, #009900);background-image:-o-linear-gradient(#22dd22, #009900);background-image:-webkit-gradient(linear, left top, left bottom, from(#22dd22), to(#009900));background-image:-webkit-linear-gradient(#22dd22, #009900);}
+.vm{vertical-align:middle;}
+.tc{text-align:center;}
+.db{display:block;}
+.dib{display:inline-block;}
+.b{font-weight:700;}
+.clr{clear:both;}
+.text img{max-width:100%;}
+.page-url{padding-top:18px;}
+.page-url-link{color:#607FA6;font-size:14px;text-decoration:none;text-shadow:0 1px #ffffff;-webkit-text-shadow:0 1px #ffffff;-moz-text-shadow:0 1px #ffffff;}
+#mbutton{padding:15px 10px 15px 10px; overflow:hidden; border-bottom:1px #DDD solid;}
+#mbutton > span{float:right; display:inline-block; background:#999999; border:1px #999999 solid; color:#FFF; height:30px; line-height:30px; padding:0 10px; margin-left:10px;}
+#mcover{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0, 0, 0, 0.7);display:none;z-index:20000;}
+#mcover img{position:fixed;right: 18px;top:5px;width:260px;height:180px;z-index:20001;}
+.head{height:40px; line-height:40px; background:#efefef; margin-bottom:5px; padding:0 5px; color:#FFF;}
+.head .bn{display:inline-block; height:30px; line-height:30px; padding:0 10px; margin-top:4px; font-size:20px; border:1px #efefef solid; background:#efefef; color:#999999; text-decoration:none;}
+.head .bn.pull-right{position:absolute; right:5px; top:0;}
+.head .title{font-size:14pt;display:block;padding-left:10px;font-weight:bolder;margin-right:49px;text-align:center;height:40px;line-height:40px;text-overflow:ellipsis;white-space:nowrap;overflow: hidden;color:#999999;}
+.head .order{background:#F9F9F9; position:absolute; z-index:9999; right:0;}
+.head .order li > a{display:block; padding:0 10px; min-width:100px; height:35px; line-height:35px; font-size:16px; color:#333; text-decoration:none; border-top:1px #EEE solid;}
+.head .order li.icon-caret-up{font-size:20px;color:#F9F9F9;position:absolute;top:-11px;right:16px;}
+</style>
+<div class="head">
+	<a href="javascript:history.go(-1);" class="bn pull-left"><i class="fa fa-mail-reply"></i></a>
+	<span class="title">预约服务</span>
+	<a href="javascript:$('.head .order').toggleClass('hide');" class="bn pull-right"><i class="icon-reorder"></i></a>
+</div>
+{template 'slide'}
+<div class="row">
+{loop $projects $project}
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="{$_W['attachurl']}{$project['picurl']}" alt="{$project['ser_name']}">
+      <div class="caption">
+        <h3>{$project['ser_name']}</h3>
+        <p>{$project['kbox']}</p>
+        <p>
+        <a href="{php echo $this->createMobileUrl('reservation',array('id' => $project['id']))}" class="btn btn-primary" role="button">预约</a>
+        <a href="{php echo $this->createMobileUrl('profession',array('id' => $project['id']))}" class="btn btn-default" role="button">介绍</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  {/loop}
+</div>
+
+</div>
+</div>
+<div id="mbutton">
+	<span  class="" onclick="$('#mcover').show()"><i class="icon-share-alt" ></i> 转发</span>
+	<span class="" onclick="$('#mcover').show()"><i class="icon-group"></i> 分享</span>
+</div>
+<div id="mcover" onclick="$(this).hide()"><img src="{php echo IMS_VERSION>=0.6?"../addons":"./source/modules"}/bm_meifa/template/img/guide.png"></div>
+<script>
+$(function() {
+	if(!navigator.userAgent.match(/Android/i)) {
+		$(".contacts").click(function() {
+			$('#mcover').show();
+			return false;
+		});
+	}
+});
+</script>
+
+{template 'footer'}

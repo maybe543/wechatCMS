@@ -1,0 +1,43 @@
+{php include $_template->template('header')}
+<main id="panel" class="panel">
+<link href="http://a1.jmstatic.com/91f179567fa39f33/common.css" rel="stylesheet" type="text/css"/>
+<link href="http://a5.jmstatic.com/1bea7cf6230e9af5/ui.css" rel="stylesheet" type="text/css"/>
+<link href="http://a1.jmstatic.com/5ab60ad284bc262c/deals_new.css" rel="stylesheet" type="text/css"/>
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/jmtouch.css?v={TIMESTAMP}"  media="screen" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="{$_tpl_dir_path}css/v3/css/deal_details.css?v={TIMESTAMP}" media="screen"  charset="utf-8" />
+
+<div class="views content_title">
+  <a id="back" class='js-slideout-toggle' href="javascript:history.back()">
+    <img src="http://a0.jmstatic.com/bae11435b0c3c891/header_back.png" class="return">
+  </a>
+  <span id="page_title">导航</span>
+  <a class="go_home" href="{php echo $this->createMobileUrl('List')}"><img src="http://s1.jmstatic.com/templates/touch/css/v3/image/go_home.png" alt=""></a>
+</div>
+
+<!--活动列表-->
+<section id="global-deals-new" class="global-deals-new">
+<section id="deals-content" class="deals-content">
+    <!--栏目一-->
+    <ul class="touch-activity-detail clear">
+      {loop $category $item}
+      {php include $_template->template('cate_item')}
+      {/loop}
+    </ul>
+    <!--栏目一 end-->
+</section>
+    <div class="ui-bg"></div>
+
+    <footer class="touch-footer-container">
+    <div class="top-line"></div>
+    <div class="bottom-rights">
+      <p>©2015 {$_W['account']['name']}</p>
+    </div>
+    </footer>
+
+    <script type="text/javascript" src="{$_tpl_dir_path}/css/v3/js/jumei.js"></script>
+    <script type="text/javascript" src="http://a5.jmstatic.com/daf74efcc8331433/ui.js"></script>
+    <script type="text/javascript" src="http://a2.jmstatic.com/7d11baec538cfdeb/deals_new_main.js"></script>
+
+</main>
+
+{php include $_template->template('footer')}

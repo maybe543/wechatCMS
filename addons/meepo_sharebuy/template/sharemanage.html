@@ -1,0 +1,180 @@
+{template 'common/header'}
+<script type='text/javascript' src='resource/js/lib/jquery-1.11.1.min.js'></script>
+<script type="text/javascript" src="{MEEPO}images/jquery.gcjs.js"></script>
+<script type="text/javascript" src="{MEEPO}images/jquery.form.js"></script>
+<script type="text/javascript" src="{MEEPO}images/tooltipbox.js"></script>
+<style type="text/css">
+.red {float:left;color:red}
+.white{float:left;color:#fff}
+
+.tooltipbox {
+	background:#fef8dd;border:1px solid #c40808; position:absolute; left:0;top:0; text-align:center;height:20px;
+	color:#c40808;padding:2px 5px 1px 5px; border-radius:3px;z-index:1000;
+}
+.red { float:left;color:red}
+</style>
+<ul class="nav nav-tabs">
+	<li {if $operation == 'display'} class="active" {/if}><a href="{php echo $this->createWebUrl('sharemanage',array('op' =>'display'))}">分享数据列表</a></li>
+	<li  {if empty($list['id']) &&  $operation == 'post'}class="active"{/if}><a href="{php echo $this->createWebUrl('sharemanage',array('op' =>'post'))}">添加分享数据</a></li>
+	{if !empty($list['id']) &&  $operation == 'post'}<li  class="active"><a href="{php echo $this->createWebUrl('sharemanage',array('op' =>'post','id'=>$list['id']))}">编辑分享数据</a></li>{/if}
+</ul>
+
+{if $operation == 'display'}
+<div class="panel panel-info">
+	<div class="panel-heading">筛选</div>
+	<div class="panel-body">
+		<form action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="meepo_sharebuy" />
+			<input type="hidden" name="do" value="sharemanage" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享标题</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<input class="form-control" name="keyword" id="" type="text" value="{$_GPC['keyword']}" placeholder="请输入分享标题">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">分享内容</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<input class="form-control" name="keyword2" id="" type="text" value="{$_GPC['keyword2']}" placeholder="请输入分享内容">
+				</div>
+			</div>
+			<div class="form-group">
+			    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label"></label>
+				<div class=" col-xs-12 col-sm-2 col-lg-3">
+					<input type="submit"  value="搜索" class="btn btn-success btn-block" />
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<div class="main panel panel-default">
+<div class="panel-heading">
+    请注意 <br>
+	1: 由于分享的图片与点击阅读全文图片相互串联着 故需运营着自己设计 在模块里有一张样图asb.jpg 可下载下来参照设计<br><br>
+	2: 图片规格为 640*1289<br><br>
+	3: 系统已经统计: 总分享次数为: <font color=red>{$nums}</font> 次
+</div>
+	<div class="panel-body">
+		<table class="table">
+			<thead class="navbar-inner">
+				<tr>
+					<th>分享标题</th>
+					<th>分享内容</th>
+					<th>分享图片</th>
+					<th>分享链接</th>
+					<th>分享转跳链接</th>
+					<th>分享次数</th>
+					<th>添加时间<th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<style>td{height:50px;text-align:center}</style>
+				{loop $lists $list}
+				<tr>
+					<td  title="{$list['share_title']}" >{$list['share_title']}</td>
+					<td  title="{$list['share_content']}">{$list['share_content']}</td>
+					<td><img width="50" src="{$_W['attachurl']}{$list['share_logo']}" class="avatar" /></td>
+					<td  title="{$list['share_link']}">{$list['share_link']}</td>
+                    <td title="{$list['share_ztlink']}">{$list['share_ztlink']}</td>
+					 <td title="{$list['num']}">{$list['num']}</td>
+					<td>{php echo date('Y-m-d H:i:s',$list['createtime'])}</td>
+					<td style="text-align:right;">
+						<a href="{php echo $this->createWebUrl('sharemanage', array('op' => 'post', 'id' => $list['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="修改" ><i class="fa fa-edit"></i></a>
+						<a href="{php echo $this->createWebUrl('sharemanage', array('op' => 'delete', 'id' => $list['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="删除" onclick="return confirm('删除将无法恢复，确认吗？');return false;"><i class="fa fa-times"></i></a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+	</div>
+</div>
+<script>
+	require(['bootstrap'],function($){
+		$('.btn').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+		$('#title').hover(function(){
+			$(this).tooltip('show');
+		},function(){
+			$(this).tooltip('hide');
+		});
+	});
+</script>
+{elseif $operation == 'post'}
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data" onsubmit='return formcheck()'>
+		<input type="hidden" name="id" value="{$list['id']}" />
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				{if !empty($list['id'])}修改{else}新增{/if}分享数据
+			</div>
+			<div class="panel-body">
+			    <div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>分享标题</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" id='share_title' name="share_title" class="form-control" value="{$list['share_title']}" />
+						<span class="help-block">分享标题</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>分享内容</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" id='share_content' name="share_content" class="form-control" value="{$list['share_content']}" />
+						<span class="help-block">分享内容</span>
+					</div>
+				</div>
+                <div class="form-group">
+			        <label class="col-xs-12 col-sm-3 col-md-2 control-label">分享显示图片</label>
+					<div class="col-sm-9">
+						{php echo tpl_form_field_image('share_logo', $list['share_logo']);}
+						<span class="help-block">注意 此处图片不仅用于分享显示图片而且用于点击阅读全文打开的显示图片 规格为:640*1289 请认真设计</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>分享链接</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" id='share_link' name="share_link" class="form-control" value="{$list['share_link']}" />
+						<span class="help-block">分享链接</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style="color:red">*</span>分享后转跳链接</label>
+					<div class="col-sm-9 col-xs-12">
+						<input type="text" id='share_ztlink' name="share_ztlink" class="form-control" value="{$list['share_ztlink']}" />
+						<span class="help-block">分享后转跳链接</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-success col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+	    </div>
+ </form>
+</div>
+<script language='javascript'>
+	function formcheck() {
+		if($("#share_title").isEmpty()) {
+			Tip.focus("share_title", "请填写分享标题!");
+			return false;
+		}
+		if($("#share_link").isEmpty()){
+		   Tip.focus("share_link", "请填写分享链接!");
+			return false;
+		}
+		if($("#share_ztlink").isEmpty()){
+		   Tip.focus("share_ztlink", "请填写分享转跳链接!");
+			return false;
+		}
+		return true;
+	}
+</script>
+{/if}
+{template 'common/footer'}

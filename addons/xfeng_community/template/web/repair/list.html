@@ -1,0 +1,109 @@
+{template 'common/header'}
+<ul class="nav nav-tabs">
+        <li class="active"><a href="{php echo $this->createWebUrl('repair', array('op' => 'list'));}">管理</a>
+        </li>
+        <li><a href="{php echo $this->createWebUrl('repair', array('op'=>'category'));}">服务分类</a></li>
+    </ul>
+    <div class="panel panel-info">
+        <div class="panel-heading">筛选</div>
+        <div class="panel-body">
+            <form action="" method="post" class="form-horizontal" role="form">
+            {if !$user}
+            	<div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">选择小区</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                        <select name="regionid" class="form-control">
+                                {loop $regions $region}
+                                <option value="{$region['id']}" {if $region['id']==$_GPC['regionid']} selected{/if}>{$region['title']}</option>
+                                {/loop}
+                        </select>
+                    </div>
+                </div>
+            {/if}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">报修类型</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                        <select name="category" class="form-control">
+                                {loop $categories $category}
+                                <option value="{$category['name']}" {if $category['name']==$_GPC['category']} selected{/if}>{$category['name']}</option>
+                                {/loop}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">报修日期</label>
+                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                       {php echo tpl_form_field_daterange('birth', array('starttime' => date('Y-m-d',empty($starttime) ? TIMESTAMP : $starttime),'endtime' => date('Y-m-d',empty($endtime) ? TIMESTAMP : $endtime)));}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 control-label">状态</label>
+                    <div class="col-sm-8 col-md-8 col-lg-8 col-xs-12">
+                        <label for="ipt_status1" class="radio-inline">
+                                <input class="" name="status" id="ipt_status1" type="radio" value="2" {if $status == 2 || empty($status)}checked='checked' {/if}/>未处理
+                        </label>
+                        <label for="ipt_status2" class="radio-inline">
+                            <input class="" name="status" id="ipt_status2" type="radio" value="3" {if $status == 3}checked='checked' {/if} />处理中
+                        </label>
+                        <label for="ipt_status3" class="radio-inline">
+                            <input class="" name="status" id="ipt_status3" type="radio" value="1" {if $status == 1}checked='checked' {/if} />已处理
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label"></label>
+                    <div class="col-sm-7 col-lg-9 col-xs-12">
+                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <input type="hidden" name="token" value="{$_W['token']}" />
+                        <button type="submit" name="export" value="1" class="btn btn-primary">导出 Excel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div style="padding:15px;">
+        <table class="table table-hover">
+            <thead class="navbar-inner">
+                <tr>
+                    <th style="width:80px;">报修类型</th>
+                    <th style="width:50px;">报修人</th>
+                    <th style="width:100px;">报修人手机</th>
+                    <th style="width:100px;">所属小区</th>
+                    <th style="width:100px;">报修日期</th>
+                    <th style="width:100px;">状态</th>
+                    <th style="min-width:60px; width:10%;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop $list $item}
+                <tr>
+                    <td>{$item['category']}</td>
+                    <td>{$item['realname']}</td>
+                    <td>{$item['mobile']}</td>
+                    <td>
+                        {$item['city']}{$item['dist']}{$item['title']}
+                    </td>
+                    <td>{php echo date('Y-m-d H:i:s', $item[createtime]);}</td>
+                    <td>{if $item['status'] ==1 }<span class="label label-success">已处理</span>{/if}{if $item['status'] == 3 }<span class="label label-info">受理中</span>{/if}{if $item['status'] == 2 }<span class="label label-default">未处理</span>{/if}</td>
+                    <td>
+                        <span>
+							<a href="{php echo $this->createWebUrl('repair',array('op'=>'add','id'=>$item['id']));}"  class="btn btn-default btn-sm">
+                                <i class='glyphicon glyphicon-edit'></i>
+                            查看</a>
+						</span>
+                        &nbsp;&nbsp;
+                        <span>
+							<a  class="btn btn-default btn-sm" onclick="return confirm('删除操作不可恢复，确认吗？')" href="{php echo $this->createWebUrl('repair',array('op'=>'delete','id'=>$item['id']));}">
+                             <i class='glyphicon glyphicon-remove-circle'></i>
+                            删除</a>
+						</span>
+                    </td>
+                </tr>
+                {/loop}
+            </tbody>
+        </table>
+        {$pager}
+    </div>
+
+
+{template 'common/footer'}

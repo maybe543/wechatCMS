@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<meta content="" name="pgv">
+<title>上传照片</title>
+<script type="text/javascript" src="../addons/water_super/template/js/jquery-1.8.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../addons/water_super/template/js/webuploader/webuploader.css">
+<script type="text/javascript" src="../addons/water_super/template/js/webuploader/webuploader.js"></script>
+</head>
+<body>
+<style type="text/css">
+	.webuploader-pick {
+		display: block;
+		width: 90%;
+	}
+</style>
+	<div class="ui-container">
+		<div id='body_1'>
+			<div id="fileListIcon" style="overflow:hidden;padding:10px;">
+			</div>
+			<div class="ui-btn-wrap">
+				<div id="file_upload_icon">添加3张照片</div>
+			</div>
+			<div id="fileListImages" style="overflow:hidden;padding:10px;">
+			</div>
+		</div>
+	</div>
+	{php $showorder =  $this->createMobileUrl('orderShow', array());}
+	<script type="text/javascript">
+	var orderid = "{$orderid}";
+	var orderstate = "{$orderstate}";
+	var numid = "{$numid}";
+	var BASE_URL = "{$_W['siteroot']}addons/water_super/template/js/webuploader/";
+	// 图片上传demo
+	jQuery(function() {
+	    var $ = jQuery,
+	        $list = $('#fileListIcon'),
+	        $listImages = $('#fileListImages'),
+	        // 优化retina, 在retina下这个值是2
+	        ratio = window.devicePixelRatio || 1,
+
+	        // 缩略图大小
+	        thumbnailWidth = 60 * ratio,
+	        thumbnailHeight = 60 * ratio,
+
+	        // Web Uploader实例
+	        uploaderIcon;
+
+
+	    // 初始化Web Uploader
+	    uploaderAlbum = WebUploader.create({
+
+	        // 自动上传。
+	        auto: true,
+
+	        // swf文件路径
+	        swf: BASE_URL + '/Uploader.swf',
+
+	        // 文件接收服务端。
+	        server: '{php echo $this->createMobileUrl("picupload")}',
+
+	        // 选择文件的按钮。可选。
+	        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+	        pick: '#file_upload_icon',
+
+	        // 只允许选择文件，可选。
+	        accept: {
+	            title: 'Images',
+	            extensions: 'gif,jpg,jpeg,bmp,png',
+	            mimeTypes: 'image/*'
+	        },
+	        formData:{'datatype':'album','orderid':orderid,'orderstate':orderstate,'numid':numid},
+	        fileNumLimit:3,
+	        compress: {
+			    width: 400,
+			    height: 300,
+
+			    // 图片质量，只有type为`image/jpeg`的时候才有效。
+			    quality: 90,
+
+			    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+			    allowMagnify: false,
+
+			    // 是否允许裁剪。
+			    crop: false,
+
+			    // 是否保留头部meta信息。
+			    preserveHeaders: true,
+
+			    // 如果发现压缩后文件大小比原来还大，则使用原来图片
+			    // 此属性可能会影响图片自动纠正功能
+			    noCompressIfLarger: false,
+
+			    // 单位字节，如果图片大小小于此值，不会采用压缩。
+			    compressSize: 1024*50
+			}
+	    });
+
+	    // icon
+	    uploadOperation(uploaderAlbum,$list);
+
+	    function uploadOperation(uploader,$list) {
+	    	// 当有文件添加进来的时候
+		    uploader.on( 'fileQueued', function( file ) {
+		        var $li = $(
+		                '<div id="' + file.id + '" class="file-item thumbnail">' +
+		                    '<img>' +
+		                    '<div class="info">' + file.name + '</div>' +
+		                '</div>'
+		                ),
+		            $img = $li.find('img');
+
+		        $list.append( $li );
+
+		        // 创建缩略图
+		        uploader.makeThumb( file, function( error, src ) {
+		            if ( error ) {
+		                $img.replaceWith('<span>不能预览</span>');
+		                return;
+		            }
+
+		            $img.attr( 'src', src );
+		        }, thumbnailWidth, thumbnailHeight );
+		    });
+
+		    // 全部文件上传结束
+		    uploader.on('uploadFinished',function(file) {
+
+		    	//window.location.href="";
+		    })
+
+		    // 文件上传过程中创建进度条实时显示。
+		    uploader.on( 'uploadProgress', function( file, percentage ) {
+		        var $li = $( '#'+file.id ),
+		            $percent = $li.find('.ui-progress span');
+
+		        // 避免重复创建
+		        if ( !$percent.length ) {
+		            $percent = $('<div class="ui-progress"><span style="width:0%"></span></div>')
+		                    .appendTo( $li )
+		                    .find('span');
+		        }
+
+		        $percent.css( 'width', percentage * 100 + '%' );
+		    });
+
+		    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+		    uploader.on( 'uploadSuccess', function( file ) {
+		         var $li = $( '#'+file.id ),
+		            $success = $li.find('div.success');
+
+		        // 避免重复创建
+		        if ( !$success.length ) {
+		            $success = $('<div class="success"></div>').appendTo( $li );
+		        }
+
+		        $success.text('上传成功');
+		        window.location.href='';
+		    });
+
+		    uploader.on( 'uploadAccept', function( obj,res ) {
+		    	
+		    });
+
+
+		    // 文件上传失败，现实上传出错。
+		    uploader.on( 'uploadError', function( file,reason  ) {
+		        var $li = $( '#'+file.id ),
+		            $error = $li.find('div.error');
+
+		        // 避免重复创建
+		        if ( !$error.length ) {
+		            $error = $('<div class="success"></div>').appendTo( $li );
+		        }
+
+		        $error.text('上传成功');
+		    });
+
+		    // 完成上传完了，成功或者失败，先删除进度条。
+		    uploader.on( 'uploadComplete', function( file ) {
+		        $( '#'+file.id ).find('.progress').remove();
+		        var url = '{php echo $showorder}';
+		     	var newurl = url.replace('?','?id='+orderid+'&numid='+numid);  
+		    	window.location.href = newurl;
+		    });
+		};
+	});
+</script>
+<body>
+</html>
+
+  

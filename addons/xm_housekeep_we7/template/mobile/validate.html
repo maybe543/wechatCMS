@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">    
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<title>服务员工身份绑定</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/swiper307.min.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+<style>
+.indexlist a:nth-child(3n+0).ubr{
+border-right: none;
+}
+</style>
+<script>
+function submit1(){
+	var mobile = document.getElementById('mobile').value;	
+				
+	if(!mobile){
+		alert("请输入电话");
+		return;
+	}
+	if (!/^1[358]{1}[0-9]{9}/.test(mobile)) {
+		alert('请输入正确的手机号码！');
+		return;
+	}
+			
+	$.ajax({
+		url: "{php echo $this->createMobileUrl('validateok', array());}",
+		type:"POST",
+		data:$("#form1").serialize(),
+		dataType:"json",
+		success: function(res){
+			if(res == "0"){
+				alert('对不起，与登记的手机号码不符，身份验证失败！请重新填写！');
+			}else{
+				alert('恭喜您，身份验证成功！');
+				WeixinJSBridge.call('closeWindow');  
+			}
+		}
+	});
+				
+}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<body>
+
+<div id="page0" class="c-gra1 ub ub-ver">
+	{if $isValidate == 1}
+	<div class="ub-f1 ub ub-ver">
+            <div class="ub ub-ver ub-ac ub-pc" style="height:8em">
+                <div class="uc-a50 c-gra ub-img1" style="height:4em; width:4em; background-image:url({$headurl})"></div>
+                <div class=" umar-t1">{$niname}</div>
+            </div>
+            <div class="uinn8 c-wh  ubt ubb b-bla01">
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">姓名：</div>
+                	{$item[name]}
+				</div>
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">手机：</div>
+                    {$item[mobile]}
+                </div>
+            </div>
+			
+			 <div class="uinn8 c-wh tx-c  ubt ubb b-bla01">
+			 <身份已验证>
+			 </div>
+			
+			<div class="c-wh ub-f1">
+                <div class="uinn"></div>
+                <div class="t-gra tx-c ulev-1 uinn1">姓名，手机号码是您在本家政平台登记的信息</div>
+	</div>		
+	{else}
+	<form class="form-horizontal ub ub-f1 ub-ver" id="form1" action="javascript:;" method="post">
+        <div class="ub-f1 ub ub-ver">
+           
+            <div class="uinn8 c-wh  ubt ubb b-bla01">
+                <div class="uinn8"></div>
+                <div class="uinn ub ub-ac">
+                    <div class="umar-r tx-r" style="min-width:4em">手机：</div>
+                    <input type="tel" name="mobile" id="mobile" placeholder="请填写手机号" style="width:10em" class="uinn uba b-bla01 ulev0 ub-f1 uc-a1" />
+                </div>
+				<div class="uinn8"></div>
+            </div>
+
+            <div class="c-wh ub-f1">
+                <div class="uinn"></div>
+                <div class="t-gra tx-c ulev-1 uinn1">请输入您在本家政平台登记的<br />服务人员手机号进行微信绑定。<br /><br />绑定后您将实时收到派单通知和奖金通知。</div>
+                
+                <div class="uinn8  ub">
+                    <!--<a href="#" onclick="checkform()" class="uinn c-org ub ub-pc uc-a1" style="margin-bottom:0.5em"><span class="ulev0 t-wh">保存</span></a>-->
+                    <button class="uinn211 c-org block uc-a1 ub-f1 tx-c t-wh ulev0"  onClick="submit1()" style="margin-bottom:0.5em;" type="submit">验证绑定</button>
+					<!--<input onClick="submit1()" type="submit" value="保存信息" class="uinn c-org ub ub-pc uc-a1" style="margin-bottom:0.5em" />-->
+					<input type="hidden" name="token" value="{$_W['token']}" />
+                </div>
+            </div>
+        </div>
+    </form>
+	{/if}
+</div>
+
+<!--<script type="text/javascript" src="js/zepto1.3.min.js"></script>-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/jquery_min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+	//分享
+	//分享
+	jssdkconfig = {php echo json_encode($_W['account']['jssdkconfig']);} || {};
+
+	// 是否启用调试
+	jssdkconfig.debug = false;
+	
+	jssdkconfig.jsApiList = [
+		'checkJsApi',
+		'hideOptionMenu',
+	];
+	
+	wx.config(jssdkconfig);
+	
+	wx.ready(function () {
+		wx.hideOptionMenu();
+	});
+</script>
+
+</body>
+</html>

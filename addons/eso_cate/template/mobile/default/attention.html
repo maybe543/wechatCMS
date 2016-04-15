@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{php echo $this->reply['title']}</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+    <link href="{NOW_PATH}css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="{NOW_PATH}css/index.min.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .usericon a, .usericon a:visited {
+            text-decoration: none;
+            color: #6930DD;
+            font-weight: bold;
+        }
+    </style>
+    <script type="text/javascript" src="{NOW_PATH}js/jQuery/jquery-1.5.2.min.js"></script>
+    <script type="text/javascript" src="{JS_PATH}jquery.alert.js"></script>
+</head>
+
+<body>
+
+
+<div class="mb-sou mb-top">
+    <div class="c-f-search">
+        <span class="c-f-title" style="margin:0">温馨提示</span>
+    </div>
+</div>
+
+<div class="usericon clearfix">
+    请通过公众号 “<a href="{$accountdata['subscribeurl']}">{$accountdata['name']}</a>” {if $rule_keyword_text}<br/>发送关键词【{$rule_keyword_text}】{/if}进入
+</div>
+
+{template TEMPLET.'bottom'}
+
+
+<div id="fb-root"></div>
+
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

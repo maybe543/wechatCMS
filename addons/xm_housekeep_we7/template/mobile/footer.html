@@ -1,0 +1,170 @@
+<div id="footer" class="fix0 c-s403" style="width:100%; bottom:0;">
+		<div class="ub">
+            <a href ="{php echo $this->createMobileUrl('xmCover',array('name'=>'xm_housekeep_we7'));}" class="ub ub-pc block {if $from == 'index'} c-s402 t-wh {/if};" style="width:25%">
+                <div class="ub ub-ver ub-ac ub-pc">
+                    <i class="iconfont icon-sort ulev1 {if $from == 'index'} t-wh {/if}"></i> 
+                    <span class="block ulev-1 {if $from == 'index'} t-wh {/if}" style="">服务项目</span>
+                </div>
+            </a>
+            <a href ="{php echo $this->createMobileUrl('Usercenter',array('name'=>'xm_housekeep_we7'));}" class="ub ub-pc block {if $from == 'user'} c-s402 t-wh {/if}" style="width:25%">
+                <div class="ub ub-ver ub-ac ub-pc">
+                    <i class="iconfont icon-nan ulev1 {if $from == 'user'} t-wh {/if}"></i> 
+                    <span class="block ulev-1 {if $from == 'user'} t-wh {/if}" style="">会员中心</span>
+                </div>
+            </a>
+            <a href ="{php echo $this->createMobileUrl('Question',array('name'=>'xm_housekeep_we7'));}" class="ub ub-pc block {if $from == 'question'} c-s402 t-wh {/if};" style="width:25%">
+                <div class="ub ub-ver ub-ac ub-pc">
+                    <i class="iconfont icon-pinglun ulev1 {if $from == 'question'} t-wh {/if}"></i> 
+                    <span class="block ulev-1 {if $from == 'question'} t-wh {/if}" style="">常见问题</span>
+                </div>
+            </a>
+            <a href="{php echo $this->createMobileUrl('Service',array('name'=>'xm_housekeep_we7'));}" class="ub ub-pc block {if $from == 'service'} c-s402 t-wh {/if};" style="width:25%">
+                <div class="ub ub-ver ub-ac ub-pc">
+                    <i class="iconfont icon-news ulev1 {if $from == 'service'} t-wh {/if}"></i> 
+                    <span class="block ulev-1 {if $from == 'service'} t-wh {/if}" style="">服务说明</span>
+                </div>
+            </a>
+        </div>
+		
+</div>
+	
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	
+<script type="text/javascript">
+	//分享
+	jssdkconfig = {php echo json_encode($_W['account']['jssdkconfig']);} || {};
+
+	// 是否启用调试
+	jssdkconfig.debug = false;
+	
+	jssdkconfig.jsApiList = [
+		'checkJsApi',
+		'onMenuShareTimeline',
+		'onMenuShareAppMessage',
+		'onMenuShareQQ',
+		'onMenuShareWeibo',
+	];
+	
+	wx.config(jssdkconfig);
+	
+	wx.ready(function () {
+		// 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+        wx.onMenuShareAppMessage({
+            title: '{$base[share_title]}',
+            desc: '{$base[share_content]}',
+            link: '{$base[link]}',
+            imgUrl: '{$_W[attachurl]}{$base[share_icon]}',
+            trigger: function (res) {
+
+            },
+            success: function (res) {
+                /*$.ajax({
+					url: "{php echo $this->createMobileUrl('addshare', array());}",
+					type:"POST",
+					data:"",
+					dataType:"json",
+					success: function(json){
+						//alert(json);
+					}
+				});	*/
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+
+            }
+        });
+		
+		// 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+		wx.onMenuShareTimeline({
+            title: '{$base[share_title]}',
+            desc: '{$base[share_content]}',
+            link: '{$base[link]}',
+            imgUrl: '{$_W[attachurl]}{$base[share_icon]}',
+            trigger: function (res) {
+
+            },
+            success: function (res) {
+				/*$.ajax({
+					url: "{php echo $this->createMobileUrl('addshare', array());}",
+					type:"POST",
+					data:"",
+					dataType:"json",
+					success: function(json){
+						//alert(json);
+					}
+				});*/
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+				alert('失败');
+            }
+        });
+		
+		//分享到QQ
+		wx.onMenuShareQQ({
+            title: '{$base[share_title]}',
+            desc: '{$base[share_content]}',
+            link: '{$base[link]}',
+            imgUrl: '{$_W[attachurl]}{$base[share_icon]}',
+            trigger: function (res) {
+
+            },
+            complete: function (res) {
+
+            },
+            success: function (res) {
+                /*$.ajax({
+					url: "{php echo $this->createMobileUrl('addshare', array());}",
+					type:"POST",
+					data:"",
+					dataType:"json",
+					success: function(json){
+						//alert(json);
+					}
+				});*/
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+
+            }
+        });
+		
+		//分享到微博
+        wx.onMenuShareWeibo({
+            title: '{$base[share_title]}',
+            desc: '{$base[share_content]}',
+            link: '{$base[link]}',
+            imgUrl: '{$_W[attachurl]}{$base[share_icon]}',
+            trigger: function (res) {
+
+            },
+            complete: function (res) {
+
+            },
+            success: function (res) {
+                /*$.ajax({
+					url: "{php echo $this->createMobileUrl('addshare', array());}",
+					type:"POST",
+					data:"",
+					dataType:"json",
+					success: function(json){
+						//alert(json);
+					}
+				});*/
+            },
+            cancel: function (res) {
+
+            },
+            fail: function (res) {
+
+            }
+        });
+
+	});
+</script>

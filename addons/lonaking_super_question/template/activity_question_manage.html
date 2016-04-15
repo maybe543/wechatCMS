@@ -1,0 +1,98 @@
+{template 'common/header'}
+<span class="hide" id="activity-id" data-id="{$activity['id']}"></span>
+<span class="hide" id="select-url" data-url="{php echo $this->createWebUrl('ActivityQuestionSelect');}"></span>
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="{php echo $this->createWebUrl('ActivityManage');}">活动管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('QuestionManage');}">问题管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('TeamManage');}">战队管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('PlayerManage');}">玩家管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('RecordManage');}">活动参加记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('AdManage');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+	</ul>
+	<div class="panel panel-default">
+		<div class="panel-heading"><div class="" style="font-size: 18px;">选择问题:<span style="padding-left: 30px;">{$activity['name']}</span></div></div>
+		<div class="panel-body">
+			<div>
+				<a href="{php echo $this->createWebUrl('ActivityQuestionManage',array('id'=>$activity['id']))}"><button type="button" class="btn btn-default btn-sm {if $class == null }active{/if}">全部</button></a>
+				{loop $class_list $c}
+				<a href="{php echo $this->createWebUrl('ActivityQuestionManage',array('id'=> $activity['id'],'class'=>$c['id']));}"><button type="button" class="btn btn-default btn-sm {if $class == $c['id']}active{/if}">{$c['name']}</button></a>
+				{/loop}
+			</div>
+			<div class="" style="padding 15px">
+				<form action="" method="post">
+					<table class="table table-hover">
+						<thead class="navbar-inner">
+							<tr>
+								<th width="7%">选择</th>
+								<th width="7%">编号</th>
+								<!--<th width="30%">唯一标志</th>-->
+								<th>问题</th>
+								<th>正确答案</th>
+								<th>默认得分</th>
+								<th>创建时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{loop $result_question_page['data'] $d}
+								<tr>
+									<td data-id="{$d['id']}"><input data-question-id="{$d['id']}" type="checkbox" {if $d['selected'] == true}checked{/if} class="select-question"></td>
+									<td data-id="{$d['id']}">{$d['id']}</td>
+									<!--<td>{$d['question_num']}</td>-->
+									<td>{$d['title']}</td>
+									<td>{$option_arr[$d['right_answer']]}</td>
+									<td>{$d['score']}</td>
+									<td>{php echo date("Y-m-d h:i:s",$d['create_time'])}</td>
+									<td>
+										<a href="{php echo $this->createWebUrl('QuestionEdit',array('id'=>$d['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+										<a href="javascript:void(0);" class="btn btn-danger btn-sm del-ad" data-id="{$d['id']}" data-url="{php echo $this->createWebUrl('HardRemove',array('id'=>$d['id'],'opt'=>'question'));}"><i class="glyphicon glyphicon-remove"> 删除</i></a>
+									</td>
+								</tr>
+							{/loop}
+						</tbody>
+					</table>
+				</form>
+				{$result_question_page['pager']}
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".del-ad").on("click",function(){
+			var btn = $(this);
+			var url = btn.data('url')
+			var tr = btn.parent().parent();
+			$.post(url,function(result){
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					//移除dom
+					tr.remove();
+				}
+			});
+		});
+		//加入一条记录
+		$('.select-question').on('click', function () {
+			var question_id = $(this).data('question-id');
+			var activity_id = $('#activity-id').data('id');
+			var post_data = {
+				question_id : question_id,
+				activity_id : activity_id
+			}
+			var post_url = $('#select-url').data('url');
+			$.post(post_url,post_data, function (e) {
+				var json = JSON.parse(e);
+				if(json.status != 200){
+					alert(json.message);
+				}
+			})
+
+		})
+	});
+</script>
+{template 'common/footer'}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<title>提示</title>
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-media.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-base.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-box.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="{MODULE_URL}/template/mobile/css/ui-color.css">
+</head>
+<body>
+<div id="page0" class="ub ub-ver c-gra1">
+    {if $flag == 0}
+		<div class="ub-f1 ub ub-ac ub-pc ub-ver">
+			<i class="iconfont icon-xiaolian t-org" style="font-size:6rem"></i>
+			<div class="uinn8">{$prompt}</div>
+		</div>
+		<div class="umar-t1" style="height:3em"></div>
+	{else}
+		<div class="ub-f1 ub ub-ac ub-pc ub-ver">
+			<i class="iconfont icon-xiaolian t-org" style="font-size:6rem"></i>
+			<div class="uinn8">{$prompt}</div>
+		</div>
+		<div class="umar-t1" style="height:3em"></div>
+	{/if}
+	{template 'footer'}
+</div>
+
+<!--<script type="text/javascript" src="js/zepto1.3.min.js"></script>-->
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript" src="{MODULE_URL}/template/mobile/js/main.js"></script>
+
+</body>
+</html>

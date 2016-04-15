@@ -1,0 +1,220 @@
+.head_icon{
+    vertical-align: middle;
+    width: 3px;
+    height: 14px;
+}
+.metro_group_head,.list_group_head{
+    height: 45px;
+    overflow: hidden;
+}
+.list_group_head{
+    padding: 0px 10px;
+}
+.metro_group_head .group_more{
+    float: right;
+    color: #707070;
+    font-size: 12px;
+}
+.metro_group_head .head_name,.list_group_head .head_name{
+    /*border-left: solid 2px #ed145b;*/
+    display: inline;
+    vertical-align: middle;
+    /*margin-left: 6px;*/
+    color: #212121;
+    font-size: 14px;
+    line-height: 45px;
+}
+.list_group_head{
+    border-bottom: solid 1px #ddd;
+}
+.more_metro_div{
+    background: url(images/go_more.gif) center right;
+}
+/*.more_metro_div .head_icon{
+        float: none;
+        vertical-align: middle;
+}
+.more_metro_head{
+        color: #2b2b2b;
+}
+.more_metro_content{
+        clear: both;
+        color: #474747
+}*/
+.item {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.information {
+    margin: 0px; 
+    width: 57%;
+    float: left;
+}
+.information p{
+    font-size: 14px;
+    line-height: 18px;
+    height: 52px;
+    overflow: hidden;
+    color: #666;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.price_info{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.price_info em {
+    margin-right:4px;
+}
+.price_info .grey {
+    font-size: 12px;
+    margin-right: 5px;
+}
+.cart {
+    position: static; 
+    float: right;
+    height: auto; 
+    margin-top: 15px;
+}
+.first_card{
+    margin-top:0px;
+}
+.list_container .item{
+    padding:0px;
+    margin-top: 0px;
+}
+.list_container a{
+    display: block;
+}
+.cart {
+    /*width: 14%;*/
+    width: 30px;
+}
+.cart img {
+    width:100%;
+    height: auto;
+}
+
+/*style start*/
+.item_image {
+    position: relative;
+    float: left;
+    width: 40%;
+    margin-right: 3%;
+    background: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+.item_image product-img {
+    /*height: 213px !important;*/
+    width: 100% !important;
+    display: block !important;
+    min-height: 100px;
+}
+.item_image .product-icon{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 32px;
+}
+.metro_container,.list_container{
+    background-color: #fff;
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 0px 10px;
+}
+/*.metro_container:first-child{
+    margin-top: 10px;
+}*/
+.list_container{
+    padding: 0px;
+}
+.quik_nav_container{
+    background-color: #ffffff;
+    border-top: 1px solid #d7d7d7; 
+    border-bottom: 1px solid #d7d7d7; 
+    margin-bottom: 10px;
+}
+.metro_item a{
+    display: block;
+}
+.metro_item {
+    width: 100%;
+    float: left;
+    margin-bottom: 6px;
+}
+/*style end*/
+.sell_state{
+    position: absolute;
+    top: 24%;
+    left: 24%;
+    width: 52%;
+    height: 27%;
+    background: rgba(0,0,0,0.6);
+    line-height: 64%;
+    border-radius: 64%;
+    -moz-border-radius: 64%;
+    padding-top: 25%;
+    color: #fff;
+    font-size: 4vw;
+    line-height: 1vw;
+}
+/*width*/
+.metro_4_w{
+    width: 100%;
+    /* background: url(../image/bg_logo_big.png) center center no-repeat;
+     background-size: 90px;*/
+}
+.metro_2_w{
+    width: 49.5%;
+    /*background: url(../image/bg_logo_big.png) center center no-repeat;
+    background-size: 45px;*/
+}
+.metro_3_w{
+    width: 75%;
+    /*background: url(../image/bg_logo_big.png) center center no-repeat;
+    background-size: 65px;*/
+}
+.metro_1_w{
+    width: 24.25%;
+    /*background: url(../image/bg_logo_big.png) center center no-repeat;
+    background-size: 25px;*/
+}
+.metro_cell_nomal{
+    width: 25%;
+}
+.metro_1cell_defer{
+    width: 24.25%;
+}
+.metro_2cell_defer{
+    width: 50.5%;
+}
+.metro_3cell_defer{
+    width: 75.75%;
+}
+/*.float_car{
+    position: fixed;
+    width: 40px;
+    bottom:20px;
+    left: 20px;
+    z-index: 99;
+}
+.float_car img{
+    width: 100%;
+}
+.go_top{
+    position: fixed;
+    bottom:20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 40px;
+    display: none;
+    z-index: 99;
+}
+.go_top img{
+    width: 100%;
+}*/

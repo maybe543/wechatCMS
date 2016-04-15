@@ -1,0 +1,100 @@
+{template 'common/header'}
+<style>
+  .menu-item-icon {
+    font-size:1.4em;
+    padding:14px;
+  }
+  .menu-item {
+    min-width:120px;
+  }
+</style>
+
+{php $installed = false; }
+{loop $entries $m=>$entry}
+
+{if empty($entry)}
+  {php continue; }
+{/if}
+
+{php $installed = true; }
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {$titles[$m]}
+		{if $installedmodulelist[$m]['settings']}
+    <a title="{$titles[$m]} 参数设置" style="float:right" href="{url 'profile/module/setting' array('m' => $m)}"><i class="fa fa-cog"></i></a>
+    {/if}
+  </div>
+  <div class="panel-body">
+    {loop $entry['menu'] $menu}
+    <a class="menu-item btn btn-default" href="{$menu['url']}">
+      <i class="menu-item-icon {php echo $this->famap($menu['title'])}"></i>
+      <br/>{$menu['title']}
+    </a>
+    {/loop}
+  </div>
+</div>
+{/loop}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {$sys_entry['title']}
+  </div>
+  <div class="panel-body">
+    {loop $sys_entry['menu'] $menu}
+    <a class="menu-item btn btn-default" href="{$menu['url']}">
+      <i class="menu-item-icon {php echo $this->famap($menu['title'])}"></i>
+      <br/>{$menu['title']}
+    </a>
+    {/loop}
+  </div>
+</div>
+
+{if $installed == false }
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {$default_entry['title']}
+  </div>
+  <div class="panel-body">
+    {loop $default_entry['menu'] $menu}
+    <a class="menu-item btn btn-default" href="{$menu['url']}">
+      <i class="menu-item-icon {php echo $this->famap($menu['title'])}"></i>
+      <br/>{$menu['title']}
+    </a>
+    {/loop}
+  </div>
+</div>
+{/if}
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <a style="float:right" class="btn btn-default" href="{php echo wurl('profile/module/setting', array('m'=>'xc_panel'))}" title="添加更多模块到面板中来">
+      添加更多模块
+    </a>
+    <a style="margin-right:20px; float:right" class="btn btn-default" id="bookmarkme" href="#" rel="sidebar" title="加入到收藏夹, 后继操作更便捷">
+      加入到收藏夹
+    </a>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#bookmarkme').click(function() {
+            if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+                window.sidebar.addPanel(document.title,window.location.href,'');
+            } else if(window.external && ('AddFavorite' in window.external)) { // IE Favorite
+                window.external.AddFavorite(location.href,document.title); 
+            } else if(window.opera && window.print) { // Opera Hotlist
+                this.title=document.title;
+                return true;
+            } else if (navigator.userAgent.toLowerCase().indexOf('mac') != - 1) { // webkit - chrome
+                alert('高大上的Mac系统，请按' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command' : 'CTRL') + ' + D添加本页面到收藏夹');
+            } else { // webkit - safari
+                alert('请按' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command' : 'CTRL') + ' + D添加本页面到收藏夹');
+            }
+            return false;
+        });
+    });
+</script>
+
+{template 'common/footer'}

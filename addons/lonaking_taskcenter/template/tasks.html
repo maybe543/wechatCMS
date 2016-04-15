@@ -1,0 +1,95 @@
+{template 'common/header'}
+<div class="main">
+	<ul class="nav nav-tabs">
+		<li><a href="{php echo $this->createWebUrl('users');}">推广员管理</a></li>
+		<li class="active"><a href="{php echo $this->createWebUrl('tasks');}">推广任务管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('gifts');}">礼品管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('ads');}">广告管理</a></li>
+		<li><a href="{php echo $this->createWebUrl('giftorders');}">兑换记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('checkRecordManage');}">核销记录</a></li>
+		<li><a href="{php echo $this->createWebUrl('tplNoticeConfig');}">模板消息设置</a></li>
+		<li><a href="{php echo $this->createWebUrl('updatePage');}">手动更新</a></li>
+		<a href="{php echo $this->createWebUrl('task');}" class="btn btn-success btn-sm pull-right"><i class="glyphicon glyphicon-plus"></i> 添加任务</a>
+	</ul>
+	<div>
+		<a href="{php echo $this->createWebUrl('tasks')}"><button type="button" class="btn btn-default btn-sm {if $status == -1 }active{/if}">所有任务</button></a>
+		<a href="{php echo $this->createWebUrl('tasks',array('s'=>0))}"><button type="button" class="btn btn-default btn-sm {if $status == 0}active{/if}">进行中</button></a>
+		<a href="{php echo $this->createWebUrl('tasks',array('s'=>1))}"><button type="button" class="btn btn-default btn-sm {if $status == 1}active{/if}">暂停</button></a>
+		<a href="{php echo $this->createWebUrl('tasks',array('s'=>2))}"><button type="button" class="btn btn-default btn-sm {if $status == 2}active{/if}">完成</button></a>
+
+	</div>
+	<div class="" style="padding 15px">
+		<form action="" method="post">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th width="7%">编号</th>
+	                    <th width="15%">标题</th>
+						<th width="10%">状态</th>
+						<th width="8%">点击</th>
+						<th width="10%">分享次数</th>
+						<th width="20%">创建时间</th>
+						<th width="40%">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $tasks $task}
+						<tr class="{if $task['status'] == 0}success{elseif $task['status'] == 1}info{elseif $task['status'] == 2}{/if}">			
+							<td data-id="{$task['id']}">{$task['id']}</td>
+							<td>{$task['name']}</td>
+							<td data-option="status">{if $task['status'] == 0}进行中...{elseif $task['status'] == 1}暂停{elseif $task['status'] == 2}完成{/if}</td>
+							<td>{$task['click_times']}</td>
+							<td>{$task['share_times']}</td>
+							<td>{php echo date("Y-m-d h:i:s",$task['createtime'])}</td>
+							<td>
+								<a href="{php echo $this->createWebUrl('task',array('id'=>$task['id']));}" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-edit"> 修改</i></a>
+								<a href="javascript:void(0);" class="btn btn-danger btn-sm opt-task" {if $task['status'] == 1 || $task['status'] == 2}disabled{/if} data-id="{$task['id']}" url="{php echo $this->createWebUrl('option_task',array('opt'=>'pause','id'=>$task['id']));}"><i class="glyphicon glyphicon-pause"> 暂停</i></a>
+	                        	<a href="javascript:void(0);" class="btn btn-primary btn-sm opt-task"  {if $task['status'] == 0 || $task['status'] == 2}disabled{/if} data-id="{$task['id']}" url="{php echo $this->createWebUrl('option_task',array('opt'=>'start','id'=>$task['id']));}"><i class="glyphicon glyphicon-play"> 开始</i></a>
+	                        	<a href="javascript:void(0);" class="btn btn-success btn-sm opt-task" {if $task['status'] == 2}disabled{/if} data-id="{$task['id']}" url="{php echo $this->createWebUrl('option_task',array('opt'=>'finish','id'=>$task['id']));}"><i class="glyphicon glyphicon-ok"> 完成</i></a>
+	                        	<a href="javascript:void(0);" class="btn btn-danger btn-sm opt-task"data-id="{$task['id']}" url="{php echo $this->createWebUrl('option_task',array('opt'=>'delete','id'=>$task['id']));}"><i class="glyphicon glyphicon-remove"> 删除</i></a>
+	                        </td>
+						</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</form>
+		{$pager}
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".opt-task").on("click",function(){
+			var btn = $(this);
+			var url = btn.attr('url')
+			$.post(url,function(result){
+				$id = $(this).attr('data-id');
+				var json = eval('('+result+')');
+				if(json.status != 200){
+					alert(json.message);
+					return false;
+				}else{
+					if(json.data == 'delete'){
+						btn.parent().parent().remove();
+						return ;
+					}
+					btn.siblings("a.opt-gift-order").attr("disabled","disabled");
+					btn.attr("disabled","disabled");
+					if(url.indexOf('opt=pause') != -1){
+						btn.parent().parent().attr("class","info");
+						btn.siblings().attr('disabled','disabled');
+						btn.parent().siblings("td[data-option='status']").text("暂停");
+					}else if(url.indexOf('opt=start') != -1 ){
+						btn.parent().parent().attr("class","success");
+						btn.parent().siblings("td[data-option='status']").text("进行中...");
+					}else if(url.indexOf('opt=finish') != -1 ){
+						btn.parent().parent().attr("class","");
+						btn.siblings().attr('disabled','disabled');
+						btn.parent().siblings("td[data-option='status']").text("完成");
+					}
+				}
+			});
+
+		});
+	});
+</script>
+{template 'common/footer'}

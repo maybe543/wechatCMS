@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-share-callback="{$urls['share_callback']}" data-send-result-url="{$urls['send_result_url']}" data-activity-id="{$activity['id']}" data-check-limit-url="{$urls['check_limit_url']}" data-limit-seconds="{$activity['limit_seconds']}" data-question-ids="{$activity['question_ids']}" data-record-id="{$activity['record']['id']}" data-follow-url="{$urls['follow_url']}" data-follow="{$html['follow']}">    
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+    <title>{$activity['name']}</title>
+    <meta name="share_logo" content="{$share['share_logo']}" />
+    <meta id="share-url-id" name="share_url" content="{$share['share_url']}" />
+    <meta id="share-title-id" name="share_title" content="{$share['share_title']}" />
+    <meta id="share-content-id" name="share_content" content="{$share['share_description']}" />
+    <!--<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="resource/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../addons/lonaking_super_question/template/mobile/share-assets/share.css">
+    <link href="../addons/lonaking_super_question/template/mobile/css/index.css?v={php echo rand(1,2999)}" rel="stylesheet">
+    <link href="../addons/lonaking_super_question/template/mobile/font/iconfont.css" rel="stylesheet">
+    <script type="text/javascript" src="resource/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="resource/js/lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/js/index.js"></script>
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/share-assets/share-guide.js"></script>
+    <link rel="stylesheet" href="../addons/lonaking_super_question/template/mobile/assets/confirm/jquery-confirm.min.css">
+    <script type="text/javascript" src="../addons/lonaking_super_question/template/mobile/assets/confirm/jquery-confirm.min.js"></script>
+</head>
+<body style="">
+<div id="background" style="position: absolute;z-index:-1;width: 100%; height: 100%;">
+    <img id="background-img" src="{php echo tomedia($activity['bg_pic'])}" height="100%" width="100%"></div>
+</div>
+<div id="mcover" onclick="hideShare()" style="display:none;">
+    <img src="../addons/lonaking_super_question/template/mobile/share-assets/guide.png" />
+</div>
+<div class="fakeloader"></div>
+    <div class="container">
+        <div class="rule-context option" style="display: none;">
+            <h2 class="rule-title text-center">规则说明</h2>
+            <article class="rule-content">
+                {$activity['rule']}
+            </article>
+            <div class="alert alert-warning opacity50 alert-dismissable text-center rule-back-tip">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                </button>
+                点击返回继续答题
+            </div>
+            <div class="col-lg-12">
+                <div class="copyright text-center">
+                    <div class="">&copy; {$activity['copyright']}</div>
+                </div>
+            </div>
+        </div>
+        <div class="index option" style="display: block;">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="logo pull-right">
+                        {if $activity['logo_pic']}<img src="{php echo tomedia($activity['logo_pic'])}">{/if}
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                    <div class="theme-pic text-center">
+                        {if $activity['theme_pic']}<img src="{php echo tomedia($activity['theme_pic'])}">{/if}
+                    </div>
+                </div>
+                <div class="dead-page-content">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <div class="play-text text-center">
+                            已有<span class="play-times">{php echo $activity['play_times']+$activity['virtual_times']}</span>参与测试
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <div class="btn-group btn-group-justified buttons" role="group">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary start-button">点击开始</button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default rule-button">规则说明</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <div class="copyright text-center">
+                            <div class="">&copy; {$activity['copyright']}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {loop $html['questions'] $q}
+        <div class="question option" style="display: none;" data-question-id="{$q['id']}" data-score="{$q['score']}" data-descore="{$q['de_score']}" data-bg-pic="{php echo tomedia($q['bg_pic'])}">
+            <div class="row {if $q['pic']}show{else}hide{/if}">
+                <div class="pic">
+                    <img src="{php echo tomedia($q['pic'])}" {if $html['config']['question_image_height']}height="250px"{/if}>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="question-title">{$q['title']}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'a'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option" >A.</span><span class="">{$q['option_a']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'b'}1{else}0{/if}">
+                    <div class="panel-body ">
+                        <span class="option">B.</span><span class="">{$q['option_b']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {if $q['option_c']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'c'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">C.</span><span class="">{$q['option_c']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+                {if $q['option_d']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'd'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">D.</span><span class="">{$q['option_d']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+                {if $q['option_e']}
+                <div class="panel panel-default select-option" data-right="{if $q['right_answer'] == 'e'}1{else}0{/if}">
+                    <div class="panel-body">
+                        <span class="option ">E.</span><span class="">{$q['option_e']}</span>
+                        <i class="icon iconfont pull-right">&#xe60e;</i>
+                    </div>
+                </div>
+                {/if}
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="question-ad">
+                        {if $q['ad']}<a href="{$q['ad']['url']}"><img src="{php echo tomedia($q['ad']['image'])}" width="100%" height="80px"></a>{/if}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        {/loop}
+        <div class="last-page option" style="display: none;" data-bg-pic="{php echo tomedia($q['bg_pic'])}">
+            <div class="result-score text-center">
+                <span class="score"></span>分
+            </div>
+            <div class="result-analyse">
+                <h2 class="result-title">答题分析</h2>
+                <div class="result-context">
+                    <article class="result-context-desc">
+                    </article>
+                    <div class="result-tip"><i class="glyphicon glyphicon-hand-right"></i>&nbsp;&nbsp;
+                        <span class="result-tip-content">
+                            答错<span class="wrong"></span>道题,转发朋友圈求助圈里好友,让他/她帮你回答错误题目,答对全部可获<span class="help-score"></span>积分哦
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm btn-block share-btn" onclick="shareTimeLine();">
+                分享给好友看看他们的得分
+            </button>
+            <a href="{$urls['rank_page']}" class="btn btn-success btn-sm btn-block share-btn">
+                查看本次活动排名
+            </a>
+            <div class="gift-shop-ad text-center">
+                {if $html['config']['gift_shop_logo']}
+                <span class="tip-line">本次答题获得<span class="score"></span>分，用时<span id="second"></span>秒，点击下面兑换礼品</span>
+                <a href="{$html['config']['gift_shop_url']}"> <img src="{php echo tomedia($html['config']['gift_shop_logo'])}"></a>{/if}
+            </div>
+            <div class="col-lg-12">
+                <div class="copyright text-center">
+                    <div class="">&copy; {$activity['copyright']}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="footer" style="display: none;">
+        <table width="100%" height="100%" border="0" style="border-collapse: collapse;">
+            <tr>
+                <td align="center"><span id="answered-count">0</span><br>
+                    已答题目</td>
+                <td align="center"><span id="question-count">{$html['question_count']}</span><br>
+                    题目总数</td>
+                <td align="center"><span id="time-count">0</span>秒<br>
+                    答题用时
+                </td>
+            </tr>
+        </table>
+    </nav>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+        debug: false,
+        appId: '{$html['jsconfig']['appId']}',  //微信的appid需要在公众平台生成
+        timestamp: '{$html['jsconfig']['timestamp']}', //这是由php部分生成的
+        nonceStr: '{$html['jsconfig']['nonceStr']}', //这是由php部分生成的
+        signature: '{$html['jsconfig']['signature']}', //这是由php部分生成的
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+        ]
+    });
+</script>
+<script src="../addons/lonaking_super_question/template/mobile/share-assets/wxshare.js"></script>
+</body>
+</html>

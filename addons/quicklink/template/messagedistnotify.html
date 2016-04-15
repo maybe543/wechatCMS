@@ -1,0 +1,52 @@
+<div class="form-group">
+  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
+    <h4>下线扫码关注公众号后，通知一级、二级上线：</h4>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-10">
+    <dl>
+      <dd>通知模板中可以插入多种链接, 以增强活跃度</dd>
+      <br>
+      <dd> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/order', array('m'=>'quickshop', 'weid'=>$_W['weid']))}'&gt;我的订单&lt;/a&gt;</dd>
+      <dd> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/list', array('m'=>'quickshop', 'weid'=>$_W['weid']))}'&gt;点击进入商城&lt;/a&gt;</dd>
+      <dd> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/goods', array('m'=>'quickcredit', 'weid'=>$_W['weid']))}'&gt;打开这里兑换积分&lt;/a&gt;</dd>
+      <dd> &lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/center', array('m'=>'quickcenter', 'weid'=>$_W['weid']))}'&gt;个人中心&lt;/a&gt;</dd>
+      <dd>以上只是一些例子，文字也可以修改。还可以自己填写更多种类的链接。</dd>
+      <dd><em style="color:red">层级说明：<kbd>会员(路人甲)</kbd> 的上线是 <kbd>推销员</kbd>的上线是<kbd>经理</kbd>的上线是<kbd>老板</kbd></em></dd>
+    </dl>
+  </div>
+</div>
+
+<div class="form-group">
+  {php echo FormTpl::label2('会员得到的<br><kbd>关注通知</kbd>', 'col-xs-12 col-sm-3 col-md-2 col-lg-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+    <span class="help-block">会员会得到个性化的通知, 输入不同关键词，可以得到不同的回复。具体设置，见【扫码响应内容】的设置。如果希望不发送任何通知，请填写：*（填写英文的星号）。</label>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('销员得到的<br><kbd>关注通知</kbd>', 'col-xs-12 col-sm-3 col-md-2', true); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_leader_follow_text', $item['notify_leader_follow_text']); }
+    <span class="help-block">例如: 通过您的努力，您的朋友 [nickname] 成为了您忠诚的支持者，您也获得了相应的积分奖励，&lt;a href='{$_W['siteroot']}app/{php echo murl('entry/module/goods', array('m'=>'quickcredit', 'weid'=>$_W['weid']))}'&gt;打开这里兑换积分&lt;/a&gt;！</span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('经理得到的<br><kbd>关注通知</kbd>', 'col-xs-12 col-sm-3 col-md-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_uplevel_follow_text', $item['notify_uplevel_follow_text']); }
+    <span class="help-block">例如: 您的朋友[nickname]又获得了一个新的支持者，您也得到了相应积分奖励，请注意查收! </span>
+  </div>
+</div>
+
+
+<div class="form-group">
+  {php echo FormTpl::label2('推销员得到的<br><kbd>扫码通知</kbd>', 'col-xs-12 col-sm-3 col-md-2'); }
+  <div class="col-xs-12 col-sm-9 col-md-10">
+    {php echo FormTpl::getWebControl2('textarea', 'notify_leader_scan_text', $item['notify_leader_scan_text']); }
+    <span class="help-block">例如: 您的朋友[nickname] . 通过您的二维码进入了系统. </span>
+  </div>
+</div>
+

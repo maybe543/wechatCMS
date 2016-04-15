@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>{if empty($item['aname'])}打赏活动{else}{$item['aname']}{/if}</title>
+<style>
+    html,body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #a60003;
+    }
+
+    #bodybox {
+        position: relative;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        {if empty($item['index'])}
+        background: url(../addons/jy_crowdfunding/images/page1_topImage.jpg) no-repeat;
+        {else}
+        background: url({$_W['attachurl']}{$item['index']}) no-repeat;
+        {/if}
+        background-size: 100% 100%;
+        overflow: hidden;
+        max-width: 640px;
+    }
+.page1-btn {
+    width: 46%;
+    position: absolute;
+    left: 27%;
+    bottom: 4%;
+}
+.buttonTitle{
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 8%;
+    color: #fff0d1;
+    font-size: 1.3em;
+}
+.textContent{
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    bottom: 20%;
+    color: #fff0d1;
+    line-height: 22px;
+    text-indent: 2em;
+    font-size: 1em;
+}
+</style>
+</head>
+<body>
+    <div id="bodybox">
+    {if empty($item['index_text'])}
+        <div class="textContent">发起【打赏活动】卖萌撒娇求我的小伙伴们来打赏，实现我的梦想！我与梦想之间，只差一个点击...</div>
+    {else}
+        <div class="textContent">{$item['index_text']}</div>
+    {/if}
+        <img class="page1-btn" src="../addons/jy_crowdfunding/images/zhongchouTravel.png" onclick="toPage2Func()" />
+    {if empty($item['index_button'])}
+        <div class="buttonTitle" onclick="toPage2Func()">Late in autumn</div>
+    {else}
+        <div class="buttonTitle" onclick="toPage2Func()">{$item['index_button']}</div>
+    {/if}
+      
+    </div>
+
+    <script>
+    
+    function toPage2Func() {
+        window.location.href = "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('huodong')}";
+    }
+    </script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    {php $signPackage=$_W['account']['jssdkconfig'];}   
+    <script>
+
+    var appid = '{$_W['account']['jssdkconfig']['appId']}';
+    var timestamp = '{$_W['account']['jssdkconfig']['timestamp']}';
+    var nonceStr = '{$_W['account']['jssdkconfig']['nonceStr']}';
+    var signature = '{$_W['account']['jssdkconfig']['signature']}';
+
+    wx.config({
+        debug: false,   
+        appId: appid,
+        timestamp: timestamp,
+        nonceStr: nonceStr,
+        signature: signature,
+        jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',]
+    });
+
+    wx.ready(function () {
+        var shareData = {
+            title: "赐我打赏吧",
+            desc: "发起打赏活动吧",
+            link: "{php echo $_W['siteroot'].'app/'.$this->createMobileUrl('index')}",
+            {if !empty($user['avatar'])}
+            imgUrl: "{$user['avatar']}",
+            {else}
+            imgUrl: "{$_W['siteroot']}addons/jy_crowdfunding/images/icon.jpg",
+            {/if}
+            trigger: function (res) {},
+            complete: function (res) {},
+            success: function (res) {
+                 
+                },
+            cancel: function (res) {
+            },
+            fail: function (res) {}
+        };
+        wx.onMenuShareTimeline(shareData);
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareQQ(shareData);
+        wx.onMenuShareWeibo(shareData);
+
+    });
+    </script>
+</body>
+</html>

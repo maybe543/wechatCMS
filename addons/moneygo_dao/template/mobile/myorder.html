@@ -1,0 +1,195 @@
+{template 'common/header'}
+<link href="../addons/moneygo_dao/template/css/comm.css" rel="stylesheet" type="text/css">
+<link href="../addons/moneygo_dao/template/css/goods.css" rel="stylesheet" type="text/css">
+<link href="../addons/moneygo_dao/template/css/index.css" rel="stylesheet" type="text/css">
+<link  rel="stylesheet"  href="../addons/moneygo_dao/template/css/css.css">
+{php echo register_jssdk();}
+<link rel="stylesheet" href="../addons/moneygo_dao/template/css/css.css">
+<script  src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+</head>
+<body style="background:#ffffff;">
+<header class="g-header">
+	<a href="javascript:;" onclick="window.history.back();" title="返回" class="back" style="margin-top:8px;"><i class="b_arr"></i>返回</a>
+	<a href="{php echo $this->createMobileUrl('index')}" title="首页" class="home" style="margin-top:8px;">首页 <i class="fa fa-home"></i></a>
+	<h2 id="oneNavTitle">兑换记录</h2>
+</header>
+<section class="wrap" style="padding-top:10px;">
+  <section class="exc_record">
+	<div id="oneUserChangelist" class="prize_list">
+		{loop $p_record $goodsid $goods}
+		<dl class="prize">
+			<dt class="pri_img"> 
+				<a href="{php echo $this->createMobileUrl('details', array('id' => $goods['id']))}" title="(第{$goods['periods']}期){$goods['title']}"><img src="{$_W['attachurl']}{$goods['picarr']}" alt="(第{$goods['periods']}期){$goods['title']}"></a>
+			</dt>
+			<dd class="pri_info">
+				<h3 class="pri_tit"> <a href="{php echo $this->createMobileUrl('details', array('id' => $goods['id']))}" title="(第{$goods['periods']}期){$goods['title']}">(第{$goods['periods']}期){$goods['title']}</a></h3>
+				<p>总需：{$goods['zongrenshu']}份</p>
+				{if $goods['q_uid'] == ''}
+				<p>获得者：<span class="fc">待揭晓</span></p>
+				<p>幸运号码：<span class="fc">待揭晓</span></p>
+				<p style="height:35px;">揭晓时间：待揭晓</p>
+				{else}
+				<p>获得者：<span class="fc">{$goods['q_uid']}</span></p>
+				<p>幸运号码：<span class="fc">{$goods['q_user_code']}</span></p>
+				<p style="height:35px;">揭晓时间：{php echo date('Y-m-d H:i:s',$goods['q_end_time'])}</p>
+				{/if}
+				<p>中奖率：{php echo round($goods['allcount']/$goods['zongrenshu'] ,4)*100}%</p>
+				<p>本期参与：{$goods['allcount']}人次</p>
+				<p><a href="{php echo $this->createMobileUrl('mycodes', array('id' => $goods['id'],'periods' => $goods['periods'],'title' => $goods['title']))}" title="查看我的幸运码" class="btn btn-success chk_link">幸运码</a>
+					{if $goods['q_uid'] == ''}
+					{elseif $goods['q_uid']&&$goods['showstatus']==0}
+					<a href="{php echo $this->createMobileUrl('show',array('id'=>$goods['id'],'showstatus'=>1,'openid'=>$_W['openid']))}" class="btn btn-warning chk_link">我要晒单</a>
+
+					{elseif $goods['showstatus']==1}
+					<span class="btn btn-danger chk_link disable" style="float:left;width:50%;padding:6px;">晒单成功</span>
+					{/if}</p>
+
+			</dd>
+		</dl>
+		{/loop}	
+		</div>
+  </section>
+</section>
+<div style="height:100px;clear: both;"></div>
+<!-- <span id="oneMore" style="display: block;" class="load_more">加载更多&gt;&gt;</span> -->
+<style type="text/css">
+	.footer {
+		clear: both;
+		width: 100%;
+		background: none repeat scroll 0% 0% #4E4E4E;
+		border-top: 1px solid #DDD;
+		height: 48px;
+		position: fixed;
+		bottom: 0px;
+		z-index: 100;
+	}
+	* {
+		outline: 0px none;
+	}
+	ul {
+		list-style: outside none none;
+	}
+	li,  ul {
+		margin: 0px;
+		padding: 0px;
+	}
+	.footer a {
+		width: 20%;
+		height: 50px;
+		padding-top: 3px;
+		text-align: center;
+		float: left;
+		display: block;
+		color: #fff;
+		font-size: 12px;
+	}
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+	.footer li.f_personal i {
+		width: 20px;
+		height: 22px;
+		background-position: 0px -151px;
+		position: relative;
+		top: 3px;
+		margin-bottom: 4px;
+	}
+	.footer a i {
+		display: block;
+		background: url('../addons/moneygo_dao/template/image/f_set.png') repeat scroll 0% 0% / 28px auto transparent;
+		margin: 0px auto 1px;
+	}
+	address, em, i, cite, s {
+		font-style: normal;
+	}
+	.footer li a.active { background-color: #F03048;}
+	.footer li.f_whole i {
+		width: 23px;
+		height: 25px;
+		background-position: 0px -78px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_sd i {
+		width: 23px;
+		height: 25px;
+		background-position: -5px -127px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_all i {
+		width: 23px;
+		height: 25px;
+		background-position: 0 75px;
+		position: relative;
+		top: 1px;
+	}
+	.footer li.f_home i {
+		width: 27px;
+		height: 25px;
+		background-position: 0px -25px;
+	}
+</style>
+<!-- 底部导航 -->
+<div class="footer" style="bottom: 0px;">
+	<ul>
+		<li class="f_home"><a href="{php echo $this->createMobileUrl('index')}" title="首页"><i></i>首页</a></li>
+		<li class="f_all"><a href="{php echo $this->createMobileUrl('list')}" title="全部商品"><i></i>全部商品</a></li>
+		<li class="f_whole"><a href="{php echo $this->createMobileUrl('introduction')}" title="规则介绍"><i></i>规则介绍</a></li>
+		<li class="f_sd"><a href="{php echo $this->createMobileUrl('show')}" title="幸运晒单"><i></i>幸运晒单</a></li>
+		<li class="f_personal"><a href="{php echo $this->createMobileUrl('profile')}" class="active" title="个人中心"><i></i>个人中心</a></li>
+	</ul>
+</div>
+</body>
+
+<script type="text/javascript">
+	
+
+	
+</script>
+<script type="text/javascript">
+wx.ready(function () {
+	var shareData = {
+		title: "{$share_data['share_title']}",
+		desc: "{$share_data['share_desc']}",
+		link: "{$to_url}",
+		imgUrl: "{$_W['attachurl']}{$share_data['share_image']}",
+	};
+//分享朋友
+	wx.onMenuShareAppMessage({
+	    title: shareData.title,
+	  	desc: shareData.desc,
+	  	link: shareData.link,
+	  	imgUrl:shareData.imgUrl,
+	  	trigger: function (res) {
+	  	},
+	  	success: function (res) {
+	    	window.location.href =adurl;
+	  	},
+	  	cancel: function (res) {
+	  	},
+	  	fail: function (res) {
+	    	alert(JSON.stringify(res));
+	  	}
+	});
+	//朋友圈
+	wx.onMenuShareTimeline({
+	  	title: shareData.title+"---"+shareData.desc,
+	  	link: shareData.link,
+	  	imgUrl:shareData.imgUrl,
+	  	trigger: function (res) {
+	  	},
+	  	success: function (res) {
+	    	window.location.href =adurl;
+	  	},
+	  	cancel: function (res) {
+	  	},
+	  	fail: function (res) {
+	    	alert(JSON.stringify(res));
+	  	}
+	});   
+
+});
+</script>
+</html>

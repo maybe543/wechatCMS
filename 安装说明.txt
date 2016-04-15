@@ -1,0 +1,29 @@
+
+微赞安装说明
+
+安装环境需求：IIS/Apache+PHP5.4以上+MYSQL数据库 需要开启OPENSSL
+
+
+源码上传至网站根目录
+
+1.访问帝国备份王    域名/h770.com    账号密码 admin  111111
+
+2.填写你的数据库信息   然后恢复数据
+
+3.打开源码data目录修改config.php文件
+
+       $config['db']['host'] = '127.0.0.1';
+       $config['db']['username'] = 'user1';     这里root修改成你的数据库帐号
+       $config['db']['password'] = '123456';     这里root修改成你的数据库密码
+       $config['db']['port'] = '3306';
+       $config['db']['database'] = 'wechatDB';   这里weizan修改成你的数据库名称
+       $config['db']['charset'] = 'utf8';
+       $config['db']['pconnect'] = 0;
+       $config['db']['tablepre'] = 'ims_';
+
+
+访问网站域名（微赞是没有独立后台地址的、管理和会员在相同的登录页面）
+
+使用帐号admin密码h770.com进入网站后台进行相关设置。
+
+以上就完成了微赞的安装

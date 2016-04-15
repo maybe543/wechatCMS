@@ -1,0 +1,182 @@
+{template 'header'}
+{php $_showMenu=1}
+<style>
+.j_list_n ,.j_list_n li{ list-style:none; margin:0; padding:0;}
+.j_list_n li div[class^='col-']{ padding:0;}
+.j_list_n li div[class^='col-']:first-child{color:#999}
+.form-group label{ padding-right:0; line-height:34px;}
+</style>
+<nav class="navbar navbar-default header navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-2 col-sm-2 col-md-2"> <A href="javascript:history.back()"><i class="fa fa-angle-left"></i></A> </div>
+      <div class="col-xs-8 col-sm-8 col-md-8">
+        <h1>活动报名</h1>
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-2"> </div>
+    </div>
+  </div>
+</nav>
+<div class="fixed_first">&nbsp;</div>
+<div class="jp_10">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <ul class="j_list_n">
+        <li>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3">活动名称</div>
+              <div class="col-xs-9 col-sm-9 col-md-9">{$item['title']}</div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3">报名时间</div>
+              <div class="col-xs-9 col-sm-9 col-md-9">{php echo date('Y-m-d',$item['joinstarttime'])} 至 {php echo date('m-d',$item['joinendtime'])}</div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3">活动时间</div>
+              <div class="col-xs-9 col-sm-9 col-md-9">{php echo date('Y-m-d',$item['starttime'])} 至 {php echo date('m-d',$item['endtime'])}</div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3">报名限额</div>
+              <div class="col-xs-9 col-sm-9 col-md-9">{if empty($item['applicants'])}不限{else}<b>{$item['applicants']}</b>人{/if}</div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-3 col-sm-3 col-md-3">获选限额</div>
+              <div class="col-xs-9 col-sm-9 col-md-9">{if empty($item['quota'])}不限{else}<b>{$item['quota']}</b>人{/if}</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form action="" method="post" class="form-horizontal form" enctype="multipart/form-data"  onsubmit="return checkmyFrom(this);">
+  <input type="hidden" name="id" value="{php echo $id}"/>
+  <input type="hidden" name="op" value="ok"/>
+  <input type="hidden" name="code" value="{$_GPC['code']}"/>
+    <div class="panel panel-default">
+      <div class="panel-heading">您的资料 <small style="color:red">以下内容必须填写完整</small></div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-3 col-sm-3 col-md-3 control-label">真实姓名</label>
+          <div class="col-xs-9 col-sm-9 col-md-9">
+            <input type="text" name="realname" class="form-control" value="{$profile['realname']}" placeholder="方便工作人员与您联系" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-3 col-sm-3 col-md-3 control-label">昵称</label>
+          <div class="col-xs-9 col-sm-9 col-md-9">
+            <input type="text" name="nickname" class="form-control" value="{$profile['nickname']}" placeholder="方便网上公布" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-3 col-sm-3 col-md-3 control-label">手机</label>
+          <div class="col-xs-9 col-sm-9 col-md-9">
+            <input type="tel" name="mobile" class="form-control" value="{$profile['mobile']}" placeholder="方便工作人员与您联系" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-3 col-sm-3 col-md-3 control-label">性别</label>
+          <div class="col-xs-9 col-sm-9 col-md-9">
+            <label for="option1" class="radio-inline">
+              <input type="radio" name="gender" id="option1" value="1" {if $profile['gender']==1}checked="checked"{/if} >
+              先生 </label>
+            <label  class="radio-inline" for="option2" >
+              <input type="radio" name="gender" id="option2" value="2" {if $profile['gender']==2}checked="checked"{/if}>
+              女士 </label>
+          </div>
+        </div>
+        {if strlen($parmaTemp)>10}{php echo $parmaTemp;}{/if}
+      </div>
+    </div>
+    
+    
+    <div style="padding:0 10px;">
+      <input type="submit" name="submit" class="btn btn-block btn-info" value="提交报名" />
+      <input type="hidden" name="token" value="{$_W['token']}" />
+    </div>
+  </form>
+</div>
+<script language="javascript">
+function checkmyFrom() {
+	if($("input[name='realname']").val().length<2){
+		alertH('请填写您的姓名，不然无法通知您的哦');
+		$("input[name='realname']").focus();
+		return false;
+	}
+	if($("input[name='nickname']").val().length<2){
+		alertH('昵称是用来发布的哦，就是对外公布的时候用的，写一下吧');
+		$("input[name='nickname']").focus();
+		return false;
+	}
+	if($("input[name='mobile']").val().length!=11){
+		alertH('手机号码不正确哦，我们是通过手机通知您是否入选的哦');
+		$("input[name='mobile']").focus();
+		return false;
+	}
+	$("input[name^='parama-key']").each(function(index, element) {
+        if($(this).val().length<1){
+			alertH('请填写完整');
+			$(this).focus();
+			return false;
+		}
+    });
+	return true;
+}
+function alertH(obj){
+	require(['jquery','util'], function($, util){
+		util.message(obj);
+	});	
+}
+var images = {
+  localId: [],
+  serverId: []
+};
+function uploadWimg(obj){
+	wx.chooseImage({
+		success: function (res) {
+			images.localId = res.localIds;
+			if (images.localId.length == 0) return;
+			var i = 0, length = 1;
+			images.serverId = [];
+			alert("图片选定数量"+images.localId.length);
+			wx.uploadImage({
+				localId: images.localId[0],
+				success: function (res) {
+					images.serverId.push(res.serverId);
+					imgServerid=res.serverId;
+					$.get("./index.php?c=entry&m=qw_cjhdpt&do=ajaxupload&i={$_W['uniacid']}",{media_id:imgServerid},function(data){
+						//alert("上传成功");
+						if(data=="0"){
+							alert("图片上传失败哦");
+							return;
+						}
+						$("input[name='parama-key["+obj+"]']").val(data);
+						if($(".uploadimg[op='"+obj+"']").size()>0)$(".uploadimg[op='"+obj+"']").remove();
+						$("input[name='parama-key["+obj+"]']").after("<p class='uploadimg' op='"+obj+"'><img src='"+data+"' width='80'/></p>");
+					})
+				},
+				fail: function (res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		}
+	});
+}
+</script> 
+{template 'footer2'}

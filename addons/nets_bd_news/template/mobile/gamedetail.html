@@ -1,0 +1,156 @@
+<?php$pagetitle=$game["title"]."_活动详情";?>
+{template 'mobile_head'}
+<header class="header-common">
+  <section>
+    <div class="goback" onclick="history.go(-1);"><i></i></div>
+    <div class="title">活动详情</div>
+    <div class="gomenu">
+      <div class="points-wrap"> <i class="points"></i> </div>
+    </div>
+  </section>
+  <ul class="menu hide">
+    {template 'head_right_menu'}
+  </ul>
+  <div class="mask hide"></div>
+</header>
+<section class="bill-top-title fix-header" id="topTitle">
+  <div class="title-box on" name="licaiwap_billList_tab_bill" id="head_game" onclick="headTabClick('mygame','game')"><span>参与活动</span></div>
+  <div class="title-box" name="licaiwap_billList_tab_term" id="head_mygame" onclick="headTabClick('game','mygame')"><span>我参与的</span></div>
+  <script>
+	
+	function headTabClick(hideid,showid){
+		$("#head_"+showid).addClass('on');
+		$("#head_"+hideid).removeClass("on");
+		$("#content_"+hideid).hide();
+		$("#content_"+showid).show();
+	}
+	
+  </script>
+</section>
+<?php 
+				$b="1";
+				$count=pdo_fetchcolumn("select count(*) from ims_netsbd_integral_game_record where gameid=".$game['id']);
+				if(strtotime($game["endtime"])<strtotime(date("Y-m-d h:m:s"))){
+					$b="0";
+				}
+				if(intval($count)==intval($game["num_eq_result"])){
+					$b="已结束";
+				}
+			?>
+<div id="content_game" style="margin-top:10px;">
+<section class="box bond-box">
+  <div class="bond-top">
+    <div class="title-line"> <span class="name">{$game["title"]}</span> <span class="type">截止人数{$game['num_eq_result']}人</span> </div>
+    <ul class="info  info2">
+      <li> <a href="javascript:void(0);" id="oneYearRaiseDrop">
+        <p class="positive">参与金钱</p>
+        <p>{$game["integral_eq_game"]} 元</p>
+		<p></p>
+        </a> </li>
+      <li> <a href="javascript:void(0);" id="fundNavVal">
+        <p class="positive" id="fundNav">开始时间</p>
+        <p>{$game["begintime"]}</p>
+        <p></p>
+        </a> </li>
+      <li> <a href="javascript:void(0);" class="toFundHistoryList" id="raiseDropParent">
+        <p class="positive">结束时间</p>
+        <p>{$game["endtime"]}</p>
+		<p></p>
+        </a> </li>
+    </ul>
+  </div>
+</section>
+<section class="box trend-box">
+  <div style=" text-align: center;">
+	<img src="/attachment/{$game['picture']}"  onload="javascript:if(this.height>this.width){this.height=36}else{this.width=300}"  alt="">
+  </div>
+</section>
+
+<section class="box unpad-box"> 
+  <div style=" text-align: left;padding:20px;">
+	  <?php echo htmlspecialchars_decode($game["content"])?>
+  </div>
+</section>
+<section class="box"> 
+<div style="overflow: hidden; text-align: left;padding:20px;">{$game["prize"]}</div>
+</section>
+<section class="bottom-btn"> <span id="fdBuy" {if $b=="1"}onclick="partin_game({$game['id']})" {/if}>{if $b=="1"}立即参与{else}已结束{/if}</span> </section>
+</div>
+<div id="content_mygame" style="display:none;">
+<section class="bill-list-box fix-content">
+  <section class="list-content-box">
+    <div class="list-content">
+      <div class="ui-pulldown-refresh" style="height: 0px; transition: height 0.4s ease;">
+        <div style="bottom:0;"><i class=""></i><span>下拉刷新</span></div>
+      </div>
+      <div class="bill-lists" id="bill-lists1">
+        {loop $game_record $r}
+        <section class="bill-list scroll-ajax-anim" style="opacity: 1;">
+			<?php $count=pdo_fetchcolumn("select count(*) from ims_netsbd_integral_game_record where gameid=".$r['gameid']);
+				$b="进行中";
+				if(strtotime($r["endtime"])<strtotime(date("Y-m-d h:m:s"))){
+					$b="已结束";
+				}
+				if(intval($count)==intval($r["num_eq_result"])){
+					$b="已结束";
+				}
+			?>
+          <div class="bill-title"> 
+		  <span class="bill-name">{$r["title"]}</span> 
+		  <span class="bill-label">{if $r["state"]==1}恭喜，您已中奖,<a href="/app/index.php?i={$_W['uniacid']}&c=mc&a=profile">完善资料</a>{else}{$b}{/if}</span> 
+		  </div>
+          <div class="bill-infos-box">
+            <div class="bill-infos">
+              <p class="bill-income"><img src="/attachment/{$r['picture']}" onload="javascript:if(this.height>this.width){this.height=36}else{this.width=100}"  alt=""></p>
+            </div>
+            <div class="bill-infos">
+              <p class="space"></p>
+              <p class="bill-word">总人数：{$r["num_eq_result"]}</p>
+              <p class="bill-word">已参与：{$count}</p>
+			  <p class="bill-word">结束时间：{$r["endtime"]}</p>
+			  <p><div class="meter" style="width:100%; border:solid 1px rgb(95, 218, 173); height:20px;">
+				<div style="width: <?php echo ($count/$r["num_eq_result"])*100 ?>%; background-color:rgb(95, 218, 173);height:18px;border:solid 1px rgb(95, 218, 173);"></div>
+			  </div></p>
+            </div>
+            <div class="bill-infos">
+              <div class="bill-pie"> <svg width="55" height="55" viewBox="0 0 55 55" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path d="M 27.525084291388097 -3.9999900123527894 A 31.5 31.5 0 1 1 27.522397115995126 -3.9999920376052636 L 27.512798351997215 9.500004549939849 A 18 18 0 1 0 27.5143338807932 9.500005707226975 Z" fill="rgba(0,0,0,0.0)"></path>
+                <g opacity="1">
+                  <path stroke-width="1" fill="#5fdaad" data-order="0" d="M 27.5 0 A 27.5 27.5 0 1 1 27.48272124154212 0.000005428282243258309 L 27.486176993233695 5.500004342625793 A 22 22 0 1 0 27.5 5.5 Z"></path>
+                  <path stroke-width="1" fill="#f2f2f2" data-order="1" d="M 27.48272124154212 0.000005428282243258309 A 27.5 27.5 0 0 1 27.49999999999997 0 L 27.499999999999975 5.5 A 22 22 0 0 0 27.486176993233695 5.500004342625793 Z"></path>
+                </g>
+                </svg>
+                <div class="doughnutSummary" style="width: 33px; height: 33px; margin-left: -16.5px; margin-top: -16.5px;">
+                  <p class="doughnutSummaryNumber" style="opacity: 1;">{$count}/{$r["num_eq_result"]}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bill-status-box bill-unable"> <span>
+		  {$b}
+		</span> </div>
+        </section>
+		{/loop}
+      </div>
+      
+    </div>
+  </section>
+</section>
+</div>
+{template 'common'}
+ <script>
+	var uniacid="{$_W['uniacid']}";
+	var sourceid="{$news['id']}";
+	var showtab="{$_GPC['mygame']}";
+	if(showtab==1){
+		headTabClick('game','mygame');
+	}
+</script>
+<script src="../addons/nets_bd_news/template/style/js/ajax.js"></script>
+<?php
+$share_img="http://www.91fyt.com/attachment/".$game["picture"];
+$share_title=$game["title"];
+?>
+{template 'common_share'}
+</body>
+</html>

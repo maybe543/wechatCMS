@@ -1,0 +1,67 @@
+{template 'common/header'}
+<div class="main">
+    <form class="form-horizontal form" id="setting-form" action=""
+          method="post">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">二维码</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">二维码前缀</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[prefix]"
+                               value="{$settings['prefix']}" required/>
+                        <span class="help-block">二维码前缀，不能为空</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">核销机具设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">核销机具appid</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[appid]"
+                               value="{$settings['appid']}"/>
+                        <span class="help-block">核销机具appid</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">核销机具secret</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[secret]"
+                               value="{$settings['secret']}"/>
+                        <span class="help-block">核销机具secret</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">平台名称</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="data[platform_name]"
+                               value="{$settings['platform_name']}"/>
+                        <span class="help-block">平台名称，显示在核销软件上</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">底部logo设置</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">底部logo</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('data[logo]', $settings['logo'])}
+                        <span class="help-block">底部logo:120px*34px，参考：http://img1.hudongba.com/static_v4/images/detail/ba_Zi2_5.png</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <input name="token" type="hidden" value="{$_W['token']}" /> <input
+                type="submit" class="btn btn-primary col-lg-1" name="submit"
+                value="提交" />
+        </div>
+    </form>
+</div>
+{template 'common/footer'}
