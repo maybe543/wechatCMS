@@ -11,4 +11,5 @@ env:
 install:
   - docker-php-ext-install pdo_mysql
 
-
+script:
+ 
