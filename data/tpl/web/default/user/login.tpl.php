@@ -23,13 +23,13 @@
 						<div class="input-group-addon"><i class="fa fa-unlock-alt"></i></div>
 						<input name="password" type="password" class="form-control input-lg" placeholder="请输入登录密码">
 					</div>
-					<?php  if(!empty($_W['setting']['copyright']['verifycode'])) { ?>
-					<div class="form-group input-group">
-						<div class="input-group-addon"><i class="fa fa-info"></i></div>
-						<input name="verify" type="text" class="form-control input-lg" style="width:200px;" placeholder="请输入验证码">
-						<a href="javascript:;" id="toggle" style="text-decoration: none"><img id="imgverify" src="<?php  echo url('utility/code')?>" style="height:46px;" title="点击图片更换验证码"/> 看不清？换一张</a>
-					</div>
-					<?php  } ?>
+<!--					--><?php // if(!empty($_W['setting']['copyright']['verifycode'])) { ?>
+<!--					<div class="form-group input-group">-->
+<!--						<div class="input-group-addon"><i class="fa fa-info"></i></div>-->
+<!--						<input name="verify" type="text" class="form-control input-lg" style="width:200px;" placeholder="请输入验证码">-->
+<!--						<a href="javascript:;" id="toggle" style="text-decoration: none"><img id="imgverify" src="--><?php // echo url('utility/code')?><!--" style="height:46px;" title="点击图片更换验证码"/> 看不清？换一张</a>-->
+<!--					</div>-->
+<!--					--><?php // } ?>
 					<div class="form-group">
 						<label class="checkbox-inline input-lg">
 							<input type="checkbox" value="true" name="rember"> 记住用户名 <font color="red">[请移步‘注册页面’,注册体验微赞-微信公众号服务！]</font>
@@ -68,15 +68,15 @@ $('#toggle').click(function() {
 	$('#imgverify').prop('src', '<?php  echo url('utility/code')?>r='+Math.round(new Date().getTime()));
 	return false;
 });
-<?php  if(!empty($_W['setting']['copyright']['verifycode'])) { ?>
-	$('#form1').submit(function() {
-		var verify = $(':text[name="verify"]').val();
-		if (verify == '') {
-			alert('请填写验证码');
-			return false;
-		}
-	});
-<?php  } ?>
+<?php // if(!empty($_W['setting']['copyright']['verifycode'])) { ?>
+//	$('#form1').submit(function() {
+//		var verify = $(':text[name="verify"]').val();
+//		if (verify == '') {
+//			alert('请填写验证码');
+//			return false;
+//		}
+//	});
+<?php // } ?>
 </script>
 </body>
 </html>
